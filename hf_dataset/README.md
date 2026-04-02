@@ -82,7 +82,7 @@ print(ds["train"][0])
 | `cwe` | CWE weaknesses | 14,565 |
 | `combined` | All sources merged (deduplicated) | 71,531 |
 
-*Counts as of 2026-04-02T20:36:34Z. Regenerate from [source](https://github.com/S0UGATA/mitre-attack-kg) for the latest data.*
+*Counts as of 2026-04-02T20:51:56Z. Regenerate from [source](https://github.com/S0UGATA/mitre-attack-kg) for the latest data.*
 
 ## Knowledge Graph Structure
 
