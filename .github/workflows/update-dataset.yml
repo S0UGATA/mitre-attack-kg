@@ -1,0 +1,351 @@
+name: Update MITRE ATT&CK Dataset
+
+on:
+  schedule:
+    # Run weekly on Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt huggingface_hub
+
+      - name: Check which sources have changed
+        id: source_check
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PYEOF'
+          import json, os
+          import requests
+          from huggingface_hub import hf_hub_download
+
+          repo_id = "s0u9ata/mitre-attack-kg"
+
+          # --- Collect current source fingerprints ---
+          current = {}
+
+          # ATT&CK: latest commit SHA
+          resp = requests.get(
+              "https://api.github.com/repos/mitre-attack/attack-stix-data/commits/master",
+              headers={"Accept": "application/vnd.github.v3+json"},
+              timeout=30,
+          )
+          resp.raise_for_status()
+          commit_data = resp.json()
+          current["attack_sha"] = commit_data["sha"]
+          current["attack_date"] = commit_data["commit"]["committer"]["date"]
+          print(f"ATT&CK latest commit: {current['attack_sha']} ({current['attack_date']})")
+
+          # CAPEC: Last-Modified header
+          resp = requests.head("https://capec.mitre.org/data/xml/capec_latest.xml", timeout=30)
+          current["capec_last_modified"] = resp.headers.get("Last-Modified", "")
+          print(f"CAPEC Last-Modified: {current['capec_last_modified']}")
+
+          # CWE: Last-Modified header
+          resp = requests.head("https://cwe.mitre.org/data/xml/cwec_latest.xml.zip", timeout=30)
+          current["cwe_last_modified"] = resp.headers.get("Last-Modified", "")
+          print(f"CWE Last-Modified: {current['cwe_last_modified']}")
+
+          # --- Load previous metadata from HuggingFace ---
+          previous = {}
+          try:
+              meta_path = hf_hub_download(
+                  repo_id=repo_id,
+                  filename=".metadata.json",
+                  repo_type="dataset",
+                  token=os.environ["HF_TOKEN"],
+              )
+              previous = json.loads(open(meta_path).read())
+              print(f"Previous metadata: {previous}")
+          except Exception:
+              print("No previous metadata found, will process all sources")
+
+          # --- Compare each source independently ---
+          attack_changed = current["attack_sha"] != previous.get("attack_sha")
+          capec_changed = current["capec_last_modified"] != previous.get("capec_last_modified")
+          cwe_changed = current["cwe_last_modified"] != previous.get("cwe_last_modified")
+          any_changed = attack_changed or capec_changed or cwe_changed
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"any_changed={'true' if any_changed else 'false'}\n")
+              f.write(f"attack_changed={'true' if attack_changed else 'false'}\n")
+              f.write(f"capec_changed={'true' if capec_changed else 'false'}\n")
+              f.write(f"cwe_changed={'true' if cwe_changed else 'false'}\n")
+              f.write(f"metadata={json.dumps(current)}\n")
+
+          print(f"ATT&CK: {'CHANGED' if attack_changed else 'unchanged'}")
+          print(f"CAPEC:  {'CHANGED' if capec_changed else 'unchanged'}")
+          print(f"CWE:    {'CHANGED' if cwe_changed else 'unchanged'}")
+          if not any_changed:
+              print("All sources unchanged, skipping.")
+          PYEOF
+
+      - name: Download unchanged parquets from HuggingFace
+        if: steps.source_check.outputs.any_changed == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PYEOF'
+          import os, shutil
+          from pathlib import Path
+          from huggingface_hub import hf_hub_download
+
+          repo_id = "s0u9ata/mitre-attack-kg"
+          output = Path("output")
+          output.mkdir(exist_ok=True)
+
+          # Download parquets for sources that have NOT changed
+          files_to_download = []
+          if "${{ steps.source_check.outputs.attack_changed }}" != "true":
+              files_to_download += ["enterprise", "mobile", "ics", "attack-all"]
+          if "${{ steps.source_check.outputs.capec_changed }}" != "true":
+              files_to_download += ["capec"]
+          if "${{ steps.source_check.outputs.cwe_changed }}" != "true":
+              files_to_download += ["cwe"]
+
+          for name in files_to_download:
+              try:
+                  cached = hf_hub_download(
+                      repo_id=repo_id,
+                      filename=f"data/{name}.parquet",
+                      repo_type="dataset",
+                      token=os.environ["HF_TOKEN"],
+                  )
+                  shutil.copy(cached, output / f"{name}.parquet")
+                  print(f"Downloaded {name}.parquet (unchanged)")
+              except Exception as e:
+                  print(f"Could not download {name}.parquet: {e}")
+                  print("Will regenerate from source")
+          PYEOF
+
+      - name: Convert ATT&CK data
+        if: steps.source_check.outputs.any_changed == 'true' && steps.source_check.outputs.attack_changed == 'true'
+        run: python convert.py --sources attack --no-combined --cache-dir /tmp/stix-cache
+
+      - name: Convert CAPEC data
+        if: steps.source_check.outputs.any_changed == 'true' && steps.source_check.outputs.capec_changed == 'true'
+        run: python convert_capec.py --cache-dir /tmp/stix-cache
+
+      - name: Convert CWE data
+        if: steps.source_check.outputs.any_changed == 'true' && steps.source_check.outputs.cwe_changed == 'true'
+        run: python convert_cwe.py --cache-dir /tmp/stix-cache
+
+      - name: Rebuild combined.parquet
+        if: steps.source_check.outputs.any_changed == 'true'
+        run: |
+          python - <<'PYEOF'
+          import pandas as pd
+          from pathlib import Path
+          from common import write_parquet
+
+          output = Path("output")
+          dfs = []
+          for name in ["attack-all", "capec", "cwe"]:
+              path = output / f"{name}.parquet"
+              if path.exists():
+                  dfs.append(pd.read_parquet(path))
+                  print(f"  {name}: {len(dfs[-1]):,} triples")
+
+          if len(dfs) > 1:
+              combined = pd.concat(dfs, ignore_index=True).drop_duplicates()
+              write_parquet(combined, output / "combined.parquet")
+          elif dfs:
+              write_parquet(dfs[0], output / "combined.parquet")
+          PYEOF
+
+      - name: Validate generated data
+        if: steps.source_check.outputs.any_changed == 'true'
+        run: |
+          python - <<'PYEOF'
+          import sys
+          import pyarrow.parquet as pq
+          from pathlib import Path
+
+          # Minimum expected triples per file (well below current counts as safety floor)
+          MIN_TRIPLES = {
+              "enterprise": 20_000,
+              "mobile": 2_000,
+              "ics": 1_500,
+              "attack-all": 25_000,
+              "capec": 4_000,
+              "cwe": 7_000,
+              "combined": 35_000,
+          }
+
+          failed = False
+          for name, minimum in MIN_TRIPLES.items():
+              path = Path(f"output/{name}.parquet")
+              if not path.exists():
+                  print(f"FAIL: {path} does not exist")
+                  failed = True
+                  continue
+
+              count = pq.read_metadata(path).num_rows
+              size_kb = path.stat().st_size / 1024
+
+              if count < minimum:
+                  print(f"FAIL: {name}.parquet has {count} triples (minimum: {minimum})")
+                  failed = True
+              elif size_kb < 10:
+                  print(f"FAIL: {name}.parquet is suspiciously small ({size_kb:.1f} KB)")
+                  failed = True
+              else:
+                  print(f"OK: {name}.parquet — {count:,} triples, {size_kb:.0f} KB")
+
+          if failed:
+              print("\nValidation failed — aborting to protect existing HuggingFace data.")
+              sys.exit(1)
+          PYEOF
+
+      - name: Update dataset card with fresh counts and date
+        if: steps.source_check.outputs.any_changed == 'true'
+        env:
+          SOURCE_META: ${{ steps.source_check.outputs.metadata }}
+        run: |
+          python - <<'PYEOF'
+          import json, os, re
+          from datetime import datetime, timezone
+          import pyarrow.parquet as pq
+          from pathlib import Path
+
+          readme = Path("hf_dataset/README.md")
+          text = readme.read_text()
+
+          # Read triple counts from generated Parquet files
+          counts = {}
+          for name in ["enterprise", "mobile", "ics", "attack-all", "capec", "cwe", "combined"]:
+              path = Path(f"output/{name}.parquet")
+              counts[name] = pq.read_metadata(path).num_rows
+
+          now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+          TABLE_ROWS = [
+              ("enterprise", "`enterprise` (default)", "Enterprise ATT&CK"),
+              ("mobile", "`mobile`", "Mobile ATT&CK"),
+              ("ics", "`ics`", "ICS ATT&CK"),
+              ("attack-all", "`attack-all`", "ATT&CK combined (deduplicated)"),
+              ("capec", "`capec`", "CAPEC attack patterns"),
+              ("cwe", "`cwe`", "CWE weaknesses"),
+              ("combined", "`combined`", "All sources merged (deduplicated)"),
+          ]
+          for key, config_col, desc_col in TABLE_ROWS:
+              pattern = rf"\| {re.escape(config_col)} \| {re.escape(desc_col)} \| [\d,]+\s+\|"
+              replacement = f"| {config_col} | {desc_col} | {counts[key]:,} |"
+              text = re.sub(pattern, replacement, text)
+
+          # Update the timestamp
+          text = re.sub(
+              r"\*Counts as of \d{4}-\d{2}-\d{2}T[\d:]+Z\.",
+              f"*Counts as of {now}.",
+              text,
+          )
+
+          # Update source versions table
+          from email.utils import parsedate_to_datetime
+
+          meta = json.loads(os.environ["SOURCE_META"])
+          attack_sha = meta.get("attack_sha", "---")
+          attack_date = meta.get("attack_date", "---")
+          capec_mod = meta.get("capec_last_modified", "---")
+          cwe_mod = meta.get("cwe_last_modified", "---")
+
+          def http_date_to_iso(s):
+              try:
+                  return parsedate_to_datetime(s).strftime("%Y-%m-%dT%H:%M:%SZ")
+              except Exception:
+                  return s
+
+          text = re.sub(
+              r"\| ATT&CK \| \[`[^`]*`\]\([^)]*\) \| [^|]* \|",
+              f"| ATT&CK | [`mitre-attack/attack-stix-data`](https://github.com/mitre-attack/attack-stix-data/commit/{attack_sha}) | {attack_date} |",
+              text,
+          )
+          text = re.sub(
+              r"\| CAPEC \| \[`[^`]*`\]\([^)]*\) \| [^|]* \|",
+              f"| CAPEC | [`capec_latest.xml`](https://capec.mitre.org/data/xml/capec_latest.xml) | {http_date_to_iso(capec_mod)} |",
+              text,
+          )
+          text = re.sub(
+              r"\| CWE \| \[`[^`]*`\]\([^)]*\) \| [^|]* \|",
+              f"| CWE | [`cwec_latest.xml.zip`](https://cwe.mitre.org/data/xml/cwec_latest.xml.zip) | {http_date_to_iso(cwe_mod)} |",
+              text,
+          )
+
+          readme.write_text(text)
+          print(f"Updated counts: {counts}, timestamp: {now}")
+          PYEOF
+
+      - name: Upload to HuggingFace Hub
+        if: steps.source_check.outputs.any_changed == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PYEOF'
+          import json, os, shutil
+          from pathlib import Path
+          from huggingface_hub import HfApi
+
+          repo_id = "s0u9ata/mitre-attack-kg"
+          api = HfApi(token=os.environ["HF_TOKEN"])
+
+          # Ensure the dataset repo exists
+          api.create_repo(repo_id=repo_id, repo_type="dataset", exist_ok=True)
+
+          # Stage all files into a single directory for atomic upload
+          staging = Path("hf_staging")
+          staging.mkdir(exist_ok=True)
+          (staging / "data").mkdir(exist_ok=True)
+
+          for name in ["enterprise", "mobile", "ics", "attack-all", "capec", "cwe", "combined"]:
+              shutil.copy(f"output/{name}.parquet", staging / "data" / f"{name}.parquet")
+
+          shutil.copy("hf_dataset/README.md", staging / "README.md")
+
+          meta = '${{ steps.source_check.outputs.metadata }}'
+          (staging / ".metadata.json").write_text(json.dumps(json.loads(meta), indent=2))
+
+          # Upload everything in one commit
+          api.upload_folder(
+              folder_path=str(staging),
+              repo_id=repo_id,
+              repo_type="dataset",
+              commit_message="Update dataset",
+          )
+          print(f"Uploaded all files. Metadata: {meta}")
+          PYEOF
+
+      - name: Open PR to update dataset card counts
+        if: steps.source_check.outputs.any_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git diff --quiet hf_dataset/README.md && exit 0
+          branch="update-dataset-card-counts-${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add hf_dataset/README.md
+          git commit -m "Update dataset card counts"
+          git push -u origin "$branch"
+          existing=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
+          if [ -z "$existing" ]; then
+            gh pr create \
+              --title "Update dataset card counts" \
+              --body "Automated update of triple counts and date in the HuggingFace dataset card." \
+              --base main
+          fi
