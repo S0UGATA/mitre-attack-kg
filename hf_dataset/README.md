@@ -74,15 +74,15 @@ print(ds["train"][0])
 
 | Config | Description | Triples |
 |--------|-------------|---------|
-| `enterprise` (default) | Enterprise ATT&CK | 1       |
-| `mobile` | Mobile ATT&CK | 5,307   |
-| `ics` | ICS ATT&CK | 3,756   |
-| `attack-all` | ATT&CK combined (deduplicated) | 49,622  |
-| `capec` | CAPEC attack patterns | 8,114   |
-| `cwe` | CWE weaknesses | 14,565  |
-| `combined` | All sources merged (deduplicated) | 2       |
+| `enterprise` (default) | Enterprise ATT&CK | 42,041 |
+| `mobile` | Mobile ATT&CK | 5,307 |
+| `ics` | ICS ATT&CK | 3,756 |
+| `attack-all` | ATT&CK combined (deduplicated) | 49,622 |
+| `capec` | CAPEC attack patterns | 8,114 |
+| `cwe` | CWE weaknesses | 14,565 |
+| `combined` | All sources merged (deduplicated) | 71,531 |
 
-*Counts as of 2026-04-02T00:00:00Z. Regenerate from [source](https://github.com/S0UGATA/mitre-attack-kg) for the latest data.*
+*Counts as of 2026-04-02T20:36:34Z. Regenerate from [source](https://github.com/S0UGATA/mitre-attack-kg) for the latest data.*
 
 ## Knowledge Graph Structure
 
