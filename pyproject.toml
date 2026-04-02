@@ -1,7 +1,7 @@
 [project]
 name = "mitre-attack-kg"
 version = "1.0.0"
-description = "Convert MITRE ATT&CK STIX data into SPO knowledge-graph triples (Parquet)"
+description = "Convert MITRE ATT&CK, CAPEC, and CWE data into SPO knowledge-graph triples (Parquet)"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 authors = [{ name = "Sougata Bhattacharya" }]

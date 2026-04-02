@@ -234,7 +234,15 @@ jobs:
 
           now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-          TABLE_ROWS = [
+          def update_table_counts(text, rows, counts):
+              for key, col_a, col_b in rows:
+                  pattern = rf"\| {re.escape(col_a)} \| {re.escape(col_b)} \| [\d,]+\s+\|"
+                  replacement = f"| {col_a} | {col_b} | {counts[key]:,} |"
+                  text = re.sub(pattern, replacement, text)
+              return text
+
+          # Update HF dataset card
+          HF_TABLE_ROWS = [
               ("enterprise", "`enterprise` (default)", "Enterprise ATT&CK"),
               ("mobile", "`mobile`", "Mobile ATT&CK"),
               ("ics", "`ics`", "ICS ATT&CK"),
@@ -243,19 +251,15 @@ jobs:
               ("cwe", "`cwe`", "CWE weaknesses"),
               ("combined", "`combined`", "All sources merged (deduplicated)"),
           ]
-          for key, config_col, desc_col in TABLE_ROWS:
-              pattern = rf"\| {re.escape(config_col)} \| {re.escape(desc_col)} \| [\d,]+\s+\|"
-              replacement = f"| {config_col} | {desc_col} | {counts[key]:,} |"
-              text = re.sub(pattern, replacement, text)
+          text = update_table_counts(text, HF_TABLE_ROWS, counts)
 
-          # Update the timestamp
           text = re.sub(
               r"\*Counts as of \d{4}-\d{2}-\d{2}T[\d:]+Z\.",
               f"*Counts as of {now}.",
               text,
           )
 
-          # Update source versions table
+          # Update source versions
           from email.utils import parsedate_to_datetime
 
           meta = json.loads(os.environ["SOURCE_META"])
@@ -287,7 +291,22 @@ jobs:
           )
 
           readme.write_text(text)
-          print(f"Updated counts: {counts}, timestamp: {now}")
+          print(f"Updated hf_dataset/README.md: {counts}, timestamp: {now}")
+
+          # Update root README.md counts table
+          ROOT_TABLE_ROWS = [
+              ("enterprise", "`enterprise.parquet`", "ATT&CK Enterprise"),
+              ("mobile", "`mobile.parquet`", "ATT&CK Mobile"),
+              ("ics", "`ics.parquet`", "ATT&CK ICS"),
+              ("attack-all", "`attack-all.parquet`", "ATT&CK combined (deduplicated)"),
+              ("capec", "`capec.parquet`", "CAPEC attack patterns"),
+              ("cwe", "`cwe.parquet`", "CWE weaknesses"),
+              ("combined", "`combined.parquet`", "All sources merged (deduplicated)"),
+          ]
+          root_readme = Path("README.md")
+          root_text = update_table_counts(root_readme.read_text(), ROOT_TABLE_ROWS, counts)
+          root_readme.write_text(root_text)
+          print("Updated README.md")
           PYEOF
 
       - name: Upload to HuggingFace Hub
@@ -334,13 +353,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git diff --quiet hf_dataset/README.md && exit 0
+          git diff --quiet hf_dataset/README.md README.md && exit 0
           branch="update-dataset-card-counts-${{ github.run_id }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add hf_dataset/README.md
-          git commit -m "Update dataset card counts"
+          git add hf_dataset/README.md README.md
+          git commit -m "Update dataset counts"
           git push -u origin "$branch"
           existing=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
           if [ -z "$existing" ]; then

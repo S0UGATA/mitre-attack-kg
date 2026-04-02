@@ -23,14 +23,15 @@ flowchart LR
         WXML["CWE XML"]
   end
  subgraph out["SPO Triples · Parquet"]
-        ATK["enterprise / mobile / ics / all"]
+        ATK["enterprise / mobile / ics / attack-all"]
         CAP["capec"]
         CW["cwe"]
+        CMB["combined"]
   end
     STIX --> CONV["convert.py"]
     CXML --> CONV
     WXML --> CONV
-    CONV --> ATK & CAP & CW
+    CONV --> ATK & CAP & CW --> CMB
     out --> HF["HuggingFace Hub"]
 
     style STIX fill:#dbeafe,stroke:#3b82f6
@@ -40,6 +41,7 @@ flowchart LR
     style ATK fill:#dbeafe,stroke:#3b82f6
     style CAP fill:#fef3c7,stroke:#f59e0b
     style CW fill:#fce7f3,stroke:#ec4899
+    style CMB fill:#f3f4f6,stroke:#6b7280
     style HF fill:#d1fae5,stroke:#10b981
 ```
 
