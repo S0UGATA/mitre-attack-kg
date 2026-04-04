@@ -6,6 +6,8 @@ import json
 import zipfile
 from unittest.mock import MagicMock, patch
 
+import requests
+
 from common import (
     _cleanup_old_versions,
     _fingerprint_from_etag,
@@ -84,7 +86,7 @@ class TestRemoteVersion:
         mock_head.return_value = mock_resp
         assert _remote_version("http://example.com/file") == ""
 
-    @patch("common.requests.head", side_effect=Exception("timeout"))
+    @patch("common.requests.head", side_effect=requests.RequestException("timeout"))
     def test_exception_returns_empty(self, mock_head):
         assert _remote_version("http://example.com/file") == ""
 
@@ -178,7 +180,7 @@ class TestDownloadGithubZip:
         assert any("abcdef123456" in f.name for f in tmp_path.iterdir())
         assert result.is_dir()
 
-    @patch("common._github_commit_sha", side_effect=Exception("API error"))
+    @patch("common._github_commit_sha", side_effect=requests.RequestException("API error"))
     @patch("common._remote_version", return_value="fallback_ver")
     @patch("common.requests.get")
     def test_falls_back_on_sha_failure(self, mock_get, mock_rv, mock_sha, tmp_path):

@@ -1,6 +1,7 @@
 """CLI orchestrator: Security Data → KG Triples (Parquet)."""
 
 import argparse
+import json
 import logging
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -138,6 +139,51 @@ def _convert_source(
     return source, Path(path).name
 
 
+def _convert_attack(
+    domains: list[str],
+    output_dir: str,
+    cache_dir: str,
+    parquet_format: str,
+    log_dir: str | None = None,
+    force: bool = False,
+) -> tuple[str, dict[str, str]]:
+    """Convert all ATT&CK domains. Runs in a worker process.
+
+    Returns ("attack", {domain: fingerprint, ...}) with only changed domains.
+    """
+    _setup_logging(Path(log_dir) if log_dir else None, "attack")
+    t0 = time.monotonic()
+    logger.info("Starting ATT&CK conversion for domains: %s", ", ".join(domains))
+
+    out_dir = Path(output_dir)
+    attack_dfs = []
+    attack_fingerprints: dict[str, str] = {}
+    attack_any_changed = False
+
+    for domain in domains:
+        stix_path = download_stix(domain, cache_dir)
+        if not force and not source_changed(out_dir, domain, stix_path):
+            logger.info(
+                "Source %s unchanged, skipping conversion (use --force to override)", domain
+            )
+            existing = out_dir / f"{domain}.parquet"
+            if existing.exists():
+                attack_dfs.append(pd.read_parquet(existing))
+            continue
+        attack_any_changed = True
+        df = convert_domain(domain, out_dir, cache_dir, parquet_format, stix_path=stix_path)
+        attack_fingerprints[domain] = Path(stix_path).name
+        attack_dfs.append(df)
+
+    if len(attack_dfs) > 1 and attack_any_changed:
+        attack_combined = pd.concat(attack_dfs, ignore_index=True).drop_duplicates()
+        write_parquet(attack_combined, out_dir / "attack-all.parquet", parquet_format)
+
+    elapsed = time.monotonic() - t0
+    logger.info("Finished ATT&CK in %.1fs", elapsed)
+    return "attack", attack_fingerprints
+
+
 def main():
     parser = argparse.ArgumentParser(description="Security Data → KG Triples (Parquet)")
     parser.add_argument(
@@ -223,79 +269,105 @@ def main():
 
     cache_dir = args.cache_dir
     log_dir_str = str(args.log_dir)
+    failed_sources: list[str] = []
 
-    # --- ATT&CK domains ---
-    if "attack" in args.sources:
-        logger.info("Converting ATT&CK domains: %s", ", ".join(args.domains))
-        attack_dfs = []
-        attack_any_changed = False
-        attack_fingerprints: dict[str, str] = {}
-        for domain in args.domains:
-            stix_path = download_stix(domain, cache_dir)
-            if not args.force and not source_changed(args.output_dir, domain, stix_path):
-                logger.info(
-                    "Source %s unchanged, skipping conversion (use --force to override)", domain
-                )
-                # Load existing parquet for the combined file
-                existing = args.output_dir / f"{domain}.parquet"
-                if existing.exists():
-                    attack_dfs.append(pd.read_parquet(existing))
-                continue
-            attack_any_changed = True
-            df = convert_domain(
-                domain, args.output_dir, cache_dir, args.parquet_format, stix_path=stix_path
-            )
-            attack_fingerprints[domain] = Path(stix_path).name
-            attack_dfs.append(df)
-
-        if attack_fingerprints:
-            save_fingerprints(attack_fingerprints)
-
-        if len(attack_dfs) > 1 and attack_any_changed:
-            attack_combined = pd.concat(attack_dfs, ignore_index=True).drop_duplicates()
-            write_parquet(
-                attack_combined, args.output_dir / "attack-all.parquet", args.parquet_format
-            )
-
-    # --- Non-ATT&CK sources ---
+    # Order sources so heaviest ones start first (maximizes parallel overlap)
+    HEAVY_SOURCES_ORDER = ["cve", "ghsa", "vulnrichment", "cpe", "attack"]
     non_attack = [s for s in args.sources if s != "attack" and s in SOURCE_CONVERTERS]
+    has_attack = "attack" in args.sources
+    all_sources = non_attack.copy()
 
-    if args.parallel and len(non_attack) > 1:
-        logger.info("Running %d sources in parallel with %d workers", len(non_attack), args.workers)
+    # Sort: heavy sources first, then the rest in original order
+    def _source_priority(s: str) -> int:
+        try:
+            return HEAVY_SOURCES_ORDER.index(s)
+        except ValueError:
+            return len(HEAVY_SOURCES_ORDER)
+
+    all_sources.sort(key=_source_priority)
+
+    if args.parallel and (len(all_sources) + (1 if has_attack else 0)) > 1:
+        total = len(all_sources) + (1 if has_attack else 0)
+        logger.info("Running %d sources in parallel with %d workers", total, args.workers)
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
-            futures = {
-                pool.submit(
-                    _convert_source,
+            futures: dict = {}
+
+            # Submit ATT&CK as a single worker task
+            if has_attack:
+                futures[
+                    pool.submit(
+                        _convert_attack,
+                        list(args.domains),
+                        str(args.output_dir),
+                        cache_dir,
+                        args.parquet_format,
+                        log_dir_str,
+                        args.force,
+                    )
+                ] = "attack"
+
+            # Submit non-ATT&CK sources (heavy first)
+            for source in all_sources:
+                futures[
+                    pool.submit(
+                        _convert_source,
+                        source,
+                        str(args.output_dir),
+                        cache_dir,
+                        args.parquet_format,
+                        log_dir_str,
+                        args.force,
+                    )
+                ] = source
+
+            for future in as_completed(futures):
+                source = futures[future]
+                try:
+                    if source == "attack":
+                        _, attack_fps = future.result()
+                        if attack_fps:
+                            save_fingerprints(attack_fps)
+                    else:
+                        _, fp = future.result()
+                        if fp:
+                            save_fingerprint(source, fp)
+                    logger.info("Completed: %s", source)
+                except Exception:
+                    logger.exception("Failed: %s", source)
+                    failed_sources.append(source)
+    else:
+        # Sequential mode
+        if has_attack:
+            try:
+                _, attack_fps = _convert_attack(
+                    list(args.domains),
+                    str(args.output_dir),
+                    cache_dir,
+                    args.parquet_format,
+                    log_dir_str,
+                    args.force,
+                )
+                if attack_fps:
+                    save_fingerprints(attack_fps)
+            except Exception:
+                logger.exception("Failed: attack")
+                failed_sources.append("attack")
+
+        for source in all_sources:
+            try:
+                _, fp = _convert_source(
                     source,
                     str(args.output_dir),
                     cache_dir,
                     args.parquet_format,
                     log_dir_str,
                     args.force,
-                ): source
-                for source in non_attack
-            }
-            for future in as_completed(futures):
-                source = futures[future]
-                try:
-                    _, fp = future.result()
-                    if fp:
-                        save_fingerprint(source, fp)
-                    logger.info("Completed: %s", source)
-                except Exception:
-                    logger.exception("Failed: %s", source)
-    else:
-        for source in non_attack:
-            _, fp = _convert_source(
-                source,
-                str(args.output_dir),
-                cache_dir,
-                args.parquet_format,
-                log_dir_str,
-                args.force,
-            )
-            if fp:
-                save_fingerprint(source, fp)
+                )
+                if fp:
+                    save_fingerprint(source, fp)
+            except Exception:
+                logger.exception("Failed: %s", source)
+                failed_sources.append(source)
 
     # --- Combined (all sources) — stream from parquet files to avoid loading all into memory ---
     if not args.no_combined:
@@ -329,8 +401,14 @@ def main():
                 "Wrote %s (%d triples, format=%s)", combined_path, total_rows, args.parquet_format
             )
 
+    # Write conversion report for CI workflow consumption
+    report = {"failed_sources": failed_sources, "timestamp": now}
+    (args.output_dir / "conversion_report.json").write_text(json.dumps(report, indent=2) + "\n")
+    if failed_sources:
+        logger.warning("Failed sources: %s", ", ".join(failed_sources))
+
     if args.update_readme:
-        update_dataset_readme(args.output_dir)
+        update_dataset_readme(args.output_dir, failed_sources=failed_sources)
 
     elapsed_total = time.monotonic() - t0_total
     logger.info("All done in %.1fs", elapsed_total)

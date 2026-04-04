@@ -79,7 +79,7 @@ def _consequence_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, 
 
 def extract_capec_triples(xml_path: str) -> list[tuple[str, str, str]]:
     """Extract SPO triples from CAPEC XML."""
-    tree = ET.parse(xml_path)
+    tree = ET.parse(xml_path)  # nosec B314 — trusted MITRE data
     root = tree.getroot()
     triples: list[tuple[str, str, str]] = []
 

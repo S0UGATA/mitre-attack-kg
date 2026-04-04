@@ -109,7 +109,7 @@ def _consequence_triples(cwe_id: str, weakness: ET.Element) -> list[tuple[str, s
 
 def extract_cwe_triples(xml_path: str) -> list[tuple[str, str, str]]:
     """Extract SPO triples from CWE XML."""
-    tree = ET.parse(xml_path)
+    tree = ET.parse(xml_path)  # nosec B314 — trusted MITRE data
     root = tree.getroot()
     triples: list[tuple[str, str, str]] = []
 

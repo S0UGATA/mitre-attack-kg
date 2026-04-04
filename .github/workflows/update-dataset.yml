@@ -205,37 +205,144 @@ jobs:
           sources=$(echo $sources | xargs)
           echo "Changed sources: $sources"
           if [ -n "$sources" ]; then
-            python src/convert.py --sources $sources --cache-dir /tmp/source-cache --log-dir logs --parallel --workers 2
+            python src/convert.py --sources $sources --cache-dir /tmp/source-cache --log-dir logs --parallel --workers 4
           fi
+
+      - name: Download fallback parquets for failed sources
+        if: steps.source_check.outputs.any_changed == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PYEOF'
+          import json, os, shutil, sys
+          from pathlib import Path
+          from huggingface_hub import hf_hub_download
+
+          report_path = Path("output/conversion_report.json")
+          if not report_path.exists():
+              print("No conversion report found, skipping fallback download")
+              sys.exit(0)
+
+          report = json.loads(report_path.read_text())
+          failed = report.get("failed_sources", [])
+          if not failed:
+              print("No failed sources, no fallbacks needed")
+              sys.exit(0)
+
+          print(f"Failed sources: {', '.join(failed)}")
+
+          repo_id = "s0u9ata/security-kg"
+          output = Path("output")
+
+          source_files = {
+              "attack": ["enterprise", "mobile", "ics", "attack-all"],
+              "capec": ["capec"], "cwe": ["cwe"], "cve": ["cve"], "cpe": ["cpe"],
+              "d3fend": ["d3fend"], "atlas": ["atlas"], "car": ["car"],
+              "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
+              "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
+              "sigma": ["sigma"], "exploitdb": ["exploitdb"],
+          }
+
+          for source in failed:
+              for name in source_files.get(source, [source]):
+                  pq_path = output / f"{name}.parquet"
+                  if pq_path.exists():
+                      print(f"  {name}.parquet already exists, skipping")
+                      continue
+                  try:
+                      cached = hf_hub_download(
+                          repo_id=repo_id,
+                          filename=f"data/{name}.parquet",
+                          repo_type="dataset",
+                          token=os.environ["HF_TOKEN"],
+                      )
+                      shutil.copy(cached, pq_path)
+                      print(f"  Downloaded fallback {name}.parquet from HuggingFace")
+                  except Exception as e:
+                      print(f"  ERROR: Could not download fallback {name}.parquet: {e}")
+          PYEOF
+
+      - name: Rebuild combined.parquet with fallbacks
+        if: steps.source_check.outputs.any_changed == 'true'
+        run: |
+          python - <<'PYEOF'
+          import json
+          from pathlib import Path
+          import pyarrow.parquet as pq
+          import pyarrow as pa
+          from common import PARQUET_SCHEMA, PARQUET_FORMATS
+
+          report_path = Path("output/conversion_report.json")
+          if not report_path.exists():
+              exit(0)
+
+          report = json.loads(report_path.read_text())
+          if not report.get("failed_sources"):
+              print("No failed sources, combined.parquet is already complete")
+              exit(0)
+
+          print("Rebuilding combined.parquet with fallback parquets...")
+          parquet_names = [
+              "attack-all", "capec", "cwe", "cve", "cpe",
+              "d3fend", "atlas", "car", "engage", "epss", "kev",
+              "vulnrichment", "ghsa", "sigma", "exploitdb",
+          ]
+          output = Path("output")
+          parquet_files = [output / f"{n}.parquet" for n in parquet_names if (output / f"{n}.parquet").exists()]
+
+          if len(parquet_files) > 1:
+              combined_path = output / "combined.parquet"
+              pq_opts = PARQUET_FORMATS["v2"]
+              writer = None
+              total_rows = 0
+              try:
+                  for pf in parquet_files:
+                      for batch in pq.ParquetFile(pf).iter_batches(batch_size=500_000):
+                          if writer is None:
+                              writer = pq.ParquetWriter(combined_path, PARQUET_SCHEMA, **pq_opts)
+                          writer.write_table(pa.Table.from_batches([batch], schema=PARQUET_SCHEMA))
+                          total_rows += batch.num_rows
+              finally:
+                  if writer is not None:
+                      writer.close()
+              print(f"Rebuilt combined.parquet: {total_rows:,} triples from {len(parquet_files)} files")
+          PYEOF
 
       - name: Validate generated data
         if: steps.source_check.outputs.any_changed == 'true'
         run: |
           python - <<'PYEOF'
-          import sys
+          import json, sys
           import pyarrow.parquet as pq
           from pathlib import Path
 
-          # Minimum expected triples per file (safety floor)
+          # Load conversion report to identify fallback sources
+          report_path = Path("output/conversion_report.json")
+          failed_sources = []
+          if report_path.exists():
+              report = json.loads(report_path.read_text())
+              failed_sources = report.get("failed_sources", [])
+
+          source_to_parquets = {
+              "attack": ["enterprise", "mobile", "ics", "attack-all"],
+              "capec": ["capec"], "cwe": ["cwe"], "cve": ["cve"], "cpe": ["cpe"],
+              "d3fend": ["d3fend"], "atlas": ["atlas"], "car": ["car"],
+              "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
+              "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
+              "sigma": ["sigma"], "exploitdb": ["exploitdb"],
+          }
+          fallback_parquets = set()
+          for src in failed_sources:
+              for pq_name in source_to_parquets.get(src, [src]):
+                  fallback_parquets.add(pq_name)
+
           MIN_TRIPLES = {
-              "enterprise": 20_000,
-              "mobile": 2_000,
-              "ics": 1_500,
-              "attack-all": 25_000,
-              "capec": 4_000,
-              "cwe": 7_000,
-              "cve": 500_000,
-              "cpe": 500_000,
-              "d3fend": 500,
-              "atlas": 100,
-              "car": 100,
-              "engage": 100,
-              "epss": 100_000,
-              "kev": 2_000,
-              "vulnrichment": 100_000,
-              "ghsa": 50_000,
-              "sigma": 10_000,
-              "exploitdb": 50_000,
+              "enterprise": 20_000, "mobile": 2_000, "ics": 1_500,
+              "attack-all": 25_000, "capec": 4_000, "cwe": 7_000,
+              "cve": 500_000, "cpe": 500_000, "d3fend": 500,
+              "atlas": 100, "car": 100, "engage": 100,
+              "epss": 100_000, "kev": 2_000, "vulnrichment": 100_000,
+              "ghsa": 50_000, "sigma": 10_000, "exploitdb": 50_000,
               "combined": 1_000_000,
           }
 
@@ -243,13 +350,18 @@ jobs:
           for name, minimum in MIN_TRIPLES.items():
               path = Path(f"output/{name}.parquet")
               if not path.exists():
-                  print(f"WARN: {path} does not exist (source may not have changed)")
+                  if name in fallback_parquets:
+                      print(f"WARN: {name}.parquet missing (failed + no fallback available)")
+                  else:
+                      print(f"WARN: {path} does not exist (source may not have changed)")
                   continue
 
               count = pq.read_metadata(path).num_rows
               size_kb = path.stat().st_size / 1024
 
-              if count < minimum:
+              if name in fallback_parquets:
+                  print(f"FALLBACK: {name}.parquet — {count:,} triples, {size_kb:.0f} KB (last good version)")
+              elif count < minimum:
                   print(f"FAIL: {name}.parquet has {count} triples (minimum: {minimum})")
                   failed = True
               else:
@@ -258,16 +370,33 @@ jobs:
           if failed:
               print("\nValidation failed — aborting to protect existing HuggingFace data.")
               sys.exit(1)
+
+          if failed_sources:
+              print(f"\nNote: {len(failed_sources)} source(s) used fallback: {', '.join(failed_sources)}")
           PYEOF
 
       - name: Update dataset card with fresh counts and date
         if: steps.source_check.outputs.any_changed == 'true'
         run: |
-          python -c "
+          python - <<'PYEOF'
+          import json
           from pathlib import Path
           from common import update_dataset_readme
-          update_dataset_readme(Path('output'))
-          "
+
+          report_path = Path("output/conversion_report.json")
+          failed_sources = []
+          if report_path.exists():
+              report = json.loads(report_path.read_text())
+              failed_sources = report.get("failed_sources", [])
+
+          update_dataset_readme(Path("output"), failed_sources=failed_sources)
+
+          # Copy report to hf_dataset/ for git tracking
+          import shutil
+          report_src = Path("output/conversion_report.json")
+          if report_src.exists():
+              shutil.copy(report_src, Path("hf_dataset/.conversion_report.json"))
+          PYEOF
 
       - name: Upload to HuggingFace Hub
         if: steps.source_check.outputs.any_changed == 'true'
@@ -306,6 +435,10 @@ jobs:
 
           shutil.copy("hf_dataset/.metadata.json", staging / ".metadata.json")
 
+          report = Path("output/conversion_report.json")
+          if report.exists():
+              shutil.copy(report, staging / ".conversion_report.json")
+
           # Upload everything in one commit
           api.upload_folder(
               folder_path=str(staging),
@@ -326,7 +459,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add hf_dataset/README.md hf_dataset/.metadata.json README.md
+          git add hf_dataset/README.md hf_dataset/.metadata.json hf_dataset/.conversion_report.json README.md
           git commit -m "Update dataset counts"
           git push -u origin "$branch"
           existing=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
@@ -339,7 +472,7 @@ jobs:
 
       - name: Upload conversion logs
         if: always() && steps.source_check.outputs.any_changed == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: conversion-logs
           path: logs/

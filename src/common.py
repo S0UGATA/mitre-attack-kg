@@ -5,11 +5,12 @@ import hashlib
 import json
 import logging
 import re
+import shutil
 import tarfile
 import zipfile
 from email.utils import parsedate_to_datetime
 from pathlib import Path
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # noqa: S405 — trusted MITRE data only
 
 import pandas as pd
 import pyarrow as pa
@@ -36,7 +37,7 @@ def _ts_from_http_date(date_str: str) -> str:
     try:
         dt = parsedate_to_datetime(date_str)
         return dt.strftime("%Y%m%d_%H%M")
-    except Exception:
+    except (ValueError, TypeError, IndexError):
         return ""
 
 
@@ -101,7 +102,7 @@ def _remote_version(url: str) -> str:
         etag = head.headers.get("ETag", "")
         if etag:
             return _fingerprint_from_etag(etag)
-    except Exception:
+    except (requests.RequestException, OSError):
         pass
     return ""
 
@@ -199,6 +200,17 @@ def download_tar_gz(url: str, filename: str, cache_dir: str | None = None) -> Pa
     return extract_dir
 
 
+def _safe_zip_extract(zip_path: Path, extract_dir: Path) -> None:
+    """Extract a ZIP file, rejecting entries with path traversal attempts."""
+    resolved = extract_dir.resolve()
+    with zipfile.ZipFile(zip_path) as zf:
+        for member in zf.namelist():
+            target = (extract_dir / member).resolve()
+            if not str(target).startswith(str(resolved)):
+                raise ValueError(f"Zip entry {member!r} would escape extraction directory")
+        zf.extractall(extract_dir)  # nosec B202 — path traversal validated above
+
+
 def download_zip(url: str, filename: str, cache_dir: str | None = None) -> Path:
     """Download a ZIP and extract. Returns path to the extraction directory."""
     zip_path = download_file(url, filename, cache_dir)
@@ -208,8 +220,7 @@ def download_zip(url: str, filename: str, cache_dir: str | None = None) -> Path:
         return extract_dir
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
-    with zipfile.ZipFile(zip_path) as zf:
-        zf.extractall(extract_dir)
+    _safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
     return extract_dir
 
@@ -232,11 +243,12 @@ def download_github_zip(
     try:
         sha = _github_commit_sha(owner, repo, branch)
         logger.info("GitHub %s/%s@%s commit SHA: %s", owner, repo, branch, sha)
-    except Exception:
+    except (requests.RequestException, KeyError, OSError) as exc:
         logger.warning(
-            "Failed to get commit SHA for %s/%s, falling back to HTTP headers",
+            "Failed to get commit SHA for %s/%s (%s), falling back to HTTP headers",
             owner,
             repo,
+            exc,
         )
         sha = None
 
@@ -251,8 +263,6 @@ def download_github_zip(
     for old_dir in zip_path.parent.glob(f"{stem}_*"):
         if old_dir.is_dir() and old_dir != extract_dir:
             try:
-                import shutil
-
                 shutil.rmtree(old_dir)
                 logger.info("Cleaned up old extraction dir %s", old_dir)
             except OSError:
@@ -260,8 +270,7 @@ def download_github_zip(
 
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
-    with zipfile.ZipFile(zip_path) as zf:
-        zf.extractall(extract_dir)
+    _safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
     return extract_dir
 
@@ -473,12 +482,12 @@ def get_remote_fingerprint(source: str) -> str:
             owner, repo, branch = parts[0], parts[1], parts[2]
             sha = _github_commit_sha(owner, repo, branch)
             return f"sha:{sha}"
-        elif method.startswith("github_release:"):
+        if method.startswith("github_release:"):
             parts = method[len("github_release:") :].split("/", 1)
             owner, repo = parts[0], parts[1]
             tag = _github_release_tag(owner, repo)
             return f"tag:{tag}"
-        elif method.startswith("http:"):
+        if method.startswith("http:"):
             url = method[len("http:") :]
             head = requests.head(url, timeout=30, allow_redirects=True)
             lm = head.headers.get("Last-Modified", "")
@@ -487,7 +496,7 @@ def get_remote_fingerprint(source: str) -> str:
             etag = head.headers.get("ETag", "")
             if etag:
                 return f"etag:{etag}"
-    except Exception as e:
+    except (requests.RequestException, OSError, ValueError) as e:
         logger.warning("Failed to get remote fingerprint for '%s': %s", source, e)
     return ""
 
@@ -554,9 +563,20 @@ ALL_PARQUET_NAMES = [
 ]
 
 
-def update_dataset_readme(output_dir: Path) -> None:
-    """Update hf_dataset/README.md with real triple counts and current timestamp."""
-    from datetime import UTC, datetime
+_PARQUET_TO_SOURCE = {
+    "enterprise": "attack",
+    "mobile": "attack",
+    "ics": "attack",
+    "attack-all": "attack",
+}
+
+
+def update_dataset_readme(
+    output_dir: Path,
+    failed_sources: list[str] | None = None,
+) -> None:
+    """Update hf_dataset/README.md with real triple counts, status, and timestamp."""
+    from datetime import UTC, datetime  # noqa: PLC0415 — avoid import at module level
 
     if not DATASET_README.exists():
         logger.warning("Dataset README not found at %s", DATASET_README)
@@ -574,18 +594,67 @@ def update_dataset_readme(output_dir: Path) -> None:
         logger.warning("No parquet files found in %s, skipping README update", output_dir)
         return
 
+    # Build status mapping
+    failed = set(failed_sources or [])
+    statuses: dict[str, str] = {}
+    for name in ALL_PARQUET_NAMES:
+        parent_source = _PARQUET_TO_SOURCE.get(name, name)
+        statuses[name] = "Last good version" if parent_source in failed else "Current"
+
     now = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
+    # Ensure the table has a Status column header
+    if "| Status |" not in text:
+        text = text.replace(
+            "| Config | Description | Est. Triples |",
+            "| Config | Description | Est. Triples | Status |",
+        )
+        text = text.replace(
+            "|--------|-------------|-------------|",
+            "|--------|-------------|-------------|--------|",
+        )
+
     for name, count in counts.items():
-        pattern = rf"(\| `{re.escape(name)}`[^|]*\|[^|]*\|)[^|]+\|"
-        replacement = rf"\1 {count:,} |"
-        text = re.sub(pattern, replacement, text)
+        status = statuses.get(name, "Current")
+        # Try 4-column match first (with Status column)
+        pattern_4col = rf"(\| `{re.escape(name)}`[^|]*\|[^|]*\|)[^|]+\|[^|]+\|"
+        replacement_4col = rf"\1 {count:,} | {status} |"
+        new_text = re.sub(pattern_4col, replacement_4col, text)
+        if new_text != text:
+            text = new_text
+        else:
+            # Fall back to 3-column (first run before table migration)
+            pattern_3col = rf"(\| `{re.escape(name)}`[^|]*\|[^|]*\|)[^|]+\|"
+            replacement_3col = rf"\1 {count:,} | {status} |"
+            text = re.sub(pattern_3col, replacement_3col, text)
 
     text = re.sub(
         r"\*Last updated:.*?\*",
         f"*Last updated: {now}*",
         text,
     )
+
+    # Update fallback note
+    fallback_marker = "<!-- fallback-status-note -->"
+    # Remove existing note block (marker + any following blockquote lines)
+    text = re.sub(
+        rf"{re.escape(fallback_marker)}\n(?:>.*\n)*",
+        "",
+        text,
+    )
+    fallback_names = [n for n, s in statuses.items() if s == "Last good version"]
+    if fallback_names:
+        sources_list = ", ".join(f"`{n}`" for n in fallback_names)
+        note = (
+            f"{fallback_marker}\n"
+            f"> **Note:** {sources_list} failed conversion and use their "
+            f"last known good version. The `combined` config includes these "
+            f"fallback versions.\n\n"
+        )
+        text = text.replace(
+            "\n## Knowledge Graph Structure",
+            f"\n{note}## Knowledge Graph Structure",
+        )
 
     DATASET_README.write_text(text)
     logger.info(

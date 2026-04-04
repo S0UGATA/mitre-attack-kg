@@ -136,27 +136,29 @@ print(ds["train"][0])
 
 ## Configurations
 
-| Config | Description | Est. Triples |
-|--------|-------------|-------------|
-| `enterprise` (default) | Enterprise ATT&CK | 42,041 |
-| `mobile` | Mobile ATT&CK | 5,307 |
-| `ics` | ICS ATT&CK | 3,756 |
-| `attack-all` | ATT&CK combined (deduplicated) | 49,622 |
-| `capec` | CAPEC attack patterns | 8,114 |
-| `cwe` | CWE weaknesses | 14,565 |
-| `cve` | CVE vulnerabilities | 3,544,309 |
-| `cpe` | CPE platform enumeration | 12,399,534 |
-| `d3fend` | D3FEND defensive techniques | 8,154 |
-| `atlas` | ATLAS AI/ML techniques | 1,420 |
-| `car` | CAR analytics | 1,617 |
-| `engage` | ENGAGE adversary engagement | 1,464 |
-| `epss` | EPSS exploit prediction scores | 649,226 |
-| `kev` | KEV known exploited vulns | 17,054 |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 |
-| `ghsa` | GitHub Security Advisories | 327,142 |
-| `sigma` | Sigma detection rules | 32,750 |
-| `exploitdb` | ExploitDB public exploits | 346,303 |
-| `combined` | All sources merged (deduplicated) | 18,057,481 |
+| Config | Description | Est. Triples | Status |
+|--------|-------------|-------------|--------|
+| `enterprise` (default) | Enterprise ATT&CK | 42,041 | Current |
+| `mobile` | Mobile ATT&CK | 5,307 | Current |
+| `ics` | ICS ATT&CK | 3,756 | Current |
+| `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current |
+| `capec` | CAPEC attack patterns | 8,114 | Current |
+| `cwe` | CWE weaknesses | 14,565 | Current |
+| `cve` | CVE vulnerabilities | 3,544,309 | Current |
+| `cpe` | CPE platform enumeration | 12,399,534 | Current |
+| `d3fend` | D3FEND defensive techniques | 8,154 | Current |
+| `atlas` | ATLAS AI/ML techniques | 1,420 | Current |
+| `car` | CAR analytics | 1,617 | Current |
+| `engage` | ENGAGE adversary engagement | 1,464 | Current |
+| `epss` | EPSS exploit prediction scores | 649,226 | Current |
+| `kev` | KEV known exploited vulns | 17,054 | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 | Current |
+| `ghsa` | GitHub Security Advisories | 327,142 | Current |
+| `sigma` | Sigma detection rules | 32,750 | Current |
+| `exploitdb` | ExploitDB public exploits | 346,303 | Current |
+| `combined` | All sources merged (deduplicated) | 18,057,481 | Current |
+
+<!-- fallback-status-note -->
 
 ## Knowledge Graph Structure
 
