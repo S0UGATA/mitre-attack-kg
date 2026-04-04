@@ -138,24 +138,24 @@ print(ds["train"][0])
 
 | Config | Description | Est. Triples | Status |
 |--------|-------------|-------------|--------|
-| `enterprise` (default) | Enterprise ATT&CK | 42,041 | Current | Current | Current |
-| `mobile` | Mobile ATT&CK | 5,307 | Current | Current | Current |
-| `ics` | ICS ATT&CK | 3,756 | Current | Current | Current |
-| `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current | Current | Current |
-| `capec` | CAPEC attack patterns | 8,114 | Current | Current | Current |
-| `cwe` | CWE weaknesses | 14,565 | Current | Current | Current |
+| `enterprise` (default) | Enterprise ATT&CK | 42,041 | Current |
+| `mobile` | Mobile ATT&CK | 5,307 | Current |
+| `ics` | ICS ATT&CK | 3,756 | Current |
+| `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current |
+| `capec` | CAPEC attack patterns | 8,114 | Current |
+| `cwe` | CWE weaknesses | 14,565 | Current |
 | `cve` | CVE vulnerabilities | 3,544,309 | Current |
-| `cpe` | CPE platform enumeration | 12,399,534 | Current | Current | Current |
-| `d3fend` | D3FEND defensive techniques | 8,154 | Current | Current | Current |
-| `atlas` | ATLAS AI/ML techniques | 1,420 | Current | Current | Current |
-| `car` | CAR analytics | 1,617 | Current | Current | Current |
-| `engage` | ENGAGE adversary engagement | 1,464 | Current | Current | Current |
-| `epss` | EPSS exploit prediction scores | 649,650 | Current | Current |
-| `kev` | KEV known exploited vulns | 17,054 | Current | Current | Current |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 | Current | Current | Current |
-| `ghsa` | GitHub Security Advisories | 327,142 | Current | Current | Current |
-| `sigma` | Sigma detection rules | 32,750 | Current | Current | Current |
-| `exploitdb` | ExploitDB public exploits | 346,303 | Current | Current | Current |
+| `cpe` | CPE platform enumeration | 12,399,534 | Current |
+| `d3fend` | D3FEND defensive techniques | 8,154 | Current |
+| `atlas` | ATLAS AI/ML techniques | 1,420 | Current |
+| `car` | CAR analytics | 1,617 | Current |
+| `engage` | ENGAGE adversary engagement | 1,464 | Current |
+| `epss` | EPSS exploit prediction scores | 649,650 | Current |
+| `kev` | KEV known exploited vulns | 17,054 | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 | Current |
+| `ghsa` | GitHub Security Advisories | 327,142 | Current |
+| `sigma` | Sigma detection rules | 32,750 | Current |
+| `exploitdb` | ExploitDB public exploits | 346,303 | Current |
 | `combined` | All sources merged (deduplicated) | 18,057,905 | Current |
 
 

@@ -616,17 +616,12 @@ def update_dataset_readme(
 
     for name, count in counts.items():
         status = statuses.get(name, "Current")
-        # Try 4-column match first (with Status column)
-        pattern_4col = rf"(\| `{re.escape(name)}`[^|]*\|[^|]*\|)[^|]+\|[^|]+\|"
-        replacement_4col = rf"\1 {count:,} | {status} |"
-        new_text = re.sub(pattern_4col, replacement_4col, text)
-        if new_text != text:
-            text = new_text
-        else:
-            # Fall back to 3-column (first run before table migration)
-            pattern_3col = rf"(\| `{re.escape(name)}`[^|]*\|[^|]*\|)[^|]+\|"
-            replacement_3col = rf"\1 {count:,} | {status} |"
-            text = re.sub(pattern_3col, replacement_3col, text)
+        # Match config name + description columns, then replace everything
+        # through end of row (handles any number of trailing columns from
+        # previous runs that may have appended extra | Current | entries).
+        pattern = rf"(\| `{re.escape(name)}`[^|]*\|[^|]*\|).*\|"
+        replacement = rf"\1 {count:,} | {status} |"
+        text = re.sub(pattern, replacement, text)
 
     text = re.sub(
         r"\*Last updated:.*?\*",
@@ -645,11 +640,14 @@ def update_dataset_readme(
     fallback_names = [n for n, s in statuses.items() if s == "Last good version"]
     if fallback_names:
         sources_list = ", ".join(f"`{n}`" for n in fallback_names)
+        singular = len(fallback_names) == 1
+        verb = "uses its" if singular else "use their"
         note = (
             f"{fallback_marker}\n"
-            f"> **Note:** {sources_list} failed conversion and use their "
-            f"last known good version. The `combined` config includes these "
-            f"fallback versions.\n\n"
+            f"> **Note:** {sources_list} failed conversion and {verb} "
+            f"last known good version. The `combined` config includes "
+            f"{'this fallback' if singular else 'these fallback'} version"
+            f"{'.' if singular else 's.'}\n\n"
         )
         text = text.replace(
             "\n## Knowledge Graph Structure",

@@ -402,9 +402,24 @@ jobs:
         if: steps.source_check.outputs.any_changed == 'true'
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          ATTACK_CHANGED: ${{ steps.source_check.outputs.attack_changed }}
+          CAPEC_CHANGED: ${{ steps.source_check.outputs.capec_changed }}
+          CWE_CHANGED: ${{ steps.source_check.outputs.cwe_changed }}
+          CVE_CHANGED: ${{ steps.source_check.outputs.cve_changed }}
+          CPE_CHANGED: ${{ steps.source_check.outputs.cpe_changed }}
+          D3FEND_CHANGED: ${{ steps.source_check.outputs.d3fend_changed }}
+          ATLAS_CHANGED: ${{ steps.source_check.outputs.atlas_changed }}
+          CAR_CHANGED: ${{ steps.source_check.outputs.car_changed }}
+          ENGAGE_CHANGED: ${{ steps.source_check.outputs.engage_changed }}
+          EPSS_CHANGED: ${{ steps.source_check.outputs.epss_changed }}
+          KEV_CHANGED: ${{ steps.source_check.outputs.kev_changed }}
+          VULNRICHMENT_CHANGED: ${{ steps.source_check.outputs.vulnrichment_changed }}
+          GHSA_CHANGED: ${{ steps.source_check.outputs.ghsa_changed }}
+          SIGMA_CHANGED: ${{ steps.source_check.outputs.sigma_changed }}
+          EXPLOITDB_CHANGED: ${{ steps.source_check.outputs.exploitdb_changed }}
         run: |
           python - <<'PYEOF'
-          import os, shutil
+          import json, os, shutil
           from pathlib import Path
           from huggingface_hub import HfApi
 
@@ -414,39 +429,50 @@ jobs:
           # Ensure the dataset repo exists
           api.create_repo(repo_id=repo_id, repo_type="dataset", exist_ok=True)
 
-          # Stage all files into a single directory for atomic upload
+          # Only upload parquets for changed sources (unchanged ones are already on HF)
+          source_files = {
+              "attack": ["enterprise", "mobile", "ics", "attack-all"],
+              "capec": ["capec"], "cwe": ["cwe"], "cve": ["cve"], "cpe": ["cpe"],
+              "d3fend": ["d3fend"], "atlas": ["atlas"], "car": ["car"],
+              "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
+              "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
+              "sigma": ["sigma"], "exploitdb": ["exploitdb"],
+          }
+
+          # Identify which parquets actually need uploading
+          changed_parquets = set()
+          for source, files in source_files.items():
+              if os.environ.get(f"{source.upper()}_CHANGED") == "true":
+                  changed_parquets.update(files)
+          # combined.parquet is always rebuilt when any source changes
+          changed_parquets.add("combined")
+
           staging = Path("hf_staging")
           staging.mkdir(exist_ok=True)
           (staging / "data").mkdir(exist_ok=True)
 
-          all_files = [
-              "enterprise", "mobile", "ics", "attack-all",
-              "capec", "cwe", "cve", "cpe",
-              "d3fend", "atlas", "car", "engage", "epss", "kev",
-              "vulnrichment", "ghsa", "sigma", "exploitdb",
-              "combined",
-          ]
-          for name in all_files:
+          for name in changed_parquets:
               src = Path(f"output/{name}.parquet")
               if src.exists():
                   shutil.copy(src, staging / "data" / f"{name}.parquet")
+                  print(f"Staging {name}.parquet (changed)")
 
           shutil.copy("hf_dataset/README.md", staging / "README.md")
-
           shutil.copy("hf_dataset/.metadata.json", staging / ".metadata.json")
 
           report = Path("output/conversion_report.json")
           if report.exists():
               shutil.copy(report, staging / ".conversion_report.json")
 
-          # Upload everything in one commit
+          # Upload only changed files in one commit (upload_folder does not
+          # delete remote files that are absent from the local staging dir)
           api.upload_folder(
               folder_path=str(staging),
               repo_id=repo_id,
               repo_type="dataset",
               commit_message="Update dataset",
           )
-          print("Uploaded all files to HuggingFace Hub.")
+          print("Uploaded changed files to HuggingFace Hub.")
           PYEOF
 
       - name: Open PR to update dataset card counts
@@ -472,7 +498,7 @@ jobs:
 
       - name: Upload conversion logs
         if: always() && steps.source_check.outputs.any_changed == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: conversion-logs
           path: logs/
