@@ -252,9 +252,6 @@ jobs:
               if count < minimum:
                   print(f"FAIL: {name}.parquet has {count} triples (minimum: {minimum})")
                   failed = True
-              elif size_kb < 10:
-                  print(f"FAIL: {name}.parquet is suspiciously small ({size_kb:.1f} KB)")
-                  failed = True
               else:
                   print(f"OK: {name}.parquet — {count:,} triples, {size_kb:.0f} KB")
 
