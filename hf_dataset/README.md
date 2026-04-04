@@ -122,7 +122,7 @@ Security data from 15 sources represented as **Subject-Predicate-Object (SPO) tr
 
 Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb)
 
-*Last updated: 2026-04-04T12:44:58Z*
+*Last updated: 2026-04-04T13:30:43Z*
 
 ## Quick Start
 
@@ -153,10 +153,10 @@ print(ds["train"][0])
 | `epss` | EPSS exploit prediction scores | 649,226 |
 | `kev` | KEV known exploited vulns | 17,054 |
 | `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 |
-| `ghsa` | GitHub Security Advisories | 327,132 |
+| `ghsa` | GitHub Security Advisories | 327,142 |
 | `sigma` | Sigma detection rules | 32,750 |
 | `exploitdb` | ExploitDB public exploits | 346,303 |
-| `combined` | All sources merged (deduplicated) | 18,057,471 |
+| `combined` | All sources merged (deduplicated) | 18,057,481 |
 
 ## Knowledge Graph Structure
 
