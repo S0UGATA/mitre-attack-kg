@@ -122,7 +122,7 @@ Security data from 15 sources represented as **Subject-Predicate-Object (SPO) tr
 
 Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb)
 
-*Last updated: 2026-04-04T14:25:45Z*
+*Last updated: 2026-04-04T14:30:04Z*
 
 ## Quick Start
 
@@ -138,29 +138,27 @@ print(ds["train"][0])
 
 | Config | Description | Est. Triples | Status |
 |--------|-------------|-------------|--------|
-| `enterprise` (default) | Enterprise ATT&CK | 42,041 | Current | Current |
-| `mobile` | Mobile ATT&CK | 5,307 | Current | Current |
-| `ics` | ICS ATT&CK | 3,756 | Current | Current |
-| `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current | Current |
-| `capec` | CAPEC attack patterns | 8,114 | Current | Current |
-| `cwe` | CWE weaknesses | 14,565 | Current | Current |
-| `cve` | CVE vulnerabilities | 3,544,309 | Last good version |
-| `cpe` | CPE platform enumeration | 12,399,534 | Current | Current |
-| `d3fend` | D3FEND defensive techniques | 8,154 | Current | Current |
-| `atlas` | ATLAS AI/ML techniques | 1,420 | Current | Current |
-| `car` | CAR analytics | 1,617 | Current | Current |
-| `engage` | ENGAGE adversary engagement | 1,464 | Current | Current |
-| `epss` | EPSS exploit prediction scores | 649,650 | Current |
-| `kev` | KEV known exploited vulns | 17,054 | Current | Current |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 | Current | Current |
-| `ghsa` | GitHub Security Advisories | 327,142 | Current | Current |
-| `sigma` | Sigma detection rules | 32,750 | Current | Current |
-| `exploitdb` | ExploitDB public exploits | 346,303 | Current | Current |
+| `enterprise` (default) | Enterprise ATT&CK | 42,041 | Current | Current | Current |
+| `mobile` | Mobile ATT&CK | 5,307 | Current | Current | Current |
+| `ics` | ICS ATT&CK | 3,756 | Current | Current | Current |
+| `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current | Current | Current |
+| `capec` | CAPEC attack patterns | 8,114 | Current | Current | Current |
+| `cwe` | CWE weaknesses | 14,565 | Current | Current | Current |
+| `cve` | CVE vulnerabilities | 3,544,309 | Current |
+| `cpe` | CPE platform enumeration | 12,399,534 | Current | Current | Current |
+| `d3fend` | D3FEND defensive techniques | 8,154 | Current | Current | Current |
+| `atlas` | ATLAS AI/ML techniques | 1,420 | Current | Current | Current |
+| `car` | CAR analytics | 1,617 | Current | Current | Current |
+| `engage` | ENGAGE adversary engagement | 1,464 | Current | Current | Current |
+| `epss` | EPSS exploit prediction scores | 649,650 | Current | Current |
+| `kev` | KEV known exploited vulns | 17,054 | Current | Current | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 | Current | Current | Current |
+| `ghsa` | GitHub Security Advisories | 327,142 | Current | Current | Current |
+| `sigma` | Sigma detection rules | 32,750 | Current | Current | Current |
+| `exploitdb` | ExploitDB public exploits | 346,303 | Current | Current | Current |
 | `combined` | All sources merged (deduplicated) | 18,057,905 | Current |
 
 
-<!-- fallback-status-note -->
-> **Note:** `cve` failed conversion and use their last known good version. The `combined` config includes these fallback versions.
 
 ## Knowledge Graph Structure
 
