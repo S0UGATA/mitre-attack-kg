@@ -1,0 +1,21 @@
+{
+  "converter_fingerprints": {
+    "atlas": "ATLAS_fbb296490a50.yaml",
+    "capec": "capec_latest_20230124_1832.xml",
+    "car": "car-master_1b922fe1527d",
+    "cpe": "nvdcpe-2.0_20260404_0400",
+    "cve": "cve_extracted_2026-04-04_all_CVEs_at_midnight",
+    "cwe": "cwec_v4.19.1.xml",
+    "d3fend": "d3fend_20260402_0054.json",
+    "engage": "engage_attack_mapping_15343fed3525.json",
+    "enterprise": "enterprise-attack_a9a83f7507b9.json",
+    "epss": "epss_scores-current.csv_20260403_1331.gz",
+    "exploitdb": "files_exploits_d249b9d7a2ae.csv",
+    "ghsa": "ghsa_9e31db78de46",
+    "ics": "ics-attack_a842e2e7635c.json",
+    "kev": "known_exploited_vulnerabilities_20260402_1932.json",
+    "mobile": "mobile-attack_aeca345f8229.json",
+    "sigma": "sigma_rules_r2026-01-01",
+    "vulnrichment": "vulnrichment_8223803bda69"
+  }
+}

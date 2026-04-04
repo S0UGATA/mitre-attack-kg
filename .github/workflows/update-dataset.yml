@@ -1,4 +1,4 @@
-name: Update MITRE ATT&CK Dataset
+name: Update Security KG Dataset
 
 on:
   schedule:
@@ -13,6 +13,8 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: src
     steps:
       - uses: actions/checkout@v5
 
@@ -24,75 +26,86 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt huggingface_hub
 
+      - name: Download metadata from HuggingFace
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'PYEOF'
+          import os, shutil
+          from pathlib import Path
+          from huggingface_hub import hf_hub_download
+
+          repo_id = "s0u9ata/security-kg"
+          try:
+              cached = hf_hub_download(
+                  repo_id=repo_id,
+                  filename=".metadata.json",
+                  repo_type="dataset",
+                  token=os.environ["HF_TOKEN"],
+              )
+              shutil.copy(cached, "hf_dataset/.metadata.json")
+              print("Downloaded .metadata.json from HuggingFace")
+          except Exception as e:
+              print(f"Could not download .metadata.json: {e}")
+              print("Will process all sources (first run or missing metadata)")
+          PYEOF
+
       - name: Check which sources have changed
         id: source_check
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           python - <<'PYEOF'
-          import json, os
-          import requests
-          from huggingface_hub import hf_hub_download
-
-          repo_id = "s0u9ata/mitre-attack-kg"
-
-          # --- Collect current source fingerprints ---
-          current = {}
-
-          # ATT&CK: latest commit SHA
-          resp = requests.get(
-              "https://api.github.com/repos/mitre-attack/attack-stix-data/commits/master",
-              headers={"Accept": "application/vnd.github.v3+json"},
-              timeout=30,
+          import logging, os
+          from pathlib import Path
+          from common import (
+              get_all_remote_fingerprints,
+              load_metadata,
+              save_metadata,
+              SOURCE_FINGERPRINT_METHODS,
           )
-          resp.raise_for_status()
-          commit_data = resp.json()
-          current["attack_sha"] = commit_data["sha"]
-          current["attack_date"] = commit_data["commit"]["committer"]["date"]
-          print(f"ATT&CK latest commit: {current['attack_sha']} ({current['attack_date']})")
 
-          # CAPEC: Last-Modified header
-          resp = requests.head("https://capec.mitre.org/data/xml/capec_latest.xml", timeout=30)
-          current["capec_last_modified"] = resp.headers.get("Last-Modified", "")
-          print(f"CAPEC Last-Modified: {current['capec_last_modified']}")
+          logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-          # CWE: Last-Modified header
-          resp = requests.head("https://cwe.mitre.org/data/xml/cwec_latest.xml.zip", timeout=30)
-          current["cwe_last_modified"] = resp.headers.get("Last-Modified", "")
-          print(f"CWE Last-Modified: {current['cwe_last_modified']}")
-
-          # --- Load previous metadata from HuggingFace ---
-          previous = {}
-          try:
-              meta_path = hf_hub_download(
-                  repo_id=repo_id,
-                  filename=".metadata.json",
-                  repo_type="dataset",
-                  token=os.environ["HF_TOKEN"],
-              )
-              previous = json.loads(open(meta_path).read())
-              print(f"Previous metadata: {previous}")
-          except Exception:
+          previous = load_metadata()
+          if previous:
+              print(f"Previous metadata loaded ({len(previous)} keys)")
+          else:
               print("No previous metadata found, will process all sources")
 
-          # --- Compare each source independently ---
-          attack_changed = current["attack_sha"] != previous.get("attack_sha")
-          capec_changed = current["capec_last_modified"] != previous.get("capec_last_modified")
-          cwe_changed = current["cwe_last_modified"] != previous.get("cwe_last_modified")
-          any_changed = attack_changed or capec_changed or cwe_changed
+          previous_fp = previous.get("source_fingerprints", {})
+
+          # --- Collect current remote fingerprints ---
+          print("\nFetching remote fingerprints ...")
+          current_fp = get_all_remote_fingerprints()
+
+          # --- Compare each source ---
+          sources = {}
+          for source in SOURCE_FINGERPRINT_METHODS:
+              cur = current_fp.get(source, "")
+              prev = previous_fp.get(source, "")
+              is_changed = not cur or cur != prev
+              sources[source] = is_changed
+
+          any_changed = any(sources.values())
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               f.write(f"any_changed={'true' if any_changed else 'false'}\n")
-              f.write(f"attack_changed={'true' if attack_changed else 'false'}\n")
-              f.write(f"capec_changed={'true' if capec_changed else 'false'}\n")
-              f.write(f"cwe_changed={'true' if cwe_changed else 'false'}\n")
-              f.write(f"metadata={json.dumps(current)}\n")
+              for src, changed in sources.items():
+                  f.write(f"{src}_changed={'true' if changed else 'false'}\n")
 
-          print(f"ATT&CK: {'CHANGED' if attack_changed else 'unchanged'}")
-          print(f"CAPEC:  {'CHANGED' if capec_changed else 'unchanged'}")
-          print(f"CWE:    {'CHANGED' if cwe_changed else 'unchanged'}")
+          # Save updated metadata (preserve converter fingerprints from previous run)
+          updated = {"source_fingerprints": current_fp}
+          if "converter_fingerprints" in previous:
+              updated["converter_fingerprints"] = previous["converter_fingerprints"]
+          save_metadata(updated)
+
+          print()
+          for src, changed in sources.items():
+              fp = current_fp.get(src, "(failed)")
+              print(f"  {src.upper():>14s}: {'CHANGED' if changed else 'unchanged'} — {fp}")
           if not any_changed:
-              print("All sources unchanged, skipping.")
+              print("\nAll sources unchanged, skipping.")
           PYEOF
 
       - name: Download unchanged parquets from HuggingFace
@@ -105,68 +118,80 @@ jobs:
           from pathlib import Path
           from huggingface_hub import hf_hub_download
 
-          repo_id = "s0u9ata/mitre-attack-kg"
+          repo_id = "s0u9ata/security-kg"
           output = Path("output")
           output.mkdir(exist_ok=True)
 
-          # Download parquets for sources that have NOT changed
-          files_to_download = []
-          if "${{ steps.source_check.outputs.attack_changed }}" != "true":
-              files_to_download += ["enterprise", "mobile", "ics", "attack-all"]
-          if "${{ steps.source_check.outputs.capec_changed }}" != "true":
-              files_to_download += ["capec"]
-          if "${{ steps.source_check.outputs.cwe_changed }}" != "true":
-              files_to_download += ["cwe"]
+          # Map source change flags to their parquet files
+          source_files = {
+              "attack": ["enterprise", "mobile", "ics", "attack-all"],
+              "capec": ["capec"],
+              "cwe": ["cwe"],
+              "cve": ["cve"],
+              "cpe": ["cpe"],
+              "d3fend": ["d3fend"],
+              "atlas": ["atlas"],
+              "car": ["car"],
+              "engage": ["engage"],
+              "epss": ["epss"],
+              "kev": ["kev"],
+              "vulnrichment": ["vulnrichment"],
+              "ghsa": ["ghsa"],
+              "sigma": ["sigma"],
+              "exploitdb": ["exploitdb"],
+          }
 
-          for name in files_to_download:
-              try:
-                  cached = hf_hub_download(
-                      repo_id=repo_id,
-                      filename=f"data/{name}.parquet",
-                      repo_type="dataset",
-                      token=os.environ["HF_TOKEN"],
-                  )
-                  shutil.copy(cached, output / f"{name}.parquet")
-                  print(f"Downloaded {name}.parquet (unchanged)")
-              except Exception as e:
-                  print(f"Could not download {name}.parquet: {e}")
-                  print("Will regenerate from source")
+          for source, files in source_files.items():
+              env_key = f"{source}_changed"
+              if "${{ steps.source_check.outputs." + env_key + " }}" == "true":
+                  continue
+              for name in files:
+                  try:
+                      cached = hf_hub_download(
+                          repo_id=repo_id,
+                          filename=f"data/{name}.parquet",
+                          repo_type="dataset",
+                          token=os.environ["HF_TOKEN"],
+                      )
+                      shutil.copy(cached, output / f"{name}.parquet")
+                      print(f"Downloaded {name}.parquet (unchanged)")
+                  except Exception as e:
+                      print(f"Could not download {name}.parquet: {e}")
+                      print("Will regenerate from source")
           PYEOF
 
-      - name: Convert ATT&CK data
-        if: steps.source_check.outputs.any_changed == 'true' && steps.source_check.outputs.attack_changed == 'true'
-        run: python convert.py --sources attack --no-combined --cache-dir /tmp/stix-cache
-
-      - name: Convert CAPEC data
-        if: steps.source_check.outputs.any_changed == 'true' && steps.source_check.outputs.capec_changed == 'true'
-        run: python convert_capec.py --cache-dir /tmp/stix-cache
-
-      - name: Convert CWE data
-        if: steps.source_check.outputs.any_changed == 'true' && steps.source_check.outputs.cwe_changed == 'true'
-        run: python convert_cwe.py --cache-dir /tmp/stix-cache
-
-      - name: Rebuild combined.parquet
+      - name: Convert changed sources
         if: steps.source_check.outputs.any_changed == 'true'
+        timeout-minutes: 90
         run: |
-          python - <<'PYEOF'
-          import pandas as pd
-          from pathlib import Path
-          from common import write_parquet
-
-          output = Path("output")
-          dfs = []
-          for name in ["attack-all", "capec", "cwe"]:
-              path = output / f"{name}.parquet"
-              if path.exists():
-                  dfs.append(pd.read_parquet(path))
-                  print(f"  {name}: {len(dfs[-1]):,} triples")
-
-          if len(dfs) > 1:
-              combined = pd.concat(dfs, ignore_index=True).drop_duplicates()
-              write_parquet(combined, output / "combined.parquet")
-          elif dfs:
-              write_parquet(dfs[0], output / "combined.parquet")
-          PYEOF
+          # Build --sources list from changed flags
+          sources=""
+          for src in attack capec cwe cve cpe d3fend atlas car engage epss kev vulnrichment ghsa sigma exploitdb; do
+            flag="${src}_changed"
+            # Use step outputs to check each source
+            case "$src" in
+              attack)    [ "${{ steps.source_check.outputs.attack_changed }}" = "true" ] && sources="$sources attack" ;;
+              capec)     [ "${{ steps.source_check.outputs.capec_changed }}" = "true" ] && sources="$sources capec" ;;
+              cwe)       [ "${{ steps.source_check.outputs.cwe_changed }}" = "true" ] && sources="$sources cwe" ;;
+              cve)       [ "${{ steps.source_check.outputs.cve_changed }}" = "true" ] && sources="$sources cve" ;;
+              cpe)       [ "${{ steps.source_check.outputs.cpe_changed }}" = "true" ] && sources="$sources cpe" ;;
+              d3fend)    [ "${{ steps.source_check.outputs.d3fend_changed }}" = "true" ] && sources="$sources d3fend" ;;
+              atlas)     [ "${{ steps.source_check.outputs.atlas_changed }}" = "true" ] && sources="$sources atlas" ;;
+              car)       [ "${{ steps.source_check.outputs.car_changed }}" = "true" ] && sources="$sources car" ;;
+              engage)    [ "${{ steps.source_check.outputs.engage_changed }}" = "true" ] && sources="$sources engage" ;;
+              epss)      [ "${{ steps.source_check.outputs.epss_changed }}" = "true" ] && sources="$sources epss" ;;
+              kev)       [ "${{ steps.source_check.outputs.kev_changed }}" = "true" ] && sources="$sources kev" ;;
+              vulnrichment) [ "${{ steps.source_check.outputs.vulnrichment_changed }}" = "true" ] && sources="$sources vulnrichment" ;;
+              ghsa)      [ "${{ steps.source_check.outputs.ghsa_changed }}" = "true" ] && sources="$sources ghsa" ;;
+              sigma)     [ "${{ steps.source_check.outputs.sigma_changed }}" = "true" ] && sources="$sources sigma" ;;
+              exploitdb) [ "${{ steps.source_check.outputs.exploitdb_changed }}" = "true" ] && sources="$sources exploitdb" ;;
+            esac
+          done
+          sources=$(echo $sources | xargs)
+          echo "Changed sources: $sources"
+          if [ -n "$sources" ]; then
+            python src/convert.py --sources $sources --cache-dir /tmp/source-cache --log-dir logs --parallel --workers 2
+          fi
 
       - name: Validate generated data
         if: steps.source_check.outputs.any_changed == 'true'
@@ -176,7 +201,7 @@ jobs:
           import pyarrow.parquet as pq
           from pathlib import Path
 
-          # Minimum expected triples per file (well below current counts as safety floor)
+          # Minimum expected triples per file (safety floor)
           MIN_TRIPLES = {
               "enterprise": 20_000,
               "mobile": 2_000,
@@ -184,15 +209,26 @@ jobs:
               "attack-all": 25_000,
               "capec": 4_000,
               "cwe": 7_000,
-              "combined": 35_000,
+              "cve": 500_000,
+              "cpe": 500_000,
+              "d3fend": 500,
+              "atlas": 100,
+              "car": 100,
+              "engage": 100,
+              "epss": 100_000,
+              "kev": 2_000,
+              "vulnrichment": 100_000,
+              "ghsa": 50_000,
+              "sigma": 10_000,
+              "exploitdb": 50_000,
+              "combined": 1_000_000,
           }
 
           failed = False
           for name, minimum in MIN_TRIPLES.items():
               path = Path(f"output/{name}.parquet")
               if not path.exists():
-                  print(f"FAIL: {path} does not exist")
-                  failed = True
+                  print(f"WARN: {path} does not exist (source may not have changed)")
                   continue
 
               count = pq.read_metadata(path).num_rows
@@ -214,100 +250,12 @@ jobs:
 
       - name: Update dataset card with fresh counts and date
         if: steps.source_check.outputs.any_changed == 'true'
-        env:
-          SOURCE_META: ${{ steps.source_check.outputs.metadata }}
         run: |
-          python - <<'PYEOF'
-          import json, os, re
-          from datetime import datetime, timezone
-          import pyarrow.parquet as pq
+          python -c "
           from pathlib import Path
-
-          readme = Path("hf_dataset/README.md")
-          text = readme.read_text()
-
-          # Read triple counts from generated Parquet files
-          counts = {}
-          for name in ["enterprise", "mobile", "ics", "attack-all", "capec", "cwe", "combined"]:
-              path = Path(f"output/{name}.parquet")
-              counts[name] = pq.read_metadata(path).num_rows
-
-          now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-          def update_table_counts(text, rows, counts):
-              for key, col_a, col_b in rows:
-                  pattern = rf"\| {re.escape(col_a)} \| {re.escape(col_b)} \| [\d,]+\s+\|"
-                  replacement = f"| {col_a} | {col_b} | {counts[key]:,} |"
-                  text = re.sub(pattern, replacement, text)
-              return text
-
-          # Update HF dataset card
-          HF_TABLE_ROWS = [
-              ("enterprise", "`enterprise` (default)", "Enterprise ATT&CK"),
-              ("mobile", "`mobile`", "Mobile ATT&CK"),
-              ("ics", "`ics`", "ICS ATT&CK"),
-              ("attack-all", "`attack-all`", "ATT&CK combined (deduplicated)"),
-              ("capec", "`capec`", "CAPEC attack patterns"),
-              ("cwe", "`cwe`", "CWE weaknesses"),
-              ("combined", "`combined`", "All sources merged (deduplicated)"),
-          ]
-          text = update_table_counts(text, HF_TABLE_ROWS, counts)
-
-          text = re.sub(
-              r"\*Counts as of \d{4}-\d{2}-\d{2}T[\d:]+Z\.",
-              f"*Counts as of {now}.",
-              text,
-          )
-
-          # Update source versions
-          from email.utils import parsedate_to_datetime
-
-          meta = json.loads(os.environ["SOURCE_META"])
-          attack_sha = meta.get("attack_sha", "---")
-          attack_date = meta.get("attack_date", "---")
-          capec_mod = meta.get("capec_last_modified", "---")
-          cwe_mod = meta.get("cwe_last_modified", "---")
-
-          def http_date_to_iso(s):
-              try:
-                  return parsedate_to_datetime(s).strftime("%Y-%m-%dT%H:%M:%SZ")
-              except Exception:
-                  return s
-
-          text = re.sub(
-              r"\| ATT&CK \| \[`[^`]*`\]\([^)]*\) \| [^|]* \|",
-              f"| ATT&CK | [`mitre-attack/attack-stix-data`](https://github.com/mitre-attack/attack-stix-data/commit/{attack_sha}) | {attack_date} |",
-              text,
-          )
-          text = re.sub(
-              r"\| CAPEC \| \[`[^`]*`\]\([^)]*\) \| [^|]* \|",
-              f"| CAPEC | [`capec_latest.xml`](https://capec.mitre.org/data/xml/capec_latest.xml) | {http_date_to_iso(capec_mod)} |",
-              text,
-          )
-          text = re.sub(
-              r"\| CWE \| \[`[^`]*`\]\([^)]*\) \| [^|]* \|",
-              f"| CWE | [`cwec_latest.xml.zip`](https://cwe.mitre.org/data/xml/cwec_latest.xml.zip) | {http_date_to_iso(cwe_mod)} |",
-              text,
-          )
-
-          readme.write_text(text)
-          print(f"Updated hf_dataset/README.md: {counts}, timestamp: {now}")
-
-          # Update root README.md counts table
-          ROOT_TABLE_ROWS = [
-              ("enterprise", "`enterprise.parquet`", "ATT&CK Enterprise"),
-              ("mobile", "`mobile.parquet`", "ATT&CK Mobile"),
-              ("ics", "`ics.parquet`", "ATT&CK ICS"),
-              ("attack-all", "`attack-all.parquet`", "ATT&CK combined (deduplicated)"),
-              ("capec", "`capec.parquet`", "CAPEC attack patterns"),
-              ("cwe", "`cwe.parquet`", "CWE weaknesses"),
-              ("combined", "`combined.parquet`", "All sources merged (deduplicated)"),
-          ]
-          root_readme = Path("README.md")
-          root_text = update_table_counts(root_readme.read_text(), ROOT_TABLE_ROWS, counts)
-          root_readme.write_text(root_text)
-          print("Updated README.md")
-          PYEOF
+          from common import update_dataset_readme
+          update_dataset_readme(Path('output'))
+          "
 
       - name: Upload to HuggingFace Hub
         if: steps.source_check.outputs.any_changed == 'true'
@@ -315,11 +263,11 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           python - <<'PYEOF'
-          import json, os, shutil
+          import os, shutil
           from pathlib import Path
           from huggingface_hub import HfApi
 
-          repo_id = "s0u9ata/mitre-attack-kg"
+          repo_id = "s0u9ata/security-kg"
           api = HfApi(token=os.environ["HF_TOKEN"])
 
           # Ensure the dataset repo exists
@@ -330,13 +278,21 @@ jobs:
           staging.mkdir(exist_ok=True)
           (staging / "data").mkdir(exist_ok=True)
 
-          for name in ["enterprise", "mobile", "ics", "attack-all", "capec", "cwe", "combined"]:
-              shutil.copy(f"output/{name}.parquet", staging / "data" / f"{name}.parquet")
+          all_files = [
+              "enterprise", "mobile", "ics", "attack-all",
+              "capec", "cwe", "cve", "cpe",
+              "d3fend", "atlas", "car", "engage", "epss", "kev",
+              "vulnrichment", "ghsa", "sigma", "exploitdb",
+              "combined",
+          ]
+          for name in all_files:
+              src = Path(f"output/{name}.parquet")
+              if src.exists():
+                  shutil.copy(src, staging / "data" / f"{name}.parquet")
 
           shutil.copy("hf_dataset/README.md", staging / "README.md")
 
-          meta = '${{ steps.source_check.outputs.metadata }}'
-          (staging / ".metadata.json").write_text(json.dumps(json.loads(meta), indent=2))
+          shutil.copy("hf_dataset/.metadata.json", staging / ".metadata.json")
 
           # Upload everything in one commit
           api.upload_folder(
@@ -345,7 +301,7 @@ jobs:
               repo_type="dataset",
               commit_message="Update dataset",
           )
-          print(f"Uploaded all files. Metadata: {meta}")
+          print("Uploaded all files to HuggingFace Hub.")
           PYEOF
 
       - name: Open PR to update dataset card counts
@@ -358,7 +314,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add hf_dataset/README.md README.md
+          git add hf_dataset/README.md hf_dataset/.metadata.json README.md
           git commit -m "Update dataset counts"
           git push -u origin "$branch"
           existing=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
@@ -367,4 +323,24 @@ jobs:
               --title "Update dataset card counts" \
               --body "Automated update of triple counts and date in the HuggingFace dataset card." \
               --base main
+          fi
+
+      - name: Upload conversion logs
+        if: always() && steps.source_check.outputs.any_changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: conversion-logs
+          path: logs/
+          retention-days: 30
+
+      - name: Log summary
+        if: always() && steps.source_check.outputs.any_changed == 'true'
+        run: |
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "Conversion logs available at: ${run_url}"
+          echo "Download logs artifact from the workflow run page."
+          if [ -d logs ]; then
+            echo ""
+            echo "--- Log Summary ---"
+            grep -rh -E '(Starting|Finished|Wrote|FAIL|ERROR|All done)' logs/*.log 2>/dev/null | tail -50
           fi

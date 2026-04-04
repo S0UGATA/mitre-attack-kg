@@ -10,12 +10,24 @@ tags:
 - mitre-attack
 - capec
 - cwe
+- cve
+- cpe
+- d3fend
+- atlas
+- car
+- engage
+- epss
+- kev
+- vulnrichment
+- ghsa
+- sigma
+- exploitdb
 - stix
 - threat-intelligence
 - triples
-pretty_name: "MITRE ATT&CK / CAPEC / CWE Knowledge Graph Triples"
+pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB)"
 size_categories:
-- 10K<n<100K
+- 1M<n<10M
 configs:
 - config_name: enterprise
   data_files:
@@ -42,6 +54,54 @@ configs:
   data_files:
   - split: train
     path: data/cwe.parquet
+- config_name: cve
+  data_files:
+  - split: train
+    path: data/cve.parquet
+- config_name: cpe
+  data_files:
+  - split: train
+    path: data/cpe.parquet
+- config_name: d3fend
+  data_files:
+  - split: train
+    path: data/d3fend.parquet
+- config_name: atlas
+  data_files:
+  - split: train
+    path: data/atlas.parquet
+- config_name: car
+  data_files:
+  - split: train
+    path: data/car.parquet
+- config_name: engage
+  data_files:
+  - split: train
+    path: data/engage.parquet
+- config_name: epss
+  data_files:
+  - split: train
+    path: data/epss.parquet
+- config_name: kev
+  data_files:
+  - split: train
+    path: data/kev.parquet
+- config_name: vulnrichment
+  data_files:
+  - split: train
+    path: data/vulnrichment.parquet
+- config_name: ghsa
+  data_files:
+  - split: train
+    path: data/ghsa.parquet
+- config_name: sigma
+  data_files:
+  - split: train
+    path: data/sigma.parquet
+- config_name: exploitdb
+  data_files:
+  - split: train
+    path: data/exploitdb.parquet
 - config_name: combined
   data_files:
   - split: train
@@ -56,69 +116,114 @@ dataset_info:
     dtype: string
 ---
 
-# MITRE ATT&CK Knowledge Graph Triples
+# Security Knowledge Graph Triples
 
-[MITRE ATT&CK](https://attack.mitre.org/), [CAPEC](https://capec.mitre.org/), and [CWE](https://cwe.mitre.org/) data represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
+Security data from 15 sources represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
+
+Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb)
+
+*Last updated: 2026-04-04T12:44:58Z*
 
 ## Quick Start
 
 ```python
 from datasets import load_dataset
 
-ds = load_dataset("s0u9ata/mitre-attack-kg", "enterprise")
+ds = load_dataset("s0u9ata/security-kg", "enterprise")
 print(ds["train"][0])
 # {'subject': 'T1059.001', 'predicate': 'rdf:type', 'object': 'Technique'}
 ```
 
 ## Configurations
 
-| Config | Description | Triples |
-|--------|-------------|---------|
+| Config | Description | Est. Triples |
+|--------|-------------|-------------|
 | `enterprise` (default) | Enterprise ATT&CK | 42,041 |
 | `mobile` | Mobile ATT&CK | 5,307 |
 | `ics` | ICS ATT&CK | 3,756 |
 | `attack-all` | ATT&CK combined (deduplicated) | 49,622 |
 | `capec` | CAPEC attack patterns | 8,114 |
 | `cwe` | CWE weaknesses | 14,565 |
-| `combined` | All sources merged (deduplicated) | 71,531 |
-
-*Counts as of 2026-04-02T20:51:56Z. Regenerate from [source](https://github.com/S0UGATA/mitre-attack-kg) for the latest data.*
+| `cve` | CVE vulnerabilities | 3,544,309 |
+| `cpe` | CPE platform enumeration | 12,399,534 |
+| `d3fend` | D3FEND defensive techniques | 8,154 |
+| `atlas` | ATLAS AI/ML techniques | 1,420 |
+| `car` | CAR analytics | 1,617 |
+| `engage` | ENGAGE adversary engagement | 1,464 |
+| `epss` | EPSS exploit prediction scores | 649,226 |
+| `kev` | KEV known exploited vulns | 17,054 |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 656,207 |
+| `ghsa` | GitHub Security Advisories | 327,132 |
+| `sigma` | Sigma detection rules | 32,750 |
+| `exploitdb` | ExploitDB public exploits | 346,303 |
+| `combined` | All sources merged (deduplicated) | 18,057,471 |
 
 ## Knowledge Graph Structure
 
 ```
-                                         ATT&CK
-                                         ──────
-
-   Campaign ───── attributed-to ─────▶ Group
-       │                                  │
-       │                                  │
-       │ uses                             │ uses
-       │                                  │
-       ▼                                  ▼
-   Malware/Tool ──────── uses ────────▶ Technique ──── belongs-to-tactic ────▶ Tactic
-                                          ▲  ▲  ▲
-                                          │  │  │
-         Sub-technique ──subtechnique-of──┘  │  └── detects ── DataComponent
-                                             │
-                   Mitigation ── mitigates ──┘
-
-
-                              CAPEC                CWE
-                              ─────                ───
-
-                    ╭── child-of ──╮          ╭── child-of ──╮
-                    ╰─▶ Attack Pattern        ╰─▶ Weakness
-
-
-                                    Cross-source
-                                    ────────────
-
-   Attack Pattern ── maps-to-technique ──────────────▶ Technique        (CAPEC → ATT&CK)
-
-   Attack Pattern ── related-weakness ───────────────▶ Weakness         (CAPEC → CWE)
-
-   Weakness ── related-attack-pattern ───────────────▶ Attack Pattern   (CWE → CAPEC)
+                          Campaign ── attributed-to ──▶ Group
+                             │                            │
+                        uses │                            │ uses
+                             ▼                            │
+                        Malware/Tool ── uses ──┐          │
+                                               │          │
+                                               ▼          ▼
+                                        ┌──────────────────────┐
+    Sub-technique ── subtechnique-of ──▶│                      │── belongs-to-tactic ──▶ Tactic
+                                        │                      │
+        Mitigation ── mitigates ───────▶│                      │
+                                        │                      │
+      DataComponent ── detects ────────▶│                      │
+                                        │                      │
+   Analytic (CAR) ── detects-technique ▶│                      │
+           │                            │                      │
+           │ maps-to-d3fend             │      TECHNIQUE       │
+           ▼                            │                      │
+   DefensiveTechnique ── counters ─────▶│                      │
+       (D3FEND)                         │                      │
+                                        │                      │
+       SigmaRule ── detects-technique ─▶│                      │
+                                        │                      │
+EngagementActivity ── engages-technique▶│                      │
+       (ENGAGE)                         │                      │
+                                        │                      │
+ ATLAS Technique ── related-attack-tech▶│                      │
+                                        │                      │
+  Attack Pattern ── maps-to-technique ─▶│                      │
+       (CAPEC)                          └──────────────────────┘
+           │
+           ├── child-of ──▶ Attack Pattern (parent)
+           │
+           │ related-weakness ──▶ child-of ──▶ Weakness (parent)
+           ▼
+      ┌─────────────────┐  
+      │                 │
+      │  Weakness (CWE) │── related-attack-pattern ──▶ Attack Pattern (CAPEC)
+      │                 │
+      │                 │◀── related-weakness ──── KEV Entry
+      │                 │
+      │                 │◀── related-weakness ──── Advisory (GHSA)
+      └────────┬────────┘
+               ▲
+               │ related-weakness
+               │
+      ┌────────┴────────┐
+      │                 │◀── related-cve ────── SigmaRule
+      │                 │
+      │  Vulnerability  │◀── related-cve ────── Advisory (GHSA)
+      │     (CVE)       │
+      │                 │◀── exploits-cve ───── Exploit (ExploitDB)
+      │                 │
+      │                 │◀── epss-score ─────── EPSS Score
+      │                 │
+      │                 │◀── ssvc-*/adp-* ───── Vulnrichment
+      └────────┬────────┘
+               │ affects-cpe
+               ▼
+        ┌──────────────┐
+        │   Platform   │
+        │    (CPE)     │
+        └──────────────┘
 ```
 
 ## Schema
@@ -127,32 +232,29 @@ Each row is a single triple with three string columns:
 
 | Column | Description | Examples |
 |--------|-------------|----------|
-| `subject` | Entity ID | `T1059.001`, `G0016`, `CAPEC-66`, `CWE-79` |
-| `predicate` | Property name or relationship type | `rdf:type`, `name`, `uses`, `mitigates` |
-| `object` | Value or target entity ID | `Technique`, `PowerShell`, `T1059`, `CWE-89` |
+| `subject` | Entity ID | `T1059.001`, `G0016`, `CAPEC-66`, `CWE-79`, `CVE-2024-1234`, `cpe:2.3:a:apache:httpd:*`, `D3-FE`, `AML.T0000`, `CAR-2024-01-001`, `EAC0001`, `GHSA-xxxx-yyyy-zzzz`, `EDB-16929` |
+| `predicate` | Property name or relationship type | `rdf:type`, `name`, `uses`, `mitigates`, `epss-score`, `counters`, `ssvc-exploitation`, `exploits-cve`, `detects-technique` |
+| `object` | Value or target entity ID | `Technique`, `PowerShell`, `T1059`, `CWE-89`, `0.97500`, `SecurityAdvisory`, `SigmaRule`, `Exploit` |
 
 ## Predicate Reference
 
-### Entity properties (from STIX object fields)
+### ATT&CK Entity Properties
 
 | Predicate | Description | Example object value |
 |-----------|-------------|---------------------|
 | `rdf:type` | Entity type | `Technique`, `Group`, `Malware`, `Tool`, `Tactic`, `Mitigation`, `Campaign`, `DataSource`, `DataComponent` |
 | `name` | Display name | `PowerShell` |
 | `description` | Full description text | `Adversaries may abuse PowerShell...` |
-| `platform` | Applicable platform (one triple per platform) | `Windows`, `Linux`, `macOS` |
+| `platform` | Applicable platform | `Windows`, `Linux`, `macOS` |
 | `domain` | ATT&CK domain | `enterprise-attack` |
-| `alias` | Alternative name (excludes primary name) | `Cozy Bear` |
+| `alias` | Alternative name | `Cozy Bear` |
 | `is-subtechnique` | Whether entity is a sub-technique | `True`, `False` |
-| `belongs-to-tactic` | Tactic ATT&CK ID from kill chain phases | `TA0002`, `TA0003` |
-| `shortname` | Tactic shortname (on Tactic entities) | `credential-access` |
+| `belongs-to-tactic` | Tactic ATT&CK ID | `TA0002` |
+| `shortname` | Tactic shortname | `credential-access` |
 | `url` | ATT&CK website URL | `https://attack.mitre.org/techniques/T1059/001` |
-| `created` | Creation timestamp | `2020-01-14 17:18:32...` |
-| `modified` | Last modification timestamp | `2024-06-01 12:00:00...` |
-| `revoked` | Whether entity is revoked | `true` |
-| `deprecated` | Whether entity is deprecated | `true` |
+| `created` / `modified` | Timestamps | `2020-01-14 17:18:32...` |
 
-### ATT&CK relationship predicates (from STIX relationship objects)
+### ATT&CK Relationship Predicates
 
 | Predicate | Typical subject / object | Example |
 |-----------|--------------------------|---------|
@@ -161,86 +263,235 @@ Each row is a single triple with three string columns:
 | `subtechnique-of` | Sub-technique / Parent technique | `T1059.001 / T1059` |
 | `detects` | DataComponent / Technique | `DC0001 / T1059.001` |
 | `attributed-to` | Campaign / Group | `C0018 / G0016` |
-| `revoked-by` | Old entity / Replacement entity | `T1234 / T5678` |
-| `targets` | Technique / Asset (ICS) | `T0800 / A0001` |
 
-### CAPEC properties and relationships
+### CAPEC Predicates
 
 | Predicate | Description | Example object value |
 |-----------|-------------|---------------------|
-| `rdf:type` | Always `AttackPattern` | `AttackPattern` |
-| `name` | Display name | `SQL Injection` |
-| `description` | Full description text | `An attacker exploits...` |
-| `abstraction` | Abstraction level | `Meta`, `Standard`, `Detailed` |
-| `status` | Pattern status | `Stable`, `Draft` |
-| `likelihood` | Likelihood of attack | `High`, `Medium`, `Low` |
-| `severity` | Typical severity | `High`, `Medium`, `Low` |
+| `rdf:type` | `AttackPattern` | `AttackPattern` |
+| `name` / `description` | Display name / full text | `SQL Injection` |
+| `abstraction` / `status` | Level / status | `Standard`, `Stable` |
+| `likelihood` / `severity` | Attack likelihood / severity | `High` |
 | `child-of` | Parent attack pattern | `CAPEC-248` |
-| `related-weakness` | Related CWE weakness | `CWE-89` |
+| `related-weakness` | Related CWE | `CWE-89` |
 | `maps-to-technique` | Mapped ATT&CK technique | `T1190.002` |
-| `consequence-scope` | Impact scope | `Confidentiality` |
-| `consequence-impact` | Impact type | `Read Data` |
 
-### CWE properties and relationships
+### CWE Predicates
 
 | Predicate | Description | Example object value |
 |-----------|-------------|---------------------|
-| `rdf:type` | Always `Weakness` | `Weakness` |
-| `name` | Display name | `Cross-site Scripting (XSS)` |
-| `description` | Full description text | `The product does not...` |
-| `abstraction` | Abstraction level | `Base`, `Class`, `Variant` |
-| `status` | Weakness status | `Stable`, `Draft` |
-| `likelihood-of-exploit` | Exploitation likelihood | `High`, `Medium`, `Low` |
+| `rdf:type` | `Weakness` | `Weakness` |
+| `name` / `description` | Display name / full text | `Cross-site Scripting (XSS)` |
+| `abstraction` / `status` | Level / status | `Base`, `Stable` |
+| `likelihood-of-exploit` | Exploitation likelihood | `High` |
 | `child-of` | Parent weakness | `CWE-74` |
-| `related-attack-pattern` | Related CAPEC pattern | `CAPEC-86` |
-| `platform` | Applicable platform | `JavaScript`, `Web Based` |
-| `consequence-scope` | Impact scope | `Confidentiality`, `Integrity` |
-| `consequence-impact` | Impact type | `Execute Unauthorized Code or Commands` |
-| `introduction-phase` | Introduction phase | `Implementation`, `Design` |
+| `related-attack-pattern` | Related CAPEC | `CAPEC-86` |
+| `platform` | Applicable platform | `JavaScript` |
+| `consequence-scope` / `consequence-impact` | Impact | `Confidentiality`, `Read Data` |
+| `introduction-phase` | Introduction phase | `Implementation` |
+
+### CVE Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `Vulnerability` | `Vulnerability` |
+| `state` | CVE state | `PUBLISHED` |
+| `description` | English description | `A remote code execution...` |
+| `date-published` / `date-updated` | Timestamps | `2024-01-15T00:00:00.000Z` |
+| `assigner` | Assigning organization | `microsoft` |
+| `vendor` / `product` | Affected vendor/product | `Microsoft`, `Windows` |
+| `affects-cpe` | Affected CPE string | `cpe:2.3:o:microsoft:windows_10:*` |
+| `platform` | Affected platform | `x64` |
+| `related-weakness` | Related CWE | `CWE-79` |
+| `cvss-base-score` / `cvss-severity` | CVSS metrics | `9.8`, `CRITICAL` |
+
+### CPE Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `Platform` | `Platform` |
+| `part` | CPE part type | `application`, `operating_system`, `hardware` |
+| `vendor` / `product` / `version` | Components | `apache`, `httpd`, `2.4.51` |
+| `title` | English display name | `Apache HTTP Server 2.4.51` |
+| `created` / `modified` | Timestamps | `2021-10-07` |
+
+### D3FEND Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `DefensiveTechnique` or `OffensiveTechnique` | `DefensiveTechnique` |
+| `name` / `definition` | Display name / definition | `File Encryption` |
+| `synonym` | Alternative name | `Disk Encryption` |
+| `child-of` | Parent technique | `PlatformHardening` |
+| `counters` | Countered offensive technique | `T1059` |
+
+### ATLAS Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `Tactic`, `Technique`, `CaseStudy`, `Mitigation` | `Technique` |
+| `name` / `description` | Display name / full text | `ML Supply Chain Compromise` |
+| `maturity` | Technique maturity | `Reviewed` |
+| `belongs-to-tactic` | Parent tactic | `AML.TA0001` |
+| `subtechnique-of` | Parent technique | `AML.T0000` |
+| `related-attack-technique` | Linked ATT&CK technique | `T1195` |
+| `related-attack-tactic` | Linked ATT&CK tactic | `TA0001` |
+| `uses-technique` | Case study technique | `AML.T0000` |
+| `mitigates` | Mitigated technique | `AML.T0000` |
+
+### CAR Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `Analytic` | `Analytic` |
+| `title` / `description` | Analytic name / full text | `Suspicious PowerShell Commands` |
+| `platform` | Applicable platform | `Windows` |
+| `information-domain` | Information domain | `Host` |
+| `analytic-type` | Type of analytic | `Situational Awareness` |
+| `detects-technique` | Detected ATT&CK technique | `T1059` |
+| `detects-subtechnique` | Detected subtechnique | `T1059.001` |
+| `covers-tactic` | Covered ATT&CK tactic | `Execution` |
+| `maps-to-d3fend` | Linked D3FEND technique | `D3-PSA` |
+
+### ENGAGE Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `EngagementActivity` or `AdversaryVulnerability` | `EngagementActivity` |
+| `name` / `description` | Display name / full text | `Software Manipulation` |
+| `engages-technique` | Engaged ATT&CK technique | `T1001` |
+| `exploits-vulnerability-of` | Exploited ATT&CK technique | `T1001` |
+| `addresses-vulnerability` | Addressed adversary vulnerability | `EAV0001` |
+
+### EPSS Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `epss-score` | Exploit probability (0-1) | `0.97500` |
+| `epss-percentile` | Score percentile (0-1) | `0.99900` |
+
+### KEV Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `KnownExploitedVulnerability` | `KnownExploitedVulnerability` |
+| `kev-vendor` / `kev-product` | Affected vendor/product | `Microsoft`, `Windows` |
+| `kev-name` / `kev-description` | Vulnerability name/description | `Windows Privilege Escalation` |
+| `kev-date-added` / `kev-due-date` | Dates | `2024-01-15` |
+| `kev-required-action` | Required remediation action | `Apply updates per vendor instructions.` |
+| `kev-ransomware-use` | Ransomware campaign use | `Known`, `Unknown` |
+| `related-weakness` | Related CWE | `CWE-269` |
+
+### Vulnrichment Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `ssvc-exploitation` | SSVC exploitation status | `active`, `poc`, `none` |
+| `ssvc-automatable` | Whether exploitation is automatable | `yes`, `no` |
+| `ssvc-technical-impact` | Technical impact level | `total`, `partial` |
+| `adp-cvss-base-score` | CISA-analyzed CVSS base score | `9.8` |
+| `adp-cvss-severity` | CISA-analyzed CVSS severity | `CRITICAL` |
+| `adp-related-weakness` | CISA-assigned CWE | `CWE-79` |
+| `adp-affects-cpe` | CISA-assigned CPE | `cpe:2.3:o:microsoft:windows_10:*` |
+
+### GHSA Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `SecurityAdvisory` | `SecurityAdvisory` |
+| `summary` | Advisory summary | `XSS vulnerability in example-package` |
+| `date-published` / `date-modified` | Timestamps | `2024-01-15T00:00:00Z` |
+| `severity` | Severity level | `HIGH`, `MODERATE`, `LOW`, `CRITICAL` |
+| `related-cve` | Associated CVE | `CVE-2024-1234` |
+| `related-weakness` | Associated CWE | `CWE-79` |
+| `cvss-vector` | CVSS v3 vector string | `CVSS:3.1/AV:N/AC:L/...` |
+| `affects-package` | Affected package (ecosystem/name) | `npm/example-package` |
+| `fixed-in:<pkg>` | Fix version for a package | `2.0.1` |
+
+### Sigma Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `SigmaRule` | `SigmaRule` |
+| `title` / `description` | Rule name / full text | `Suspicious PowerShell Download` |
+| `status` | Rule maturity | `stable`, `test`, `experimental` |
+| `level` | Detection severity | `critical`, `high`, `medium`, `low`, `informational` |
+| `author` / `date` | Rule author / creation date | `Security Researcher`, `2024-01-15` |
+| `logsource-category` | Log source category | `process_creation`, `network_connection` |
+| `logsource-product` | Log source product | `windows`, `linux` |
+| `logsource-service` | Log source service | `sshd`, `sysmon` |
+| `detects-technique` | Detected ATT&CK technique | `T1059.001` |
+| `related-cve` | Related CVE | `CVE-2024-1234` |
+
+### ExploitDB Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `Exploit` | `Exploit` |
+| `description` | Exploit description | `Apache HTTP Server RCE` |
+| `date-published` | Publication date | `2024-01-15` |
+| `author` | Exploit author | `Metasploit` |
+| `exploit-type` | Exploit category | `remote`, `local`, `dos`, `webapps` |
+| `platform` | Target platform | `linux`, `windows`, `aix` |
+| `verified` | Verified by OffSec | `True` |
+| `exploits-cve` | Exploited CVE | `CVE-2024-1234` |
 
 ## Dataset Creation
 
 ### Source Data
 
-| Source | Feed | Last Updated |
-|--------|------|--------------|
-| ATT&CK | [`mitre-attack/attack-stix-data`](https://github.com/mitre-attack/attack-stix-data/commit/70987bc82ae85f594471c6ca532235c388f7a368) | 2025-12-23T18:37:51Z |
-| CAPEC | [`capec_latest.xml`](https://capec.mitre.org/data/xml/capec_latest.xml) | 2023-01-24T18:32:31Z |
-| CWE | [`cwec_latest.xml.zip`](https://cwe.mitre.org/data/xml/cwec_latest.xml.zip) | 2026-01-21T10:22:51Z |
+| Source | Feed | Format |
+|--------|------|--------|
+| ATT&CK | [`mitre-attack/attack-stix-data`](https://github.com/mitre-attack/attack-stix-data) | STIX 2.0 JSON |
+| CAPEC | [`capec_latest.xml`](https://capec.mitre.org/data/xml/capec_latest.xml) | XML |
+| CWE | [`cwec_latest.xml.zip`](https://cwe.mitre.org/data/xml/cwec_latest.xml.zip) | XML (ZIP) |
+| CVE | [`CVEProject/cvelistV5`](https://github.com/CVEProject/cvelistV5/releases) | JSON 5.x (ZIP) |
+| CPE | [`nvdcpe-2.0.tar.gz`](https://nvd.nist.gov/feeds/json/cpe/2.0/nvdcpe-2.0.tar.gz) | JSON (tar.gz) |
+| D3FEND | [`d3fend.json`](https://d3fend.mitre.org/ontologies/d3fend.json) | JSON-LD |
+| ATLAS | [`ATLAS.yaml`](https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml) | YAML |
+| CAR | [`mitre-attack/car`](https://github.com/mitre-attack/car) | YAML (ZIP) |
+| ENGAGE | [`attack_mapping.json`](https://raw.githubusercontent.com/mitre/engage/main/Data/json/attack_mapping.json) | JSON |
+| EPSS | [`epss_scores-current.csv.gz`](https://epss.cyentia.com/epss_scores-current.csv.gz) | CSV (gzip) |
+| KEV | [`known_exploited_vulnerabilities.json`](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json) | JSON |
+| Vulnrichment | [`cisagov/vulnrichment`](https://github.com/cisagov/vulnrichment) | JSON 5.x (ZIP) |
+| GHSA | [`github/advisory-database`](https://github.com/github/advisory-database) | OSV JSON (ZIP) |
+| Sigma | [`SigmaHQ/sigma`](https://github.com/SigmaHQ/sigma/releases) | YAML (ZIP) |
+| ExploitDB | [`files_exploits.csv`](https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv) | CSV |
 
 ### Conversion Pipeline
 
 The converter downloads source data, extracts entity property triples and relationship triples, and writes them as Parquet files. The source code and full documentation are at:
 
-**[github.com/S0UGATA/mitre-attack-kg](https://github.com/S0UGATA/mitre-attack-kg)**
+**[github.com/S0UGATA/security-kg](https://github.com/S0UGATA/security-kg)**
 
 To regenerate or update this dataset:
 
 ```bash
-git clone https://github.com/S0UGATA/mitre-attack-kg.git
-cd mitre-attack-kg
+git clone https://github.com/S0UGATA/security-kg.git
+cd security-kg
 pip install -r requirements.txt
-python convert.py
+python src/convert.py
 ```
 
-This produces fresh Parquet files in `output/` from the latest ATT&CK, CAPEC, and CWE data.
+This produces fresh Parquet files in `output/` from the latest data across all 15 sources.
 
 ## Use Cases
 
 - **Knowledge Graph Construction**: Load triples into Neo4j, RDFLib, or NetworkX for graph queries
-- **Graph ML**: Train graph neural networks (GNNs) on ATT&CK structure for link prediction
+- **Graph ML**: Train graph neural networks (GNNs) on security data structure for link prediction
 - **RAG / LLM Grounding**: Use triples as structured context for retrieval-augmented generation
-- **Threat Intelligence**: Query relationships between groups, techniques, and mitigations
+- **Threat Intelligence**: Query relationships between groups, techniques, vulnerabilities, and mitigations
+- **Vulnerability Prioritization**: Combine CVE, EPSS, and KEV data for risk-based prioritization
 - **Security Automation**: Programmatically map detections to techniques to tactics
 
 ## Example Queries
 
-### Enterprise
+### Enterprise ATT&CK
 
 ```python
 from datasets import load_dataset
 
-ds = load_dataset("s0u9ata/mitre-attack-kg", "enterprise")
+ds = load_dataset("s0u9ata/security-kg", "enterprise")
 df = ds["train"].to_pandas()
 
 # What techniques does APT29 (G0016) use?
@@ -248,94 +499,67 @@ apt29_techniques = df[(df.subject == "G0016") & (df.predicate == "uses")].object
 
 # What mitigates PowerShell (T1059.001)?
 mitigations = df[(df.predicate == "mitigates") & (df.object == "T1059.001")].subject.tolist()
-
-# All sub-techniques of Command and Scripting Interpreter (T1059)
-subtechs = df[(df.predicate == "subtechnique-of") & (df.object == "T1059")].subject.tolist()
 ```
 
-### Mobile
+### CVE + EPSS + KEV (Vulnerability Prioritization)
 
 ```python
-ds = load_dataset("s0u9ata/mitre-attack-kg", "mobile")
-df = ds["train"].to_pandas()
+# Load CVE and EPSS data
+cve = load_dataset("s0u9ata/security-kg", "cve")["train"].to_pandas()
+epss = load_dataset("s0u9ata/security-kg", "epss")["train"].to_pandas()
+kev = load_dataset("s0u9ata/security-kg", "kev")["train"].to_pandas()
 
-# All mobile malware families
-mobile_malware = df[(df.predicate == "rdf:type") & (df.object == "Malware")].subject.tolist()
+# High EPSS scores (likely to be exploited)
+high_epss = epss[(epss.predicate == "epss-score") & (epss.object.astype(float) > 0.5)]
 
-# What techniques does Pegasus (S0316) use?
-pegasus_techs = df[(df.subject == "S0316") & (df.predicate == "uses")].object.tolist()
+# Known exploited vulnerabilities
+kev_cves = kev[kev.predicate == "rdf:type"].subject.tolist()
 
-# Mobile mitigations
-mobile_mitigations = df[(df.predicate == "rdf:type") & (df.object == "Mitigation")].subject.tolist()
+# CVEs with critical CVSS scores
+critical = cve[(cve.predicate == "cvss-severity") & (cve.object == "CRITICAL")]
 ```
 
-### ICS
+### D3FEND (Defensive Mapping)
 
 ```python
-ds = load_dataset("s0u9ata/mitre-attack-kg", "ics")
+ds = load_dataset("s0u9ata/security-kg", "d3fend")
 df = ds["train"].to_pandas()
 
-# All ICS techniques
-ics_techniques = df[(df.predicate == "rdf:type") & (df.object == "Technique")].subject.tolist()
+# What defensive techniques counter a specific ATT&CK technique?
+counters = df[(df.predicate == "counters") & (df.object == "T1059")].subject.tolist()
 
-# What techniques does Stuxnet (S0603) use?
-stuxnet_techs = df[(df.subject == "S0603") & (df.predicate == "uses")].object.tolist()
-
-# Which groups target ICS?
-ics_groups = df[(df.predicate == "rdf:type") & (df.object == "Group")].subject.tolist()
+# All defensive techniques
+defenses = df[(df.predicate == "rdf:type") & (df.object == "DefensiveTechnique")].subject.tolist()
 ```
 
-### Cross-domain ATT&CK (attack-all)
+### CAPEC → CWE → CVE (Attack Chain)
 
 ```python
-ds = load_dataset("s0u9ata/mitre-attack-kg", "attack-all")
-df = ds["train"].to_pandas()
+capec = load_dataset("s0u9ata/security-kg", "capec")["train"].to_pandas()
+cve = load_dataset("s0u9ata/security-kg", "cve")["train"].to_pandas()
 
-# Total techniques across all ATT&CK domains
-all_techniques = df[(df.predicate == "rdf:type") & (df.object == "Technique")].subject.unique()
-print(f"{len(all_techniques)} unique techniques across enterprise, mobile, and ICS")
+# Find CWEs related to SQL Injection (CAPEC-66)
+cwe_ids = capec[(capec.subject == "CAPEC-66") & (capec.predicate == "related-weakness")].object.tolist()
 
-# Find all entity types and their counts
-type_counts = df[df.predicate == "rdf:type"].object.value_counts()
-print(type_counts)
-
-# All groups and the techniques they use, across domains
-group_uses = df[(df.predicate == "uses") & df.subject.str.startswith("G")]
-print(f"{group_uses.subject.nunique()} groups using {group_uses.object.nunique()} techniques")
+# Find CVEs with those CWEs
+for cwe_id in cwe_ids:
+    related_cves = cve[(cve.predicate == "related-weakness") & (cve.object == cwe_id)].subject.unique()
+    print(f"{cwe_id}: {len(related_cves)} CVEs")
 ```
 
-### CAPEC
+### CAR Analytics
 
 ```python
-ds = load_dataset("s0u9ata/mitre-attack-kg", "capec")
+ds = load_dataset("s0u9ata/security-kg", "car")
 df = ds["train"].to_pandas()
 
-# All attack patterns
-patterns = df[(df.predicate == "rdf:type") & (df.object == "AttackPattern")].subject.tolist()
+# Which analytics detect T1059 (Command and Scripting Interpreter)?
+analytics = df[(df.predicate == "detects-technique") & (df.object == "T1059")].subject.tolist()
 
-# Which CWE weaknesses are related to SQL Injection (CAPEC-66)?
-cwe_links = df[(df.subject == "CAPEC-66") & (df.predicate == "related-weakness")].object.tolist()
-
-# Which ATT&CK techniques does CAPEC-66 map to?
-techs = df[(df.subject == "CAPEC-66") & (df.predicate == "maps-to-technique")].object.tolist()
-```
-
-### CWE
-
-```python
-ds = load_dataset("s0u9ata/mitre-attack-kg", "cwe")
-df = ds["train"].to_pandas()
-
-# All weaknesses
-weaknesses = df[(df.predicate == "rdf:type") & (df.object == "Weakness")].subject.tolist()
-
-# What CAPEC patterns relate to XSS (CWE-79)?
-capec_links = df[(df.subject == "CWE-79") & (df.predicate == "related-attack-pattern")].object.tolist()
-
-# High-likelihood weaknesses
-high_risk = df[(df.predicate == "likelihood-of-exploit") & (df.object == "High")].subject.tolist()
+# Analytics with D3FEND mappings
+d3fend_mapped = df[df.predicate == "maps-to-d3fend"]
 ```
 
 ## License
 
-Apache 2.0 -- same as the underlying MITRE ATT&CK data.
+Apache 2.0 -- same as the underlying source data.

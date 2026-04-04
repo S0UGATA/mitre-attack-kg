@@ -29,4 +29,4 @@ jobs:
           cache: "pip"
       - run: pip install -r requirements.txt pytest
       - name: Unit tests
-        run: python -m pytest tests/test_convert_attack.py tests/test_convert_capec.py tests/test_convert_cwe.py -v
+        run: python -m pytest tests/ -v --ignore=tests/test_integration.py

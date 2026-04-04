@@ -187,10 +187,19 @@ def extract_triples(attack: MitreAttackData) -> list[tuple[str, str, str]]:
 
 
 def convert_domain(
-    domain: str, output_dir: Path, cache_dir: str | None = None, parquet_format: str = "v2"
+    domain: str,
+    output_dir: Path,
+    cache_dir: str | None = None,
+    parquet_format: str = "v2",
+    stix_path: str | None = None,
 ) -> "pd.DataFrame":
-    """Download STIX data for a domain, convert to triples, save as Parquet."""
-    stix_path = download_stix(domain, cache_dir)
+    """Convert STIX data for a domain to triples and save as Parquet.
+
+    If *stix_path* is provided, uses it directly (skipping download).
+    Otherwise downloads the STIX bundle first.
+    """
+    if stix_path is None:
+        stix_path = download_stix(domain, cache_dir)
     logger.info("Loading %s into MitreAttackData ...", domain)
     attack = MitreAttackData(stix_path)
     logger.info("Extracting triples for %s ...", domain)

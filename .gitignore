@@ -24,3 +24,9 @@ output/*.parquet
 
 # Downloaded STIX JSON
 *-attack.json
+
+# Cached source data (downloaded by converters)
+source/
+
+# Conversion logs
+logs/
