@@ -112,6 +112,21 @@ jobs:
         if: steps.source_check.outputs.any_changed == 'true'
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          ATTACK_CHANGED: ${{ steps.source_check.outputs.attack_changed }}
+          CAPEC_CHANGED: ${{ steps.source_check.outputs.capec_changed }}
+          CWE_CHANGED: ${{ steps.source_check.outputs.cwe_changed }}
+          CVE_CHANGED: ${{ steps.source_check.outputs.cve_changed }}
+          CPE_CHANGED: ${{ steps.source_check.outputs.cpe_changed }}
+          D3FEND_CHANGED: ${{ steps.source_check.outputs.d3fend_changed }}
+          ATLAS_CHANGED: ${{ steps.source_check.outputs.atlas_changed }}
+          CAR_CHANGED: ${{ steps.source_check.outputs.car_changed }}
+          ENGAGE_CHANGED: ${{ steps.source_check.outputs.engage_changed }}
+          EPSS_CHANGED: ${{ steps.source_check.outputs.epss_changed }}
+          KEV_CHANGED: ${{ steps.source_check.outputs.kev_changed }}
+          VULNRICHMENT_CHANGED: ${{ steps.source_check.outputs.vulnrichment_changed }}
+          GHSA_CHANGED: ${{ steps.source_check.outputs.ghsa_changed }}
+          SIGMA_CHANGED: ${{ steps.source_check.outputs.sigma_changed }}
+          EXPLOITDB_CHANGED: ${{ steps.source_check.outputs.exploitdb_changed }}
         run: |
           python - <<'PYEOF'
           import os, shutil
@@ -142,8 +157,8 @@ jobs:
           }
 
           for source, files in source_files.items():
-              env_key = f"{source}_changed"
-              if "${{ steps.source_check.outputs." + env_key + " }}" == "true":
+              env_key = f"{source.upper()}_CHANGED"
+              if os.environ.get(env_key) == "true":
                   continue
               for name in files:
                   try:
