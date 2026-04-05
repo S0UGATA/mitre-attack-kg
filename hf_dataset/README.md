@@ -27,7 +27,7 @@ tags:
 - triples
 pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB)"
 size_categories:
-- 1M<n<10M
+- 10M<n<100M
 configs:
 - config_name: enterprise
   data_files:
@@ -455,58 +455,81 @@ This produces fresh Parquet files in `output/` from the latest data across all 1
 - **Graph ML**: Train graph neural networks (GNNs) on security data structure for link prediction
 - **RAG / LLM Grounding**: Use triples as structured context for retrieval-augmented generation
 - **Threat Intelligence**: Query relationships between groups, techniques, vulnerabilities, and mitigations
-- **Vulnerability Prioritization**: Combine CVE, EPSS, and KEV data for risk-based prioritization
+- **Vulnerability Prioritization**: Combine SSVC, EPSS, KEV, and ExploitDB data for risk-based triage
+- **Defensive Gap Analysis**: Find heavily-used ATT&CK techniques with insufficient detection coverage
+- **Supply Chain Risk**: Score open-source packages by linking GHSA advisories to CVE/EPSS/KEV enrichment
 - **Security Automation**: Programmatically map detections to techniques to tactics
+
+## Cross-Source Analysis Notebook
+
+The repository includes a [Jupyter notebook](https://github.com/S0UGATA/security-kg/blob/main/tests/cross_source_visualizations.ipynb) with 16 cross-source analyses and visualizations built on `combined.parquet` — covering SSVC patch prioritization, defensive gap analysis, kill chain tactic coverage, exploit weaponization timelines, ransomware CWE pipelines, supply chain package risk, and more.
 
 ## Example Queries
 
-### Enterprise ATT&CK
+### SSVC Patch Prioritization (Vulnrichment + EPSS + KEV)
 
 ```python
+import pandas as pd
 from datasets import load_dataset
 
-ds = load_dataset("s0u9ata/security-kg", "enterprise")
+# Load combined graph for cross-source queries
+ds = load_dataset("s0u9ata/security-kg", "combined")
 df = ds["train"].to_pandas()
 
-# What techniques does APT29 (G0016) use?
-apt29_techniques = df[(df.subject == "G0016") & (df.predicate == "uses")].object.tolist()
+# Build SSVC triage matrix: exploitation status × automatable × EPSS score
+ssvc = df[df.predicate == "ssvc-exploitation"][["subject", "object"]].rename(columns={"object": "exploitation"})
+auto = df[df.predicate == "ssvc-automatable"][["subject", "object"]].rename(columns={"object": "automatable"})
+epss = df[df.predicate == "epss-score"][["subject", "object"]].copy()
+epss["epss"] = epss.object.astype(float)
 
-# What mitigates PowerShell (T1059.001)?
-mitigations = df[(df.predicate == "mitigates") & (df.object == "T1059.001")].subject.tolist()
+triage = ssvc.merge(auto, on="subject").merge(epss[["subject", "epss"]], on="subject")
+
+# Highest priority: actively exploited + automatable + high EPSS
+critical = triage[(triage.exploitation == "active") & (triage.automatable == "yes") & (triage.epss > 0.9)]
+print(f"Immediate action: {len(critical)} CVEs")
 ```
 
-### CVE + EPSS + KEV (Vulnerability Prioritization)
+### Defensive Gap Analysis (ATT&CK + Sigma + D3FEND + CAR)
 
 ```python
-# Load CVE and EPSS data
-cve = load_dataset("s0u9ata/security-kg", "cve")["train"].to_pandas()
-epss = load_dataset("s0u9ata/security-kg", "epss")["train"].to_pandas()
-kev = load_dataset("s0u9ata/security-kg", "kev")["train"].to_pandas()
+# Find ATT&CK techniques heavily used by APT groups but poorly covered by detections
+uses = df[(df.predicate == "uses") & df.subject.str.startswith("G")]
+group_usage = uses.groupby("object").subject.nunique().rename("groups_using")
 
-# High EPSS scores (likely to be exploited)
-high_epss = epss[(epss.predicate == "epss-score") & (epss.object.astype(float) > 0.5)]
+# Count detection sources per technique (Sigma + CAR + D3FEND + ENGAGE)
+sigma = df[df.predicate == "detects-technique"].groupby("object").subject.nunique().rename("detections")
+d3fend = df[df.predicate == "restricts"].groupby("object").subject.nunique().rename("defenses")
 
-# Known exploited vulnerabilities
-kev_cves = kev[kev.predicate == "rdf:type"].subject.tolist()
-
-# CVEs with critical CVSS scores
-critical = cve[(cve.predicate == "cvss-severity") & (cve.object == "CRITICAL")]
+coverage = pd.DataFrame(group_usage).join(sigma).join(d3fend).fillna(0)
+gaps = coverage[(coverage.groups_using > 10) & (coverage.detections < 5)]
+print(f"High-usage, low-detection techniques: {len(gaps)}")
 ```
 
-### D3FEND (Defensive Mapping)
+### Supply Chain Risk (GHSA + CVE + EPSS + KEV + ExploitDB)
 
 ```python
-ds = load_dataset("s0u9ata/security-kg", "d3fend")
-df = ds["train"].to_pandas()
+# Score open-source packages by aggregating risk from linked CVEs
+ghsa_cve = df[df.predicate == "related-cve"][["subject", "object"]].rename(columns={"subject": "ghsa", "object": "cve"})
+packages = df[df.predicate == "affects-package"][["subject", "object"]].rename(columns={"subject": "ghsa", "object": "pkg"})
 
-# What defensive techniques counter a specific ATT&CK technique?
-counters = df[(df.predicate == "counters") & (df.object == "T1059")].subject.tolist()
+epss_scores = df[df.predicate == "epss-score"][["subject", "object"]].copy()
+epss_scores["epss"] = epss_scores.object.astype(float)
 
-# All defensive techniques
-defenses = df[(df.predicate == "rdf:type") & (df.object == "DefensiveTechnique")].subject.tolist()
+kev_cves = set(df[(df.predicate == "rdf:type") & (df.object == "KnownExploitedVulnerability")].subject)
+exploit_cves = set(df[df.predicate == "exploits-cve"].object)
+
+# Join package → GHSA → CVE → enrichment
+risk = packages.merge(ghsa_cve, on="ghsa").merge(epss_scores[["subject", "epss"]], left_on="cve", right_on="subject")
+risk["in_kev"] = risk.cve.isin(kev_cves)
+risk["has_exploit"] = risk.cve.isin(exploit_cves)
+risk["ecosystem"] = risk.pkg.str.split("/").str[0]
+
+# Top ecosystems by high-risk CVE count
+high_risk = risk[(risk.epss > 0.5) | risk.in_kev | risk.has_exploit]
+print(high_risk.groupby("ecosystem").cve.nunique().sort_values(ascending=False).head(10))
 ```
 
-### CAPEC → CWE → CVE (Attack Chain)
+### CAPEC → CWE → CVE (Attack Pattern Chain)
 
 ```python
 capec = load_dataset("s0u9ata/security-kg", "capec")["train"].to_pandas()
@@ -521,17 +544,22 @@ for cwe_id in cwe_ids:
     print(f"{cwe_id}: {len(related_cves)} CVEs")
 ```
 
-### CAR Analytics
+### D3FEND (Defensive Taxonomy)
 
 ```python
-ds = load_dataset("s0u9ata/security-kg", "car")
+ds = load_dataset("s0u9ata/security-kg", "d3fend")
 df = ds["train"].to_pandas()
 
-# Which analytics detect T1059 (Command and Scripting Interpreter)?
-analytics = df[(df.predicate == "detects-technique") & (df.object == "T1059")].subject.tolist()
+# All 497 defensive techniques in the D3FEND taxonomy
+defenses = df[(df.predicate == "rdf:type") & (df.object == "DefensiveTechnique")]
+print(f"Defensive techniques: {len(defenses)}")
 
-# Analytics with D3FEND mappings
-d3fend_mapped = df[df.predicate == "maps-to-d3fend"]
+# Find children of a category (e.g., all techniques under Network Traffic Analysis)
+children = df[(df.predicate == "child-of") & (df.object == "NetworkTrafficAnalysis")].subject.tolist()
+
+# Get their names
+names = df[df.predicate == "name"][["subject", "object"]]
+print(names[names.subject.isin(children)].to_string(index=False))
 ```
 
 ## License

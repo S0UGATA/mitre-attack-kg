@@ -198,6 +198,15 @@ python -m pytest tests/test_integration.py -v
 python -m pytest tests/ -v
 ```
 
+## Cross-Source Analysis Notebook
+
+The [cross-source visualizations notebook](tests/cross_source_visualizations.ipynb) demonstrates 16 analyses that are only possible because all 15 sources are merged into a single graph — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
+
+```bash
+pip install -e ".[viz]"
+jupyter notebook tests/cross_source_visualizations.ipynb
+```
+
 ## HuggingFace Dataset
 
 The dataset is published at [s0u9ata/security-kg](https://huggingface.co/datasets/s0u9ata/security-kg) on HuggingFace Hub and auto-updated weekly via GitHub Actions.
