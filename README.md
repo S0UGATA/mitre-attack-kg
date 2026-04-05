@@ -262,7 +262,7 @@ This project is licensed under Apache 2.0. The underlying source data is provide
 | [D3FEND](https://github.com/d3fend/d3fend-ontology) | MIT License | © The MITRE Corporation. MITRE D3FEND™ is a trademark of The MITRE Corporation. |
 | [ATLAS](https://github.com/mitre-atlas/atlas-data) | Apache 2.0 | © MITRE. |
 | [CAR](https://github.com/mitre-attack/car) | Apache 2.0 | © The MITRE Corporation. |
-| [ENGAGE](https://engage.mitre.org/terms-of-use/) | Custom (MITRE) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. See ENGAGE Terms of Use for restrictions. |
+| [ENGAGE](https://engage.mitre.org/) | Apache 2.0 ([GitHub repo](https://github.com/mitre/engage/blob/main/LICENSE.md)) / Custom restrictive ([website ToU](https://engage.mitre.org/terms-of-use/)) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. Note: the GitHub repo is licensed Apache 2.0, but the website terms restrict use to internal/non-commercial purposes. Clarification pending with MITRE. |
 | [EPSS](https://www.first.org/epss/) | Custom permissive (FIRST) | Jacobs, Romanosky, Edwards, Roytman, Adjerid (2021), *Exploit Prediction Scoring System*, Digital Threats Research and Practice, 2(3). See [first.org/epss](https://www.first.org/epss/). |
 | [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Public domain (U.S. Gov) | Source: CISA Known Exploited Vulnerabilities Catalog. |
 | [Vulnrichment](https://github.com/cisagov/vulnrichment) | CC0 1.0 Universal | Source: CISA Vulnrichment. |
