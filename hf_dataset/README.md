@@ -562,6 +562,28 @@ names = df[df.predicate == "name"][["subject", "object"]]
 print(names[names.subject.isin(children)].to_string(index=False))
 ```
 
+## Source Licensing & Attribution
+
+This dataset is published under the Apache 2.0 license. The underlying source data is provided under various licenses as detailed below. By using this dataset, you agree to comply with each source's respective terms.
+
+| Source | License | Attribution |
+|--------|---------|-------------|
+| [ATT&CK](https://attack.mitre.org/resources/terms-of-use/) | Custom royalty-free (MITRE) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. |
+| [CAPEC](https://capec.mitre.org/about/termsofuse.html) | Custom royalty-free (MITRE) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. |
+| [CWE](https://cwe.mitre.org/about/termsofuse.html) | Custom royalty-free (MITRE) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. |
+| [CVE](https://www.cve.org/Legal/TermsOfUse) | Custom permissive (MITRE) | © The MITRE Corporation. CVE® is a registered trademark of The MITRE Corporation. |
+| [CPE / NVD](https://nvd.nist.gov/developers/terms-of-use) | Public domain (NIST) | This product uses data from the NVD API but is not endorsed or certified by the NVD. |
+| [D3FEND](https://github.com/d3fend/d3fend-ontology) | MIT License | © The MITRE Corporation. MITRE D3FEND™ is a trademark of The MITRE Corporation. |
+| [ATLAS](https://github.com/mitre-atlas/atlas-data) | Apache 2.0 | © MITRE. |
+| [CAR](https://github.com/mitre-attack/car) | Apache 2.0 | © The MITRE Corporation. |
+| [ENGAGE](https://engage.mitre.org/terms-of-use/) | Custom (MITRE) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. See ENGAGE Terms of Use for restrictions. |
+| [EPSS](https://www.first.org/epss/) | Custom permissive (FIRST) | Jacobs, Romanosky, Edwards, Roytman, Adjerid (2021), *Exploit Prediction Scoring System*, Digital Threats Research and Practice, 2(3). See [first.org/epss](https://www.first.org/epss/). |
+| [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Public domain (U.S. Gov) | Source: CISA Known Exploited Vulnerabilities Catalog. |
+| [Vulnrichment](https://github.com/cisagov/vulnrichment) | CC0 1.0 Universal | Source: CISA Vulnrichment. |
+| [GHSA](https://github.com/github/advisory-database) | CC BY 4.0 | Source: GitHub Advisory Database. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). |
+| [Sigma](https://github.com/SigmaHQ/sigma) | Detection Rule License 1.1 | Source: SigmaHQ. Licensed under [DRL 1.1](https://github.com/SigmaHQ/sigma/blob/master/LICENSE.Detection.Rules.md). Rule author attribution is preserved in triples. |
+| [ExploitDB](https://gitlab.com/exploit-database/exploitdb) | GPLv2+ | Source: OffSec ExploitDB. Derived factual metadata (IDs, CVE mappings, dates) extracted under [GPLv2+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html). |
+
 ## License
 
-Apache 2.0 -- same as the underlying source data.
+Apache 2.0 — see [Source Licensing & Attribution](#source-licensing--attribution) for individual source terms.
