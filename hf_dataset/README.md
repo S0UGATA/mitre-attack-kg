@@ -163,69 +163,41 @@ print(ds["train"][0])
 ## Knowledge Graph Structure
 
 ```
-                          Campaign ── attributed-to ──▶ Group
-                             │                            │
-                        uses │                            │ uses
-                             ▼                            │
-                        Malware/Tool ── uses ──┐          │
-                                               │          │
-                                               ▼          ▼
-                                        ┌──────────────────────┐
-    Sub-technique ── subtechnique-of ──▶│                      │── belongs-to-tactic ──▶ Tactic
-                                        │                      │
-        Mitigation ── mitigates ───────▶│                      │
-                                        │                      │
-      DataComponent ── detects ────────▶│                      │
-                                        │                      │
-   Analytic (CAR) ── detects-technique ▶│                      │
-           │                            │                      │
-           │ maps-to-d3fend             │      TECHNIQUE       │
-           ▼                            │                      │
-   DefensiveTechnique ── counters ─────▶│                      │
-       (D3FEND)                         │                      │
-                                        │                      │
-       SigmaRule ── detects-technique ─▶│                      │
-                                        │                      │
-EngagementActivity ── engages-technique▶│                      │
-       (ENGAGE)                         │                      │
-                                        │                      │
- ATLAS Technique ── related-attack-tech▶│                      │
-                                        │                      │
-  Attack Pattern ── maps-to-technique ─▶│                      │
-       (CAPEC)                          └──────────────────────┘
-           │
-           ├── child-of ──▶ Attack Pattern (parent)
-           │
-           │ related-weakness ──▶ child-of ──▶ Weakness (parent)
-           ▼
-      ┌─────────────────┐  
-      │                 │
-      │  Weakness (CWE) │── related-attack-pattern ──▶ Attack Pattern (CAPEC)
-      │                 │
-      │                 │◀── related-weakness ──── KEV Entry
-      │                 │
-      │                 │◀── related-weakness ──── Advisory (GHSA)
-      └────────┬────────┘
-               ▲
-               │ related-weakness
-               │
-      ┌────────┴────────┐
-      │                 │◀── related-cve ────── SigmaRule
-      │                 │
-      │  Vulnerability  │◀── related-cve ────── Advisory (GHSA)
-      │     (CVE)       │
-      │                 │◀── exploits-cve ───── Exploit (ExploitDB)
-      │                 │
-      │                 │◀── epss-score ─────── EPSS Score
-      │                 │
-      │                 │◀── ssvc-*/adp-* ───── Vulnrichment
-      └────────┬────────┘
-               │ affects-cpe
-               ▼
-        ┌──────────────┐
-        │   Platform   │
-        │    (CPE)     │
-        └──────────────┘
+     Group  Campaign
+        \      /
+          uses
+           |
+           v
+      TECHNIQUE -----> Tactic
+        ^  ^  ^
+        |  |  |
+        |  |  +-- D3FEND (counters)
+        |  |  +-- CAR (detects)
+        |  |  +-- Sigma (detects)
+        |  |  +-- ENGAGE (engages)
+        |  |  +-- ATLAS (related)
+        |  |
+        |  +-- Mitigation (mitigates)
+        |  +-- DataComponent (detects)
+        |
+        +-- maps-to -- CAPEC
+                         |
+                  related-weakness
+                         |
+                         v
+                        CWE
+                         ^
+                         |
+                  related-weakness
+                         |
+                        CVE ----> CPE
+                         ^
+                         |
+                   EPSS (score)
+                   KEV (exploited)
+                   GHSA (advisory)
+                   Vulnrichment (SSVC)
+                   ExploitDB (exploit)
 ```
 
 ## Schema
