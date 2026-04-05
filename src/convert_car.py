@@ -62,7 +62,7 @@ def _analytic_triples(analytic: dict) -> list[tuple[str, str, str]]:
 
             coverage_level = cov.get("coverage", "")
             if coverage_level:
-                triples.append((aid, f"coverage-{tech}", coverage_level))
+                triples.append((aid, "coverage-level", f"{tech}:{coverage_level}"))
 
             for tactic in cov.get("tactics", []):
                 triples.append((aid, "covers-tactic", tactic))

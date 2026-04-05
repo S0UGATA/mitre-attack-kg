@@ -99,7 +99,7 @@ class TestCarTriples:
         ts = set(triples)
 
         assert ("CAR-2024-01-001", "detects-technique", "T1059") in ts
-        assert ("CAR-2024-01-001", "coverage-T1059", "Moderate") in ts
+        assert ("CAR-2024-01-001", "coverage-level", "T1059:Moderate") in ts
         assert ("CAR-2024-01-001", "covers-tactic", "Execution") in ts
         assert ("CAR-2024-01-001", "detects-subtechnique", "T1059.001") in ts
 

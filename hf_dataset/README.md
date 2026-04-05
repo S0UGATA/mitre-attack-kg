@@ -334,7 +334,7 @@ Each row is a single triple with three string columns:
 | `rdf:type` | `EngagementActivity` or `AdversaryVulnerability` | `EngagementActivity` |
 | `name` / `description` | Display name / full text | `Software Manipulation` |
 | `engages-technique` | Engaged ATT&CK technique | `T1001` |
-| `exploits-vulnerability-of` | Exploited ATT&CK technique | `T1001` |
+| `vulnerability-of` | ATT&CK technique this adversary vulnerability applies to | `T1001` |
 | `addresses-vulnerability` | Addressed adversary vulnerability | `EAV0001` |
 
 ### EPSS Predicates
@@ -380,7 +380,7 @@ Each row is a single triple with three string columns:
 | `related-weakness` | Associated CWE | `CWE-79` |
 | `cvss-vector` | CVSS v3 vector string | `CVSS:3.1/AV:N/AC:L/...` |
 | `affects-package` | Affected package (ecosystem/name) | `npm/example-package` |
-| `fixed-in:<pkg>` | Fix version for a package | `2.0.1` |
+| `fixed-in` | Fixed version for package (ecosystem/name@version) | `npm/example-package@2.0.1` |
 
 ### Sigma Predicates
 

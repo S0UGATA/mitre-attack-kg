@@ -25,8 +25,9 @@ def _tactic_triples(tactic: dict) -> list[tuple[str, str, str]]:
 
     triples = [
         (tid, "rdf:type", "Tactic"),
-        (tid, "name", tactic.get("name", "")),
     ]
+    if tactic.get("name"):
+        triples.append((tid, "name", tactic["name"]))
 
     if tactic.get("description"):
         triples.append((tid, "description", tactic["description"]))
@@ -51,8 +52,9 @@ def _technique_triples(tech: dict) -> list[tuple[str, str, str]]:
 
     triples = [
         (tid, "rdf:type", "Technique"),
-        (tid, "name", tech.get("name", "")),
     ]
+    if tech.get("name"):
+        triples.append((tid, "name", tech["name"]))
 
     if tech.get("description"):
         triples.append((tid, "description", tech["description"]))
@@ -87,8 +89,9 @@ def _case_study_triples(case: dict) -> list[tuple[str, str, str]]:
 
     triples = [
         (cid, "rdf:type", "CaseStudy"),
-        (cid, "name", case.get("name", "")),
     ]
+    if case.get("name"):
+        triples.append((cid, "name", case["name"]))
 
     if case.get("description"):
         triples.append((cid, "description", case["description"]))
@@ -107,8 +110,9 @@ def _mitigation_triples(mit: dict) -> list[tuple[str, str, str]]:
 
     triples = [
         (mid, "rdf:type", "Mitigation"),
-        (mid, "name", mit.get("name", "")),
     ]
+    if mit.get("name"):
+        triples.append((mid, "name", mit["name"]))
 
     if mit.get("description"):
         triples.append((mid, "description", mit["description"]))

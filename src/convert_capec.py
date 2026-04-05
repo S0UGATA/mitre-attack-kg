@@ -20,10 +20,16 @@ def _property_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, str
     """Extract property triples from a single CAPEC attack pattern."""
     triples = [
         (capec_id, "rdf:type", "AttackPattern"),
-        (capec_id, "name", ap.get("Name", "")),
-        (capec_id, "abstraction", ap.get("Abstraction", "")),
-        (capec_id, "status", ap.get("Status", "")),
     ]
+    name = ap.get("Name", "")
+    if name:
+        triples.append((capec_id, "name", name))
+    abstraction = ap.get("Abstraction", "")
+    if abstraction:
+        triples.append((capec_id, "abstraction", abstraction))
+    status = ap.get("Status", "")
+    if status:
+        triples.append((capec_id, "status", status))
 
     desc = xml_text(ap.find("capec:Description", NS))
     if desc:

@@ -37,10 +37,16 @@ def _property_triples(cwe_id: str, weakness: ET.Element) -> list[tuple[str, str,
     """Extract property triples from a single CWE weakness."""
     triples = [
         (cwe_id, "rdf:type", "Weakness"),
-        (cwe_id, "name", weakness.get("Name", "")),
-        (cwe_id, "abstraction", weakness.get("Abstraction", "")),
-        (cwe_id, "status", weakness.get("Status", "")),
     ]
+    name = weakness.get("Name", "")
+    if name:
+        triples.append((cwe_id, "name", name))
+    abstraction = weakness.get("Abstraction", "")
+    if abstraction:
+        triples.append((cwe_id, "abstraction", abstraction))
+    status = weakness.get("Status", "")
+    if status:
+        triples.append((cwe_id, "status", status))
 
     desc = xml_text(weakness.find("cwe:Description", NS))
     if desc:

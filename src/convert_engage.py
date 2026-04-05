@@ -54,7 +54,7 @@ def extract_engage_triples(json_path: str) -> list[tuple[str, str, str]]:
         # Relationships (deduplicate)
         for rel in (
             (eac_id, "engages-technique", attack_id) if eac_id and attack_id else None,
-            (eav_id, "exploits-vulnerability-of", attack_id) if eav_id and attack_id else None,
+            (eav_id, "vulnerability-of", attack_id) if eav_id and attack_id else None,
             (eac_id, "addresses-vulnerability", eav_id) if eac_id and eav_id else None,
         ):
             if rel and rel not in seen_rels:

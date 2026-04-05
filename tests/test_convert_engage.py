@@ -81,8 +81,8 @@ class TestEngageTriples:
         triples = extract_engage_triples(sample_json_path)
         ts = set(triples)
 
-        assert ("EAV0001", "exploits-vulnerability-of", "T1001") in ts
-        assert ("EAV0002", "exploits-vulnerability-of", "T1001") in ts
+        assert ("EAV0001", "vulnerability-of", "T1001") in ts
+        assert ("EAV0002", "vulnerability-of", "T1001") in ts
 
     def test_addresses_vulnerability(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)

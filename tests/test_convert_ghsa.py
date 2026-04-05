@@ -144,9 +144,9 @@ class TestGhsaTriples:
         triples = list(extract_ghsa_triples(sample_advisory_dir))
         ts = set(triples)
 
-        assert ("GHSA-xxxx-yyyy-zzzz", "fixed-in:npm/example-package", "2.0.1") in ts
-        assert ("GHSA-xxxx-yyyy-zzzz", "fixed-in:npm/example-package-core", "3.1.0") in ts
-        assert ("GHSA-aaaa-bbbb-cccc", "fixed-in:PyPI/db-lib", "1.2.3") in ts
+        assert ("GHSA-xxxx-yyyy-zzzz", "fixed-in", "npm/example-package@2.0.1") in ts
+        assert ("GHSA-xxxx-yyyy-zzzz", "fixed-in", "npm/example-package-core@3.1.0") in ts
+        assert ("GHSA-aaaa-bbbb-cccc", "fixed-in", "PyPI/db-lib@1.2.3") in ts
 
     def test_cvss_vector(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))

@@ -80,7 +80,7 @@ def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str]]:
         for rng in affected.get("ranges", []):
             for event in rng.get("events", []):
                 if "fixed" in event:
-                    triples.append((ghsa_id, f"fixed-in:{pkg_id}", event["fixed"]))
+                    triples.append((ghsa_id, "fixed-in", f"{pkg_id}@{event['fixed']}"))
 
     return triples
 

@@ -155,7 +155,7 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str]]:
 
     # CVSS metrics
     for metric in cna.get("metrics", []):
-        cvss = metric.get("cvssV3_1") or metric.get("cvssV3_0") or metric.get("cvssV4_0")
+        cvss = metric.get("cvssV4_0") or metric.get("cvssV3_1") or metric.get("cvssV3_0")
         if cvss:
             if cvss.get("baseScore") is not None:
                 triples.append((cve_id, "cvss-base-score", str(cvss["baseScore"])))
