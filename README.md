@@ -152,25 +152,25 @@ Output goes to `output/`:
 
 | File | Source | Est. Triples |
 |------|--------|-------------|
-| `enterprise.parquet` | ATT&CK Enterprise | ~42K |
-| `mobile.parquet` | ATT&CK Mobile | ~5K |
-| `ics.parquet` | ATT&CK ICS | ~4K |
-| `attack-all.parquet` | ATT&CK combined (deduplicated) | ~50K |
-| `capec.parquet` | CAPEC attack patterns | ~8K |
-| `cwe.parquet` | CWE weaknesses | ~15K |
-| `cve.parquet` | CVE vulnerabilities | ~1.5-3M |
-| `cpe.parquet` | CPE platform enumeration | ~2-4M |
-| `d3fend.parquet` | D3FEND defensive techniques | ~3K |
-| `atlas.parquet` | ATLAS AI/ML techniques | ~3K |
-| `car.parquet` | CAR analytics | ~2K |
-| `engage.parquet` | ENGAGE adversary engagement | ~2K |
-| `epss.parquet` | EPSS exploit prediction scores | ~650K |
-| `kev.parquet` | KEV known exploited vulns | ~9K |
-| `vulnrichment.parquet` | CISA Vulnrichment (SSVC, CVSS, CWE) | ~200-400K |
-| `ghsa.parquet` | GitHub Security Advisories | ~20-40K |
-| `sigma.parquet` | Sigma detection rules | ~20-40K |
-| `exploitdb.parquet` | ExploitDB public exploits | ~300-500K |
-| `combined.parquet` | All sources merged (deduplicated) | ~5-10M |
+| `enterprise.parquet` | ATT&CK Enterprise | ~40-50K |
+| `mobile.parquet` | ATT&CK Mobile | ~5-7K |
+| `ics.parquet` | ATT&CK ICS | ~4-5K |
+| `attack-all.parquet` | ATT&CK combined (deduplicated) | ~50-60K |
+| `capec.parquet` | CAPEC attack patterns | ~8-10K |
+| `cwe.parquet` | CWE weaknesses | ~14-16K |
+| `cve.parquet` | CVE vulnerabilities | ~3-4M |
+| `cpe.parquet` | CPE platform enumeration | ~10-15M |
+| `d3fend.parquet` | D3FEND defensive techniques | ~8-10K |
+| `atlas.parquet` | ATLAS AI/ML techniques | ~1-2K |
+| `car.parquet` | CAR analytics | ~1-2K |
+| `engage.parquet` | ENGAGE adversary engagement | ~1-2K |
+| `epss.parquet` | EPSS exploit prediction scores | ~600-700K |
+| `kev.parquet` | KEV known exploited vulns | ~15-20K |
+| `vulnrichment.parquet` | CISA Vulnrichment (SSVC, CVSS, CWE) | ~500K-1M |
+| `ghsa.parquet` | GitHub Security Advisories | ~300-400K |
+| `sigma.parquet` | Sigma detection rules | ~30-40K |
+| `exploitdb.parquet` | ExploitDB public exploits | ~300-400K |
+| `combined.parquet` | All sources merged (deduplicated) | ~15-20M |
 
 ## Cross-Source Links
 
