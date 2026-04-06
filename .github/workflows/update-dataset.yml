@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: src
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v5
 
@@ -343,7 +344,8 @@ jobs:
               path = Path(f"output/{name}.parquet")
               if not path.exists():
                   if name in fallback_parquets:
-                      print(f"WARN: {name}.parquet missing (failed + no fallback available)")
+                      print(f"FAIL: {name}.parquet missing (conversion failed + no fallback)")
+                      failed = True
                   else:
                       print(f"WARN: {path} does not exist (source may not have changed)")
                   continue

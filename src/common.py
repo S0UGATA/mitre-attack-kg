@@ -4,6 +4,7 @@ import gzip
 import hashlib
 import json
 import logging
+import os
 import re
 import shutil
 import tarfile
@@ -52,6 +53,15 @@ def _fingerprint_from_etag(etag: str) -> str:
     return hashlib.sha256(clean.encode()).hexdigest()[:12]
 
 
+def github_api_headers() -> dict[str, str]:
+    """Build headers for GitHub API requests, including auth token if available."""
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"token {token}"
+    return headers
+
+
 def _github_commit_sha(owner: str, repo: str, branch: str = "main") -> str:
     """Get the latest commit SHA (12-char prefix) for a GitHub repo branch.
 
@@ -59,11 +69,7 @@ def _github_commit_sha(owner: str, repo: str, branch: str = "main") -> str:
     unlike the unstable ETag/Last-Modified headers on GitHub archive URLs.
     """
     url = f"https://api.github.com/repos/{owner}/{repo}/commits/{branch}"
-    resp = requests.get(
-        url,
-        headers={"Accept": "application/vnd.github.v3+json"},
-        timeout=30,
-    )
+    resp = requests.get(url, headers=github_api_headers(), timeout=30)
     resp.raise_for_status()
     return resp.json()["sha"][:12]
 
@@ -71,11 +77,7 @@ def _github_commit_sha(owner: str, repo: str, branch: str = "main") -> str:
 def _github_release_tag(owner: str, repo: str) -> str:
     """Get the latest release tag for a GitHub repo."""
     url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
-    resp = requests.get(
-        url,
-        headers={"Accept": "application/vnd.github.v3+json"},
-        timeout=30,
-    )
+    resp = requests.get(url, headers=github_api_headers(), timeout=30)
     resp.raise_for_status()
     return resp.json()["tag_name"]
 

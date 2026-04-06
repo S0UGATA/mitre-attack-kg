@@ -8,7 +8,7 @@ from pathlib import Path
 import requests
 import yaml
 
-from common import SOURCE_DIR
+from common import SOURCE_DIR, github_api_headers
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +24,7 @@ def download_sigma(cache_dir: str | None = None) -> str:
     cache.mkdir(parents=True, exist_ok=True)
 
     logger.info("Fetching latest SigmaHQ release info ...")
-    resp = requests.get(
-        SIGMA_RELEASES_API,
-        headers={"Accept": "application/vnd.github.v3+json"},
-        timeout=30,
-    )
+    resp = requests.get(SIGMA_RELEASES_API, headers=github_api_headers(), timeout=30)
     resp.raise_for_status()
     release = resp.json()
     tag = release["tag_name"]

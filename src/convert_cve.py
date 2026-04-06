@@ -8,7 +8,7 @@ from pathlib import Path
 
 import requests
 
-from common import SOURCE_DIR
+from common import SOURCE_DIR, github_api_headers
 
 logger = logging.getLogger(__name__)
 
@@ -25,11 +25,7 @@ def download_cve(cache_dir: str | None = None) -> str:
 
     # Get latest release info
     logger.info("Fetching latest cvelistV5 release info ...")
-    resp = requests.get(
-        CVELIST_API,
-        headers={"Accept": "application/vnd.github.v3+json"},
-        timeout=30,
-    )
+    resp = requests.get(CVELIST_API, headers=github_api_headers(), timeout=30)
     resp.raise_for_status()
     release = resp.json()
     tag = release["tag_name"]
