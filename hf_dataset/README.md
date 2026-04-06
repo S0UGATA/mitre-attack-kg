@@ -481,6 +481,10 @@ python src/convert.py
 
 This produces fresh Parquet files in `output/` from the latest data across all 16 sources.
 
+## Visualizer
+
+Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.github.io/security-kg-viz/).
+
 ## Use Cases
 
 - **Knowledge Graph Construction**: Load triples into Neo4j, RDFLib, or NetworkX for graph queries

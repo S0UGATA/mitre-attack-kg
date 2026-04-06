@@ -107,20 +107,21 @@ def generate_stats(parquet_path: Path) -> dict:
     ).fetchall()
     top_predicates = [{"predicate": r[0], "count": r[1]} for r in pred_rows]
 
-    # Query 3: source distribution + cross-source links
+    # Query 3: source distribution + cross-source links (with dominant predicate)
     source_rows = con.execute(
         f"""
         WITH sourced AS (
-            SELECT {SUBJECT_SOURCE} AS src, {OBJECT_SOURCE} AS dst
+            SELECT {SUBJECT_SOURCE} AS src, {OBJECT_SOURCE} AS dst, predicate
             FROM kg
         )
-        SELECT 'source' AS kind, src AS key1, NULL AS key2, COUNT(*) AS cnt
+        SELECT 'source' AS kind, src AS key1, NULL AS key2, NULL AS pred, COUNT(*) AS cnt
         FROM sourced GROUP BY src
         UNION ALL
-        SELECT 'cross' AS kind, src, dst, COUNT(*) AS cnt
+        SELECT 'cross' AS kind, src, dst, predicate, COUNT(*) AS cnt
         FROM sourced
         WHERE src != dst AND src != 'literal' AND dst != 'literal'
-        GROUP BY src, dst
+        GROUP BY src, dst, predicate
+        QUALIFY ROW_NUMBER() OVER (PARTITION BY src, dst ORDER BY COUNT(*) DESC) = 1
         ORDER BY cnt DESC
         LIMIT 15
         """
@@ -130,9 +131,11 @@ def generate_stats(parquet_path: Path) -> dict:
     cross_source_links = []
     for row in source_rows:
         if row[0] == "source":
-            by_source.append({"source": row[1], "count": row[3]})
+            by_source.append({"source": row[1], "count": row[4]})
         else:
-            cross_source_links.append({"from": row[1], "to": row[2], "count": row[3]})
+            cross_source_links.append(
+                {"from": row[1], "to": row[2], "count": row[4], "predicate": row[3]}
+            )
     by_source.sort(key=lambda x: x["count"], reverse=True)
     cross_source_links.sort(key=lambda x: x["count"], reverse=True)
     cross_source_links = cross_source_links[:15]

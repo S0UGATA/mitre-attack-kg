@@ -5,6 +5,7 @@
 [![HuggingFace](https://img.shields.io/badge/dataset-HuggingFace-yellow)](https://huggingface.co/datasets/s0u9ata/security-kg)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
+[![Visualizer](https://img.shields.io/badge/visualizer-security--kg--viz-orange)](https://s0ugata.github.io/security-kg-viz/)
 
 Convert security data from 16 sources into **Subject-Predicate-Object (SPO) knowledge-graph triples** in Parquet format.
 
@@ -206,6 +207,10 @@ python -m pytest tests/test_integration.py -v
 # All tests
 python -m pytest tests/ -v
 ```
+
+## Visualizer
+
+Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.github.io/security-kg-viz/).
 
 ## Cross-Source Analysis Notebook
 
