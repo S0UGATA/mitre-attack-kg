@@ -46,6 +46,20 @@ KNOWN_FILES = [
     "vulnrichment.parquet",
 ]
 
+# Maps parquet filenames to source IDs used by the viz app.
+# Files not listed here are skipped when building sourceDetails.
+# ATT&CK children (enterprise, mobile, ics) are nested under attack-all.
+_ATTACK_SOURCE_IDS = {
+    "attack-all.parquet": "attack",
+    "enterprise.parquet": "attack/enterprise",
+    "mobile.parquet": "attack/mobile",
+    "ics.parquet": "attack/ics",
+}
+FILE_TO_SOURCE_ID: dict[str, str] = {
+    **{f: f.replace(".parquet", "") for f in KNOWN_FILES if f != "combined.parquet"},
+    **_ATTACK_SOURCE_IDS,
+}
+
 # Source detection SQL — must stay in sync with detectSource() in
 # security-kg-viz/src/lib/constants.ts and Dashboard.tsx SOURCE_CASE_SQL.
 SOURCE_CASE_SQL = """
@@ -107,30 +121,32 @@ def generate_stats(parquet_path: Path) -> dict:
     ).fetchall()
     top_predicates = [{"predicate": r[0], "count": r[1]} for r in pred_rows]
 
-    # Query 3: source distribution + cross-source links (with dominant predicate)
+    # Query 3: source distribution + cross-source links (single scan with SOURCE_CASE_SQL)
     source_rows = con.execute(
         f"""
         WITH sourced AS (
             SELECT {SUBJECT_SOURCE} AS src, {OBJECT_SOURCE} AS dst, predicate
             FROM kg
         )
-        SELECT 'source' AS kind, src AS key1, NULL AS key2, NULL AS pred, COUNT(*) AS cnt
-        FROM sourced GROUP BY src
+        SELECT 'dist' AS kind, source, NULL AS dst, NULL AS pred, SUM(cnt) AS cnt FROM (
+            SELECT src AS source, COUNT(*) AS cnt FROM sourced GROUP BY src
+            UNION ALL
+            SELECT dst AS source, COUNT(*) AS cnt FROM sourced GROUP BY dst
+        )
+        WHERE source != 'literal'
+        GROUP BY source
         UNION ALL
         SELECT 'cross' AS kind, src, dst, predicate, COUNT(*) AS cnt
         FROM sourced
         WHERE src != dst AND src != 'literal' AND dst != 'literal'
         GROUP BY src, dst, predicate
         QUALIFY ROW_NUMBER() OVER (PARTITION BY src, dst ORDER BY COUNT(*) DESC) = 1
-        ORDER BY cnt DESC
-        LIMIT 15
         """
     ).fetchall()
-
     by_source = []
     cross_source_links = []
     for row in source_rows:
-        if row[0] == "source":
+        if row[0] == "dist":
             by_source.append({"source": row[1], "count": row[4]})
         else:
             cross_source_links.append(
@@ -138,9 +154,7 @@ def generate_stats(parquet_path: Path) -> dict:
             )
     by_source.sort(key=lambda x: x["count"], reverse=True)
     cross_source_links.sort(key=lambda x: x["count"], reverse=True)
-    cross_source_links = cross_source_links[:15]
-
-    # Query 4: top 15 connected entities (filtered junk)
+    # Query 5: top 15 connected entities (filtered junk)
     entity_rows = con.execute(
         """
         SELECT entity, SUM(cnt) AS total FROM (
@@ -218,6 +232,7 @@ def generate_all_stats(
     filenames = files if files else KNOWN_FILES
     stats_dir.mkdir(parents=True, exist_ok=True)
     generated = 0
+    source_details: dict[str, dict] = {}
 
     for filename in filenames:
         parquet_path = output_dir / filename
@@ -233,6 +248,23 @@ def generate_all_stats(
         elapsed = time.monotonic() - t0
         logger.info("Wrote %s (%d triples, %.1fs)", stats_path.name, stats["totalTriples"], elapsed)
         generated += 1
+
+        # Collect per-source details for the combined stats
+        source_id = FILE_TO_SOURCE_ID.get(filename)
+        if source_id:
+            source_details[source_id] = {
+                "triples": stats["totalTriples"],
+                "entities": stats["uniqueSubjects"],
+                "predicates": stats["uniquePredicates"],
+            }
+
+    # Inject sourceDetails into the combined stats file
+    combined_path = stats_dir / "combined.stats.json"
+    if source_details and combined_path.exists():
+        combined = json.loads(combined_path.read_text())
+        combined["sourceDetails"] = source_details
+        combined_path.write_text(json.dumps(combined, indent=2) + "\n")
+        logger.info("Added sourceDetails (%d sources) to combined.stats.json", len(source_details))
 
     logger.info("Generated stats for %d/%d files", generated, len(filenames))
     return generated
