@@ -134,6 +134,7 @@ jobs:
           GHSA_CHANGED: ${{ steps.source_check.outputs.ghsa_changed }}
           SIGMA_CHANGED: ${{ steps.source_check.outputs.sigma_changed }}
           EXPLOITDB_CHANGED: ${{ steps.source_check.outputs.exploitdb_changed }}
+          MISP_GALAXY_CHANGED: ${{ steps.source_check.outputs.misp_galaxy_changed }}
         run: |
           python - <<'PYEOF'
           import os, shutil
@@ -161,6 +162,7 @@ jobs:
               "ghsa": ["ghsa"],
               "sigma": ["sigma"],
               "exploitdb": ["exploitdb"],
+              "misp_galaxy": ["misp_galaxy"],
           }
 
           for source, files in source_files.items():
@@ -188,7 +190,7 @@ jobs:
         run: |
           # Build --sources list from changed flags
           sources=""
-          for src in attack capec cwe cve cpe d3fend atlas car engage epss kev vulnrichment ghsa sigma exploitdb; do
+          for src in attack capec cwe cve cpe d3fend atlas car engage epss kev vulnrichment ghsa sigma exploitdb misp_galaxy; do
             flag="${src}_changed"
             # Use step outputs to check each source
             case "$src" in
@@ -207,12 +209,13 @@ jobs:
               ghsa)      [ "${{ steps.source_check.outputs.ghsa_changed }}" = "true" ] && sources="$sources ghsa" ;;
               sigma)     [ "${{ steps.source_check.outputs.sigma_changed }}" = "true" ] && sources="$sources sigma" ;;
               exploitdb) [ "${{ steps.source_check.outputs.exploitdb_changed }}" = "true" ] && sources="$sources exploitdb" ;;
+              misp_galaxy) [ "${{ steps.source_check.outputs.misp_galaxy_changed }}" = "true" ] && sources="$sources misp_galaxy" ;;
             esac
           done
           sources=$(echo $sources | xargs)
           echo "Changed sources: $sources"
           if [ -n "$sources" ]; then
-            python src/convert.py --sources $sources --cache-dir /tmp/source-cache --log-dir logs --parallel --workers 4 --no-combined
+            python src/convert.py --sources $sources --cache-dir /tmp/source-cache --log-dir logs --parallel --workers 4 --no-combined --no-stats
           fi
 
       - name: Download fallback parquets for failed sources
@@ -225,7 +228,7 @@ jobs:
           from pathlib import Path
           from huggingface_hub import hf_hub_download
 
-          report_path = Path("output/conversion_report.json")
+          report_path = Path("hf_dataset/.conversion_report.json")
           if not report_path.exists():
               print("No conversion report found, skipping fallback download")
               sys.exit(0)
@@ -248,6 +251,7 @@ jobs:
               "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
+              "misp_galaxy": ["misp_galaxy"],
           }
 
           for source in failed:
@@ -280,11 +284,11 @@ jobs:
 
           # Always rebuild combined.parquet from all per-source parquets
           # (convert.py only combines the sources it was told to convert,
-          # but the workflow needs the full combined from all 15 sources).
+          # but the workflow needs the full combined from all 16 sources).
           parquet_names = [
               "attack-all", "capec", "cwe", "cve", "cpe",
               "d3fend", "atlas", "car", "engage", "epss", "kev",
-              "vulnrichment", "ghsa", "sigma", "exploitdb",
+              "vulnrichment", "ghsa", "sigma", "exploitdb", "misp_galaxy",
           ]
           output = Path("output")
           parquet_files = [output / f"{n}.parquet" for n in parquet_names if (output / f"{n}.parquet").exists()]
@@ -316,7 +320,7 @@ jobs:
           from pathlib import Path
 
           # Load conversion report to identify fallback sources
-          report_path = Path("output/conversion_report.json")
+          report_path = Path("hf_dataset/.conversion_report.json")
           failed_sources = []
           if report_path.exists():
               report = json.loads(report_path.read_text())
@@ -329,6 +333,7 @@ jobs:
               "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
+              "misp_galaxy": ["misp_galaxy"],
           }
           fallback_parquets = set()
           for src in failed_sources:
@@ -342,6 +347,7 @@ jobs:
               "atlas": 100, "car": 100, "engage": 100,
               "epss": 100_000, "kev": 2_000, "vulnrichment": 100_000,
               "ghsa": 50_000, "sigma": 10_000, "exploitdb": 50_000,
+              "misp_galaxy": 50_000,
               "combined": 1_000_000,
           }
 
@@ -383,20 +389,19 @@ jobs:
           from pathlib import Path
           from common import update_dataset_readme
 
-          report_path = Path("output/conversion_report.json")
+          report_path = Path("hf_dataset/.conversion_report.json")
           failed_sources = []
           if report_path.exists():
               report = json.loads(report_path.read_text())
               failed_sources = report.get("failed_sources", [])
 
           update_dataset_readme(Path("output"), failed_sources=failed_sources)
-
-          # Copy report to hf_dataset/ for git tracking
-          import shutil
-          report_src = Path("output/conversion_report.json")
-          if report_src.exists():
-              shutil.copy(report_src, Path("hf_dataset/.conversion_report.json"))
           PYEOF
+
+      - name: Generate dashboard stats
+        if: steps.source_check.outputs.any_changed == 'true'
+        run: |
+          python src/generate_stats.py --output-dir output --stats-dir hf_dataset/.stats
 
       - name: Upload to HuggingFace Hub
         if: steps.source_check.outputs.any_changed == 'true'
@@ -417,6 +422,7 @@ jobs:
           GHSA_CHANGED: ${{ steps.source_check.outputs.ghsa_changed }}
           SIGMA_CHANGED: ${{ steps.source_check.outputs.sigma_changed }}
           EXPLOITDB_CHANGED: ${{ steps.source_check.outputs.exploitdb_changed }}
+          MISP_GALAXY_CHANGED: ${{ steps.source_check.outputs.misp_galaxy_changed }}
         run: |
           python - <<'PYEOF'
           import json, os, shutil
@@ -437,6 +443,7 @@ jobs:
               "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
+              "misp_galaxy": ["misp_galaxy"],
           }
 
           # Identify which parquets actually need uploading
@@ -457,10 +464,19 @@ jobs:
                   shutil.copy(src, staging / "data" / f"{name}.parquet")
                   print(f"Staging {name}.parquet (changed)")
 
+          # Copy stats JSON files
+          stats_src = Path("hf_dataset/.stats")
+          if stats_src.is_dir():
+              stats_dst = staging / "stats"
+              stats_dst.mkdir(exist_ok=True)
+              for sf in stats_src.glob("*.stats.json"):
+                  shutil.copy(sf, stats_dst / sf.name)
+                  print(f"Staging {sf.name}")
+
           shutil.copy("hf_dataset/README.md", staging / "README.md")
           shutil.copy("hf_dataset/.metadata.json", staging / ".metadata.json")
 
-          report = Path("output/conversion_report.json")
+          report = Path("hf_dataset/.conversion_report.json")
           if report.exists():
               shutil.copy(report, staging / ".conversion_report.json")
 
@@ -485,7 +501,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add hf_dataset/README.md hf_dataset/.metadata.json hf_dataset/.conversion_report.json README.md
+          git add hf_dataset/README.md hf_dataset/.metadata.json hf_dataset/.conversion_report.json hf_dataset/.stats/ README.md
           git commit -m "Update dataset counts"
           git push -u origin "$branch"
           existing=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')

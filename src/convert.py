@@ -44,6 +44,7 @@ ALL_SOURCES = (
     "ghsa",
     "sigma",
     "exploitdb",
+    "misp_galaxy",
 )
 
 SOURCE_CONVERTERS = {
@@ -65,6 +66,7 @@ SOURCE_CONVERTERS = {
     "ghsa": ("convert_ghsa", "download_ghsa", "extract_ghsa_triples"),
     "sigma": ("convert_sigma", "download_sigma", "extract_sigma_triples"),
     "exploitdb": ("convert_exploitdb", "download_exploitdb", "extract_exploitdb_triples"),
+    "misp_galaxy": ("convert_misp_galaxy", "download_misp_galaxy", "extract_misp_galaxy_triples"),
 }
 
 LOG_FORMAT = "%(asctime)s [%(source)s] %(levelname)s: %(message)s"
@@ -250,6 +252,11 @@ def main():
         action="store_true",
         help="Update hf_dataset/README.md with real triple counts and timestamp",
     )
+    parser.add_argument(
+        "--no-stats",
+        action="store_true",
+        help="Skip generating dashboard stats JSON files in hf_dataset/.stats/",
+    )
     args = parser.parse_args()
 
     _setup_logging(args.log_dir, "main")
@@ -403,12 +410,19 @@ def main():
 
     # Write conversion report for CI workflow consumption
     report = {"failed_sources": failed_sources, "timestamp": now}
-    (args.output_dir / "conversion_report.json").write_text(json.dumps(report, indent=2) + "\n")
+    report_path = PROJECT_ROOT / "hf_dataset" / ".conversion_report.json"
+    report_path.write_text(json.dumps(report, indent=2) + "\n")
     if failed_sources:
         logger.warning("Failed sources: %s", ", ".join(failed_sources))
 
     if args.update_readme:
         update_dataset_readme(args.output_dir, failed_sources=failed_sources)
+
+    if not args.no_stats:
+        from generate_stats import generate_all_stats
+
+        logger.info("Generating dashboard stats ...")
+        generate_all_stats(args.output_dir)
 
     elapsed_total = time.monotonic() - t0_total
     logger.info("All done in %.1fs", elapsed_total)

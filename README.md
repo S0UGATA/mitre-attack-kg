@@ -6,9 +6,9 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
 
-Convert security data from 15 sources into **Subject-Predicate-Object (SPO) knowledge-graph triples** in Parquet format.
+Convert security data from 16 sources into **Subject-Predicate-Object (SPO) knowledge-graph triples** in Parquet format.
 
-Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb)
+Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
 
 ## Data Flow
 
@@ -34,6 +34,7 @@ flowchart LR
     GHSJ["GHSA JSON"]:::src --> CONV
     SIGY["Sigma YAML"]:::src --> CONV
     EDBC["ExploitDB CSV"]:::src --> CONV
+    MSPJ["MISP Galaxy JSON"]:::src --> CONV
 
     CONV --> ATK["enterprise / mobile / ics / attack-all"]:::out --> CMB["combined.parquet"]:::conv
     CONV --> CAP["capec"]:::out --> CMB
@@ -50,6 +51,7 @@ flowchart LR
     CONV --> GHS["ghsa"]:::out --> CMB
     CONV --> SIG["sigma"]:::out --> CMB
     CONV --> EDB["exploitdb"]:::out --> CMB
+    CONV --> MSG["misp_galaxy"]:::out --> CMB
 
     CMB --> HF["HuggingFace Hub"]:::hf
 
@@ -86,6 +88,11 @@ graph LR
     EA[EngagementActivity]:::engage -->|engages-technique| T
     AT[ATLAS Technique]:::atlas -->|related-attack-technique| T
 
+    %% MISP Galaxy → ATT&CK + threat context
+    TA[ThreatActor]:::misp -->|related-attack-id| T
+    TA -->|targets-country| CTR[Country]:::misp
+    TA -->|targets-sector| SEC[Sector]:::misp
+
     %% CAPEC ↔ CWE bridge
     AP[Attack Pattern]:::capec -->|maps-to-technique| T
     AP -->|related-weakness| W[Weakness]:::cwe
@@ -108,9 +115,10 @@ graph LR
     classDef atlas fill:#cffafe,stroke:#06b6d4,color:#164e63
     classDef epss fill:#f3f4f6,stroke:#6b7280,color:#374151
     classDef kev fill:#f3f4f6,stroke:#6b7280,color:#374151
+    classDef misp fill:#fdf2f8,stroke:#db2777,color:#831843
 ```
 
-> Legend: <span style="color:#3b82f6">**Blue** = ATT&CK</span> · <span style="color:#f59e0b">**Amber** = CAPEC</span> · <span style="color:#ec4899">**Pink** = CWE</span> · <span style="color:#ef4444">**Red** = CVE</span> · <span style="color:#6366f1">**Indigo** = CPE</span> · <span style="color:#10b981">**Green** = D3FEND</span> · <span style="color:#06b6d4">**Cyan** = ATLAS</span> · <span style="color:#eab308">**Yellow** = CAR</span> · <span style="color:#8b5cf6">**Violet** = ENGAGE</span>
+> Legend: <span style="color:#3b82f6">**Blue** = ATT&CK</span> · <span style="color:#f59e0b">**Amber** = CAPEC</span> · <span style="color:#ec4899">**Pink** = CWE</span> · <span style="color:#ef4444">**Red** = CVE</span> · <span style="color:#6366f1">**Indigo** = CPE</span> · <span style="color:#10b981">**Green** = D3FEND</span> · <span style="color:#06b6d4">**Cyan** = ATLAS</span> · <span style="color:#eab308">**Yellow** = CAR</span> · <span style="color:#8b5cf6">**Violet** = ENGAGE</span> · <span style="color:#db2777">**Fuchsia** = MISP Galaxies</span>
 
 ## Usage
 
@@ -170,6 +178,7 @@ Output goes to `output/`:
 | `ghsa.parquet` | GitHub Security Advisories | ~300-400K |
 | `sigma.parquet` | Sigma detection rules | ~30-40K |
 | `exploitdb.parquet` | ExploitDB public exploits | ~300-400K |
+| `misp_galaxy.parquet` | MISP Galaxy clusters | ~100-200K |
 | `combined.parquet` | All sources merged (deduplicated) | ~15-20M |
 
 ## Cross-Source Links
@@ -181,8 +190,8 @@ ATT&CK <──> CAPEC <──> CWE <──> CVE <──> CPE
   ├── ATLAS (AI parallel)        ├── KEV (exploited)
   ├── CAR (detects)              ├── Vulnrichment (SSVC/CVSS)
   ├── ENGAGE (engages)           ├── GHSA (advisories)
-  └── Sigma (detects)            ├── Sigma (related CVE)
-                                 └── ExploitDB (exploits)
+  ├── Sigma (detects)            ├── Sigma (related CVE)
+  └── MISP Galaxies (cross-refs) └── ExploitDB (exploits)
 ```
 
 ## Tests
@@ -221,7 +230,6 @@ The following sources were researched and evaluated for inclusion. They are defe
 
 | Source | Format | Why Deferred |
 |--------|--------|-------------|
-| [MISP Galaxies](https://github.com/MISP/misp-galaxy) | JSON | Excellent structure with ATT&CK mappings; 100+ galaxy clusters covering threat actors, tools, sectors. Deferred to keep initial scope manageable. |
 | [EUVD](https://euvd.enisa.europa.eu/) | JSON | EU vulnerability database, structured, CVE-linked. New (launched 2025), API still maturing. |
 | [OSV](https://osv.dev/) | JSON | Google's open-source vulnerability DB with bulk download. Focused on software packages rather than CVE-level vulnerabilities. |
 
@@ -269,6 +277,7 @@ This project is licensed under Apache 2.0. The underlying source data is provide
 | [GHSA](https://github.com/github/advisory-database) | CC BY 4.0 | Source: GitHub Advisory Database. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). |
 | [Sigma](https://github.com/SigmaHQ/sigma) | Detection Rule License 1.1 | Source: SigmaHQ. Licensed under [DRL 1.1](https://github.com/SigmaHQ/sigma/blob/master/LICENSE.Detection.Rules.md). Rule author attribution is preserved in triples. |
 | [ExploitDB](https://gitlab.com/exploit-database/exploitdb) | GPLv2+ | Source: OffSec ExploitDB. Derived factual metadata (IDs, CVE mappings, dates) extracted under [GPLv2+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html). |
+| [MISP Galaxies](https://github.com/MISP/misp-galaxy) | CC0 1.0 / BSD 2-Clause | Source: MISP Project. Dual-licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) and [BSD 2-Clause](https://opensource.org/licenses/BSD-2-Clause). |
 
 ## License
 

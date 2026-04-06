@@ -463,6 +463,7 @@ SOURCE_FINGERPRINT_METHODS: dict[str, str] = {
     "ghsa": "github_sha:github/advisory-database/main",
     "sigma": "github_release:SigmaHQ/sigma",
     "exploitdb": "http:https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv",
+    "misp_galaxy": "github_sha:MISP/misp-galaxy/main",
 }
 
 
@@ -561,6 +562,7 @@ ALL_PARQUET_NAMES = [
     "ghsa",
     "sigma",
     "exploitdb",
+    "misp_galaxy",
     "combined",
 ]
 

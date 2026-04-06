@@ -30,3 +30,4 @@ source/
 
 # Conversion logs
 logs/
+/sonar-project.properties

@@ -14,6 +14,7 @@
     "ghsa": "ghsa_f03416ed9b7a",
     "ics": "ics-attack_a842e2e7635c.json",
     "kev": "known_exploited_vulnerabilities_20260402_1932.json",
+    "misp_galaxy": "misp-galaxy_491b6bc21bff",
     "mobile": "mobile-attack_aeca345f8229.json",
     "sigma": "sigma_rules_r2026-01-01",
     "vulnrichment": "vulnrichment_08007beb90fc"

@@ -1,7 +1,7 @@
 [project]
 name = "security-kg"
 version = "2.0.0"
-description = "Convert security data (ATT&CK, CAPEC, CWE, CVE, CPE, D3FEND, ATLAS, CAR, ENGAGE, EPSS, KEV, Vulnrichment, GHSA, Sigma, ExploitDB) into SPO knowledge-graph triples (Parquet)"
+description = "Convert security data (ATT&CK, CAPEC, CWE, CVE, CPE, D3FEND, ATLAS, CAR, ENGAGE, EPSS, KEV, Vulnrichment, GHSA, Sigma, ExploitDB, MISP Galaxies) into SPO knowledge-graph triples (Parquet)"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 authors = [{ name = "Sougata Bhattacharya" }]
@@ -43,7 +43,7 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["common", "convert", "convert_attack", "convert_atlas", "convert_capec", "convert_car", "convert_cpe", "convert_cve", "convert_cwe", "convert_d3fend", "convert_engage", "convert_epss", "convert_exploitdb", "convert_ghsa", "convert_kev", "convert_sigma", "convert_vulnrichment"]
+known-first-party = ["common", "convert", "convert_attack", "convert_atlas", "convert_capec", "convert_car", "convert_cpe", "convert_cve", "convert_cwe", "convert_d3fend", "convert_engage", "convert_epss", "convert_exploitdb", "convert_ghsa", "convert_kev", "convert_misp_galaxy", "convert_sigma", "convert_vulnrichment"]
 
 [tool.pytest.ini_options]
 markers = [

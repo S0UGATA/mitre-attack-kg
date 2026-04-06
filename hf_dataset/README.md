@@ -22,10 +22,11 @@ tags:
 - ghsa
 - sigma
 - exploitdb
+- misp-galaxy
 - stix
 - threat-intelligence
 - triples
-pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB)"
+pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB / MISP Galaxies)"
 size_categories:
 - 10M<n<100M
 configs:
@@ -102,6 +103,10 @@ configs:
   data_files:
   - split: train
     path: data/exploitdb.parquet
+- config_name: misp_galaxy
+  data_files:
+  - split: train
+    path: data/misp_galaxy.parquet
 - config_name: combined
   data_files:
   - split: train
@@ -118,9 +123,9 @@ dataset_info:
 
 # Security Knowledge Graph Triples
 
-Security data from 15 sources represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
+Security data from 16 sources represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
 
-Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb)
+Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
 
 *Last updated: 2026-04-06T09:38:03Z*
 
@@ -156,6 +161,7 @@ print(ds["train"][0])
 | `ghsa` | GitHub Security Advisories | 327,142 | Current |
 | `sigma` | Sigma detection rules | 32,750 | Current |
 | `exploitdb` | ExploitDB public exploits | 346,303 | Current |
+| `misp_galaxy` | MISP Galaxy threat intelligence clusters | - | Current |
 | `combined` | All sources merged (deduplicated) | 18,060,409 | Current |
 
 
@@ -177,6 +183,7 @@ print(ds["train"][0])
         |  |  +-- Sigma (detects)
         |  |  +-- ENGAGE (engages)
         |  |  +-- ATLAS (related)
+        |  |  +-- MISP Galaxies (cross-refs)
         |  |
         |  +-- Mitigation (mitigates)
         |  +-- DataComponent (detects)
@@ -411,6 +418,29 @@ Each row is a single triple with three string columns:
 | `verified` | Verified by OffSec | `True` |
 | `exploits-cve` | Exploited CVE | `CVE-2024-1234` |
 
+### MISP Galaxy Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | Galaxy entity type | `ThreatActor`, `Ransomware`, `Botnet`, `RAT` |
+| `name` | Display name | `APT1` |
+| `description` | Full description | (text) |
+| `galaxy` | Galaxy cluster type | `threat-actor`, `ransomware` |
+| `synonym` | Alternative name | `Comment Crew` |
+| `country` | Country code (ISO 3166-1) | `CN` |
+| `cfr-suspected-state-sponsor` | Suspected state sponsor | `China` |
+| `targets-country` | Targeted country | `United States` |
+| `targets-sector` | Targeted sector | `Government` |
+| `attribution-confidence` | Confidence level | `50` |
+| `similar-to` | Similar/duplicate entity | `misp:<uuid>` |
+| `uses` | Uses technique/tool | `misp:<uuid>` |
+| `used-by` | Used by actor | `misp:<uuid>` |
+| `variant-of` | Variant relationship | `misp:<uuid>` |
+| `targets` | Targets entity | `misp:<uuid>` |
+| `attributed-to` | Attributed to entity | `misp:<uuid>` |
+| `misp-related` | Generic relationship | `misp:<uuid>` |
+| `related-attack-id` | Cross-link to ATT&CK | `T1059.001`, `G0006` |
+
 ## Dataset Creation
 
 ### Source Data
@@ -432,6 +462,7 @@ Each row is a single triple with three string columns:
 | GHSA | [`github/advisory-database`](https://github.com/github/advisory-database) | OSV JSON (ZIP) |
 | Sigma | [`SigmaHQ/sigma`](https://github.com/SigmaHQ/sigma/releases) | YAML (ZIP) |
 | ExploitDB | [`files_exploits.csv`](https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv) | CSV |
+| MISP Galaxies | [`MISP/misp-galaxy`](https://github.com/MISP/misp-galaxy) | JSON (ZIP) |
 
 ### Conversion Pipeline
 
@@ -448,7 +479,7 @@ pip install -r requirements.txt
 python src/convert.py
 ```
 
-This produces fresh Parquet files in `output/` from the latest data across all 15 sources.
+This produces fresh Parquet files in `output/` from the latest data across all 16 sources.
 
 ## Use Cases
 
@@ -584,6 +615,7 @@ This dataset is published under the Apache 2.0 license. The underlying source da
 | [GHSA](https://github.com/github/advisory-database) | CC BY 4.0 | Source: GitHub Advisory Database. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). |
 | [Sigma](https://github.com/SigmaHQ/sigma) | Detection Rule License 1.1 | Source: SigmaHQ. Licensed under [DRL 1.1](https://github.com/SigmaHQ/sigma/blob/master/LICENSE.Detection.Rules.md). Rule author attribution is preserved in triples. |
 | [ExploitDB](https://gitlab.com/exploit-database/exploitdb) | GPLv2+ | Source: OffSec ExploitDB. Derived factual metadata (IDs, CVE mappings, dates) extracted under [GPLv2+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html). |
+| [MISP Galaxies](https://github.com/MISP/misp-galaxy) | CC0 1.0 / BSD 2-Clause | Source: MISP Project. Dual-licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) and [BSD 2-Clause](https://opensource.org/licenses/BSD-2-Clause). |
 
 ## License
 
