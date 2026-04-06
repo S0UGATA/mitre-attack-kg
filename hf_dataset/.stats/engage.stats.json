@@ -1,0 +1,108 @@
+{
+  "totalTriples": 1464,
+  "uniqueSubjects": 52,
+  "uniqueObjects": 258,
+  "uniquePredicates": 6,
+  "bySource": [
+    {
+      "source": "engage",
+      "count": 1464
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "exploits-vulnerability-of",
+      "count": 656
+    },
+    {
+      "predicate": "engages-technique",
+      "count": 596
+    },
+    {
+      "predicate": "addresses-vulnerability",
+      "count": 108
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 52
+    },
+    {
+      "predicate": "description",
+      "count": 29
+    },
+    {
+      "predicate": "name",
+      "count": 23
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "EAC0005",
+      "count": 110
+    },
+    {
+      "entity": "EAV0001",
+      "count": 96
+    },
+    {
+      "entity": "EAV0019",
+      "count": 86
+    },
+    {
+      "entity": "EAC0018",
+      "count": 74
+    },
+    {
+      "entity": "EAV0017",
+      "count": 69
+    },
+    {
+      "entity": "EAV0007",
+      "count": 68
+    },
+    {
+      "entity": "EAC0015",
+      "count": 64
+    },
+    {
+      "entity": "EAC0011",
+      "count": 64
+    },
+    {
+      "entity": "EAV0013",
+      "count": 62
+    },
+    {
+      "entity": "EAV0016",
+      "count": 62
+    },
+    {
+      "entity": "EAC0014",
+      "count": 62
+    },
+    {
+      "entity": "EAV0010",
+      "count": 62
+    },
+    {
+      "entity": "EAV0002",
+      "count": 62
+    },
+    {
+      "entity": "EAC0016",
+      "count": 53
+    },
+    {
+      "entity": "EAV0020",
+      "count": 47
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "engage",
+      "to": "attack",
+      "count": 1252
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:07Z"
+}

@@ -1,0 +1,117 @@
+{
+  "totalTriples": 656216,
+  "uniqueSubjects": 140279,
+  "uniqueObjects": 23590,
+  "uniquePredicates": 7,
+  "bySource": [
+    {
+      "source": "cve",
+      "count": 656216
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "ssvc-technical-impact",
+      "count": 140282
+    },
+    {
+      "predicate": "ssvc-automatable",
+      "count": 140282
+    },
+    {
+      "predicate": "ssvc-exploitation",
+      "count": 140282
+    },
+    {
+      "predicate": "adp-affects-cpe",
+      "count": 135437
+    },
+    {
+      "predicate": "adp-cvss-base-score",
+      "count": 35130
+    },
+    {
+      "predicate": "adp-cvss-severity",
+      "count": 35130
+    },
+    {
+      "predicate": "adp-related-weakness",
+      "count": 29673
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "partial",
+      "count": 93023
+    },
+    {
+      "entity": "CVE-2024-20399",
+      "count": 51532
+    },
+    {
+      "entity": "total",
+      "count": 47259
+    },
+    {
+      "entity": "poc",
+      "count": 32106
+    },
+    {
+      "entity": "yes",
+      "count": 31396
+    },
+    {
+      "entity": "MEDIUM",
+      "count": 15394
+    },
+    {
+      "entity": "HIGH",
+      "count": 13381
+    },
+    {
+      "entity": "CVE-2024-20481",
+      "count": 7946
+    },
+    {
+      "entity": "CRITICAL",
+      "count": 5755
+    },
+    {
+      "entity": "9.8",
+      "count": 4720
+    },
+    {
+      "entity": "7.5",
+      "count": 3795
+    },
+    {
+      "entity": "CWE-79",
+      "count": 3240
+    },
+    {
+      "entity": "8.8",
+      "count": 3020
+    },
+    {
+      "entity": "5.5",
+      "count": 2764
+    },
+    {
+      "entity": "6.5",
+      "count": 2619
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "cve",
+      "to": "cpe",
+      "count": 135437
+    },
+    {
+      "from": "cve",
+      "to": "cwe",
+      "count": 29673
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:08Z"
+}

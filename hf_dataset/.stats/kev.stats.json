@@ -1,0 +1,128 @@
+{
+  "totalTriples": 17054,
+  "uniqueSubjects": 1557,
+  "uniqueObjects": 5975,
+  "uniquePredicates": 11,
+  "bySource": [
+    {
+      "source": "cve",
+      "count": 17054
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "kev-name",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-vendor",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-product",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-ransomware-use",
+      "count": 1557
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-description",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-date-added",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-required-action",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-due-date",
+      "count": 1557
+    },
+    {
+      "predicate": "kev-notes",
+      "count": 1557
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 1484
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "KnownExploitedVulnerability",
+      "count": 1557
+    },
+    {
+      "entity": "Apply updates per vendor instructions.",
+      "count": 893
+    },
+    {
+      "entity": "Microsoft",
+      "count": 362
+    },
+    {
+      "entity": "Known",
+      "count": 313
+    },
+    {
+      "entity": "2021-11-03",
+      "count": 287
+    },
+    {
+      "entity": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
+      "count": 268
+    },
+    {
+      "entity": "Apply mitigations per vendor instructions or discontinue use of the product if mitigations are unavailable.",
+      "count": 259
+    },
+    {
+      "entity": "2022-05-03",
+      "count": 189
+    },
+    {
+      "entity": "Windows",
+      "count": 166
+    },
+    {
+      "entity": "CWE-20",
+      "count": 113
+    },
+    {
+      "entity": "2021-11-17",
+      "count": 102
+    },
+    {
+      "entity": "CWE-78",
+      "count": 101
+    },
+    {
+      "entity": "CWE-787",
+      "count": 98
+    },
+    {
+      "entity": "2022-03-03",
+      "count": 95
+    },
+    {
+      "entity": "Apple",
+      "count": 93
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "cve",
+      "to": "cwe",
+      "count": 1484
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:08Z"
+}

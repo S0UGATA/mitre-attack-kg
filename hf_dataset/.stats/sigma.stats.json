@@ -1,0 +1,133 @@
+{
+  "totalTriples": 32750,
+  "uniqueSubjects": 3234,
+  "uniqueObjects": 8690,
+  "uniquePredicates": 11,
+  "bySource": [
+    {
+      "source": "sigma",
+      "count": 32750
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "detects-technique",
+      "count": 3808
+    },
+    {
+      "predicate": "title",
+      "count": 3234
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 3234
+    },
+    {
+      "predicate": "description",
+      "count": 3234
+    },
+    {
+      "predicate": "level",
+      "count": 3234
+    },
+    {
+      "predicate": "author",
+      "count": 3234
+    },
+    {
+      "predicate": "status",
+      "count": 3234
+    },
+    {
+      "predicate": "date",
+      "count": 3234
+    },
+    {
+      "predicate": "logsource-product",
+      "count": 3080
+    },
+    {
+      "predicate": "logsource-category",
+      "count": 2558
+    },
+    {
+      "predicate": "logsource-service",
+      "count": 666
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "SigmaRule",
+      "count": 3234
+    },
+    {
+      "entity": "test",
+      "count": 2944
+    },
+    {
+      "entity": "windows",
+      "count": 2517
+    },
+    {
+      "entity": "high",
+      "count": 1674
+    },
+    {
+      "entity": "process_creation",
+      "count": 1418
+    },
+    {
+      "entity": "medium",
+      "count": 1389
+    },
+    {
+      "entity": "Nasreddine Bencherchali (Nextron Systems)",
+      "count": 579
+    },
+    {
+      "entity": "Florian Roth (Nextron Systems)",
+      "count": 371
+    },
+    {
+      "entity": "frack113",
+      "count": 262
+    },
+    {
+      "entity": "file_event",
+      "count": 209
+    },
+    {
+      "entity": "registry_set",
+      "count": 208
+    },
+    {
+      "entity": "experimental",
+      "count": 207
+    },
+    {
+      "entity": "T1059.001",
+      "count": 199
+    },
+    {
+      "entity": "critical",
+      "count": 171
+    },
+    {
+      "entity": "linux",
+      "count": 169
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "sigma",
+      "to": "attack",
+      "count": 3809
+    },
+    {
+      "from": "sigma",
+      "to": "cve",
+      "count": 43
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:08Z"
+}

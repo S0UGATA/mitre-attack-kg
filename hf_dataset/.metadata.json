@@ -17,7 +17,7 @@
     "misp_galaxy": "misp-galaxy_491b6bc21bff",
     "mobile": "mobile-attack_aeca345f8229.json",
     "sigma": "sigma_rules_r2026-01-01",
-    "vulnrichment": "vulnrichment_08007beb90fc"
+    "vulnrichment": "vulnrichment_9c27914e2729"
   },
   "source_fingerprints": {
     "atlas": "etag:W/\"188146fe402796510ae5018ba3c4aeafb865c95202d8400a84740e06d7d9166f\"",
@@ -25,15 +25,16 @@
     "capec": "lm:Tue, 24 Jan 2023 18:32:31 GMT",
     "car": "sha:1b922fe1527d",
     "cpe": "lm:Sat, 04 Apr 2026 04:00:26 GMT",
-    "cve": "tag:cve_2026-04-06_0800Z",
+    "cve": "tag:cve_2026-04-06_1100Z",
     "cwe": "lm:Wed, 21 Jan 2026 10:22:51 GMT",
-    "d3fend": "lm:Thu, 02 Apr 2026 00:54:24 GMT",
+    "d3fend": "lm:Thu, 02 Apr 2026 00:54:25 GMT",
     "engage": "etag:W/\"bc78d959160b3ec4eb800ba43ce1a20c4818aff6105c5feaf4d81496ff419d08\"",
     "epss": "lm:Sun, 05 Apr 2026 13:31:16 GMT",
     "exploitdb": "etag:\"70627d240899c371ea09dcd5331e504a\"",
     "ghsa": "sha:f03416ed9b7a",
     "kev": "lm:Thu, 02 Apr 2026 19:32:22 GMT",
+    "misp_galaxy": "sha:491b6bc21bff",
     "sigma": "tag:r2026-01-01",
-    "vulnrichment": "sha:08007beb90fc"
+    "vulnrichment": "sha:9c27914e2729"
   }
 }

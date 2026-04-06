@@ -1,0 +1,124 @@
+{
+  "totalTriples": 1420,
+  "uniqueSubjects": 240,
+  "uniqueObjects": 547,
+  "uniquePredicates": 10,
+  "bySource": [
+    {
+      "source": "atlas",
+      "count": 1420
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "rdf:type",
+      "count": 240
+    },
+    {
+      "predicate": "name",
+      "count": 240
+    },
+    {
+      "predicate": "created",
+      "count": 183
+    },
+    {
+      "predicate": "description",
+      "count": 183
+    },
+    {
+      "predicate": "modified",
+      "count": 183
+    },
+    {
+      "predicate": "maturity",
+      "count": 167
+    },
+    {
+      "predicate": "belongs-to-tactic",
+      "count": 111
+    },
+    {
+      "predicate": "subtechnique-of",
+      "count": 66
+    },
+    {
+      "predicate": "related-attack-technique",
+      "count": 33
+    },
+    {
+      "predicate": "related-attack-tactic",
+      "count": 14
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "Technique",
+      "count": 167
+    },
+    {
+      "entity": "demonstrated",
+      "count": 87
+    },
+    {
+      "entity": "2021-05-13",
+      "count": 73
+    },
+    {
+      "entity": "realized",
+      "count": 64
+    },
+    {
+      "entity": "CaseStudy",
+      "count": 57
+    },
+    {
+      "entity": "2025-04-09",
+      "count": 43
+    },
+    {
+      "entity": "2025-03-12",
+      "count": 43
+    },
+    {
+      "entity": "2023-10-25",
+      "count": 29
+    },
+    {
+      "entity": "2026-03-30",
+      "count": 29
+    },
+    {
+      "entity": "2025-09-30",
+      "count": 23
+    },
+    {
+      "entity": "AML.TA0007",
+      "count": 21
+    },
+    {
+      "entity": "AML.TA0003",
+      "count": 19
+    },
+    {
+      "entity": "Tactic",
+      "count": 16
+    },
+    {
+      "entity": "feasible",
+      "count": 16
+    },
+    {
+      "entity": "AML.TA0011",
+      "count": 15
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "atlas",
+      "to": "attack",
+      "count": 47
+    }
+  ],
+  "generatedAt": "2026-04-06T12:09:58Z"
+}

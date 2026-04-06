@@ -1,0 +1,128 @@
+{
+  "totalTriples": 8154,
+  "uniqueSubjects": 1934,
+  "uniqueObjects": 4285,
+  "uniquePredicates": 8,
+  "bySource": [
+    {
+      "source": "attack",
+      "count": 4517
+    },
+    {
+      "source": "literal",
+      "count": 1806
+    },
+    {
+      "source": "d3fend",
+      "count": 1184
+    },
+    {
+      "source": "atlas",
+      "count": 647
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "child-of",
+      "count": 2124
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1965
+    },
+    {
+      "predicate": "d3fend-definition",
+      "count": 1468
+    },
+    {
+      "predicate": "d3fend-name",
+      "count": 1468
+    },
+    {
+      "predicate": "name",
+      "count": 497
+    },
+    {
+      "predicate": "definition",
+      "count": 493
+    },
+    {
+      "predicate": "synonym",
+      "count": 138
+    },
+    {
+      "predicate": "restricts",
+      "count": 1
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "OffensiveTechnique",
+      "count": 1468
+    },
+    {
+      "entity": "DefensiveTechnique",
+      "count": 527
+    },
+    {
+      "entity": "DefenseEvasionTechnique",
+      "count": 93
+    },
+    {
+      "entity": "PersistenceTechnique",
+      "count": 74
+    },
+    {
+      "entity": "PrivilegeEscalationTechnique",
+      "count": 41
+    },
+    {
+      "entity": "ExecutionTechnique",
+      "count": 39
+    },
+    {
+      "entity": "DiscoveryTechnique",
+      "count": 35
+    },
+    {
+      "entity": "ATTACKMobileDefenseEvasionTechnique",
+      "count": 31
+    },
+    {
+      "entity": "CredentialAccessTechnique",
+      "count": 30
+    },
+    {
+      "entity": "CommandAndControlTechnique",
+      "count": 28
+    },
+    {
+      "entity": "T1546",
+      "count": 23
+    },
+    {
+      "entity": "ATTACKMobileCollectionTechnique",
+      "count": 23
+    },
+    {
+      "entity": "T1027",
+      "count": 21
+    },
+    {
+      "entity": "LateralMovementTechnique",
+      "count": 20
+    },
+    {
+      "entity": "ImpactTechnique",
+      "count": 20
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "d3fend",
+      "to": "attack",
+      "count": 1
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:07Z"
+}

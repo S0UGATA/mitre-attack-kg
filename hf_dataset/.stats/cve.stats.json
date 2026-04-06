@@ -1,0 +1,156 @@
+{
+  "totalTriples": 3546666,
+  "uniqueSubjects": 324970,
+  "uniqueObjects": 894225,
+  "uniquePredicates": 13,
+  "bySource": [
+    {
+      "source": "cve",
+      "count": 3546666
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "product",
+      "count": 495473
+    },
+    {
+      "predicate": "vendor",
+      "count": 495445
+    },
+    {
+      "predicate": "date-published",
+      "count": 324970
+    },
+    {
+      "predicate": "assigner",
+      "count": 324970
+    },
+    {
+      "predicate": "state",
+      "count": 324970
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 324970
+    },
+    {
+      "predicate": "date-updated",
+      "count": 324970
+    },
+    {
+      "predicate": "description",
+      "count": 317809
+    },
+    {
+      "predicate": "cvss-severity",
+      "count": 136721
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 136721
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 132071
+    },
+    {
+      "predicate": "platform",
+      "count": 128668
+    },
+    {
+      "predicate": "affects-cpe",
+      "count": 78908
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "Vulnerability",
+      "count": 324970
+    },
+    {
+      "entity": "PUBLISHED",
+      "count": 324970
+    },
+    {
+      "entity": "mitre",
+      "count": 112784
+    },
+    {
+      "entity": "Microsoft",
+      "count": 89697
+    },
+    {
+      "entity": "MEDIUM",
+      "count": 68804
+    },
+    {
+      "entity": "x64-based Systems",
+      "count": 64606
+    },
+    {
+      "entity": "Linux",
+      "count": 55842
+    },
+    {
+      "entity": "HIGH",
+      "count": 47623
+    },
+    {
+      "entity": "32-bit Systems",
+      "count": 23249
+    },
+    {
+      "entity": "CWE-79",
+      "count": 22733
+    },
+    {
+      "entity": "ARM64-based Systems",
+      "count": 17402
+    },
+    {
+      "entity": "Siemens",
+      "count": 16189
+    },
+    {
+      "entity": "Patchstack",
+      "count": 15767
+    },
+    {
+      "entity": "VulDB",
+      "count": 13189
+    },
+    {
+      "entity": "Red Hat",
+      "count": 13140
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "cve",
+      "to": "cwe",
+      "count": 132224
+    },
+    {
+      "from": "cve",
+      "to": "cpe",
+      "count": 78908
+    },
+    {
+      "from": "cve",
+      "to": "attack",
+      "count": 475
+    },
+    {
+      "from": "cve",
+      "to": "d3fend",
+      "count": 4
+    },
+    {
+      "from": "cve",
+      "to": "engage",
+      "count": 1
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:06Z"
+}

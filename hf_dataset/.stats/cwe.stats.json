@@ -1,0 +1,152 @@
+{
+  "totalTriples": 14565,
+  "uniqueSubjects": 944,
+  "uniqueObjects": 2807,
+  "uniquePredicates": 17,
+  "bySource": [
+    {
+      "source": "cwe",
+      "count": 14565
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "consequence-impact",
+      "count": 2115
+    },
+    {
+      "predicate": "consequence-scope",
+      "count": 2030
+    },
+    {
+      "predicate": "introduction-phase",
+      "count": 1394
+    },
+    {
+      "predicate": "child-of",
+      "count": 1317
+    },
+    {
+      "predicate": "platform",
+      "count": 1308
+    },
+    {
+      "predicate": "related-attack-pattern",
+      "count": 1212
+    },
+    {
+      "predicate": "description",
+      "count": 944
+    },
+    {
+      "predicate": "status",
+      "count": 944
+    },
+    {
+      "predicate": "name",
+      "count": 944
+    },
+    {
+      "predicate": "abstraction",
+      "count": 944
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 944
+    },
+    {
+      "predicate": "likelihood-of-exploit",
+      "count": 185
+    },
+    {
+      "predicate": "can-precede",
+      "count": 143
+    },
+    {
+      "predicate": "peer-of",
+      "count": 98
+    },
+    {
+      "predicate": "can-also-be",
+      "count": 27
+    },
+    {
+      "predicate": "requires",
+      "count": 13
+    },
+    {
+      "predicate": "starts-with",
+      "count": 3
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "Weakness",
+      "count": 944
+    },
+    {
+      "entity": "Implementation",
+      "count": 850
+    },
+    {
+      "entity": "Base",
+      "count": 523
+    },
+    {
+      "entity": "Integrity",
+      "count": 505
+    },
+    {
+      "entity": "Incomplete",
+      "count": 486
+    },
+    {
+      "entity": "Confidentiality",
+      "count": 471
+    },
+    {
+      "entity": "Draft",
+      "count": 432
+    },
+    {
+      "entity": "Architecture and Design",
+      "count": 364
+    },
+    {
+      "entity": "Availability",
+      "count": 320
+    },
+    {
+      "entity": "Variant",
+      "count": 292
+    },
+    {
+      "entity": "Access Control",
+      "count": 288
+    },
+    {
+      "entity": "Not Technology-Specific",
+      "count": 228
+    },
+    {
+      "entity": "Read Application Data",
+      "count": 203
+    },
+    {
+      "entity": "Bypass Protection Mechanism",
+      "count": 202
+    },
+    {
+      "entity": "Execute Unauthorized Code or Commands",
+      "count": 172
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "cwe",
+      "to": "capec",
+      "count": 1212
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:06Z"
+}

@@ -1,0 +1,241 @@
+{
+  "totalTriples": 18237703,
+  "uniqueSubjects": 1990683,
+  "uniqueObjects": 3939582,
+  "uniquePredicates": 114,
+  "bySource": [
+    {
+      "source": "cpe",
+      "count": 12399534
+    },
+    {
+      "source": "cve",
+      "count": 4869724
+    },
+    {
+      "source": "exploitdb",
+      "count": 346303
+    },
+    {
+      "source": "ghsa",
+      "count": 327142
+    },
+    {
+      "source": "misp_galaxy",
+      "count": 177294
+    },
+    {
+      "source": "attack",
+      "count": 52925
+    },
+    {
+      "source": "sigma",
+      "count": 32750
+    },
+    {
+      "source": "cwe",
+      "count": 14565
+    },
+    {
+      "source": "capec",
+      "count": 8114
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "product",
+      "count": 2045415
+    },
+    {
+      "predicate": "vendor",
+      "count": 2045387
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1989695
+    },
+    {
+      "predicate": "title",
+      "count": 1553278
+    },
+    {
+      "predicate": "modified",
+      "count": 1552951
+    },
+    {
+      "predicate": "created",
+      "count": 1552948
+    },
+    {
+      "predicate": "part",
+      "count": 1549942
+    },
+    {
+      "predicate": "version",
+      "count": 1549940
+    },
+    {
+      "predicate": "date-published",
+      "count": 400323
+    },
+    {
+      "predicate": "description",
+      "count": 396236
+    },
+    {
+      "predicate": "state",
+      "count": 324970
+    },
+    {
+      "predicate": "date-updated",
+      "count": 324970
+    },
+    {
+      "predicate": "assigner",
+      "count": 324970
+    },
+    {
+      "predicate": "epss-score",
+      "count": 324894
+    },
+    {
+      "predicate": "epss-percentile",
+      "count": 324894
+    },
+    {
+      "predicate": "platform",
+      "count": 180675
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 166627
+    },
+    {
+      "predicate": "ssvc-exploitation",
+      "count": 140282
+    },
+    {
+      "predicate": "ssvc-automatable",
+      "count": 140282
+    },
+    {
+      "predicate": "ssvc-technical-impact",
+      "count": 140282
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 136721
+    },
+    {
+      "predicate": "cvss-severity",
+      "count": 136721
+    },
+    {
+      "predicate": "adp-affects-cpe",
+      "count": 135437
+    },
+    {
+      "predicate": "affects-cpe",
+      "count": 78908
+    },
+    {
+      "predicate": "affects-package",
+      "count": 52768
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "Platform",
+      "count": 1549947
+    },
+    {
+      "entity": "application",
+      "count": 1352007
+    },
+    {
+      "entity": "PUBLISHED",
+      "count": 324970
+    },
+    {
+      "entity": "Vulnerability",
+      "count": 324970
+    },
+    {
+      "entity": "operating_system",
+      "count": 136975
+    },
+    {
+      "entity": "mitre",
+      "count": 112813
+    },
+    {
+      "entity": "partial",
+      "count": 93023
+    },
+    {
+      "entity": "Microsoft",
+      "count": 90061
+    },
+    {
+      "entity": "MEDIUM",
+      "count": 84198
+    },
+    {
+      "entity": "HIGH",
+      "count": 71016
+    },
+    {
+      "entity": "x64-based Systems",
+      "count": 64606
+    },
+    {
+      "entity": "hardware",
+      "count": 63331
+    },
+    {
+      "entity": "Linux",
+      "count": 56395
+    },
+    {
+      "entity": "CVE-2024-20399",
+      "count": 51556
+    },
+    {
+      "entity": "total",
+      "count": 47259
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "cve",
+      "to": "cpe",
+      "count": 214345
+    },
+    {
+      "from": "cve",
+      "to": "cwe",
+      "count": 163381
+    },
+    {
+      "from": "ghsa",
+      "to": "cwe",
+      "count": 31859
+    },
+    {
+      "from": "exploitdb",
+      "to": "cve",
+      "count": 30518
+    },
+    {
+      "from": "ghsa",
+      "to": "cve",
+      "count": 24987
+    },
+    {
+      "from": "misp_galaxy",
+      "to": "attack",
+      "count": 4111
+    }
+  ],
+  "generatedAt": "2026-04-06T12:09:58Z"
+}

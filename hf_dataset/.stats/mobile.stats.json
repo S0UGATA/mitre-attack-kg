@@ -1,0 +1,168 @@
+{
+  "totalTriples": 5307,
+  "uniqueSubjects": 509,
+  "uniqueObjects": 2078,
+  "uniquePredicates": 19,
+  "bySource": [
+    {
+      "source": "attack",
+      "count": 5057
+    },
+    {
+      "source": "literal",
+      "count": 126
+    },
+    {
+      "source": "engage",
+      "count": 124
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "uses",
+      "count": 1420
+    },
+    {
+      "predicate": "platform",
+      "count": 430
+    },
+    {
+      "predicate": "domain",
+      "count": 429
+    },
+    {
+      "predicate": "name",
+      "count": 385
+    },
+    {
+      "predicate": "created",
+      "count": 385
+    },
+    {
+      "predicate": "modified",
+      "count": 385
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 385
+    },
+    {
+      "predicate": "url",
+      "count": 385
+    },
+    {
+      "predicate": "description",
+      "count": 371
+    },
+    {
+      "predicate": "is-subtechnique",
+      "count": 190
+    },
+    {
+      "predicate": "mitigates",
+      "count": 167
+    },
+    {
+      "predicate": "detects",
+      "count": 124
+    },
+    {
+      "predicate": "alias",
+      "count": 60
+    },
+    {
+      "predicate": "revoked",
+      "count": 53
+    },
+    {
+      "predicate": "revoked-by",
+      "count": 52
+    },
+    {
+      "predicate": "subtechnique-of",
+      "count": 47
+    },
+    {
+      "predicate": "deprecated",
+      "count": 24
+    },
+    {
+      "predicate": "shortname",
+      "count": 14
+    },
+    {
+      "predicate": "attributed-to",
+      "count": 1
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "mobile-attack",
+      "count": 385
+    },
+    {
+      "entity": "Android",
+      "count": 266
+    },
+    {
+      "entity": "Technique",
+      "count": 190
+    },
+    {
+      "entity": "iOS",
+      "count": 143
+    },
+    {
+      "entity": "Malware",
+      "count": 121
+    },
+    {
+      "entity": "T1636.004",
+      "count": 86
+    },
+    {
+      "entity": "T1430",
+      "count": 75
+    },
+    {
+      "entity": "T1636.003",
+      "count": 69
+    },
+    {
+      "entity": "T1426",
+      "count": 68
+    },
+    {
+      "entity": "T1429",
+      "count": 65
+    },
+    {
+      "entity": "T1533",
+      "count": 64
+    },
+    {
+      "entity": "T1418",
+      "count": 63
+    },
+    {
+      "entity": "T1422",
+      "count": 61
+    },
+    {
+      "entity": "T1437.001",
+      "count": 60
+    },
+    {
+      "entity": "T1406",
+      "count": 59
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "engage",
+      "to": "attack",
+      "count": 124
+    }
+  ],
+  "generatedAt": "2026-04-06T12:09:58Z"
+}
