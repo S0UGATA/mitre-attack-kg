@@ -7,6 +7,18 @@
     {
       "source": "ghsa",
       "count": 327142
+    },
+    {
+      "source": "cwe",
+      "count": 31859
+    },
+    {
+      "source": "cve",
+      "count": 24987
+    },
+    {
+      "source": "attack",
+      "count": 4
     }
   ],
   "topPredicates": [
@@ -27,7 +39,15 @@
       "count": 29386
     },
     {
+      "predicate": "severity",
+      "count": 28385
+    },
+    {
       "predicate": "summary",
+      "count": 28385
+    },
+    {
+      "predicate": "rdf:type",
       "count": 28385
     },
     {
@@ -36,14 +56,6 @@
     },
     {
       "predicate": "date-published",
-      "count": 28385
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 28385
-    },
-    {
-      "predicate": "severity",
       "count": 28385
     },
     {
@@ -133,5 +145,5 @@
       "predicate": "summary"
     }
   ],
-  "generatedAt": "2026-04-06T13:03:27Z"
+  "generatedAt": "2026-04-06T13:24:06Z"
 }

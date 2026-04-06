@@ -7,6 +7,14 @@
     {
       "source": "car",
       "count": 1617
+    },
+    {
+      "source": "attack",
+      "count": 646
+    },
+    {
+      "source": "d3fend",
+      "count": 102
     }
   ],
   "topPredicates": [
@@ -15,11 +23,11 @@
       "count": 194
     },
     {
-      "predicate": "detects-technique",
+      "predicate": "coverage-level",
       "count": 159
     },
     {
-      "predicate": "coverage-level",
+      "predicate": "detects-technique",
       "count": 159
     },
     {
@@ -39,6 +47,14 @@
       "count": 108
     },
     {
+      "predicate": "title",
+      "count": 102
+    },
+    {
+      "predicate": "information-domain",
+      "count": 102
+    },
+    {
       "predicate": "submission-date",
       "count": 102
     },
@@ -47,19 +63,11 @@
       "count": 102
     },
     {
-      "predicate": "maps-to-d3fend",
-      "count": 102
-    },
-    {
-      "predicate": "title",
-      "count": 102
-    },
-    {
       "predicate": "rdf:type",
       "count": 102
     },
     {
-      "predicate": "information-domain",
+      "predicate": "maps-to-d3fend",
       "count": 102
     }
   ],
@@ -139,5 +147,5 @@
       "predicate": "maps-to-d3fend"
     }
   ],
-  "generatedAt": "2026-04-06T13:03:17Z"
+  "generatedAt": "2026-04-06T13:23:58Z"
 }

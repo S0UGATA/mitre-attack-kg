@@ -6,7 +6,11 @@
   "bySource": [
     {
       "source": "atlas",
-      "count": 1420
+      "count": 1597
+    },
+    {
+      "source": "attack",
+      "count": 47
     }
   ],
   "topPredicates": [
@@ -73,19 +77,19 @@
       "count": 57
     },
     {
-      "entity": "2025-03-12",
-      "count": 43
-    },
-    {
       "entity": "2025-04-09",
       "count": 43
     },
     {
-      "entity": "2026-03-30",
-      "count": 29
+      "entity": "2025-03-12",
+      "count": 43
     },
     {
       "entity": "2023-10-25",
+      "count": 29
+    },
+    {
+      "entity": "2026-03-30",
       "count": 29
     },
     {
@@ -101,15 +105,15 @@
       "count": 19
     },
     {
-      "entity": "feasible",
-      "count": 16
-    },
-    {
       "entity": "Tactic",
       "count": 16
     },
     {
-      "entity": "AML.TA0006",
+      "entity": "feasible",
+      "count": 16
+    },
+    {
+      "entity": "AML.TA0008",
       "count": 15
     }
   ],
@@ -121,5 +125,5 @@
       "predicate": "related-attack-technique"
     }
   ],
-  "generatedAt": "2026-04-06T13:03:17Z"
+  "generatedAt": "2026-04-06T13:23:58Z"
 }

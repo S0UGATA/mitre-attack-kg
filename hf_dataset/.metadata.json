@@ -17,7 +17,7 @@
     "misp_galaxy": "misp-galaxy_491b6bc21bff",
     "mobile": "mobile-attack_aeca345f8229.json",
     "sigma": "sigma_rules_r2026-01-01",
-    "vulnrichment": "vulnrichment_4e7df9e0d24a"
+    "vulnrichment": "vulnrichment_8c00bbb3a965"
   },
   "source_fingerprints": {
     "atlas": "etag:W/\"188146fe402796510ae5018ba3c4aeafb865c95202d8400a84740e06d7d9166f\"",
@@ -35,6 +35,6 @@
     "kev": "lm:Thu, 02 Apr 2026 19:32:22 GMT",
     "misp_galaxy": "sha:491b6bc21bff",
     "sigma": "tag:r2026-01-01",
-    "vulnrichment": "sha:4e7df9e0d24a"
+    "vulnrichment": "sha:8c00bbb3a965"
   }
 }
