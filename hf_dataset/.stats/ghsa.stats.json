@@ -27,6 +27,10 @@
       "count": 29386
     },
     {
+      "predicate": "summary",
+      "count": 28385
+    },
+    {
       "predicate": "date-modified",
       "count": 28385
     },
@@ -35,15 +39,11 @@
       "count": 28385
     },
     {
-      "predicate": "severity",
-      "count": 28385
-    },
-    {
-      "predicate": "summary",
-      "count": 28385
-    },
-    {
       "predicate": "rdf:type",
+      "count": 28385
+    },
+    {
+      "predicate": "severity",
       "count": 28385
     },
     {
@@ -117,18 +117,21 @@
     {
       "from": "ghsa",
       "to": "cwe",
-      "count": 31859
+      "count": 31859,
+      "predicate": "related-weakness"
     },
     {
       "from": "ghsa",
       "to": "cve",
-      "count": 24987
+      "count": 24983,
+      "predicate": "related-cve"
     },
     {
       "from": "ghsa",
       "to": "attack",
-      "count": 4
+      "count": 4,
+      "predicate": "summary"
     }
   ],
-  "generatedAt": "2026-04-06T12:10:07Z"
+  "generatedAt": "2026-04-06T13:03:27Z"
 }

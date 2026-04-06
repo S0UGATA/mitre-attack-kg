@@ -27,7 +27,11 @@
       "count": 2405
     },
     {
-      "predicate": "url",
+      "predicate": "rdf:type",
+      "count": 2290
+    },
+    {
+      "predicate": "name",
       "count": 2290
     },
     {
@@ -39,11 +43,7 @@
       "count": 2290
     },
     {
-      "predicate": "rdf:type",
-      "count": 2290
-    },
-    {
-      "predicate": "name",
+      "predicate": "url",
       "count": 2290
     },
     {
@@ -161,8 +161,9 @@
     {
       "from": "engage",
       "to": "attack",
-      "count": 691
+      "count": 691,
+      "predicate": "detects"
     }
   ],
-  "generatedAt": "2026-04-06T12:09:58Z"
+  "generatedAt": "2026-04-06T13:03:17Z"
 }
