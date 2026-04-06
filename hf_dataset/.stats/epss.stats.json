@@ -1,0 +1,86 @@
+{
+  "totalTriples": 649788,
+  "uniqueSubjects": 324894,
+  "uniqueObjects": 84707,
+  "uniquePredicates": 2,
+  "bySource": [
+    {
+      "source": "cve",
+      "count": 649788
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "epss-score",
+      "count": 324894
+    },
+    {
+      "predicate": "epss-percentile",
+      "count": 324894
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "0.00015",
+      "count": 1928
+    },
+    {
+      "entity": "0.00099",
+      "count": 1836
+    },
+    {
+      "entity": "0.00018",
+      "count": 1670
+    },
+    {
+      "entity": "0.00051",
+      "count": 1596
+    },
+    {
+      "entity": "0.00016",
+      "count": 1539
+    },
+    {
+      "entity": "0.00012",
+      "count": 1500
+    },
+    {
+      "entity": "0.00017",
+      "count": 1478
+    },
+    {
+      "entity": "0.00014",
+      "count": 1456
+    },
+    {
+      "entity": "0.00036",
+      "count": 1451
+    },
+    {
+      "entity": "0.00039",
+      "count": 1391
+    },
+    {
+      "entity": "0.00013",
+      "count": 1375
+    },
+    {
+      "entity": "0.27629",
+      "count": 1346
+    },
+    {
+      "entity": "0.00034",
+      "count": 1316
+    },
+    {
+      "entity": "0.00025",
+      "count": 1283
+    },
+    {
+      "entity": "0.00043",
+      "count": 1252
+    }
+  ],
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-06T12:10:07Z"
+}

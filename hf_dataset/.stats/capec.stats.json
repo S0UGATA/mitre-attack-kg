@@ -1,0 +1,153 @@
+{
+  "totalTriples": 8114,
+  "uniqueSubjects": 558,
+  "uniqueObjects": 1870,
+  "uniquePredicates": 16,
+  "bySource": [
+    {
+      "source": "capec",
+      "count": 8114
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "consequence-scope",
+      "count": 1392
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 1213
+    },
+    {
+      "predicate": "consequence-impact",
+      "count": 891
+    },
+    {
+      "predicate": "status",
+      "count": 558
+    },
+    {
+      "predicate": "name",
+      "count": 558
+    },
+    {
+      "predicate": "abstraction",
+      "count": 558
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 558
+    },
+    {
+      "predicate": "description",
+      "count": 556
+    },
+    {
+      "predicate": "child-of",
+      "count": 532
+    },
+    {
+      "predicate": "severity",
+      "count": 488
+    },
+    {
+      "predicate": "likelihood",
+      "count": 344
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 272
+    },
+    {
+      "predicate": "can-precede",
+      "count": 162
+    },
+    {
+      "predicate": "peer-of",
+      "count": 19
+    },
+    {
+      "predicate": "can-follow",
+      "count": 10
+    },
+    {
+      "predicate": "can-also-be",
+      "count": 3
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "AttackPattern",
+      "count": 558
+    },
+    {
+      "entity": "Confidentiality",
+      "count": 475
+    },
+    {
+      "entity": "Draft",
+      "count": 402
+    },
+    {
+      "entity": "High",
+      "count": 342
+    },
+    {
+      "entity": "Detailed",
+      "count": 316
+    },
+    {
+      "entity": "Integrity",
+      "count": 238
+    },
+    {
+      "entity": "Medium",
+      "count": 229
+    },
+    {
+      "entity": "Authorization",
+      "count": 227
+    },
+    {
+      "entity": "Access Control",
+      "count": 203
+    },
+    {
+      "entity": "Low",
+      "count": 199
+    },
+    {
+      "entity": "Read Data",
+      "count": 197
+    },
+    {
+      "entity": "Standard",
+      "count": 181
+    },
+    {
+      "entity": "Availability",
+      "count": 172
+    },
+    {
+      "entity": "Stable",
+      "count": 154
+    },
+    {
+      "entity": "Gain Privileges",
+      "count": 142
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "capec",
+      "to": "cwe",
+      "count": 1213
+    },
+    {
+      "from": "capec",
+      "to": "attack",
+      "count": 272
+    }
+  ],
+  "generatedAt": "2026-04-06T12:09:58Z"
+}

@@ -1,0 +1,134 @@
+{
+  "totalTriples": 327142,
+  "uniqueSubjects": 28385,
+  "uniqueObjects": 141229,
+  "uniquePredicates": 10,
+  "bySource": [
+    {
+      "source": "ghsa",
+      "count": 327142
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "affects-package",
+      "count": 52768
+    },
+    {
+      "predicate": "fixed-in",
+      "count": 46221
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 31859
+    },
+    {
+      "predicate": "cvss-vector",
+      "count": 29386
+    },
+    {
+      "predicate": "date-modified",
+      "count": 28385
+    },
+    {
+      "predicate": "date-published",
+      "count": 28385
+    },
+    {
+      "predicate": "severity",
+      "count": 28385
+    },
+    {
+      "predicate": "summary",
+      "count": 28385
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 28385
+    },
+    {
+      "predicate": "related-cve",
+      "count": 24983
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "SecurityAdvisory",
+      "count": 28385
+    },
+    {
+      "entity": "MODERATE",
+      "count": 12491
+    },
+    {
+      "entity": "HIGH",
+      "count": 10012
+    },
+    {
+      "entity": "CWE-79",
+      "count": 4373
+    },
+    {
+      "entity": "CRITICAL",
+      "count": 3909
+    },
+    {
+      "entity": "LOW",
+      "count": 1973
+    },
+    {
+      "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "count": 1965
+    },
+    {
+      "entity": "Packagist/magento/community-edition",
+      "count": 1563
+    },
+    {
+      "entity": "CWE-22",
+      "count": 1528
+    },
+    {
+      "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "count": 1336
+    },
+    {
+      "entity": "PyPI/tensorflow",
+      "count": 1324
+    },
+    {
+      "entity": "Packagist/moodle/moodle",
+      "count": 1322
+    },
+    {
+      "entity": "PyPI/tensorflow-gpu",
+      "count": 1311
+    },
+    {
+      "entity": "PyPI/tensorflow-cpu",
+      "count": 1307
+    },
+    {
+      "entity": "CWE-200",
+      "count": 1244
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "ghsa",
+      "to": "cwe",
+      "count": 31859
+    },
+    {
+      "from": "ghsa",
+      "to": "cve",
+      "count": 24987
+    },
+    {
+      "from": "ghsa",
+      "to": "attack",
+      "count": 4
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:07Z"
+}

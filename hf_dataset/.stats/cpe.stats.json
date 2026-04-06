@@ -1,0 +1,116 @@
+{
+  "totalTriples": 12399534,
+  "uniqueSubjects": 1549942,
+  "uniqueObjects": 2627190,
+  "uniquePredicates": 8,
+  "bySource": [
+    {
+      "source": "cpe",
+      "count": 12399534
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "created",
+      "count": 1549942
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1549942
+    },
+    {
+      "predicate": "part",
+      "count": 1549942
+    },
+    {
+      "predicate": "vendor",
+      "count": 1549942
+    },
+    {
+      "predicate": "title",
+      "count": 1549942
+    },
+    {
+      "predicate": "product",
+      "count": 1549942
+    },
+    {
+      "predicate": "modified",
+      "count": 1549942
+    },
+    {
+      "predicate": "version",
+      "count": 1549940
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "Platform",
+      "count": 1549942
+    },
+    {
+      "entity": "application",
+      "count": 1351928
+    },
+    {
+      "entity": "operating_system",
+      "count": 136975
+    },
+    {
+      "entity": "hardware",
+      "count": 61116
+    },
+    {
+      "entity": "cisco",
+      "count": 35023
+    },
+    {
+      "entity": "vim",
+      "count": 30708
+    },
+    {
+      "entity": "hp",
+      "count": 22205
+    },
+    {
+      "entity": "microsoft",
+      "count": 17938
+    },
+    {
+      "entity": "jenkins",
+      "count": 17247
+    },
+    {
+      "entity": "ibm",
+      "count": 17148
+    },
+    {
+      "entity": "apache",
+      "count": 17104
+    },
+    {
+      "entity": "intel",
+      "count": 14477
+    },
+    {
+      "entity": "google",
+      "count": 13942
+    },
+    {
+      "entity": "redhat",
+      "count": 11610
+    },
+    {
+      "entity": "1.0.0",
+      "count": 10812
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "cpe",
+      "to": "attack",
+      "count": 1091
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:04Z"
+}

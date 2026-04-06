@@ -1,0 +1,141 @@
+{
+  "totalTriples": 1617,
+  "uniqueSubjects": 102,
+  "uniqueObjects": 546,
+  "uniquePredicates": 13,
+  "bySource": [
+    {
+      "source": "car",
+      "count": 1617
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "covers-tactic",
+      "count": 194
+    },
+    {
+      "predicate": "detects-technique",
+      "count": 159
+    },
+    {
+      "predicate": "coverage-level",
+      "count": 159
+    },
+    {
+      "predicate": "detects-subtechnique",
+      "count": 134
+    },
+    {
+      "predicate": "platform",
+      "count": 129
+    },
+    {
+      "predicate": "subtype",
+      "count": 122
+    },
+    {
+      "predicate": "analytic-type",
+      "count": 108
+    },
+    {
+      "predicate": "submission-date",
+      "count": 102
+    },
+    {
+      "predicate": "description",
+      "count": 102
+    },
+    {
+      "predicate": "maps-to-d3fend",
+      "count": 102
+    },
+    {
+      "predicate": "title",
+      "count": 102
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 102
+    },
+    {
+      "predicate": "information-domain",
+      "count": 102
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "Analytic",
+      "count": 114
+    },
+    {
+      "entity": "CAR-2013-04-002",
+      "count": 102
+    },
+    {
+      "entity": "Windows",
+      "count": 99
+    },
+    {
+      "entity": "TTP",
+      "count": 80
+    },
+    {
+      "entity": "Process",
+      "count": 73
+    },
+    {
+      "entity": "Host",
+      "count": 71
+    },
+    {
+      "entity": "CAR-2013-01-002",
+      "count": 49
+    },
+    {
+      "entity": "D3-PSA",
+      "count": 48
+    },
+    {
+      "entity": "TA0005",
+      "count": 42
+    },
+    {
+      "entity": "TA0003",
+      "count": 37
+    },
+    {
+      "entity": "CAR-2016-03-001",
+      "count": 36
+    },
+    {
+      "entity": "TA0004",
+      "count": 27
+    },
+    {
+      "entity": "CAR-2013-05-003",
+      "count": 26
+    },
+    {
+      "entity": "TA0007",
+      "count": 25
+    },
+    {
+      "entity": "CAR-2013-03-001",
+      "count": 24
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "car",
+      "to": "attack",
+      "count": 646
+    },
+    {
+      "from": "car",
+      "to": "d3fend",
+      "count": 102
+    }
+  ],
+  "generatedAt": "2026-04-06T12:09:58Z"
+}

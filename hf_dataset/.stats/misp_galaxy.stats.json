@@ -1,0 +1,152 @@
+{
+  "totalTriples": 177294,
+  "uniqueSubjects": 31552,
+  "uniqueObjects": 65395,
+  "uniquePredicates": 17,
+  "bySource": [
+    {
+      "source": "misp_galaxy",
+      "count": 177294
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "misp-related",
+      "count": 35778
+    },
+    {
+      "predicate": "name",
+      "count": 27952
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 27952
+    },
+    {
+      "predicate": "galaxy",
+      "count": 27952
+    },
+    {
+      "predicate": "description",
+      "count": 23603
+    },
+    {
+      "predicate": "uses",
+      "count": 19740
+    },
+    {
+      "predicate": "synonym",
+      "count": 4826
+    },
+    {
+      "predicate": "related-attack-id",
+      "count": 3866
+    },
+    {
+      "predicate": "used-by",
+      "count": 2235
+    },
+    {
+      "predicate": "country",
+      "count": 1195
+    },
+    {
+      "predicate": "targets-country",
+      "count": 918
+    },
+    {
+      "predicate": "subtechnique-of",
+      "count": 563
+    },
+    {
+      "predicate": "targets-sector",
+      "count": 394
+    },
+    {
+      "predicate": "attribution-confidence",
+      "count": 164
+    },
+    {
+      "predicate": "cfr-suspected-state-sponsor",
+      "count": 101
+    },
+    {
+      "predicate": "variant-of",
+      "count": 31
+    },
+    {
+      "predicate": "targets",
+      "count": 24
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "References",
+      "count": 5219
+    },
+    {
+      "entity": "references",
+      "count": 5219
+    },
+    {
+      "entity": "malpedia",
+      "count": 3596
+    },
+    {
+      "entity": "MalpediaEntry",
+      "count": 3596
+    },
+    {
+      "entity": "sigma-rules",
+      "count": 3104
+    },
+    {
+      "entity": "SigmaRule",
+      "count": 3104
+    },
+    {
+      "entity": "ransomware",
+      "count": 2733
+    },
+    {
+      "entity": "Ransomware",
+      "count": 2547
+    },
+    {
+      "entity": "naics",
+      "count": 2125
+    },
+    {
+      "entity": "Naics",
+      "count": 2125
+    },
+    {
+      "entity": "Software",
+      "count": 1321
+    },
+    {
+      "entity": "software",
+      "count": 1321
+    },
+    {
+      "entity": "misp:a07e62c0-be9c-5380-beac-9d298b0e735a",
+      "count": 1309
+    },
+    {
+      "entity": "nice-framework-tasks",
+      "count": 1084
+    },
+    {
+      "entity": "NiceFrameworkTasks",
+      "count": 1084
+    }
+  ],
+  "crossSourceLinks": [
+    {
+      "from": "misp_galaxy",
+      "to": "attack",
+      "count": 4111
+    }
+  ],
+  "generatedAt": "2026-04-06T12:10:08Z"
+}
