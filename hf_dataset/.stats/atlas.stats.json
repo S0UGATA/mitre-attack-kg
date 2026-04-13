@@ -77,11 +77,11 @@
       "count": 57
     },
     {
-      "entity": "2025-04-09",
+      "entity": "2025-03-12",
       "count": 43
     },
     {
-      "entity": "2025-03-12",
+      "entity": "2025-04-09",
       "count": 43
     },
     {
@@ -105,11 +105,11 @@
       "count": 19
     },
     {
-      "entity": "Tactic",
+      "entity": "feasible",
       "count": 16
     },
     {
-      "entity": "feasible",
+      "entity": "Tactic",
       "count": 16
     },
     {
@@ -125,5 +125,5 @@
       "predicate": "related-attack-technique"
     }
   ],
-  "generatedAt": "2026-04-06T13:23:58Z"
+  "generatedAt": "2026-04-13T07:59:37Z"
 }
