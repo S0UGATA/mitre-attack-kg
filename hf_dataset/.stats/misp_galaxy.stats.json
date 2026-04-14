@@ -1,38 +1,38 @@
 {
-  "totalTriples": 177294,
-  "uniqueSubjects": 31552,
-  "uniqueObjects": 65395,
+  "totalTriples": 178790,
+  "uniqueSubjects": 31942,
+  "uniqueObjects": 66061,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 235665
+      "count": 237188
     },
     {
       "source": "attack",
-      "count": 4111
+      "count": 4156
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 35778
-    },
-    {
-      "predicate": "name",
-      "count": 27952
+      "count": 35797
     },
     {
       "predicate": "galaxy",
-      "count": 27952
+      "count": 28306
     },
     {
       "predicate": "rdf:type",
-      "count": 27952
+      "count": 28306
+    },
+    {
+      "predicate": "name",
+      "count": 28306
     },
     {
       "predicate": "description",
-      "count": 23603
+      "count": 23956
     },
     {
       "predicate": "uses",
@@ -40,11 +40,11 @@
     },
     {
       "predicate": "synonym",
-      "count": 4826
+      "count": 4832
     },
     {
       "predicate": "related-attack-id",
-      "count": 3866
+      "count": 3909
     },
     {
       "predicate": "used-by",
@@ -52,7 +52,7 @@
     },
     {
       "predicate": "country",
-      "count": 1195
+      "count": 1199
     },
     {
       "predicate": "targets-country",
@@ -68,7 +68,7 @@
     },
     {
       "predicate": "attribution-confidence",
-      "count": 164
+      "count": 165
     },
     {
       "predicate": "cfr-suspected-state-sponsor",
@@ -76,7 +76,7 @@
     },
     {
       "predicate": "variant-of",
-      "count": 31
+      "count": 39
     },
     {
       "predicate": "targets",
@@ -93,20 +93,20 @@
       "count": 5219
     },
     {
-      "entity": "MalpediaEntry",
-      "count": 3596
-    },
-    {
       "entity": "malpedia",
       "count": 3596
     },
     {
+      "entity": "MalpediaEntry",
+      "count": 3596
+    },
+    {
       "entity": "sigma-rules",
-      "count": 3104
+      "count": 3110
     },
     {
       "entity": "SigmaRule",
-      "count": 3104
+      "count": 3110
     },
     {
       "entity": "ransomware",
@@ -117,11 +117,11 @@
       "count": 2547
     },
     {
-      "entity": "Naics",
+      "entity": "naics",
       "count": 2125
     },
     {
-      "entity": "naics",
+      "entity": "Naics",
       "count": 2125
     },
     {
@@ -149,9 +149,9 @@
     {
       "from": "misp_galaxy",
       "to": "attack",
-      "count": 3866,
+      "count": 3909,
       "predicate": "related-attack-id"
     }
   ],
-  "generatedAt": "2026-04-06T13:24:07Z"
+  "generatedAt": "2026-04-13T07:59:45Z"
 }

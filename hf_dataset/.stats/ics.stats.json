@@ -31,15 +31,15 @@
       "count": 267
     },
     {
+      "predicate": "name",
+      "count": 266
+    },
+    {
       "predicate": "created",
       "count": 266
     },
     {
       "predicate": "modified",
-      "count": 266
-    },
-    {
-      "predicate": "name",
       "count": 266
     },
     {
@@ -83,11 +83,11 @@
       "count": 5
     },
     {
-      "predicate": "revoked",
+      "predicate": "revoked-by",
       "count": 2
     },
     {
-      "predicate": "revoked-by",
+      "predicate": "revoked",
       "count": 2
     }
   ],
@@ -125,11 +125,11 @@
       "count": 48
     },
     {
-      "entity": "A0010",
+      "entity": "A0018",
       "count": 47
     },
     {
-      "entity": "A0018",
+      "entity": "A0010",
       "count": 47
     },
     {
@@ -161,5 +161,5 @@
       "predicate": "detects"
     }
   ],
-  "generatedAt": "2026-04-06T13:23:58Z"
+  "generatedAt": "2026-04-13T07:59:36Z"
 }

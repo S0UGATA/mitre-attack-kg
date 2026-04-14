@@ -1,12 +1,12 @@
 {
-  "totalTriples": 12399534,
-  "uniqueSubjects": 1549942,
-  "uniqueObjects": 2627190,
+  "totalTriples": 12484758,
+  "uniqueSubjects": 1560595,
+  "uniqueObjects": 2638977,
   "uniquePredicates": 8,
   "bySource": [
     {
       "source": "cpe",
-      "count": 12399548
+      "count": 12484772
     },
     {
       "source": "attack",
@@ -15,46 +15,46 @@
   ],
   "topPredicates": [
     {
-      "predicate": "rdf:type",
-      "count": 1549942
-    },
-    {
-      "predicate": "vendor",
-      "count": 1549942
-    },
-    {
       "predicate": "part",
-      "count": 1549942
+      "count": 1560595
     },
     {
-      "predicate": "created",
-      "count": 1549942
+      "predicate": "rdf:type",
+      "count": 1560595
     },
     {
       "predicate": "product",
-      "count": 1549942
+      "count": 1560595
     },
     {
       "predicate": "modified",
-      "count": 1549942
+      "count": 1560595
+    },
+    {
+      "predicate": "created",
+      "count": 1560595
+    },
+    {
+      "predicate": "vendor",
+      "count": 1560595
     },
     {
       "predicate": "title",
-      "count": 1549942
+      "count": 1560595
     },
     {
       "predicate": "version",
-      "count": 1549940
+      "count": 1560593
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "Platform",
-      "count": 1549942
+      "count": 1560595
     },
     {
       "entity": "application",
-      "count": 1351928
+      "count": 1362581
     },
     {
       "entity": "operating_system",
@@ -70,7 +70,7 @@
     },
     {
       "entity": "vim",
-      "count": 30708
+      "count": 30782
     },
     {
       "entity": "hp",
@@ -90,7 +90,7 @@
     },
     {
       "entity": "apache",
-      "count": 17104
+      "count": 17118
     },
     {
       "entity": "intel",
@@ -106,7 +106,7 @@
     },
     {
       "entity": "1.0.0",
-      "count": 10812
+      "count": 10955
     }
   ],
   "crossSourceLinks": [
@@ -117,5 +117,5 @@
       "predicate": "title"
     }
   ],
-  "generatedAt": "2026-04-06T13:24:03Z"
+  "generatedAt": "2026-04-13T07:59:41Z"
 }

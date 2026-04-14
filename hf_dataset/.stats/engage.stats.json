@@ -77,11 +77,7 @@
       "count": 62
     },
     {
-      "entity": "EAV0002",
-      "count": 62
-    },
-    {
-      "entity": "EAV0013",
+      "entity": "EAV0016",
       "count": 62
     },
     {
@@ -89,7 +85,11 @@
       "count": 62
     },
     {
-      "entity": "EAV0016",
+      "entity": "EAV0002",
+      "count": 62
+    },
+    {
+      "entity": "EAV0013",
       "count": 62
     },
     {
@@ -109,5 +109,5 @@
       "predicate": "exploits-vulnerability-of"
     }
   ],
-  "generatedAt": "2026-04-06T13:24:06Z"
+  "generatedAt": "2026-04-13T07:59:44Z"
 }
