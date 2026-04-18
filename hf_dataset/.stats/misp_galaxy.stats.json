@@ -1,12 +1,12 @@
 {
-  "totalTriples": 178790,
-  "uniqueSubjects": 31942,
-  "uniqueObjects": 66061,
+  "totalTriples": 179162,
+  "uniqueSubjects": 32036,
+  "uniqueObjects": 66236,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 237188
+      "count": 237560
     },
     {
       "source": "attack",
@@ -19,20 +19,20 @@
       "count": 35797
     },
     {
+      "predicate": "name",
+      "count": 28400
+    },
+    {
       "predicate": "galaxy",
-      "count": 28306
+      "count": 28400
     },
     {
       "predicate": "rdf:type",
-      "count": 28306
-    },
-    {
-      "predicate": "name",
-      "count": 28306
+      "count": 28400
     },
     {
       "predicate": "description",
-      "count": 23956
+      "count": 24024
     },
     {
       "predicate": "uses",
@@ -40,7 +40,7 @@
     },
     {
       "predicate": "synonym",
-      "count": 4832
+      "count": 4853
     },
     {
       "predicate": "related-attack-id",
@@ -52,7 +52,7 @@
     },
     {
       "predicate": "country",
-      "count": 1199
+      "count": 1200
     },
     {
       "predicate": "targets-country",
@@ -85,27 +85,27 @@
   ],
   "topConnectedEntities": [
     {
-      "entity": "references",
-      "count": 5219
-    },
-    {
       "entity": "References",
       "count": 5219
     },
     {
-      "entity": "malpedia",
-      "count": 3596
+      "entity": "references",
+      "count": 5219
     },
     {
       "entity": "MalpediaEntry",
-      "count": 3596
+      "count": 3683
     },
     {
-      "entity": "sigma-rules",
-      "count": 3110
+      "entity": "malpedia",
+      "count": 3683
     },
     {
       "entity": "SigmaRule",
+      "count": 3110
+    },
+    {
+      "entity": "sigma-rules",
       "count": 3110
     },
     {
@@ -153,5 +153,5 @@
       "predicate": "related-attack-id"
     }
   ],
-  "generatedAt": "2026-04-13T07:59:45Z"
+  "generatedAt": "2026-04-18T10:30:19Z"
 }

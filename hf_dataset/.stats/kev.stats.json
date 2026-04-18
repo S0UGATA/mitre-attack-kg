@@ -1,68 +1,68 @@
 {
-  "totalTriples": 17076,
-  "uniqueSubjects": 1559,
-  "uniqueObjects": 5981,
+  "totalTriples": 17187,
+  "uniqueSubjects": 1569,
+  "uniqueObjects": 6017,
   "uniquePredicates": 11,
   "bySource": [
     {
       "source": "cve",
-      "count": 17076
+      "count": 17187
     },
     {
       "source": "cwe",
-      "count": 1486
+      "count": 1497
     }
   ],
   "topPredicates": [
     {
-      "predicate": "kev-date-added",
-      "count": 1559
-    },
-    {
-      "predicate": "kev-due-date",
-      "count": 1559
-    },
-    {
-      "predicate": "kev-notes",
-      "count": 1559
-    },
-    {
-      "predicate": "kev-required-action",
-      "count": 1559
-    },
-    {
-      "predicate": "kev-name",
-      "count": 1559
+      "predicate": "kev-vendor",
+      "count": 1569
     },
     {
       "predicate": "kev-description",
-      "count": 1559
+      "count": 1569
+    },
+    {
+      "predicate": "kev-date-added",
+      "count": 1569
+    },
+    {
+      "predicate": "kev-name",
+      "count": 1569
+    },
+    {
+      "predicate": "kev-due-date",
+      "count": 1569
+    },
+    {
+      "predicate": "kev-notes",
+      "count": 1569
     },
     {
       "predicate": "kev-ransomware-use",
-      "count": 1559
+      "count": 1569
     },
     {
       "predicate": "rdf:type",
-      "count": 1559
+      "count": 1569
     },
     {
-      "predicate": "kev-vendor",
-      "count": 1559
+      "predicate": "kev-required-action",
+      "count": 1569
     },
     {
       "predicate": "kev-product",
-      "count": 1559
+      "count": 1569
     },
     {
       "predicate": "related-weakness",
-      "count": 1486
+      "count": 1497
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "KnownExploitedVulnerability",
-      "count": 1559
+      "count": 1569
     },
     {
       "entity": "Apply updates per vendor instructions.",
@@ -70,7 +70,7 @@
     },
     {
       "entity": "Microsoft",
-      "count": 362
+      "count": 368
     },
     {
       "entity": "Known",
@@ -82,7 +82,7 @@
     },
     {
       "entity": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
-      "count": 270
+      "count": 280
     },
     {
       "entity": "Apply mitigations per vendor instructions or discontinue use of the product if mitigations are unavailable.",
@@ -94,11 +94,11 @@
     },
     {
       "entity": "Windows",
-      "count": 166
+      "count": 168
     },
     {
       "entity": "CWE-20",
-      "count": 113
+      "count": 115
     },
     {
       "entity": "2021-11-17",
@@ -125,9 +125,9 @@
     {
       "from": "cve",
       "to": "cwe",
-      "count": 1486,
+      "count": 1497,
       "predicate": "related-weakness"
     }
   ],
-  "generatedAt": "2026-04-13T07:59:45Z"
+  "generatedAt": "2026-04-18T10:30:19Z"
 }
