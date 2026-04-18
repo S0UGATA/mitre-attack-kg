@@ -4,7 +4,47 @@ on:
   schedule:
     # Run weekly on Monday at 06:00 UTC
     - cron: "0 6 * * 1"
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force reconversion of all sources (ignores fingerprints)"
+        type: boolean
+        default: false
+      sources:
+        description: "Space-separated sources to convert (empty = auto-detect changed)"
+        type: string
+        default: ""
+      domains:
+        description: "ATT&CK domains (space-separated)"
+        type: string
+        default: "enterprise mobile ics"
+      parquet_format:
+        description: "Parquet output format"
+        type: choice
+        options:
+          - v2
+          - v1
+        default: "v2"
+      parallel:
+        description: "Run source conversions in parallel"
+        type: boolean
+        default: true
+      workers:
+        description: "Number of parallel workers"
+        type: string
+        default: "4"
+      limit:
+        description: "Limit each source to N triples (0 = no limit)"
+        type: string
+        default: "0"
+      no_combined:
+        description: "Skip generating combined.parquet"
+        type: boolean
+        default: false
+      no_stats:
+        description: "Skip generating dashboard stats"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -61,6 +101,8 @@ jobs:
         id: source_check
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          FORCE_ALL: ${{ inputs.force }}
+          SOURCES_OVERRIDE: ${{ inputs.sources }}
         run: |
           python - <<'PYEOF'
           import logging, os
@@ -87,11 +129,25 @@ jobs:
           current_fp = get_all_remote_fingerprints()
 
           # --- Compare each source ---
+          force = os.environ.get("FORCE_ALL", "false") == "true"
+          sources_override = os.environ.get("SOURCES_OVERRIDE", "").strip()
+          override_set = set(sources_override.split()) if sources_override else set()
+
+          if force:
+              print("FORCE MODE: reconverting all sources regardless of fingerprints")
+          if override_set:
+              print(f"SOURCES OVERRIDE: only converting {', '.join(sorted(override_set))}")
+
           sources = {}
           for source in SOURCE_FINGERPRINT_METHODS:
-              cur = current_fp.get(source, "")
-              prev = previous_fp.get(source, "")
-              is_changed = not cur or cur != prev
+              if force:
+                  is_changed = True
+              elif override_set:
+                  is_changed = source in override_set
+              else:
+                  cur = current_fp.get(source, "")
+                  prev = previous_fp.get(source, "")
+                  is_changed = not cur or cur != prev
               sources[source] = is_changed
 
           any_changed = any(sources.values())
@@ -191,8 +247,6 @@ jobs:
           # Build --sources list from changed flags
           sources=""
           for src in attack capec cwe cve cpe d3fend atlas car engage epss kev vulnrichment ghsa sigma exploitdb misp_galaxy; do
-            flag="${src}_changed"
-            # Use step outputs to check each source
             case "$src" in
               attack)    [ "${{ steps.source_check.outputs.attack_changed }}" = "true" ] && sources="$sources attack" ;;
               capec)     [ "${{ steps.source_check.outputs.capec_changed }}" = "true" ] && sources="$sources capec" ;;
@@ -214,9 +268,33 @@ jobs:
           done
           sources=$(echo $sources | xargs)
           echo "Changed sources: $sources"
-          if [ -n "$sources" ]; then
-            python src/convert.py --sources $sources --cache-dir /tmp/source-cache --log-dir logs --parallel --workers 4 --no-combined --no-stats
+
+          if [ -z "$sources" ]; then
+            echo "No sources to convert"
+            exit 0
           fi
+
+          # Build convert.py command from workflow inputs (with defaults for scheduled runs)
+          PARQUET_FORMAT="${{ inputs.parquet_format }}"
+          DOMAINS="${{ inputs.domains }}"
+          PARALLEL="${{ inputs.parallel }}"
+          WORKERS="${{ inputs.workers }}"
+          LIMIT="${{ inputs.limit }}"
+
+          cmd="python src/convert.py --sources $sources --cache-dir /tmp/source-cache --log-dir logs --no-combined --no-stats"
+          cmd="$cmd --parquet-format ${PARQUET_FORMAT:-v2}"
+          cmd="$cmd --domains ${DOMAINS:-enterprise mobile ics}"
+
+          if [ "${PARALLEL:-true}" != "false" ]; then
+            cmd="$cmd --parallel --workers ${WORKERS:-4}"
+          fi
+
+          if [ -n "$LIMIT" ] && [ "$LIMIT" != "0" ]; then
+            cmd="$cmd --limit $LIMIT"
+          fi
+
+          echo "Running: $cmd"
+          $cmd
 
       - name: Download fallback parquets for failed sources
         if: steps.source_check.outputs.any_changed == 'true'
@@ -274,17 +352,17 @@ jobs:
           PYEOF
 
       - name: Rebuild combined.parquet from all sources
-        if: steps.source_check.outputs.any_changed == 'true'
+        if: steps.source_check.outputs.any_changed == 'true' && inputs.no_combined != true
+        env:
+          PARQUET_FORMAT: ${{ inputs.parquet_format || 'v2' }}
         run: |
           python - <<'PYEOF'
+          import os
           from pathlib import Path
           import pyarrow.parquet as pq
           import pyarrow as pa
           from common import PARQUET_SCHEMA, PARQUET_FORMATS
 
-          # Always rebuild combined.parquet from all per-source parquets
-          # (convert.py only combines the sources it was told to convert,
-          # but the workflow needs the full combined from all 16 sources).
           parquet_names = [
               "attack-all", "capec", "cwe", "cve", "cpe",
               "d3fend", "atlas", "car", "engage", "epss", "kev",
@@ -295,7 +373,7 @@ jobs:
 
           if len(parquet_files) > 1:
               combined_path = output / "combined.parquet"
-              pq_opts = PARQUET_FORMATS["v2"]
+              pq_opts = PARQUET_FORMATS[os.environ.get("PARQUET_FORMAT", "v2")]
               writer = None
               total_rows = 0
               try:
@@ -399,7 +477,7 @@ jobs:
           PYEOF
 
       - name: Generate dashboard stats
-        if: steps.source_check.outputs.any_changed == 'true'
+        if: steps.source_check.outputs.any_changed == 'true' && inputs.no_stats != true
         run: |
           python src/generate_stats.py --output-dir output --stats-dir hf_dataset/.stats
 
