@@ -16,6 +16,7 @@ SOURCE = "epss"
 def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
     return (s, p, o, SOURCE, get_object_type(p), m)
 
+
 EPSS_URL = "https://epss.cyentia.com/epss_scores-current.csv.gz"
 
 
