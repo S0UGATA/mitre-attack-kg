@@ -51,7 +51,7 @@ def sample_xml_path(tmp_path):
 class TestCapecTriples:
     def test_basic_properties(self, sample_xml_path):
         triples = extract_capec_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAPEC-66", "rdf:type", "AttackPattern") in ts
         assert ("CAPEC-66", "name", "SQL Injection") in ts
@@ -62,13 +62,13 @@ class TestCapecTriples:
 
     def test_description(self, sample_xml_path):
         triples = extract_capec_triples(sample_xml_path)
-        desc = [o for s, p, o in triples if s == "CAPEC-66" and p == "description"]
+        desc = [o for s, p, o, *_ in triples if s == "CAPEC-66" and p == "description"]
         assert len(desc) == 1
         assert "SQL injection" in desc[0]
 
     def test_relationships(self, sample_xml_path):
         triples = extract_capec_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAPEC-66", "child-of", "CAPEC-248") in ts
         assert ("CAPEC-66", "related-weakness", "CWE-89") in ts
@@ -77,14 +77,14 @@ class TestCapecTriples:
 
     def test_consequences(self, sample_xml_path):
         triples = extract_capec_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAPEC-66", "consequence-scope", "Confidentiality") in ts
         assert ("CAPEC-66", "consequence-impact", "Read Data") in ts
 
     def test_deprecated_excluded(self, sample_xml_path):
         triples = extract_capec_triples(sample_xml_path)
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "CAPEC-999" not in subjects
 
@@ -92,3 +92,32 @@ class TestCapecTriples:
         triples = extract_capec_triples(sample_xml_path)
         assert len(triples) > 5
         assert len(triples) < 50
+
+    def test_six_tuple_source_and_object_type(self, sample_xml_path):
+        """Verify source, object_type, and meta fields in 6-tuple output."""
+        triples = extract_capec_triples(sample_xml_path)
+
+        # All triples must have source="capec"
+        assert all(t[3] == "capec" for t in triples)
+
+        # Check object_type for specific predicates
+        by_pred = {}
+        for t in triples:
+            by_pred.setdefault(t[1], t)
+
+        assert by_pred["rdf:type"][4] == "enum"
+        assert by_pred["name"][4] == "string"
+        assert by_pred["abstraction"][4] == "enum"
+        assert by_pred["status"][4] == "enum"
+        assert by_pred["likelihood"][4] == "enum"
+        assert by_pred["severity"][4] == "enum"
+        assert by_pred["description"][4] == "string"
+        assert by_pred["child-of"][4] == "id"
+        assert by_pred["related-weakness"][4] == "id"
+        assert by_pred["maps-to-technique"][4] == "id"
+        assert by_pred["consequence-scope"][4] == "string"
+        assert by_pred["consequence-impact"][4] == "string"
+
+        # Property triples should have empty meta
+        assert by_pred["name"][5] == ""
+        assert by_pred["description"][5] == ""

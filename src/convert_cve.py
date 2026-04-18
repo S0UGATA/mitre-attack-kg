@@ -3,14 +3,23 @@
 import json
 import logging
 import re
-import zipfile
+from collections.abc import Iterator
 from pathlib import Path
 
 import requests
 
-from common import SOURCE_DIR, github_api_headers
+from common import (
+    SOURCE_DIR,
+    extract_cvss_meta,
+    get_object_type,
+    github_api_headers,
+    meta_json,
+    safe_zip_extract,
+)
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "cve"
 
 CVELIST_API = "https://api.github.com/repos/CVEProject/cvelistV5/releases/latest"
 
@@ -66,15 +75,13 @@ def download_cve(cache_dir: str | None = None) -> str:
     # Extract (the release ZIP contains a nested cves.zip with the actual JSON files)
     logger.info("Extracting %s ...", zip_path)
     extract_dir.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(zip_path) as zf:
-        zf.extractall(extract_dir)
+    safe_zip_extract(zip_path, extract_dir)
 
     # Check for nested cves.zip
     inner_zip = extract_dir / "cves.zip"
     if inner_zip.exists():
         logger.info("Extracting nested cves.zip ...")
-        with zipfile.ZipFile(inner_zip) as zf:
-            zf.extractall(extract_dir)
+        safe_zip_extract(inner_zip, extract_dir)
         inner_zip.unlink()
 
     logger.info("Extracted CVE data to %s", extract_dir)
@@ -88,7 +95,11 @@ def _parse_cwe_id(description: str) -> str | None:
     return match.group(1) if match else None
 
 
-def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str]]:
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
+
+
+def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, str]]:
     """Extract triples from a single CVE JSON 5.x record."""
     meta = cve_data.get("cveMetadata", {})
     cve_id = meta.get("cveId", "")
@@ -99,26 +110,47 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str]]:
     if state == "REJECTED":
         return []
 
-    triples: list[tuple[str, str, str]] = [
-        (cve_id, "rdf:type", "Vulnerability"),
+    cna = cve_data.get("containers", {}).get("cna", {})
+    entity_meta: dict = {}
+
+    refs = cna.get("references", [])
+    if refs:
+        ref_urls = [r.get("url") for r in refs if r.get("url")]
+        if ref_urls:
+            entity_meta["references"] = ref_urls
+
+    credits_list = cna.get("credits", [])
+    if credits_list:
+        credit_entries = []
+        for c in credits_list:
+            entry: dict = {}
+            if c.get("type"):
+                entry["type"] = c["type"]
+            if c.get("value"):
+                entry["value"] = c["value"]
+            if entry:
+                credit_entries.append(entry)
+        if credit_entries:
+            entity_meta["credits"] = credit_entries
+
+    triples: list[tuple[str, str, str, str, str, str]] = [
+        _t(cve_id, "rdf:type", "Vulnerability", meta_json(entity_meta)),
     ]
 
     if state:
-        triples.append((cve_id, "state", state))
+        triples.append(_t(cve_id, "state", state))
     if meta.get("datePublished"):
-        triples.append((cve_id, "date-published", meta["datePublished"]))
+        triples.append(_t(cve_id, "date-published", meta["datePublished"]))
     if meta.get("dateUpdated"):
-        triples.append((cve_id, "date-updated", meta["dateUpdated"]))
+        triples.append(_t(cve_id, "date-updated", meta["dateUpdated"]))
     if meta.get("assignerShortName"):
-        triples.append((cve_id, "assigner", meta["assignerShortName"]))
-
-    cna = cve_data.get("containers", {}).get("cna", {})
+        triples.append(_t(cve_id, "assigner", meta["assignerShortName"]))
 
     # Description
     for desc in cna.get("descriptions", []):
         lang = desc.get("lang", "")
         if lang == "en" and desc.get("value"):
-            triples.append((cve_id, "description", desc["value"]))
+            triples.append(_t(cve_id, "description", desc["value"]))
             break
 
     # Affected products
@@ -126,42 +158,42 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str]]:
         vendor = affected.get("vendor", "")
         product = affected.get("product", "")
         if vendor:
-            triples.append((cve_id, "vendor", vendor))
+            triples.append(_t(cve_id, "vendor", vendor))
         if product:
-            triples.append((cve_id, "product", product))
+            triples.append(_t(cve_id, "product", product))
 
         # CPE strings if present
         for cpe_str in affected.get("cpes", []):
-            triples.append((cve_id, "affects-cpe", cpe_str))
+            triples.append(_t(cve_id, "affects-cpe", cpe_str))
 
         # Platforms
         for platform in affected.get("platforms", []):
-            triples.append((cve_id, "platform", platform))
+            triples.append(_t(cve_id, "platform", platform))
 
     # Problem types (CWE links)
     for pt in cna.get("problemTypes", []):
         for desc in pt.get("descriptions", []):
             cwe_id_field = desc.get("cweId")
             if cwe_id_field:
-                triples.append((cve_id, "related-weakness", cwe_id_field))
+                triples.append(_t(cve_id, "related-weakness", cwe_id_field))
             elif desc.get("description"):
                 cwe_id = _parse_cwe_id(desc["description"])
                 if cwe_id:
-                    triples.append((cve_id, "related-weakness", cwe_id))
+                    triples.append(_t(cve_id, "related-weakness", cwe_id))
 
     # CVSS metrics
     for metric in cna.get("metrics", []):
-        cvss = metric.get("cvssV4_0") or metric.get("cvssV3_1") or metric.get("cvssV3_0")
+        cvss, m = extract_cvss_meta(metric)
         if cvss:
             if cvss.get("baseScore") is not None:
-                triples.append((cve_id, "cvss-base-score", str(cvss["baseScore"])))
+                triples.append(_t(cve_id, "cvss-base-score", str(cvss["baseScore"]), m))
             if cvss.get("baseSeverity"):
-                triples.append((cve_id, "cvss-severity", cvss["baseSeverity"]))
+                triples.append(_t(cve_id, "cvss-severity", cvss["baseSeverity"], m))
 
     return triples
 
 
-def extract_cve_triples(data_dir: str):
+def extract_cve_triples(data_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
     """Yield SPO triples from all CVE JSON files in the extracted directory.
 
     Returns a generator to avoid loading millions of triples into memory.

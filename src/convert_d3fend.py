@@ -4,9 +4,11 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file
+from common import download_file, get_object_type, meta_json
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "d3fend"
 
 D3FEND_URL = "https://d3fend.mitre.org/ontologies/d3fend.json"
 
@@ -14,6 +16,10 @@ D3FEND_URL = "https://d3fend.mitre.org/ontologies/d3fend.json"
 def download_d3fend(cache_dir: str | None = None) -> str:
     """Download D3FEND JSON-LD, returning the local file path."""
     return str(download_file(D3FEND_URL, "d3fend.json", cache_dir))
+
+
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
 
 
 def _extract_subclass_ids(node: dict) -> list[str]:
@@ -28,20 +34,14 @@ def _extract_subclass_ids(node: dict) -> list[str]:
     ]
 
 
-def extract_d3fend_triples(json_path: str) -> list[tuple[str, str, str]]:
-    """Extract SPO triples from D3FEND JSON-LD ontology.
-
-    The JSON-LD has @context + @graph array. Entries have:
-    - Defensive techniques: d3f:d3fend-id (D3-*), d3f:definition, rdfs:label
-    - Offensive techniques: d3f:attack-id (T*), d3f:definition, rdfs:label
-    """
+def extract_d3fend_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
+    """Extract SPO triples from D3FEND JSON-LD ontology."""
     with open(json_path) as f:
         data = json.load(f)
 
     graph = data.get("@graph", [])
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
     attack_ids: set[str] = set()
-    # Collect defensive cross-refs for second pass (need full attack_ids set first)
     deferred_refs: list[tuple[str, str, str]] = []
 
     _SKIP_KEYS = frozenset(
@@ -64,27 +64,37 @@ def extract_d3fend_triples(json_path: str) -> list[tuple[str, str, str]]:
 
         if d3fend_id:
             sid = d3fend_id
-            triples.append((sid, "rdf:type", "DefensiveTechnique"))
+            # Entity-level meta: kb references
+            entity_meta: dict = {}
+            kb_refs = node.get("d3f:kb-reference", [])
+            if isinstance(kb_refs, str):
+                kb_refs = [kb_refs]
+            elif isinstance(kb_refs, dict):
+                kb_refs = [kb_refs.get("@id", "")] if "@id" in kb_refs else []
+            kb_urls = [r for r in kb_refs if isinstance(r, str) and r]
+            if kb_urls:
+                entity_meta["kb_references"] = kb_urls
+
+            triples.append(_t(sid, "rdf:type", "DefensiveTechnique", meta_json(entity_meta)))
 
             label = node.get("rdfs:label")
             if isinstance(label, str) and label:
-                triples.append((sid, "name", label))
+                triples.append(_t(sid, "name", label))
 
             definition = node.get("d3f:definition")
             if isinstance(definition, str) and definition:
-                triples.append((sid, "definition", definition))
+                triples.append(_t(sid, "definition", definition))
 
             synonyms = node.get("d3f:synonym", [])
             if isinstance(synonyms, str):
                 synonyms = [synonyms]
             for syn in synonyms:
                 if syn:
-                    triples.append((sid, "synonym", syn))
+                    triples.append(_t(sid, "synonym", syn))
 
             for parent_id in _extract_subclass_ids(node):
-                triples.append((sid, "child-of", parent_id))
+                triples.append(_t(sid, "child-of", parent_id))
 
-            # Collect cross-refs (resolve against attack_ids after full scan)
             for key, val in node.items():
                 if not key.startswith("d3f:") or key in _SKIP_KEYS:
                     continue
@@ -97,23 +107,22 @@ def extract_d3fend_triples(json_path: str) -> list[tuple[str, str, str]]:
         elif attack_id:
             sid = attack_id
             attack_ids.add(attack_id)
-            triples.append((sid, "rdf:type", "OffensiveTechnique"))
+            triples.append(_t(sid, "rdf:type", "OffensiveTechnique"))
 
             label = node.get("rdfs:label")
             if isinstance(label, str) and label:
-                triples.append((sid, "d3fend-name", label))
+                triples.append(_t(sid, "d3fend-name", label))
 
             definition = node.get("d3f:definition")
             if isinstance(definition, str) and definition:
-                triples.append((sid, "d3fend-definition", definition))
+                triples.append(_t(sid, "d3fend-definition", definition))
 
             for parent_id in _extract_subclass_ids(node):
-                triples.append((sid, "child-of", parent_id))
+                triples.append(_t(sid, "child-of", parent_id))
 
-    # Resolve deferred cross-refs against known attack IDs
     for d3fend_id, predicate, ref_id in deferred_refs:
         if ref_id in attack_ids:
-            triples.append((d3fend_id, predicate, ref_id))
+            triples.append(_t(d3fend_id, predicate, ref_id))
 
     return triples
 

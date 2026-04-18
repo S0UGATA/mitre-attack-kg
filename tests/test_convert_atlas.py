@@ -78,7 +78,7 @@ def sample_yaml_path(tmp_path):
 class TestAtlasTriples:
     def test_tactic_properties(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.TA0001", "rdf:type", "Tactic") in ts
         assert ("AML.TA0001", "name", "ML Model Access") in ts
@@ -88,13 +88,13 @@ class TestAtlasTriples:
 
     def test_tactic_attack_reference(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.TA0001", "related-attack-tactic", "TA0001") in ts
 
     def test_technique_properties(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.T0000", "rdf:type", "Technique") in ts
         assert ("AML.T0000", "name", "ML Supply Chain Compromise") in ts
@@ -102,26 +102,26 @@ class TestAtlasTriples:
 
     def test_technique_tactic_link(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.T0000", "belongs-to-tactic", "AML.TA0001") in ts
 
     def test_technique_attack_reference(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.T0000", "related-attack-technique", "T1195") in ts
 
     def test_subtechnique(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.T0000.001", "rdf:type", "Technique") in ts
         assert ("AML.T0000.001", "subtechnique-of", "AML.T0000") in ts
 
     def test_case_study(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.CS0001", "rdf:type", "CaseStudy") in ts
         assert ("AML.CS0001", "name", "Evasion of ML Malware Detector") in ts
@@ -130,7 +130,7 @@ class TestAtlasTriples:
 
     def test_mitigation(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("AML.M0001", "rdf:type", "Mitigation") in ts
         assert ("AML.M0001", "name", "Model Validation") in ts
@@ -138,7 +138,7 @@ class TestAtlasTriples:
 
     def test_no_id_skipped(self, sample_yaml_path):
         triples = extract_atlas_triples(sample_yaml_path)
-        names = [o for s, p, o in triples if p == "name"]
+        names = [o for s, p, o, *_ in triples if p == "name"]
         assert "No ID Technique" not in names
 
     def test_triple_count(self, sample_yaml_path):

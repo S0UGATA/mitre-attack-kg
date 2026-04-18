@@ -135,14 +135,14 @@ def sample_cve_dir(tmp_path):
 class TestVulnrichmentTriples:
     def test_cvss_scores(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-1234", "adp-cvss-base-score", "9.8") in ts
         assert ("CVE-2024-1234", "adp-cvss-severity", "CRITICAL") in ts
 
     def test_ssvc_decision_points(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-1234", "ssvc-exploitation", "active") in ts
         assert ("CVE-2024-1234", "ssvc-automatable", "yes") in ts
@@ -150,13 +150,13 @@ class TestVulnrichmentTriples:
 
     def test_cwe_from_adp(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-1234", "adp-related-weakness", "CWE-79") in ts
 
     def test_cpe_from_adp(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert (
             "CVE-2024-1234",
@@ -166,7 +166,7 @@ class TestVulnrichmentTriples:
 
     def test_second_cve_ssvc(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-5678", "ssvc-exploitation", "none") in ts
         assert ("CVE-2024-5678", "ssvc-automatable", "no") in ts
@@ -174,13 +174,13 @@ class TestVulnrichmentTriples:
 
     def test_rejected_skipped(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "CVE-2024-9999" not in subjects
 
     def test_no_adp_produces_no_triples(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         # CVE-2024-0001 has no ADP container, so no enrichment triples
         assert "CVE-2024-0001" not in subjects

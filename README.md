@@ -127,7 +127,7 @@ graph LR
 # Install dependencies
 pip install -r requirements.txt
 
-# Convert everything (all 15 sources) and produce combined.parquet
+# Convert everything (all 16 sources) and produce combined.parquet
 python src/convert.py
 
 # Convert only ATT&CK
@@ -214,7 +214,7 @@ Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.git
 
 ## Cross-Source Analysis Notebook
 
-The [cross-source visualizations notebook](tests/cross_source_visualizations.ipynb) demonstrates 16 analyses that are only possible because all 15 sources are merged into a single graph — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
+The [cross-source visualizations notebook](tests/cross_source_visualizations.ipynb) demonstrates 16 analyses that are only possible because all 16 sources are merged into a single graph — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
 
 ```bash
 pip install -e ".[viz]"

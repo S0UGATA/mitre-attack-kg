@@ -30,7 +30,14 @@ class TestIntegration:
 
     def test_schema(self, enterprise_df):
         """DataFrame should have the expected SPO columns."""
-        assert list(enterprise_df.columns) == ["subject", "predicate", "object"]
+        assert list(enterprise_df.columns) == [
+            "subject",
+            "predicate",
+            "object",
+            "source",
+            "object_type",
+            "meta",
+        ]
 
 
 # ---------------------------------------------------------------------------
@@ -110,6 +117,13 @@ class TestHuggingFaceLoad:
         datasets = pytest.importorskip("datasets")
 
         ds = datasets.Dataset.from_pandas(enterprise_df)
-        assert list(ds.features.keys()) == ["subject", "predicate", "object"]
+        assert list(ds.features.keys()) == [
+            "subject",
+            "predicate",
+            "object",
+            "source",
+            "object_type",
+            "meta",
+        ]
         assert len(ds) == len(enterprise_df)
         assert len(ds) > 30_000

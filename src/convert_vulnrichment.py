@@ -2,11 +2,14 @@
 
 import json
 import logging
+from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_github_zip
+from common import download_github_zip, extract_cvss_meta, get_object_type
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "vulnrichment"
 
 
 def download_vulnrichment(cache_dir: str | None = None) -> str:
@@ -16,12 +19,12 @@ def download_vulnrichment(cache_dir: str | None = None) -> str:
     )
 
 
-def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str]]:
-    """Extract enrichment triples from a single Vulnrichment CVE JSON file.
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
 
-    Focuses on the ADP (Authorized Data Publisher) container from CISA,
-    which provides SSVC decision points, CVSS scores, CWE IDs, and CPE data.
-    """
+
+def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, str]]:
+    """Extract enrichment triples from a single Vulnrichment CVE JSON file."""
     meta = cve_data.get("cveMetadata", {})
     cve_id = meta.get("cveId", "")
     if not cve_id:
@@ -31,18 +34,17 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str]]:
     if state == "REJECTED":
         return []
 
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
 
-    # Process ADP containers (CISA enrichment)
     for adp in cve_data.get("containers", {}).get("adp", []):
         # CVSS metrics from ADP
         for metric in adp.get("metrics", []):
-            cvss = metric.get("cvssV4_0") or metric.get("cvssV3_1") or metric.get("cvssV3_0")
+            cvss, m = extract_cvss_meta(metric)
             if cvss:
                 if cvss.get("baseScore") is not None:
-                    triples.append((cve_id, "adp-cvss-base-score", str(cvss["baseScore"])))
+                    triples.append(_t(cve_id, "adp-cvss-base-score", str(cvss["baseScore"]), m))
                 if cvss.get("baseSeverity"):
-                    triples.append((cve_id, "adp-cvss-severity", cvss["baseSeverity"]))
+                    triples.append(_t(cve_id, "adp-cvss-severity", cvss["baseSeverity"], m))
 
             # SSVC decision points
             other = metric.get("other", {})
@@ -51,28 +53,25 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str]]:
                 for option in content.get("options", []):
                     for key, value in option.items():
                         key_slug = key.lower().replace(" ", "-")
-                        triples.append((cve_id, f"ssvc-{key_slug}", str(value)))
+                        triples.append(_t(cve_id, f"ssvc-{key_slug}", str(value)))
 
         # CWE from ADP problemTypes
         for pt in adp.get("problemTypes", []):
             for desc in pt.get("descriptions", []):
                 cwe_id = desc.get("cweId")
                 if cwe_id:
-                    triples.append((cve_id, "adp-related-weakness", cwe_id))
+                    triples.append(_t(cve_id, "adp-related-weakness", cwe_id))
 
         # Affected products from ADP
         for affected in adp.get("affected", []):
             for cpe_str in affected.get("cpes", []):
-                triples.append((cve_id, "adp-affects-cpe", cpe_str))
+                triples.append(_t(cve_id, "adp-affects-cpe", cpe_str))
 
     return triples
 
 
-def extract_vulnrichment_triples(data_dir: str):
-    """Yield SPO triples from all Vulnrichment CVE JSON files.
-
-    Returns a generator to avoid loading all triples into memory.
-    """
+def extract_vulnrichment_triples(data_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+    """Yield SPO triples from all Vulnrichment CVE JSON files."""
     data_path = Path(data_dir)
     count = 0
 

@@ -26,21 +26,21 @@ def sample_gz_path(tmp_path):
 class TestEpssTriples:
     def test_basic_scores(self, sample_gz_path):
         triples = list(extract_epss_triples(sample_gz_path))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-1234", "epss-score", "0.00036") in ts
         assert ("CVE-2024-1234", "epss-percentile", "0.12345") in ts
 
     def test_high_score(self, sample_gz_path):
         triples = list(extract_epss_triples(sample_gz_path))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-5678", "epss-score", "0.97500") in ts
         assert ("CVE-2024-5678", "epss-percentile", "0.99900") in ts
 
     def test_all_cves_present(self, sample_gz_path):
         triples = list(extract_epss_triples(sample_gz_path))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "CVE-2024-1234" in subjects
         assert "CVE-2024-5678" in subjects
@@ -53,7 +53,7 @@ class TestEpssTriples:
 
     def test_only_two_predicates(self, sample_gz_path):
         triples = list(extract_epss_triples(sample_gz_path))
-        predicates = {p for _, p, _ in triples}
+        predicates = {t[1] for t in triples}
         assert predicates == {"epss-score", "epss-percentile"}
 
     def test_empty_csv(self, tmp_path):

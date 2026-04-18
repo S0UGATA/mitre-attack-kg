@@ -50,7 +50,7 @@ def sample_json_path(tmp_path):
 class TestKevTriples:
     def test_basic_properties(self, sample_json_path):
         triples = extract_kev_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-1234", "rdf:type", "KnownExploitedVulnerability") in ts
         assert ("CVE-2024-1234", "kev-vendor", "Microsoft") in ts
@@ -61,40 +61,40 @@ class TestKevTriples:
 
     def test_description(self, sample_json_path):
         triples = extract_kev_triples(sample_json_path)
-        desc = [o for s, p, o in triples if s == "CVE-2024-1234" and p == "kev-description"]
+        desc = [t[2] for t in triples if t[0] == "CVE-2024-1234" and t[1] == "kev-description"]
         assert len(desc) == 1
         assert "privilege escalation" in desc[0].lower()
 
     def test_ransomware_and_notes(self, sample_json_path):
         triples = extract_kev_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-1234", "kev-ransomware-use", "Known") in ts
         assert ("CVE-2024-1234", "kev-notes", "See vendor advisory.") in ts
 
     def test_required_action(self, sample_json_path):
         triples = extract_kev_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         action = "Apply updates per vendor instructions."
         assert ("CVE-2024-1234", "kev-required-action", action) in ts
 
     def test_cwe_cross_link(self, sample_json_path):
         triples = extract_kev_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-1234", "related-weakness", "CWE-269") in ts
 
     def test_second_vuln(self, sample_json_path):
         triples = extract_kev_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CVE-2024-5678", "rdf:type", "KnownExploitedVulnerability") in ts
         assert ("CVE-2024-5678", "kev-vendor", "Apache") in ts
 
     def test_no_cve_id_skipped(self, sample_json_path):
         triples = extract_kev_triples(sample_json_path)
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "NoCVE" not in subjects
         assert "" not in subjects

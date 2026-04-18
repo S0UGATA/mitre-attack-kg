@@ -3,11 +3,19 @@
 import json
 import logging
 import re
+from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_github_zip
+from common import download_github_zip, get_object_type, meta_json
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "misp_galaxy"
+
+
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
+
 
 # Clusters to skip (not security-relevant)
 SKIP_CLUSTERS = frozenset(
@@ -96,56 +104,72 @@ def _find_clusters_dir(extract_dir: str) -> Path:
     raise FileNotFoundError(f"No clusters/ directory found in {extract_dir}")
 
 
-def _value_triples(entry: dict, galaxy_type: str, is_mitre: bool) -> list[tuple[str, str, str]]:
+def _value_triples(
+    entry: dict, galaxy_type: str, is_mitre: bool
+) -> list[tuple[str, str, str, str, str, str]]:
     """Extract triples from a single cluster value entry."""
     uuid = entry.get("uuid", "")
     if not uuid:
         return []
 
     subject = f"misp:{uuid}"
-    triples: list[tuple[str, str, str]] = []
-    meta = entry.get("meta", {})
+    triples: list[tuple[str, str, str, str, str, str]] = []
+    entry_meta = entry.get("meta", {})
 
     # Entity property triples (skip for MITRE clusters to avoid ATT&CK duplication)
     if not is_mitre:
-        triples.append((subject, "rdf:type", _type_to_label(galaxy_type)))
+        # Entity-level meta: references
+        entity_meta: dict = {}
+        refs = entry_meta.get("refs")
+        if refs and isinstance(refs, list):
+            ref_urls = [str(r) for r in refs if r]
+            if ref_urls:
+                entity_meta["references"] = ref_urls
+
+        triples.append(_t(subject, "rdf:type", _type_to_label(galaxy_type), meta_json(entity_meta)))
 
         if entry.get("value"):
-            triples.append((subject, "name", str(entry["value"])))
+            triples.append(_t(subject, "name", str(entry["value"])))
         if entry.get("description"):
-            triples.append((subject, "description", str(entry["description"])))
+            triples.append(_t(subject, "description", str(entry["description"])))
 
-        triples.append((subject, "galaxy", galaxy_type))
+        triples.append(_t(subject, "galaxy", galaxy_type))
 
-        for syn in meta.get("synonyms", []):
+        for syn in entry_meta.get("synonyms", []):
             if syn:
-                triples.append((subject, "synonym", str(syn)))
+                triples.append(_t(subject, "synonym", str(syn)))
                 if _ATTACK_ID_RE.match(str(syn)):
-                    triples.append((subject, "related-attack-id", str(syn)))
+                    triples.append(_t(subject, "related-attack-id", str(syn)))
 
-        if meta.get("country"):
-            triples.append((subject, "country", str(meta["country"])))
+        if entry_meta.get("country"):
+            triples.append(_t(subject, "country", str(entry_meta["country"])))
 
-        if meta.get("cfr-suspected-state-sponsor"):
+        if entry_meta.get("cfr-suspected-state-sponsor"):
             triples.append(
-                (subject, "cfr-suspected-state-sponsor", str(meta["cfr-suspected-state-sponsor"]))
+                _t(
+                    subject,
+                    "cfr-suspected-state-sponsor",
+                    str(entry_meta["cfr-suspected-state-sponsor"]),
+                )
             )
 
-        for victim in meta.get("cfr-suspected-victims", []):
+        for victim in entry_meta.get("cfr-suspected-victims", []):
             if victim:
-                triples.append((subject, "targets-country", str(victim)))
+                triples.append(_t(subject, "targets-country", str(victim)))
 
-        for cat in meta.get("cfr-target-category", []):
+        for cat in entry_meta.get("cfr-target-category", []):
             if cat:
-                triples.append((subject, "targets-sector", str(cat)))
+                triples.append(_t(subject, "targets-sector", str(cat)))
 
-        if meta.get("attribution-confidence"):
-            triples.append((subject, "attribution-confidence", str(meta["attribution-confidence"])))
+        if entry_meta.get("attribution-confidence"):
+            triples.append(
+                _t(subject, "attribution-confidence", str(entry_meta["attribution-confidence"]))
+            )
 
     # Cross-link to ATT&CK via external_id (MITRE clusters)
-    ext_id = meta.get("external_id", "")
+    ext_id = entry_meta.get("external_id", "")
     if ext_id and _ATTACK_ID_RE.match(ext_id):
-        triples.append((subject, "related-attack-id", ext_id))
+        triples.append(_t(subject, "related-attack-id", ext_id))
 
     # Relationship triples from the `related` array
     for rel in entry.get("related", []):
@@ -155,12 +179,12 @@ def _value_triples(entry: dict, galaxy_type: str, is_mitre: bool) -> list[tuple[
             continue
 
         predicate = rel_type if rel_type in KNOWN_RELATION_TYPES else "misp-related"
-        triples.append((subject, predicate, f"misp:{dest_uuid}"))
+        triples.append(_t(subject, predicate, f"misp:{dest_uuid}"))
 
     return triples
 
 
-def extract_misp_galaxy_triples(extract_dir: str):
+def extract_misp_galaxy_triples(extract_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
     """Yield SPO triples from all MISP Galaxy cluster JSON files."""
     clusters_dir = _find_clusters_dir(extract_dir)
     cluster_files = sorted(clusters_dir.glob("*.json"))

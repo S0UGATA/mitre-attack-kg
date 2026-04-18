@@ -4,9 +4,11 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file
+from common import download_file, get_object_type
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "kev"
 
 KEV_URL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
 
@@ -16,42 +18,46 @@ def download_kev(cache_dir: str | None = None) -> str:
     return str(download_file(KEV_URL, "known_exploited_vulnerabilities.json", cache_dir))
 
 
-def extract_kev_triples(json_path: str) -> list[tuple[str, str, str]]:
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
+
+
+def extract_kev_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
     """Extract SPO triples from CISA KEV JSON."""
     with open(json_path) as f:
         data = json.load(f)
 
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
 
     for vuln in data.get("vulnerabilities", []):
         cve_id = vuln.get("cveID", "")
         if not cve_id:
             continue
 
-        triples.append((cve_id, "rdf:type", "KnownExploitedVulnerability"))
+        triples.append(_t(cve_id, "rdf:type", "KnownExploitedVulnerability"))
 
         if vuln.get("vendorProject"):
-            triples.append((cve_id, "kev-vendor", vuln["vendorProject"]))
+            triples.append(_t(cve_id, "kev-vendor", vuln["vendorProject"]))
         if vuln.get("product"):
-            triples.append((cve_id, "kev-product", vuln["product"]))
+            triples.append(_t(cve_id, "kev-product", vuln["product"]))
         if vuln.get("vulnerabilityName"):
-            triples.append((cve_id, "kev-name", vuln["vulnerabilityName"]))
+            triples.append(_t(cve_id, "kev-name", vuln["vulnerabilityName"]))
         if vuln.get("shortDescription"):
-            triples.append((cve_id, "kev-description", vuln["shortDescription"]))
+            triples.append(_t(cve_id, "kev-description", vuln["shortDescription"]))
         if vuln.get("dateAdded"):
-            triples.append((cve_id, "kev-date-added", vuln["dateAdded"]))
+            triples.append(_t(cve_id, "kev-date-added", vuln["dateAdded"]))
         if vuln.get("requiredAction"):
-            triples.append((cve_id, "kev-required-action", vuln["requiredAction"]))
+            triples.append(_t(cve_id, "kev-required-action", vuln["requiredAction"]))
         if vuln.get("dueDate"):
-            triples.append((cve_id, "kev-due-date", vuln["dueDate"]))
+            triples.append(_t(cve_id, "kev-due-date", vuln["dueDate"]))
         if vuln.get("knownRansomwareCampaignUse"):
-            triples.append((cve_id, "kev-ransomware-use", vuln["knownRansomwareCampaignUse"]))
+            triples.append(_t(cve_id, "kev-ransomware-use", vuln["knownRansomwareCampaignUse"]))
         if vuln.get("notes"):
-            triples.append((cve_id, "kev-notes", vuln["notes"]))
+            triples.append(_t(cve_id, "kev-notes", vuln["notes"]))
         for cwe in vuln.get("cwes", []):
             if cwe:
                 cwe_id = cwe if cwe.startswith("CWE-") else f"CWE-{cwe}"
-                triples.append((cve_id, "related-weakness", cwe_id))
+                triples.append(_t(cve_id, "related-weakness", cwe_id))
 
     return triples
 

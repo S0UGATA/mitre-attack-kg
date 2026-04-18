@@ -2,17 +2,23 @@
 
 import logging
 import re
-import zipfile
+from collections.abc import Iterator
 from pathlib import Path
 
 import requests
 import yaml
 
-from common import SOURCE_DIR, github_api_headers
+from common import SOURCE_DIR, get_object_type, github_api_headers, meta_json, safe_zip_extract
 
 logger = logging.getLogger(__name__)
 
+SOURCE = "sigma"
+
 SIGMA_RELEASES_API = "https://api.github.com/repos/SigmaHQ/sigma/releases/latest"
+
+
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
 
 
 def download_sigma(cache_dir: str | None = None) -> str:
@@ -57,8 +63,7 @@ def download_sigma(cache_dir: str | None = None) -> str:
 
     logger.info("Extracting %s ...", zip_path)
     extract_dir.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(zip_path) as zf:
-        zf.extractall(extract_dir)
+    safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted Sigma rules to %s", extract_dir)
 
     return str(extract_dir)
@@ -70,37 +75,46 @@ _TECHNIQUE_RE = re.compile(r"^attack\.t(\d{4}(?:\.\d{3})?)$", re.IGNORECASE)
 _CVE_RE = re.compile(r"^cve\.(\d{4}\.\d+)$", re.IGNORECASE)
 
 
-def _rule_triples(rule: dict) -> list[tuple[str, str, str]]:
+def _rule_triples(rule: dict) -> list[tuple[str, str, str, str, str, str]]:
     """Extract triples from a single Sigma rule."""
     rule_id = rule.get("id", "")
     if not rule_id:
         return []
 
-    triples: list[tuple[str, str, str]] = [
-        (rule_id, "rdf:type", "SigmaRule"),
+    # Entity-level meta: false_positives, references
+    entity_meta: dict = {}
+    fps = rule.get("falsepositives")
+    if fps and isinstance(fps, list):
+        entity_meta["false_positives"] = [str(fp) for fp in fps if fp]
+    refs = rule.get("references")
+    if refs and isinstance(refs, list):
+        entity_meta["references"] = [str(r) for r in refs if r]
+
+    triples: list[tuple[str, str, str, str, str, str]] = [
+        _t(rule_id, "rdf:type", "SigmaRule", meta_json(entity_meta)),
     ]
 
     if rule.get("title"):
-        triples.append((rule_id, "title", str(rule["title"])))
+        triples.append(_t(rule_id, "title", str(rule["title"])))
     if rule.get("description"):
-        triples.append((rule_id, "description", str(rule["description"])))
+        triples.append(_t(rule_id, "description", str(rule["description"])))
     if rule.get("status"):
-        triples.append((rule_id, "status", str(rule["status"])))
+        triples.append(_t(rule_id, "status", str(rule["status"])))
     if rule.get("level"):
-        triples.append((rule_id, "level", str(rule["level"])))
+        triples.append(_t(rule_id, "level", str(rule["level"])))
     if rule.get("author"):
-        triples.append((rule_id, "author", str(rule["author"])))
+        triples.append(_t(rule_id, "author", str(rule["author"])))
     if rule.get("date"):
-        triples.append((rule_id, "date", str(rule["date"])))
+        triples.append(_t(rule_id, "date", str(rule["date"])))
 
     # Logsource
     logsource = rule.get("logsource", {})
     if logsource.get("category"):
-        triples.append((rule_id, "logsource-category", str(logsource["category"])))
+        triples.append(_t(rule_id, "logsource-category", str(logsource["category"])))
     if logsource.get("product"):
-        triples.append((rule_id, "logsource-product", str(logsource["product"])))
+        triples.append(_t(rule_id, "logsource-product", str(logsource["product"])))
     if logsource.get("service"):
-        triples.append((rule_id, "logsource-service", str(logsource["service"])))
+        triples.append(_t(rule_id, "logsource-service", str(logsource["service"])))
 
     # Tags → ATT&CK technique links and CVE links
     for tag in rule.get("tags", []):
@@ -110,19 +124,19 @@ def _rule_triples(rule: dict) -> list[tuple[str, str, str]]:
         match = _TECHNIQUE_RE.match(tag_str)
         if match:
             tech_id = "T" + match.group(1).upper()
-            triples.append((rule_id, "detects-technique", tech_id))
+            triples.append(_t(rule_id, "detects-technique", tech_id))
             continue
 
         # CVE reference: cve.2024.1234
         match = _CVE_RE.match(tag_str)
         if match:
             cve_id = "CVE-" + match.group(1).replace(".", "-", 1)
-            triples.append((rule_id, "related-cve", cve_id))
+            triples.append(_t(rule_id, "related-cve", cve_id))
 
     return triples
 
 
-def extract_sigma_triples(rules_dir: str):
+def extract_sigma_triples(rules_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
     """Yield SPO triples from all Sigma rule YAML files."""
     rules_path = Path(rules_dir)
 

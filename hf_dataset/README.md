@@ -119,6 +119,12 @@ dataset_info:
     dtype: string
   - name: object
     dtype: string
+  - name: source
+    dtype: string
+  - name: object_type
+    dtype: string
+  - name: meta
+    dtype: string
 ---
 
 # Security Knowledge Graph Triples
@@ -136,7 +142,7 @@ from datasets import load_dataset
 
 ds = load_dataset("s0u9ata/security-kg", "enterprise")
 print(ds["train"][0])
-# {'subject': 'T1059.001', 'predicate': 'rdf:type', 'object': 'Technique'}
+# {'subject': 'T1059.001', 'predicate': 'rdf:type', 'object': 'Technique', 'source': 'attack', 'object_type': 'enum', 'meta': ''}
 ```
 
 ## Configurations
@@ -210,13 +216,16 @@ print(ds["train"][0])
 
 ## Schema
 
-Each row is a single triple with three string columns:
+Each row is an enriched triple with six string columns:
 
 | Column | Description | Examples |
 |--------|-------------|----------|
 | `subject` | Entity ID | `T1059.001`, `G0016`, `CAPEC-66`, `CWE-79`, `CVE-2024-1234`, `cpe:2.3:a:apache:httpd:*`, `D3-FE`, `AML.T0000`, `CAR-2024-01-001`, `EAC0001`, `GHSA-xxxx-yyyy-zzzz`, `EDB-16929` |
 | `predicate` | Property name or relationship type | `rdf:type`, `name`, `uses`, `mitigates`, `epss-score`, `counters`, `ssvc-exploitation`, `exploits-cve`, `detects-technique` |
 | `object` | Value or target entity ID | `Technique`, `PowerShell`, `T1059`, `CWE-89`, `0.97500`, `SecurityAdvisory`, `SigmaRule`, `Exploit` |
+| `source` | Originating dataset | `attack`, `cve`, `cwe`, `capec`, `epss`, `kev`, `ghsa`, `sigma`, `d3fend`, `atlas`, `car`, `engage`, `cpe`, `vulnrichment`, `exploitdb`, `misp_galaxy` |
+| `object_type` | Value type of the object | `string`, `id`, `enum`, `date`, `number`, `boolean`, `url` |
+| `meta` | Supplemental JSON metadata (empty string if none) | `{"references":["https://..."],"credits":[...]}`, `{"cvss_vector":"...","cvss_version":"3.1"}` |
 
 ## Predicate Reference
 

@@ -65,7 +65,7 @@ def sample_rules_dir(tmp_path):
 class TestSigmaTriples:
     def test_basic_properties(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         rule_id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 
         assert (rule_id, "rdf:type", "SigmaRule") in ts
@@ -78,13 +78,13 @@ class TestSigmaTriples:
     def test_description(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
         rule_id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-        desc = [o for s, p, o in triples if s == rule_id and p == "description"]
+        desc = [t[2] for t in triples if t[0] == rule_id and t[1] == "description"]
         assert len(desc) == 1
         assert "PowerShell" in desc[0]
 
     def test_logsource(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         rule_id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 
         assert (rule_id, "logsource-category", "process_creation") in ts
@@ -92,14 +92,14 @@ class TestSigmaTriples:
 
     def test_logsource_service(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         rule_id = "b2c3d4e5-f6a7-8901-bcde-f12345678901"
 
         assert (rule_id, "logsource-service", "sshd") in ts
 
     def test_attack_technique_tags(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         rule_id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 
         assert (rule_id, "detects-technique", "T1059.001") in ts
@@ -107,14 +107,14 @@ class TestSigmaTriples:
 
     def test_cve_tags(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         rule_id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
 
         assert (rule_id, "related-cve", "CVE-2024-1234") in ts
 
     def test_second_rule(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         rule_id = "b2c3d4e5-f6a7-8901-bcde-f12345678901"
 
         assert (rule_id, "rdf:type", "SigmaRule") in ts
@@ -122,14 +122,14 @@ class TestSigmaTriples:
 
     def test_no_id_skipped(self, sample_rules_dir):
         triples = list(extract_sigma_triples(sample_rules_dir))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "" not in subjects
 
     def test_tactic_tags_not_techniques(self, sample_rules_dir):
         """Tactic tags like attack.execution should not create detects-technique triples."""
         triples = list(extract_sigma_triples(sample_rules_dir))
-        technique_objs = {o for _, p, o in triples if p == "detects-technique"}
+        technique_objs = {t[2] for t in triples if t[1] == "detects-technique"}
 
         # "execution" and "credential_access" are tactics, not techniques
         assert "execution" not in technique_objs

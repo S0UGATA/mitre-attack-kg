@@ -177,19 +177,19 @@ class TestEntityTriples:
         assert "url" in preds
 
         # Verify specific values
-        triple_set = set(triples)
+        triple_set = {t[:3] for t in triples}
         assert ("T1059.001", "rdf:type", "Technique") in triple_set
         assert ("T1059.001", "name", "PowerShell") in triple_set
         assert ("T1059.001", "platform", "Windows") in triple_set
         assert ("T1059.001", "belongs-to-tactic", "TA0002") in triple_set
-        assert ("T1059.001", "is-subtechnique", "True") in triple_set
+        assert ("T1059.001", "is-subtechnique", "true") in triple_set
         assert ("T1059.001", "url", "https://attack.mitre.org/techniques/T1059/001") in triple_set
 
     def test_group_aliases(self, fake_attack):
         obj = fake_attack.get_groups()[0]
         triples = _entity_triples(fake_attack, obj, "Group")
 
-        alias_triples = [(s, p, o) for s, p, o in triples if p == "alias"]
+        alias_triples = [(s, p, o) for s, p, o, *_ in triples if p == "alias"]
         alias_values = {o for _, _, o in alias_triples}
         # "APT29" is the name so should NOT appear as alias
         assert "APT29" not in alias_values
@@ -199,7 +199,36 @@ class TestEntityTriples:
     def test_tactic_shortname(self, fake_attack):
         obj = fake_attack.get_tactics()[0]
         triples = _entity_triples(fake_attack, obj, "Tactic")
-        assert ("TA0002", "shortname", "execution") in set(triples)
+        assert ("TA0002", "shortname", "execution") in {t[:3] for t in triples}
+
+    def test_six_tuple_source_and_object_type(self, fake_attack, tactic_map):
+        """Verify source, object_type, and meta fields in 6-tuple output."""
+        obj = fake_attack.get_techniques()[0]
+        triples = _entity_triples(fake_attack, obj, "Technique", tactic_map)
+
+        # All triples must have source="attack"
+        assert all(t[3] == "attack" for t in triples)
+
+        # Check object_type for specific predicates
+        by_pred = {t[1]: t for t in triples}
+        assert by_pred["rdf:type"][4] == "enum"  # rdf:type is enum
+        assert by_pred["name"][4] == "string"
+        assert by_pred["platform"][4] == "string"
+        assert by_pred["belongs-to-tactic"][4] == "id"
+        assert by_pred["is-subtechnique"][4] == "boolean"
+        assert by_pred["url"][4] == "url"
+        assert by_pred["created"][4] == "date"
+        assert by_pred["modified"][4] == "date"
+
+        # rdf:type triple should have non-empty meta (version, detection, ext refs)
+        rdf_type_meta = by_pred["rdf:type"][5]
+        # Meta may or may not be populated depending on fixture attrs,
+        # but the field should be a string
+        assert isinstance(rdf_type_meta, str)
+
+        # Property triples without special meta should have empty meta
+        assert by_pred["name"][5] == ""
+        assert by_pred["platform"][5] == ""
 
 
 class TestExtractTriples:
@@ -207,7 +236,7 @@ class TestExtractTriples:
         triples = extract_triples(fake_attack)
 
         # Should have entity triples
-        triple_set = set(triples)
+        triple_set = {t[:3] for t in triples}
         assert ("T1059.001", "rdf:type", "Technique") in triple_set
         assert ("G0016", "name", "APT29") in triple_set
         assert ("S0154", "rdf:type", "Malware") in triple_set
@@ -229,15 +258,22 @@ class TestExtractTriples:
 class TestTriplesToDataframe:
     def test_schema(self):
         triples = [
-            ("T1059", "rdf:type", "Technique"),
-            ("T1059", "name", "Command and Scripting Interpreter"),
+            ("T1059", "rdf:type", "Technique", "attack", "entity_type", ""),
+            ("T1059", "name", "Command and Scripting Interpreter", "attack", "attribute", ""),
         ]
         df = triples_to_dataframe(triples)
-        assert list(df.columns) == ["subject", "predicate", "object"]
+        assert list(df.columns) == [
+            "subject",
+            "predicate",
+            "object",
+            "source",
+            "object_type",
+            "meta",
+        ]
         assert len(df) == 2
 
     def test_values(self):
-        triples = [("G0016", "uses", "T1059.001")]
+        triples = [("G0016", "uses", "T1059.001", "attack", "relationship", "")]
         df = triples_to_dataframe(triples)
         assert df.iloc[0]["subject"] == "G0016"
         assert df.iloc[0]["predicate"] == "uses"
@@ -256,6 +292,13 @@ class TestConvertDomain:
         out_file = tmp_path / "enterprise.parquet"
         assert out_file.exists()
         loaded = pd.read_parquet(out_file)
-        assert list(loaded.columns) == ["subject", "predicate", "object"]
+        assert list(loaded.columns) == [
+            "subject",
+            "predicate",
+            "object",
+            "source",
+            "object_type",
+            "meta",
+        ]
         assert len(loaded) == len(df)
         assert len(loaded) > 0

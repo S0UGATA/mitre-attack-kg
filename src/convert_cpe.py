@@ -2,11 +2,14 @@
 
 import json
 import logging
+from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_tar_gz
+from common import download_tar_gz, get_object_type, meta_json
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "cpe"
 
 CPE_URL = "https://nvd.nist.gov/feeds/json/cpe/2.0/nvdcpe-2.0.tar.gz"
 
@@ -37,7 +40,11 @@ def _parse_cpe_uri(cpe_name: str) -> dict[str, str]:
     }
 
 
-def extract_cpe_triples(data_dir: str):
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
+
+
+def extract_cpe_triples(data_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
     """Yield SPO triples from NVD CPE dictionary JSON files.
 
     Returns a generator to avoid loading millions of triples into memory.
@@ -69,18 +76,26 @@ def extract_cpe_triples(data_dir: str):
             if cpe.get("deprecated", False):
                 continue
 
-            yield (cpe_name, "rdf:type", "Platform")
+            # Entity-level meta: references
+            entity_meta: dict = {}
+            refs = cpe.get("refs", [])
+            if refs:
+                ref_urls = [r.get("ref") for r in refs if r.get("ref")]
+                if ref_urls:
+                    entity_meta["references"] = ref_urls
+
+            yield _t(cpe_name, "rdf:type", "Platform", meta_json(entity_meta))
 
             # Parse and add components
             components = _parse_cpe_uri(cpe_name)
             if components.get("part"):
-                yield (cpe_name, "part", components["part"])
+                yield _t(cpe_name, "part", components["part"])
             if components.get("vendor"):
-                yield (cpe_name, "vendor", components["vendor"])
+                yield _t(cpe_name, "vendor", components["vendor"])
             if components.get("product"):
-                yield (cpe_name, "product", components["product"])
+                yield _t(cpe_name, "product", components["product"])
             if components.get("version"):
-                yield (cpe_name, "version", components["version"])
+                yield _t(cpe_name, "version", components["version"])
 
             # Title (English only)
             en_title = next(
@@ -92,13 +107,13 @@ def extract_cpe_triples(data_dir: str):
                 None,
             )
             if en_title:
-                yield (cpe_name, "title", en_title)
+                yield _t(cpe_name, "title", en_title)
 
             # Dates
             if cpe.get("created"):
-                yield (cpe_name, "created", cpe["created"])
+                yield _t(cpe_name, "created", cpe["created"])
             if cpe.get("lastModified"):
-                yield (cpe_name, "modified", cpe["lastModified"])
+                yield _t(cpe_name, "modified", cpe["lastModified"])
 
 
 if __name__ == "__main__":

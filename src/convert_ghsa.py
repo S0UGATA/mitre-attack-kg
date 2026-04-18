@@ -2,11 +2,14 @@
 
 import json
 import logging
+from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_github_zip
+from common import download_github_zip, get_object_type, meta_json
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "ghsa"
 
 
 def download_ghsa(cache_dir: str | None = None) -> str:
@@ -27,43 +30,69 @@ def _find_reviewed_dir(extract_dir: str) -> Path:
     return reviewed_dir
 
 
-def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str]]:
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
+
+
+def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str, str, str, str]]:
     """Extract triples from a single GHSA advisory (OSV format)."""
     ghsa_id = advisory.get("id", "")
     if not ghsa_id:
         return []
 
-    triples: list[tuple[str, str, str]] = [
-        (ghsa_id, "rdf:type", "SecurityAdvisory"),
+    # Entity-level meta: references, credits
+    entity_meta: dict = {}
+    refs = advisory.get("references", [])
+    if refs:
+        ref_urls = [r.get("url") for r in refs if r.get("url")]
+        if ref_urls:
+            entity_meta["references"] = ref_urls
+
+    credits_list = advisory.get("credits", [])
+    if credits_list:
+        credit_entries = []
+        for c in credits_list:
+            entry: dict = {}
+            if c.get("type"):
+                entry["type"] = c["type"]
+            if c.get("name"):
+                entry["name"] = c["name"]
+            if entry:
+                credit_entries.append(entry)
+        if credit_entries:
+            entity_meta["credits"] = credit_entries
+
+    triples: list[tuple[str, str, str, str, str, str]] = [
+        _t(ghsa_id, "rdf:type", "SecurityAdvisory", meta_json(entity_meta)),
     ]
 
     if advisory.get("summary"):
-        triples.append((ghsa_id, "summary", advisory["summary"]))
+        triples.append(_t(ghsa_id, "summary", advisory["summary"]))
 
     if advisory.get("published"):
-        triples.append((ghsa_id, "date-published", advisory["published"]))
+        triples.append(_t(ghsa_id, "date-published", advisory["published"]))
     if advisory.get("modified"):
-        triples.append((ghsa_id, "date-modified", advisory["modified"]))
+        triples.append(_t(ghsa_id, "date-modified", advisory["modified"]))
 
     # CVE aliases
     for alias in advisory.get("aliases", []):
         if alias.startswith("CVE-"):
-            triples.append((ghsa_id, "related-cve", alias))
+            triples.append(_t(ghsa_id, "related-cve", alias))
 
     # Severity (CVSS)
     for sev in advisory.get("severity", []):
         if sev.get("score"):
-            triples.append((ghsa_id, "cvss-vector", sev["score"]))
+            triples.append(_t(ghsa_id, "cvss-vector", sev["score"]))
 
     # database_specific fields
     db_specific = advisory.get("database_specific", {})
     severity = db_specific.get("severity")
     if severity:
-        triples.append((ghsa_id, "severity", severity))
+        triples.append(_t(ghsa_id, "severity", severity))
 
     # CWE IDs
     for cwe_id in db_specific.get("cwe_ids", []):
-        triples.append((ghsa_id, "related-weakness", cwe_id))
+        triples.append(_t(ghsa_id, "related-weakness", cwe_id))
 
     # Affected packages
     for affected in advisory.get("affected", []):
@@ -74,22 +103,38 @@ def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str]]:
             continue
 
         pkg_id = f"{ecosystem}/{name}" if ecosystem else name
-        triples.append((ghsa_id, "affects-package", pkg_id))
+
+        # Build per-package meta: version ranges
+        pkg_meta: dict = {}
+        for rng in affected.get("ranges", []):
+            range_type = rng.get("type", "")
+            introduced = None
+            last_affected = None
+            for event in rng.get("events", []):
+                if "introduced" in event:
+                    introduced = event["introduced"]
+                if "last_affected" in event:
+                    last_affected = event["last_affected"]
+            if introduced and introduced != "0":
+                pkg_meta.setdefault("introduced", []).append(
+                    f"{range_type}:{introduced}" if range_type else introduced
+                )
+            if last_affected:
+                pkg_meta.setdefault("last_affected", []).append(last_affected)
+
+        triples.append(_t(ghsa_id, "affects-package", pkg_id, meta_json(pkg_meta)))
 
         # Version ranges
         for rng in affected.get("ranges", []):
             for event in rng.get("events", []):
                 if "fixed" in event:
-                    triples.append((ghsa_id, "fixed-in", f"{pkg_id}@{event['fixed']}"))
+                    triples.append(_t(ghsa_id, "fixed-in", f"{pkg_id}@{event['fixed']}"))
 
     return triples
 
 
-def extract_ghsa_triples(extract_dir: str):
-    """Yield SPO triples from all GHSA advisory JSON files.
-
-    Returns a generator to avoid loading all triples into memory.
-    """
+def extract_ghsa_triples(extract_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+    """Yield SPO triples from all GHSA advisory JSON files."""
     data_path = _find_reviewed_dir(extract_dir)
     count = 0
 

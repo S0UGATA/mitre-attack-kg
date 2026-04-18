@@ -65,7 +65,7 @@ def sample_json_path(tmp_path):
 class TestD3fendTriples:
     def test_defensive_technique(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("D3-FE", "rdf:type", "DefensiveTechnique") in ts
         assert ("D3-FE", "name", "File Encryption") in ts
@@ -73,20 +73,20 @@ class TestD3fendTriples:
 
     def test_synonyms(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("D3-FE", "synonym", "Disk Encryption") in ts
         assert ("D3-FE", "synonym", "Data Encryption") in ts
 
     def test_parent_relationship(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("D3-FE", "child-of", "PlatformHardening") in ts
 
     def test_offensive_technique(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("T1059", "rdf:type", "OffensiveTechnique") in ts
         assert ("T1059", "d3fend-name", "Command and Scripting Interpreter") in ts
@@ -95,26 +95,26 @@ class TestD3fendTriples:
 
     def test_offensive_parent(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("T1059", "child-of", "ExecutionTechnique") in ts
 
     def test_non_d3f_skipped(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "owl:Thing" not in subjects
 
     def test_counters_relationship(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("D3-FED", "counters", "T1059") in ts
 
     def test_multiple_techniques(self, sample_json_path):
         triples = extract_d3fend_triples(sample_json_path)
-        defensive = [(s, p, o) for s, p, o in triples if o == "DefensiveTechnique"]
-        offensive = [(s, p, o) for s, p, o in triples if o == "OffensiveTechnique"]
+        defensive = [t for t in triples if t[2] == "DefensiveTechnique"]
+        offensive = [t for t in triples if t[2] == "OffensiveTechnique"]
 
         assert len(defensive) == 3  # D3-FE, D3-PH, D3-FED
         assert len(offensive) == 2  # T1059, T1565

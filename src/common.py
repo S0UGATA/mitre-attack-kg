@@ -202,7 +202,7 @@ def download_tar_gz(url: str, filename: str, cache_dir: str | None = None) -> Pa
     return extract_dir
 
 
-def _safe_zip_extract(zip_path: Path, extract_dir: Path) -> None:
+def safe_zip_extract(zip_path: Path, extract_dir: Path) -> None:
     """Extract a ZIP file, rejecting entries with path traversal attempts."""
     resolved = extract_dir.resolve()
     with zipfile.ZipFile(zip_path) as zf:
@@ -210,7 +210,13 @@ def _safe_zip_extract(zip_path: Path, extract_dir: Path) -> None:
             target = (extract_dir / member).resolve()
             if not str(target).startswith(str(resolved)):
                 raise ValueError(f"Zip entry {member!r} would escape extraction directory")
-        zf.extractall(extract_dir)  # nosec B202 — path traversal validated above
+        for info in zf.infolist():
+            zf.extract(info, extract_dir)
+            extracted = extract_dir / info.filename
+            if info.is_dir():
+                os.chmod(extracted, 0o755)
+            else:
+                os.chmod(extracted, 0o644)
 
 
 def download_zip(url: str, filename: str, cache_dir: str | None = None) -> Path:
@@ -222,7 +228,7 @@ def download_zip(url: str, filename: str, cache_dir: str | None = None) -> Path:
         return extract_dir
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
-    _safe_zip_extract(zip_path, extract_dir)
+    safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
     return extract_dir
 
@@ -272,7 +278,7 @@ def download_github_zip(
 
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
-    _safe_zip_extract(zip_path, extract_dir)
+    safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
     return extract_dir
 
@@ -294,15 +300,212 @@ def xml_text(el: ET.Element | None) -> str:
 # ---------------------------------------------------------------------------
 
 RELATION_PREDICATES = {
+    "CanAlsoBe": "can-also-be",
+    "CanFollow": "can-follow",
+    "CanPrecede": "can-precede",
     "ChildOf": "child-of",
     "ParentOf": "parent-of",
-    "CanPrecede": "can-precede",
-    "CanFollow": "can-follow",
     "PeerOf": "peer-of",
-    "CanAlsoBe": "can-also-be",
     "Requires": "requires",
     "StartsWith": "starts-with",
 }
+
+
+# ---------------------------------------------------------------------------
+# Object type classification for predicates
+# ---------------------------------------------------------------------------
+
+PREDICATE_TYPES: dict[str, str] = {
+    # boolean
+    "deprecated": "boolean",
+    "is-subtechnique": "boolean",
+    "revoked": "boolean",
+    "verified": "boolean",
+    # date
+    "created": "date",
+    "date": "date",
+    "date-modified": "date",
+    "date-published": "date",
+    "date-updated": "date",
+    "kev-date-added": "date",
+    "kev-due-date": "date",
+    "modified": "date",
+    "submission-date": "date",
+    # enum
+    "abstraction": "enum",
+    "adp-cvss-severity": "enum",
+    "cvss-severity": "enum",
+    "exploit-type": "enum",
+    "kev-ransomware-use": "enum",
+    "level": "enum",
+    "likelihood": "enum",
+    "likelihood-of-exploit": "enum",
+    "maturity": "enum",
+    "part": "enum",
+    "rdf:type": "enum",
+    "severity": "enum",
+    "state": "enum",
+    "status": "enum",
+    # id
+    "addresses-vulnerability": "id",
+    "adp-affects-cpe": "id",
+    "adp-related-weakness": "id",
+    "affects-cpe": "id",
+    "attributed-to": "id",
+    "belongs-to-tactic": "id",
+    "can-also-be": "id",
+    "can-follow": "id",
+    "can-precede": "id",
+    "child-of": "id",
+    "covers-tactic": "id",
+    "detects": "id",
+    "detects-subtechnique": "id",
+    "detects-technique": "id",
+    "engages-technique": "id",
+    "exploits-cve": "id",
+    "maps-to-d3fend": "id",
+    "maps-to-technique": "id",
+    "misp-related": "id",
+    "mitigates": "id",
+    "parent-of": "id",
+    "peer-of": "id",
+    "related-attack-id": "id",
+    "related-attack-pattern": "id",
+    "related-attack-tactic": "id",
+    "related-attack-technique": "id",
+    "related-cve": "id",
+    "related-weakness": "id",
+    "requires": "id",
+    "similar-to": "id",
+    "starts-with": "id",
+    "subtechnique-of": "id",
+    "targets": "id",
+    "used-by": "id",
+    "uses": "id",
+    "uses-technique": "id",
+    "variant-of": "id",
+    "vulnerability-of": "id",
+    # number
+    "adp-cvss-base-score": "number",
+    "attribution-confidence": "number",
+    "cvss-base-score": "number",
+    "epss-percentile": "number",
+    "epss-score": "number",
+    # string
+    "affects-package": "string",
+    "alias": "string",
+    "analytic-type": "string",
+    "assigner": "string",
+    "author": "string",
+    "cfr-suspected-state-sponsor": "string",
+    "consequence-impact": "string",
+    "consequence-scope": "string",
+    "country": "string",
+    "coverage-level": "string",
+    "cvss-vector": "string",
+    "d3fend-definition": "string",
+    "d3fend-name": "string",
+    "definition": "string",
+    "description": "string",
+    "domain": "string",
+    "fixed-in": "string",
+    "galaxy": "string",
+    "information-domain": "string",
+    "introduction-phase": "string",
+    "kev-description": "string",
+    "kev-name": "string",
+    "kev-notes": "string",
+    "kev-product": "string",
+    "kev-required-action": "string",
+    "kev-vendor": "string",
+    "logsource-category": "string",
+    "logsource-product": "string",
+    "logsource-service": "string",
+    "name": "string",
+    "platform": "string",
+    "product": "string",
+    "shortname": "string",
+    "subtype": "string",
+    "summary": "string",
+    "synonym": "string",
+    "targets-country": "string",
+    "targets-sector": "string",
+    "title": "string",
+    "vendor": "string",
+    "version": "string",
+    # url
+    "url": "url",
+}
+
+
+def get_object_type(predicate: str, default: str = "string") -> str:
+    """Get the object type for a predicate."""
+    t = PREDICATE_TYPES.get(predicate)
+    if t:
+        return t
+    if predicate.startswith("ssvc-"):
+        return "enum"
+    return default
+
+
+def meta_json(d: dict | None) -> str:
+    """Convert a metadata dict to a compact JSON string, or empty string if None/empty."""
+    if not d:
+        return ""
+    return json.dumps(d, separators=(",", ":"))
+
+
+def extract_cvss_meta(metric: dict) -> tuple[dict | None, str]:
+    """Extract CVSS data from a metric dict, returning (cvss_dict, meta_json_str).
+
+    Returns (None, "") if no CVSS data found.
+    """
+    cvss_v4 = metric.get("cvssV4_0")
+    cvss_v31 = metric.get("cvssV3_1")
+    cvss_v30 = metric.get("cvssV3_0")
+    cvss = cvss_v4 or cvss_v31 or cvss_v30
+    if not cvss:
+        return None, ""
+    cvss_meta: dict = {}
+    if cvss.get("vectorString"):
+        cvss_meta["cvss_vector"] = cvss["vectorString"]
+    if cvss_v4:
+        cvss_meta["cvss_version"] = "4.0"
+    elif cvss_v31:
+        cvss_meta["cvss_version"] = "3.1"
+    elif cvss_v30:
+        cvss_meta["cvss_version"] = "3.0"
+    return cvss, meta_json(cvss_meta)
+
+
+def merge_meta(meta_list: list[str]) -> str:
+    """Merge multiple meta JSON strings into one.
+
+    Same keys with different values become lists; unique keys are unioned.
+    """
+    merged: dict = {}
+    for m in meta_list:
+        if not m:
+            continue
+        try:
+            d = json.loads(m)
+        except (json.JSONDecodeError, TypeError):
+            continue
+        for k, v in d.items():
+            if k not in merged:
+                merged[k] = v
+            elif merged[k] != v:
+                existing = merged[k]
+                if not isinstance(existing, list):
+                    existing = [existing]
+                if isinstance(v, list):
+                    for item in v:
+                        if item not in existing:
+                            existing.append(item)
+                elif v not in existing:
+                    existing.append(v)
+                merged[k] = existing
+    return meta_json(merged)
 
 
 # ---------------------------------------------------------------------------
@@ -314,6 +517,9 @@ PARQUET_SCHEMA = pa.schema(
         pa.field("subject", pa.string()),
         pa.field("predicate", pa.string()),
         pa.field("object", pa.string()),
+        pa.field("source", pa.string()),
+        pa.field("object_type", pa.string()),
+        pa.field("meta", pa.string()),
     ]
 )
 
@@ -323,16 +529,21 @@ PARQUET_FORMATS = {
 }
 
 
-def triples_to_dataframe(triples: list[tuple[str, str, str]]) -> pd.DataFrame:
-    """Convert list of (subject, predicate, object) tuples to DataFrame."""
-    return pd.DataFrame(triples, columns=["subject", "predicate", "object"])
+COLUMNS = ["subject", "predicate", "object", "source", "object_type", "meta"]
+
+
+def triples_to_dataframe(
+    triples: list[tuple[str, str, str, str, str, str]],
+) -> pd.DataFrame:
+    """Convert list of (subject, predicate, object, source, object_type, meta) tuples."""
+    return pd.DataFrame(triples, columns=COLUMNS)
 
 
 def write_parquet(df: pd.DataFrame, path: Path, parquet_format: str = "v2") -> None:
     """Write a DataFrame of triples to a Parquet file."""
     pq_opts = PARQUET_FORMATS[parquet_format]
     table = pa.table(
-        {"subject": df["subject"], "predicate": df["predicate"], "object": df["object"]},
+        {col: df[col] for col in COLUMNS},
         schema=PARQUET_SCHEMA,
     )
     pq.write_table(table, path, **pq_opts)
@@ -345,20 +556,20 @@ def write_triples_streaming(
     parquet_format: str = "v2",
     batch_size: int = 100_000,
 ) -> int:
-    """Write an iterable of (subject, predicate, object) triples to Parquet in batches.
+    """Write enriched triples to Parquet in batches.
 
-    Avoids loading all triples into memory at once.  Works with both generators
-    and plain lists.  Returns the total number of triples written.
+    Each triple is a 6-tuple: (subject, predicate, object, source, object_type, meta).
+    Avoids loading all triples into memory at once.  Returns the total written.
     """
     pq_opts = PARQUET_FORMATS[parquet_format]
     writer = None
     total = 0
-    batch: list[tuple[str, str, str]] = []
+    batch: list[tuple[str, str, str, str, str, str]] = []
 
     def _flush(batch):
-        subjects, predicates, objects = zip(*batch, strict=True)
+        cols = list(zip(*batch, strict=True))
         return pa.table(
-            {"subject": list(subjects), "predicate": list(predicates), "object": list(objects)},
+            {name: list(col) for name, col in zip(COLUMNS, cols, strict=True)},
             schema=PARQUET_SCHEMA,
         )
 
@@ -384,6 +595,44 @@ def write_triples_streaming(
 
     logger.info("Wrote %s (%d triples, format=%s)", path, total, parquet_format)
     return total
+
+
+def deduplicate_combined(
+    df: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict]:
+    """Deduplicate triples, merging source and meta for duplicate (s,p,o) rows.
+
+    Returns (deduplicated_df, stats) where stats contains:
+      - dup_rows: total rows involved in duplicates
+      - dup_unique: number of unique (s,p,o) triples that had duplicates
+      - by_source: dict mapping source name to count of duplicate rows
+    """
+    dup_mask = df.duplicated(subset=["subject", "predicate", "object"], keep=False)
+    n_dup_rows = int(dup_mask.sum())
+
+    if not n_dup_rows:
+        return df, {"dup_rows": 0, "dup_unique": 0, "by_source": {}}
+
+    dupes = df[dup_mask]
+    stats = {
+        "dup_rows": n_dup_rows,
+        "dup_unique": int(
+            dupes.drop_duplicates(subset=["subject", "predicate", "object"]).shape[0]
+        ),
+        "by_source": dupes.groupby("source").size().sort_values(ascending=False).to_dict(),
+    }
+
+    merged = (
+        dupes.groupby(["subject", "predicate", "object"], sort=False)
+        .agg(
+            source=("source", lambda x: ",".join(sorted(set(x)))),
+            object_type=("object_type", "first"),
+            meta=("meta", lambda x: merge_meta(list(x))),
+        )
+        .reset_index()
+    )
+
+    return pd.concat([df[~dup_mask], merged], ignore_index=True), stats
 
 
 # ---------------------------------------------------------------------------

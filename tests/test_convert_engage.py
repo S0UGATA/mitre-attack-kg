@@ -44,7 +44,7 @@ def sample_json_path(tmp_path):
 class TestEngageTriples:
     def test_eac_entity(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("EAC0001", "rdf:type", "EngagementActivity") in ts
         assert ("EAC0001", "name", "Software Manipulation") in ts
@@ -53,7 +53,7 @@ class TestEngageTriples:
 
     def test_eav_entity(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("EAV0001", "rdf:type", "AdversaryVulnerability") in ts
         assert ("EAV0002", "rdf:type", "AdversaryVulnerability") in ts
@@ -61,32 +61,32 @@ class TestEngageTriples:
     def test_eac_deduplicated(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)
         # EAC0001 appears twice in input but rdf:type should only appear once
-        type_triples = [(s, p, o) for s, p, o in triples if s == "EAC0001" and p == "rdf:type"]
+        type_triples = [t[:3] for t in triples if t[0] == "EAC0001" and t[1] == "rdf:type"]
         assert len(type_triples) == 1
 
     def test_eav_deduplicated(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)
         # EAV0001 appears twice in input but rdf:type should only appear once
-        type_triples = [(s, p, o) for s, p, o in triples if s == "EAV0001" and p == "rdf:type"]
+        type_triples = [t[:3] for t in triples if t[0] == "EAV0001" and t[1] == "rdf:type"]
         assert len(type_triples) == 1
 
     def test_engages_technique(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("EAC0001", "engages-technique", "T1001") in ts
         assert ("EAC0002", "engages-technique", "T1059") in ts
 
     def test_exploits_vulnerability(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("EAV0001", "vulnerability-of", "T1001") in ts
         assert ("EAV0002", "vulnerability-of", "T1001") in ts
 
     def test_addresses_vulnerability(self, sample_json_path):
         triples = extract_engage_triples(sample_json_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("EAC0001", "addresses-vulnerability", "EAV0001") in ts
         assert ("EAC0001", "addresses-vulnerability", "EAV0002") in ts

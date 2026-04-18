@@ -119,7 +119,7 @@ def sample_clusters_dir(tmp_path):
 class TestMispGalaxyTriples:
     def test_basic_properties(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "rdf:type", "ThreatActor") in ts
@@ -129,7 +129,7 @@ class TestMispGalaxyTriples:
 
     def test_synonyms(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "synonym", "Comment Crew") in ts
@@ -137,7 +137,7 @@ class TestMispGalaxyTriples:
 
     def test_country(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "country", "CN") in ts
@@ -145,7 +145,7 @@ class TestMispGalaxyTriples:
 
     def test_targets_country(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "targets-country", "United States") in ts
@@ -153,7 +153,7 @@ class TestMispGalaxyTriples:
 
     def test_targets_sector(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "targets-sector", "Government") in ts
@@ -161,35 +161,35 @@ class TestMispGalaxyTriples:
 
     def test_attribution_confidence(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "attribution-confidence", "50") in ts
 
     def test_related_similar(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "similar-to", "misp:22222222-2222-2222-2222-222222222222") in ts
 
     def test_related_uses(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "uses", "misp:33333333-3333-3333-3333-333333333333") in ts
 
     def test_related_fallback(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         assert (subj, "misp-related", "misp:44444444-4444-4444-4444-444444444444") in ts
 
     def test_ransomware_entry(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:55555555-5555-5555-5555-555555555555"
         assert (subj, "rdf:type", "Ransomware") in ts
@@ -199,7 +199,7 @@ class TestMispGalaxyTriples:
 
     def test_mitre_cluster_skips_entity_triples(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:77777777-7777-7777-7777-777777777777"
         # Should NOT have entity properties
@@ -209,21 +209,21 @@ class TestMispGalaxyTriples:
 
     def test_mitre_cluster_emits_cross_link(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:77777777-7777-7777-7777-777777777777"
         assert (subj, "related-attack-id", "T1059.001") in ts
 
     def test_mitre_cluster_emits_relationships(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:77777777-7777-7777-7777-777777777777"
         assert (subj, "subtechnique-of", "misp:88888888-8888-8888-8888-888888888888") in ts
 
     def test_attack_id_in_synonyms(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         subj = "misp:11111111-1111-1111-1111-111111111111"
         # G0006 in synonyms should create a cross-link
@@ -231,7 +231,7 @@ class TestMispGalaxyTriples:
 
     def test_skipped_clusters(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         # cancer.json entry should not appear
         assert "misp:99999999-9999-9999-9999-999999999999" not in subjects
@@ -239,13 +239,13 @@ class TestMispGalaxyTriples:
     def test_no_uuid_skipped(self, sample_clusters_dir):
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
         # The entry "NoUUID Actor" has no uuid, should produce no triples
-        names = [o for _, p, o in triples if p == "name"]
+        names = [t[2] for t in triples if t[1] == "name"]
         assert "NoUUID Actor" not in names
 
     def test_refs_not_emitted(self, sample_clusters_dir):
         """Reference URLs should not be emitted as triples (avoids bloat)."""
         triples = list(extract_misp_galaxy_triples(sample_clusters_dir))
-        predicates = {p for _, p, _ in triples}
+        predicates = {t[1] for t in triples}
         assert "refs" not in predicates
 
     def test_triple_count(self, sample_clusters_dir):

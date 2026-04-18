@@ -57,7 +57,7 @@ def sample_xml_path(tmp_path):
 class TestCweTriples:
     def test_basic_properties(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CWE-79", "rdf:type", "Weakness") in ts
         assert ("CWE-79", "name", "Cross-site Scripting (XSS)") in ts
@@ -67,34 +67,34 @@ class TestCweTriples:
 
     def test_description(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        desc = [o for s, p, o in triples if s == "CWE-79" and p == "description"]
+        desc = [o for s, p, o, *_ in triples if s == "CWE-79" and p == "description"]
         assert len(desc) == 1
         assert "neutralize" in desc[0]
 
     def test_cwe_relationships(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CWE-79", "child-of", "CWE-74") in ts
         assert ("CWE-79", "can-precede", "CWE-494") in ts
 
     def test_capec_relationships(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CWE-79", "related-attack-pattern", "CAPEC-86") in ts
         assert ("CWE-79", "related-attack-pattern", "CAPEC-198") in ts
 
     def test_platforms(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CWE-79", "platform", "JavaScript") in ts
         assert ("CWE-79", "platform", "Web Based") in ts
 
     def test_consequences(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CWE-79", "consequence-scope", "Confidentiality") in ts
         assert ("CWE-79", "consequence-scope", "Integrity") in ts
@@ -102,13 +102,13 @@ class TestCweTriples:
 
     def test_introduction_phase(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CWE-79", "introduction-phase", "Implementation") in ts
 
     def test_deprecated_excluded(self, sample_xml_path):
         triples = extract_cwe_triples(sample_xml_path)
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "CWE-999" not in subjects
 

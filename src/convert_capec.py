@@ -3,9 +3,11 @@
 import logging
 from xml.etree import ElementTree as ET
 
-from common import RELATION_PREDICATES, download_file, xml_text
+from common import RELATION_PREDICATES, download_file, get_object_type, meta_json, xml_text
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "capec"
 
 CAPEC_URL = "https://capec.mitre.org/data/xml/capec_latest.xml"
 NS = {"capec": "http://capec.mitre.org/capec-3", "xhtml": "http://www.w3.org/1999/xhtml"}
@@ -16,78 +18,108 @@ def download_capec(cache_dir: str | None = None) -> str:
     return str(download_file(CAPEC_URL, "capec_latest.xml", cache_dir))
 
 
-def _property_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, str]]:
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
+
+
+def _property_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, str, str, str, str]]:
     """Extract property triples from a single CAPEC attack pattern."""
+    # Build entity-level meta
+    entity_meta: dict = {}
+
+    prereqs = xml_text(ap.find("capec:Prerequisites", NS))
+    if prereqs:
+        entity_meta["prerequisites"] = prereqs
+
+    skills = []
+    for skill in ap.findall(".//capec:Skills_Required/capec:Skill", NS):
+        level = skill.get("Level", "")
+        text = xml_text(skill)
+        if text:
+            skills.append({"level": level, "description": text} if level else {"description": text})
+    if skills:
+        entity_meta["skills_required"] = skills
+
+    mitigations = xml_text(ap.find("capec:Mitigations", NS))
+    if mitigations:
+        entity_meta["mitigations"] = mitigations
+
     triples = [
-        (capec_id, "rdf:type", "AttackPattern"),
+        _t(capec_id, "rdf:type", "AttackPattern", meta_json(entity_meta)),
     ]
     name = ap.get("Name", "")
     if name:
-        triples.append((capec_id, "name", name))
+        triples.append(_t(capec_id, "name", name))
     abstraction = ap.get("Abstraction", "")
     if abstraction:
-        triples.append((capec_id, "abstraction", abstraction))
+        triples.append(_t(capec_id, "abstraction", abstraction))
     status = ap.get("Status", "")
     if status:
-        triples.append((capec_id, "status", status))
+        triples.append(_t(capec_id, "status", status))
 
     desc = xml_text(ap.find("capec:Description", NS))
     if desc:
-        triples.append((capec_id, "description", desc))
+        triples.append(_t(capec_id, "description", desc))
 
     likelihood = ap.findtext("capec:Likelihood_Of_Attack", namespaces=NS)
     if likelihood:
-        triples.append((capec_id, "likelihood", likelihood))
+        triples.append(_t(capec_id, "likelihood", likelihood))
 
     severity = ap.findtext("capec:Typical_Severity", namespaces=NS)
     if severity:
-        triples.append((capec_id, "severity", severity))
+        triples.append(_t(capec_id, "severity", severity))
 
     return triples
 
 
-def _relationship_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, str]]:
+def _relationship_triples(
+    capec_id: str,
+    ap: ET.Element,
+) -> list[tuple[str, str, str, str, str, str]]:
     """Extract relationship triples (CAPEC-CAPEC, CAPEC-CWE, CAPEC-ATT&CK)."""
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
 
     for rel in ap.findall(".//capec:Related_Attack_Pattern", NS):
         pred = RELATION_PREDICATES.get(rel.get("Nature", ""))
         target_id = rel.get("CAPEC_ID", "")
         if pred and target_id:
-            triples.append((capec_id, pred, f"CAPEC-{target_id}"))
+            triples.append(_t(capec_id, pred, f"CAPEC-{target_id}"))
 
     for rw in ap.findall(".//capec:Related_Weakness", NS):
         cwe_id = rw.get("CWE_ID", "")
         if cwe_id:
-            triples.append((capec_id, "related-weakness", f"CWE-{cwe_id}"))
+            triples.append(_t(capec_id, "related-weakness", f"CWE-{cwe_id}"))
 
     for tm in ap.findall(".//capec:Taxonomy_Mapping", NS):
         if tm.get("Taxonomy_Name") == "ATTACK":
             entry_id = tm.findtext("capec:Entry_ID", namespaces=NS)
             if entry_id:
-                triples.append((capec_id, "maps-to-technique", f"T{entry_id}"))
+                triples.append(_t(capec_id, "maps-to-technique", f"T{entry_id}"))
 
     return triples
 
 
-def _consequence_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, str]]:
+def _consequence_triples(
+    capec_id: str,
+    ap: ET.Element,
+) -> list[tuple[str, str, str, str, str, str]]:
     """Extract consequence triples (scope and impact)."""
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
     for cons in ap.findall(".//capec:Consequence", NS):
         for scope in cons.findall("capec:Scope", NS):
             if scope.text:
-                triples.append((capec_id, "consequence-scope", scope.text.strip()))
+                triples.append(_t(capec_id, "consequence-scope", scope.text.strip()))
         for impact in cons.findall("capec:Impact", NS):
             if impact.text:
-                triples.append((capec_id, "consequence-impact", impact.text.strip()))
+                triples.append(_t(capec_id, "consequence-impact", impact.text.strip()))
     return triples
 
 
-def extract_capec_triples(xml_path: str) -> list[tuple[str, str, str]]:
+def extract_capec_triples(xml_path: str) -> list[tuple[str, str, str, str, str, str]]:
     """Extract SPO triples from CAPEC XML."""
     tree = ET.parse(xml_path)  # nosec B314 — trusted MITRE data
     root = tree.getroot()
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
 
     for ap in root.findall(".//capec:Attack_Pattern", NS):
         if ap.get("Status", "") in ("Deprecated", "Obsolete"):

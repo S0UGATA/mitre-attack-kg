@@ -66,7 +66,7 @@ def sample_analytics_dir(tmp_path):
 class TestCarTriples:
     def test_basic_properties(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAR-2024-01-001", "rdf:type", "Analytic") in ts
         assert ("CAR-2024-01-001", "title", "Suspicious PowerShell Commands") in ts
@@ -75,13 +75,13 @@ class TestCarTriples:
 
     def test_description(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        desc = [o for s, p, o in triples if s == "CAR-2024-01-001" and p == "description"]
+        desc = [o for s, p, o, *_ in triples if s == "CAR-2024-01-001" and p == "description"]
         assert len(desc) == 1
         assert "PowerShell" in desc[0]
 
     def test_platform(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAR-2024-01-001", "platform", "Windows") in ts
         assert ("CAR-2024-02-001", "platform", "Windows") in ts
@@ -89,14 +89,14 @@ class TestCarTriples:
 
     def test_subtypes_and_analytic_types(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAR-2024-01-001", "subtype", "Process") in ts
         assert ("CAR-2024-01-001", "analytic-type", "Situational Awareness") in ts
 
     def test_technique_detection(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAR-2024-01-001", "detects-technique", "T1059") in ts
         assert ("CAR-2024-01-001", "coverage-level", "T1059:Moderate") in ts
@@ -105,7 +105,7 @@ class TestCarTriples:
 
     def test_multiple_coverage(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAR-2024-02-001", "detects-technique", "T1547") in ts
         assert ("CAR-2024-02-001", "detects-technique", "T1112") in ts
@@ -114,13 +114,13 @@ class TestCarTriples:
 
     def test_d3fend_mapping(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("CAR-2024-01-001", "maps-to-d3fend", "D3-PSA") in ts
 
     def test_no_id_skipped(self, sample_analytics_dir):
         triples = extract_car_triples(sample_analytics_dir)
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "" not in subjects
         assert "No ID Analytics" not in subjects

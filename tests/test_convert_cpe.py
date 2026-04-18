@@ -98,7 +98,7 @@ class TestParseCpeUri:
 class TestCpeTriples:
     def test_basic_properties(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         cpe_name = "cpe:2.3:a:apache:httpd:2.4.51:*:*:*:*:*:*:*"
 
         assert (cpe_name, "rdf:type", "Platform") in ts
@@ -109,7 +109,7 @@ class TestCpeTriples:
 
     def test_title_english(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         cpe_name = "cpe:2.3:a:apache:httpd:2.4.51:*:*:*:*:*:*:*"
 
         assert (cpe_name, "title", "Apache HTTP Server 2.4.51") in ts
@@ -118,7 +118,7 @@ class TestCpeTriples:
 
     def test_dates(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         cpe_name = "cpe:2.3:a:apache:httpd:2.4.51:*:*:*:*:*:*:*"
 
         assert (cpe_name, "created", "2021-10-07") in ts
@@ -126,7 +126,7 @@ class TestCpeTriples:
 
     def test_operating_system_entry(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         cpe_name = "cpe:2.3:o:microsoft:windows_10:21H2:*:*:*:*:*:*:*"
 
         assert (cpe_name, "rdf:type", "Platform") in ts
@@ -135,7 +135,7 @@ class TestCpeTriples:
 
     def test_hardware_entry(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
         cpe_name = "cpe:2.3:h:cisco:catalyst_9300:*:*:*:*:*:*:*:*"
 
         assert (cpe_name, "rdf:type", "Platform") in ts
@@ -143,13 +143,13 @@ class TestCpeTriples:
 
     def test_deprecated_excluded(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "cpe:2.3:a:oldvendor:oldproduct:1.0:*:*:*:*:*:*:*" not in subjects
 
     def test_empty_cpe_name_excluded(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "" not in subjects
 

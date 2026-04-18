@@ -4,9 +4,11 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file
+from common import download_file, get_object_type
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "engage"
 
 ENGAGE_URL = "https://raw.githubusercontent.com/mitre/engage/main/Data/json/attack_mapping.json"
 
@@ -16,16 +18,16 @@ def download_engage(cache_dir: str | None = None) -> str:
     return str(download_file(ENGAGE_URL, "engage_attack_mapping.json", cache_dir))
 
 
-def extract_engage_triples(json_path: str) -> list[tuple[str, str, str]]:
-    """Extract SPO triples from MITRE ENGAGE JSON.
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p), m)
 
-    The JSON is a flat array of objects with keys:
-    attack_id, attack_technique, eav_id, eav, eac, eac_id
-    """
+
+def extract_engage_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
+    """Extract SPO triples from MITRE ENGAGE JSON."""
     with open(json_path) as f:
         data = json.load(f)
 
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
     seen_eac: set[str] = set()
     seen_eav: set[str] = set()
     seen_rels: set[tuple[str, str, str]] = set()
@@ -37,21 +39,18 @@ def extract_engage_triples(json_path: str) -> list[tuple[str, str, str]]:
         eav_desc = entry.get("eav", "")
         attack_id = entry.get("attack_id", "")
 
-        # Engagement Activity entity (deduplicate)
         if eac_id and eac_id not in seen_eac:
             seen_eac.add(eac_id)
-            triples.append((eac_id, "rdf:type", "EngagementActivity"))
+            triples.append(_t(eac_id, "rdf:type", "EngagementActivity"))
             if eac_name:
-                triples.append((eac_id, "name", eac_name))
+                triples.append(_t(eac_id, "name", eac_name))
 
-        # Adversary Vulnerability entity (deduplicate)
         if eav_id and eav_id not in seen_eav:
             seen_eav.add(eav_id)
-            triples.append((eav_id, "rdf:type", "AdversaryVulnerability"))
+            triples.append(_t(eav_id, "rdf:type", "AdversaryVulnerability"))
             if eav_desc:
-                triples.append((eav_id, "description", eav_desc))
+                triples.append(_t(eav_id, "description", eav_desc))
 
-        # Relationships (deduplicate)
         for rel in (
             (eac_id, "engages-technique", attack_id) if eac_id and attack_id else None,
             (eav_id, "vulnerability-of", attack_id) if eav_id and attack_id else None,
@@ -59,7 +58,7 @@ def extract_engage_triples(json_path: str) -> list[tuple[str, str, str]]:
         ):
             if rel and rel not in seen_rels:
                 seen_rels.add(rel)
-                triples.append(rel)
+                triples.append(_t(*rel))
 
     return triples
 

@@ -1,6 +1,7 @@
 """CLI orchestrator: Security Data → KG Triples (Parquet)."""
 
 import argparse
+import itertools
 import json
 import logging
 import time
@@ -9,14 +10,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
+from tqdm import tqdm
 
 from common import (
     PARQUET_FORMATS,
-    PARQUET_SCHEMA,
     PROJECT_ROOT,
     SOURCE_DIR,
+    deduplicate_combined,
     save_fingerprint,
     save_fingerprints,
     source_changed,
@@ -72,6 +72,26 @@ SOURCE_CONVERTERS = {
 LOG_FORMAT = "%(asctime)s [%(source)s] %(levelname)s: %(message)s"
 LOG_DATEFMT = "%Y-%m-%d %H:%M:%S"
 
+LEVEL_COLORS = {
+    logging.DEBUG: "\033[36m",  # cyan
+    logging.INFO: "\033[32m",  # green
+    logging.WARNING: "\033[33m",  # yellow
+    logging.ERROR: "\033[31m",  # red
+    logging.CRITICAL: "\033[1;31m",  # bold red
+}
+RESET = "\033[0m"
+DIM = "\033[2m"
+CYAN = "\033[36m"
+
+
+class ColorFormatter(logging.Formatter):
+    def format(self, record):
+        color = LEVEL_COLORS.get(record.levelno, RESET)
+        ts = self.formatTime(record, self.datefmt)
+        source = getattr(record, "source", "main")
+        msg = record.getMessage()
+        return f"{DIM}{ts}{RESET} {CYAN}[{source}]{RESET} {color}{record.levelname}{RESET}: {msg}"
+
 
 class SourceFilter(logging.Filter):
     """Inject a source tag into every log record."""
@@ -96,7 +116,7 @@ def _setup_logging(log_dir: Path | None, source: str = "main") -> None:
     filt = SourceFilter(source)
 
     console = logging.StreamHandler()
-    console.setFormatter(logging.Formatter(LOG_FORMAT, datefmt=LOG_DATEFMT))
+    console.setFormatter(ColorFormatter(datefmt=LOG_DATEFMT))
     console.addFilter(filt)
     root.addHandler(console)
 
@@ -115,6 +135,7 @@ def _convert_source(
     parquet_format: str,
     log_dir: str | None = None,
     force: bool = False,
+    limit: int | None = None,
 ) -> tuple[str, str | None]:
     """Convert a single non-ATT&CK source. Runs in a worker process.
 
@@ -134,6 +155,9 @@ def _convert_source(
         return source, None
 
     triples = getattr(mod, ext_name)(path)
+    if limit is not None:
+        triples = itertools.islice(triples, limit)
+        logger.info("Limiting %s to %d triples", source, limit)
     out_path = out_dir / f"{source}.parquet"
     write_triples_streaming(triples, out_path, parquet_format)
     elapsed = time.monotonic() - t0
@@ -148,6 +172,7 @@ def _convert_attack(
     parquet_format: str,
     log_dir: str | None = None,
     force: bool = False,
+    limit: int | None = None,
 ) -> tuple[str, dict[str, str]]:
     """Convert all ATT&CK domains. Runs in a worker process.
 
@@ -174,11 +199,15 @@ def _convert_attack(
             continue
         attack_any_changed = True
         df = convert_domain(domain, out_dir, cache_dir, parquet_format, stix_path=stix_path)
+        if limit is not None:
+            df = df.head(limit)
+            logger.info("Limiting %s to %d triples", domain, limit)
         attack_fingerprints[domain] = Path(stix_path).name
         attack_dfs.append(df)
 
     if len(attack_dfs) > 1 and attack_any_changed:
-        attack_combined = pd.concat(attack_dfs, ignore_index=True).drop_duplicates()
+        attack_combined = pd.concat(attack_dfs, ignore_index=True)
+        attack_combined, _ = deduplicate_combined(attack_combined)
         write_parquet(attack_combined, out_dir / "attack-all.parquet", parquet_format)
 
     elapsed = time.monotonic() - t0
@@ -257,6 +286,12 @@ def main():
         action="store_true",
         help="Skip generating dashboard stats JSON files in hf_dataset/.stats/",
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit each source to N triples (for quick local testing)",
+    )
     args = parser.parse_args()
 
     _setup_logging(args.log_dir, "main")
@@ -273,6 +308,9 @@ def main():
             "Using Parquet v1 (backward compat). "
             "For smaller files, re-run without --parquet-format or use: --parquet-format v2"
         )
+
+    if args.limit is not None:
+        logger.info("Limiting each source to %d triples (test mode)", args.limit)
 
     cache_dir = args.cache_dir
     log_dir_str = str(args.log_dir)
@@ -310,6 +348,7 @@ def main():
                         args.parquet_format,
                         log_dir_str,
                         args.force,
+                        args.limit,
                     )
                 ] = "attack"
 
@@ -324,59 +363,72 @@ def main():
                         args.parquet_format,
                         log_dir_str,
                         args.force,
+                        args.limit,
                     )
                 ] = source
 
-            for future in as_completed(futures):
-                source = futures[future]
+            with tqdm(total=total, desc="Converting sources", unit="source", leave=True) as pbar:
+                for future in as_completed(futures):
+                    source = futures[future]
+                    try:
+                        if source == "attack":
+                            _, attack_fps = future.result()
+                            if attack_fps:
+                                save_fingerprints(attack_fps)
+                        else:
+                            _, fp = future.result()
+                            if fp:
+                                save_fingerprint(source, fp)
+                    except Exception:
+                        logger.exception("Failed: %s", source)
+                        failed_sources.append(source)
+                    pbar.set_postfix_str(source)
+                    pbar.update(1)
+    else:
+        # Sequential mode
+        seq_sources = (["attack"] if has_attack else []) + all_sources
+        with tqdm(
+            total=len(seq_sources), desc="Converting sources", unit="source", leave=True
+        ) as pbar:
+            if has_attack:
+                pbar.set_postfix_str("attack")
                 try:
-                    if source == "attack":
-                        _, attack_fps = future.result()
-                        if attack_fps:
-                            save_fingerprints(attack_fps)
-                    else:
-                        _, fp = future.result()
-                        if fp:
-                            save_fingerprint(source, fp)
-                    logger.info("Completed: %s", source)
+                    _, attack_fps = _convert_attack(
+                        list(args.domains),
+                        str(args.output_dir),
+                        cache_dir,
+                        args.parquet_format,
+                        log_dir_str,
+                        args.force,
+                        args.limit,
+                    )
+                    if attack_fps:
+                        save_fingerprints(attack_fps)
+                except Exception:
+                    logger.exception("Failed: attack")
+                    failed_sources.append("attack")
+                pbar.update(1)
+
+            for source in all_sources:
+                pbar.set_postfix_str(source)
+                try:
+                    _, fp = _convert_source(
+                        source,
+                        str(args.output_dir),
+                        cache_dir,
+                        args.parquet_format,
+                        log_dir_str,
+                        args.force,
+                        args.limit,
+                    )
+                    if fp:
+                        save_fingerprint(source, fp)
                 except Exception:
                     logger.exception("Failed: %s", source)
                     failed_sources.append(source)
-    else:
-        # Sequential mode
-        if has_attack:
-            try:
-                _, attack_fps = _convert_attack(
-                    list(args.domains),
-                    str(args.output_dir),
-                    cache_dir,
-                    args.parquet_format,
-                    log_dir_str,
-                    args.force,
-                )
-                if attack_fps:
-                    save_fingerprints(attack_fps)
-            except Exception:
-                logger.exception("Failed: attack")
-                failed_sources.append("attack")
+                pbar.update(1)
 
-        for source in all_sources:
-            try:
-                _, fp = _convert_source(
-                    source,
-                    str(args.output_dir),
-                    cache_dir,
-                    args.parquet_format,
-                    log_dir_str,
-                    args.force,
-                )
-                if fp:
-                    save_fingerprint(source, fp)
-            except Exception:
-                logger.exception("Failed: %s", source)
-                failed_sources.append(source)
-
-    # --- Combined (all sources) — stream from parquet files to avoid loading all into memory ---
+    # --- Combined (all sources) ---
     if not args.no_combined:
         parquet_names = []
         if "attack" in args.sources:
@@ -391,22 +443,29 @@ def main():
 
         if len(parquet_files) > 1:
             combined_path = args.output_dir / "combined.parquet"
-            pq_opts = PARQUET_FORMATS[args.parquet_format]
-            writer = None
-            total_rows = 0
-            try:
-                for pf in parquet_files:
-                    for batch in pq.ParquetFile(pf).iter_batches(batch_size=500_000):
-                        if writer is None:
-                            writer = pq.ParquetWriter(combined_path, PARQUET_SCHEMA, **pq_opts)
-                        writer.write_table(pa.Table.from_batches([batch], schema=PARQUET_SCHEMA))
-                        total_rows += batch.num_rows
-            finally:
-                if writer is not None:
-                    writer.close()
+            dfs = [pd.read_parquet(pf) for pf in parquet_files]
+            combined_df = pd.concat(dfs, ignore_index=True)
+            total_before = len(combined_df)
+
+            combined_df, dup_stats = deduplicate_combined(combined_df)
+
+            if dup_stats["dup_rows"]:
+                logger.info(
+                    "Found %d duplicate rows (%d unique triples) across sources:",
+                    dup_stats["dup_rows"],
+                    dup_stats["dup_unique"],
+                )
+                for src, count in dup_stats["by_source"].items():
+                    logger.info("  %-20s %d rows", src, count)
+
             logger.info(
-                "Wrote %s (%d triples, format=%s)", combined_path, total_rows, args.parquet_format
+                "Combined: %d triples from %d sources → %d after deduplication (-%d)",
+                total_before,
+                len(parquet_files),
+                len(combined_df),
+                total_before - len(combined_df),
             )
+            write_parquet(combined_df, combined_path, args.parquet_format)
 
     # Write conversion report for CI workflow consumption
     report = {"failed_sources": failed_sources, "timestamp": now}

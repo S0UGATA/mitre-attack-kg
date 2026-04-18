@@ -97,7 +97,7 @@ def sample_advisory_dir(tmp_path):
 class TestGhsaTriples:
     def test_basic_properties(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("GHSA-xxxx-yyyy-zzzz", "rdf:type", "SecurityAdvisory") in ts
         assert ("GHSA-xxxx-yyyy-zzzz", "summary", "XSS vulnerability in example-package") in ts
@@ -106,27 +106,27 @@ class TestGhsaTriples:
 
     def test_cve_aliases(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("GHSA-xxxx-yyyy-zzzz", "related-cve", "CVE-2024-1234") in ts
 
     def test_multiple_cve_aliases(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("GHSA-aaaa-bbbb-cccc", "related-cve", "CVE-2024-5678") in ts
         assert ("GHSA-aaaa-bbbb-cccc", "related-cve", "CVE-2024-5679") in ts
 
     def test_severity(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("GHSA-xxxx-yyyy-zzzz", "severity", "MODERATE") in ts
         assert ("GHSA-aaaa-bbbb-cccc", "severity", "HIGH") in ts
 
     def test_cwe_ids(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("GHSA-xxxx-yyyy-zzzz", "related-weakness", "CWE-79") in ts
         assert ("GHSA-aaaa-bbbb-cccc", "related-weakness", "CWE-89") in ts
@@ -134,7 +134,7 @@ class TestGhsaTriples:
 
     def test_affected_packages(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("GHSA-xxxx-yyyy-zzzz", "affects-package", "npm/example-package") in ts
         assert ("GHSA-xxxx-yyyy-zzzz", "affects-package", "npm/example-package-core") in ts
@@ -142,7 +142,7 @@ class TestGhsaTriples:
 
     def test_fixed_versions(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert ("GHSA-xxxx-yyyy-zzzz", "fixed-in", "npm/example-package@2.0.1") in ts
         assert ("GHSA-xxxx-yyyy-zzzz", "fixed-in", "npm/example-package-core@3.1.0") in ts
@@ -150,7 +150,7 @@ class TestGhsaTriples:
 
     def test_cvss_vector(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        ts = set(triples)
+        ts = {t[:3] for t in triples}
 
         assert (
             "GHSA-xxxx-yyyy-zzzz",
@@ -160,7 +160,7 @@ class TestGhsaTriples:
 
     def test_no_id_skipped(self, sample_advisory_dir):
         triples = list(extract_ghsa_triples(sample_advisory_dir))
-        subjects = {s for s, _, _ in triples}
+        subjects = {t[0] for t in triples}
 
         assert "" not in subjects
 

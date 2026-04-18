@@ -6,9 +6,16 @@ from pathlib import Path
 import pandas as pd
 from mitreattack.stix20 import MitreAttackData
 
-from common import download_file, triples_to_dataframe, write_parquet
+from common import (
+    get_object_type,
+    meta_json,
+    triples_to_dataframe,
+    write_parquet,
+)
 
 logger = logging.getLogger(__name__)
+
+SOURCE = "attack"
 
 STIX_BASE_URL = "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master"
 
@@ -45,8 +52,14 @@ ENTITY_GETTERS = {
 }
 
 
+def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
+    return (s, p, o, SOURCE, get_object_type(p, "id"), m)
+
+
 def download_stix(domain: str, cache_dir: str | None = None) -> str:
     """Download a STIX JSON bundle, returning the local file path."""
+    from common import download_file
+
     url = DOMAINS[domain]
     path = download_file(url, f"{domain}-attack.json", cache_dir)
     return str(path)
@@ -83,9 +96,31 @@ def _extract_tactic_ids(
     return ids
 
 
-def _list_attr_triples(sid: str, obj, attr: str, predicate: str) -> list[tuple[str, str, str]]:
+def _extract_external_refs(obj) -> list[dict[str, str]]:
+    """Extract non-ATT&CK external references as dicts."""
+    refs = []
+    for ref in getattr(obj, "external_references", []):
+        if not hasattr(ref, "url"):
+            continue
+        if "attack.mitre.org" in ref.url:
+            continue
+        entry: dict[str, str] = {"url": ref.url}
+        if hasattr(ref, "source_name") and ref.source_name:
+            entry["source_name"] = ref.source_name
+        if hasattr(ref, "description") and ref.description:
+            entry["description"] = ref.description
+        refs.append(entry)
+    return refs
+
+
+def _list_attr_triples(
+    sid: str,
+    obj,
+    attr: str,
+    predicate: str,
+) -> list[tuple[str, str, str, str, str, str]]:
     """Produce one triple per item in a list attribute, if it exists."""
-    return [(sid, predicate, val) for val in getattr(obj, attr, [])]
+    return [_t(sid, predicate, val) for val in getattr(obj, attr, [])]
 
 
 def _entity_triples(
@@ -93,45 +128,57 @@ def _entity_triples(
     obj,
     label: str,
     tactic_map: dict[str, str] | None = None,
-) -> list[tuple[str, str, str]]:
+) -> list[tuple[str, str, str, str, str, str]]:
     """Extract property triples from a single STIX entity object."""
     sid = _resolve_id(attack, obj.id)
 
+    # Build meta for the rdf:type triple
+    entity_meta: dict = {}
+    x_version = getattr(obj, "x_mitre_version", None)
+    if x_version:
+        entity_meta["version"] = x_version
+    detection = getattr(obj, "x_mitre_detection", None)
+    if detection:
+        entity_meta["detection"] = detection
+    ext_refs = _extract_external_refs(obj)
+    if ext_refs:
+        entity_meta["external_references"] = ext_refs
+
     triples = [
-        (sid, "rdf:type", label),
-        (sid, "name", obj.name),
-        (sid, "created", str(obj.created)),
-        (sid, "modified", str(obj.modified)),
+        _t(sid, "rdf:type", label, meta_json(entity_meta)),
+        _t(sid, "name", obj.name),
+        _t(sid, "created", str(obj.created)),
+        _t(sid, "modified", str(obj.modified)),
     ]
 
     if getattr(obj, "description", None):
-        triples.append((sid, "description", obj.description))
+        triples.append(_t(sid, "description", obj.description))
 
     triples.extend(_list_attr_triples(sid, obj, "x_mitre_platforms", "platform"))
     triples.extend(_list_attr_triples(sid, obj, "x_mitre_domains", "domain"))
 
     for alias in getattr(obj, "aliases", []):
         if alias != obj.name:
-            triples.append((sid, "alias", alias))
+            triples.append(_t(sid, "alias", alias))
 
     if hasattr(obj, "x_mitre_is_subtechnique"):
-        triples.append((sid, "is-subtechnique", str(obj.x_mitre_is_subtechnique)))
+        triples.append(_t(sid, "is-subtechnique", str(obj.x_mitre_is_subtechnique).lower()))
 
     if getattr(obj, "revoked", False):
-        triples.append((sid, "revoked", "true"))
+        triples.append(_t(sid, "revoked", "true"))
 
     if getattr(obj, "x_mitre_deprecated", False):
-        triples.append((sid, "deprecated", "true"))
+        triples.append(_t(sid, "deprecated", "true"))
 
     url = _extract_url(obj)
     if url:
-        triples.append((sid, "url", url))
+        triples.append(_t(sid, "url", url))
 
     for tactic_id in _extract_tactic_ids(obj, tactic_map):
-        triples.append((sid, "belongs-to-tactic", tactic_id))
+        triples.append(_t(sid, "belongs-to-tactic", tactic_id))
 
     if hasattr(obj, "x_mitre_shortname"):
-        triples.append((sid, "shortname", obj.x_mitre_shortname))
+        triples.append(_t(sid, "shortname", obj.x_mitre_shortname))
 
     return triples
 
@@ -146,10 +193,12 @@ def _build_tactic_map(attack: MitreAttackData, tactics: list) -> dict[str, str]:
 
 
 def _all_entity_triples(
-    attack: MitreAttackData, tactics: list, tactic_map: dict[str, str]
-) -> list[tuple[str, str, str]]:
+    attack: MitreAttackData,
+    tactics: list,
+    tactic_map: dict[str, str],
+) -> list[tuple[str, str, str, str, str, str]]:
     """Extract property triples for all entity types."""
-    triples: list[tuple[str, str, str]] = []
+    triples: list[tuple[str, str, str, str, str, str]] = []
 
     for label, getter_name in ENTITY_GETTERS.items():
         getter = getattr(attack, getter_name)
@@ -164,19 +213,29 @@ def _all_entity_triples(
     return triples
 
 
-def _all_relationship_triples(attack: MitreAttackData) -> list[tuple[str, str, str]]:
+def _all_relationship_triples(
+    attack: MitreAttackData,
+) -> list[tuple[str, str, str, str, str, str]]:
     """Extract relationship triples from all STIX relationship objects."""
-    return [
-        (
-            _resolve_id(attack, rel.source_ref),
-            rel.relationship_type,
-            _resolve_id(attack, rel.target_ref),
+    triples = []
+    for rel in attack.get_objects_by_type("relationship"):
+        rel_meta: dict = {}
+        if getattr(rel, "description", None):
+            rel_meta["description"] = rel.description
+        triples.append(
+            _t(
+                _resolve_id(attack, rel.source_ref),
+                rel.relationship_type,
+                _resolve_id(attack, rel.target_ref),
+                meta_json(rel_meta),
+            )
         )
-        for rel in attack.get_objects_by_type("relationship")
-    ]
+    return triples
 
 
-def extract_triples(attack: MitreAttackData) -> list[tuple[str, str, str]]:
+def extract_triples(
+    attack: MitreAttackData,
+) -> list[tuple[str, str, str, str, str, str]]:
     """Extract all SPO triples from a loaded MitreAttackData instance."""
     tactics = attack.get_tactics()
     tactic_map = _build_tactic_map(attack, tactics)

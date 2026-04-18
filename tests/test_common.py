@@ -6,6 +6,7 @@ import json
 import zipfile
 from unittest.mock import MagicMock, patch
 
+import pandas as pd
 import requests
 
 from common import (
@@ -16,10 +17,15 @@ from common import (
     _remote_version,
     _ts_from_http_date,
     check_sources_changed,
+    deduplicate_combined,
     download_file,
     download_github_zip,
+    extract_cvss_meta,
+    get_object_type,
     get_remote_fingerprint,
     load_metadata,
+    merge_meta,
+    meta_json,
     save_metadata,
     source_changed,
 )
@@ -306,3 +312,236 @@ class TestSourceChanged:
 
         (tmp_path / "test.parquet").write_bytes(b"fake")
         assert source_changed(tmp_path, "test", "/path/to/file_v2.json") is True
+
+
+class TestMetaJson:
+    def test_basic_dict(self):
+        result = meta_json({"key": "value"})
+        assert result == '{"key":"value"}'
+
+    def test_multiple_keys(self):
+        result = meta_json({"a": "1", "b": "2"})
+        parsed = json.loads(result)
+        assert parsed == {"a": "1", "b": "2"}
+
+    def test_none_returns_empty(self):
+        assert meta_json(None) == ""
+
+    def test_empty_dict_returns_empty(self):
+        assert meta_json({}) == ""
+
+    def test_nested_dict(self):
+        result = meta_json({"cvss_vector": "AV:N", "cvss_version": "3.1"})
+        parsed = json.loads(result)
+        assert parsed["cvss_vector"] == "AV:N"
+        assert parsed["cvss_version"] == "3.1"
+
+    def test_compact_separators(self):
+        """Output must use compact separators (no extra spaces)."""
+        result = meta_json({"a": "b"})
+        assert " " not in result
+
+
+class TestGetObjectType:
+    def test_known_predicate(self):
+        assert get_object_type("name") == "string"
+        assert get_object_type("deprecated") == "boolean"
+        assert get_object_type("created") == "date"
+        assert get_object_type("uses") == "id"
+        assert get_object_type("cvss-base-score") == "number"
+        assert get_object_type("url") == "url"
+        assert get_object_type("status") == "enum"
+
+    def test_ssvc_prefix_returns_enum(self):
+        assert get_object_type("ssvc-exploitation") == "enum"
+        assert get_object_type("ssvc-automatable") == "enum"
+
+    def test_unknown_returns_default(self):
+        assert get_object_type("unknown-pred") == "string"
+
+    def test_custom_default(self):
+        assert get_object_type("unknown-pred", "custom") == "custom"
+
+
+class TestExtractCvssMeta:
+    def test_cvss_v31(self):
+        metric = {
+            "cvssV3_1": {
+                "baseScore": 9.8,
+                "baseSeverity": "CRITICAL",
+                "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+            }
+        }
+        cvss, meta = extract_cvss_meta(metric)
+        assert cvss is not None
+        assert cvss["baseScore"] == 9.8
+        parsed = json.loads(meta)
+        assert parsed["cvss_version"] == "3.1"
+        assert parsed["cvss_vector"] == "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+
+    def test_cvss_v4_preferred_over_v31(self):
+        metric = {
+            "cvssV4_0": {
+                "baseScore": 8.0,
+                "vectorString": "CVSS:4.0/AV:N",
+            },
+            "cvssV3_1": {
+                "baseScore": 7.5,
+                "vectorString": "CVSS:3.1/AV:N",
+            },
+        }
+        cvss, meta = extract_cvss_meta(metric)
+        assert cvss["baseScore"] == 8.0
+        parsed = json.loads(meta)
+        assert parsed["cvss_version"] == "4.0"
+
+    def test_cvss_v30_fallback(self):
+        metric = {
+            "cvssV3_0": {
+                "baseScore": 6.5,
+                "vectorString": "CVSS:3.0/AV:N",
+            }
+        }
+        cvss, meta = extract_cvss_meta(metric)
+        assert cvss is not None
+        parsed = json.loads(meta)
+        assert parsed["cvss_version"] == "3.0"
+
+    def test_no_cvss_returns_none(self):
+        cvss, meta = extract_cvss_meta({})
+        assert cvss is None
+        assert meta == ""
+
+    def test_no_vector_string(self):
+        metric = {"cvssV3_1": {"baseScore": 5.0}}
+        cvss, meta = extract_cvss_meta(metric)
+        assert cvss is not None
+        parsed = json.loads(meta)
+        assert "cvss_vector" not in parsed
+        assert parsed["cvss_version"] == "3.1"
+
+
+class TestMergeMeta:
+    def test_single_meta(self):
+        result = merge_meta(['{"cvss_version":"3.1"}'])
+        parsed = json.loads(result)
+        assert parsed == {"cvss_version": "3.1"}
+
+    def test_disjoint_keys_merged(self):
+        result = merge_meta(['{"a":"1"}', '{"b":"2"}'])
+        parsed = json.loads(result)
+        assert parsed == {"a": "1", "b": "2"}
+
+    def test_same_key_same_value_not_duplicated(self):
+        result = merge_meta(['{"a":"1"}', '{"a":"1"}'])
+        parsed = json.loads(result)
+        assert parsed == {"a": "1"}
+
+    def test_same_key_different_values_become_list(self):
+        result = merge_meta(['{"source":"cve"}', '{"source":"ghsa"}'])
+        parsed = json.loads(result)
+        assert parsed["source"] == ["cve", "ghsa"]
+
+    def test_empty_strings_skipped(self):
+        result = merge_meta(["", '{"a":"1"}', ""])
+        parsed = json.loads(result)
+        assert parsed == {"a": "1"}
+
+    def test_all_empty_returns_empty(self):
+        assert merge_meta(["", "", ""]) == ""
+
+    def test_empty_list(self):
+        assert merge_meta([]) == ""
+
+    def test_invalid_json_skipped(self):
+        result = merge_meta(["not-json", '{"a":"1"}'])
+        parsed = json.loads(result)
+        assert parsed == {"a": "1"}
+
+    def test_list_value_deduplication(self):
+        """When merging a list value into an existing list, duplicates are skipped."""
+        result = merge_meta(['{"a":"1"}', '{"a":"2"}', '{"a":"1"}'])
+        parsed = json.loads(result)
+        assert parsed["a"] == ["1", "2"]
+
+
+class TestDeduplicateCombined:
+    def test_no_duplicates(self):
+        df = pd.DataFrame(
+            {
+                "subject": ["A", "B"],
+                "predicate": ["name", "name"],
+                "object": ["alpha", "beta"],
+                "source": ["s1", "s2"],
+                "object_type": ["string", "string"],
+                "meta": ["", ""],
+            }
+        )
+        result, stats = deduplicate_combined(df)
+        assert len(result) == 2
+        assert stats["dup_rows"] == 0
+        assert stats["dup_unique"] == 0
+        assert stats["by_source"] == {}
+
+    def test_duplicate_rows_merged(self):
+        df = pd.DataFrame(
+            {
+                "subject": ["A", "A", "B"],
+                "predicate": ["name", "name", "name"],
+                "object": ["alpha", "alpha", "beta"],
+                "source": ["s1", "s2", "s3"],
+                "object_type": ["string", "string", "string"],
+                "meta": ["", "", ""],
+            }
+        )
+        result, stats = deduplicate_combined(df)
+        # 2 unique (s,p,o) combinations: (A,name,alpha) and (B,name,beta)
+        assert len(result) == 2
+        assert stats["dup_rows"] == 2
+        assert stats["dup_unique"] == 1
+
+    def test_sources_merged_sorted(self):
+        df = pd.DataFrame(
+            {
+                "subject": ["A", "A"],
+                "predicate": ["name", "name"],
+                "object": ["alpha", "alpha"],
+                "source": ["cve", "attack"],
+                "object_type": ["string", "string"],
+                "meta": ["", ""],
+            }
+        )
+        result, stats = deduplicate_combined(df)
+        merged_row = result[result["subject"] == "A"].iloc[0]
+        assert merged_row["source"] == "attack,cve"
+
+    def test_meta_merged(self):
+        df = pd.DataFrame(
+            {
+                "subject": ["A", "A"],
+                "predicate": ["name", "name"],
+                "object": ["alpha", "alpha"],
+                "source": ["s1", "s2"],
+                "object_type": ["string", "string"],
+                "meta": ['{"a":"1"}', '{"b":"2"}'],
+            }
+        )
+        result, stats = deduplicate_combined(df)
+        merged_row = result[result["subject"] == "A"].iloc[0]
+        parsed = json.loads(merged_row["meta"])
+        assert parsed == {"a": "1", "b": "2"}
+
+    def test_stats_by_source(self):
+        df = pd.DataFrame(
+            {
+                "subject": ["A", "A", "A"],
+                "predicate": ["name", "name", "name"],
+                "object": ["alpha", "alpha", "alpha"],
+                "source": ["cve", "cve", "ghsa"],
+                "object_type": ["string", "string", "string"],
+                "meta": ["", "", ""],
+            }
+        )
+        _, stats = deduplicate_combined(df)
+        assert stats["by_source"]["cve"] == 2
+        assert stats["by_source"]["ghsa"] == 1
