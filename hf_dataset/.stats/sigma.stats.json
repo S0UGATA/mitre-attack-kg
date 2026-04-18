@@ -23,11 +23,19 @@
       "count": 3808
     },
     {
+      "predicate": "title",
+      "count": 3234
+    },
+    {
+      "predicate": "description",
+      "count": 3234
+    },
+    {
       "predicate": "level",
       "count": 3234
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "date",
       "count": 3234
     },
     {
@@ -39,15 +47,7 @@
       "count": 3234
     },
     {
-      "predicate": "date",
-      "count": 3234
-    },
-    {
-      "predicate": "description",
-      "count": 3234
-    },
-    {
-      "predicate": "title",
+      "predicate": "rdf:type",
       "count": 3234
     },
     {
@@ -139,5 +139,5 @@
       "predicate": "title"
     }
   ],
-  "generatedAt": "2026-04-13T07:59:45Z"
+  "generatedAt": "2026-04-18T10:30:19Z"
 }

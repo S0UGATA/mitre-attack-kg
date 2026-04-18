@@ -15,7 +15,7 @@
   ],
   "topPredicates": [
     {
-      "predicate": "exploits-vulnerability-of",
+      "predicate": "vulnerability-of",
       "count": 656
     },
     {
@@ -65,15 +65,15 @@
       "count": 68
     },
     {
-      "entity": "EAC0011",
-      "count": 64
-    },
-    {
       "entity": "EAC0015",
       "count": 64
     },
     {
-      "entity": "EAV0010",
+      "entity": "EAC0011",
+      "count": 64
+    },
+    {
+      "entity": "EAV0013",
       "count": 62
     },
     {
@@ -85,11 +85,11 @@
       "count": 62
     },
     {
-      "entity": "EAV0002",
+      "entity": "EAV0010",
       "count": 62
     },
     {
-      "entity": "EAV0013",
+      "entity": "EAV0002",
       "count": 62
     },
     {
@@ -106,8 +106,8 @@
       "from": "engage",
       "to": "attack",
       "count": 656,
-      "predicate": "exploits-vulnerability-of"
+      "predicate": "vulnerability-of"
     }
   ],
-  "generatedAt": "2026-04-13T07:59:44Z"
+  "generatedAt": "2026-04-18T10:30:18Z"
 }

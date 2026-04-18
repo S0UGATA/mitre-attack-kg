@@ -1,20 +1,20 @@
 {
-  "totalTriples": 3566530,
-  "uniqueSubjects": 326571,
-  "uniqueObjects": 899359,
+  "totalTriples": 3587722,
+  "uniqueSubjects": 327684,
+  "uniqueObjects": 903372,
   "uniquePredicates": 13,
   "bySource": [
     {
       "source": "cve",
-      "count": 3566568
+      "count": 3587760
     },
     {
       "source": "cwe",
-      "count": 133965
+      "count": 135170
     },
     {
       "source": "cpe",
-      "count": 79497
+      "count": 80666
     },
     {
       "source": "attack",
@@ -32,130 +32,130 @@
   "topPredicates": [
     {
       "predicate": "product",
-      "count": 497594
+      "count": 500939
     },
     {
       "predicate": "vendor",
-      "count": 497566
+      "count": 500910
     },
     {
       "predicate": "assigner",
-      "count": 326571
-    },
-    {
-      "predicate": "state",
-      "count": 326571
-    },
-    {
-      "predicate": "date-updated",
-      "count": 326571
-    },
-    {
-      "predicate": "date-published",
-      "count": 326571
+      "count": 327684
     },
     {
       "predicate": "rdf:type",
-      "count": 326571
+      "count": 327684
+    },
+    {
+      "predicate": "date-updated",
+      "count": 327684
+    },
+    {
+      "predicate": "date-published",
+      "count": 327684
+    },
+    {
+      "predicate": "state",
+      "count": 327684
     },
     {
       "predicate": "description",
-      "count": 319408
-    },
-    {
-      "predicate": "cvss-base-score",
-      "count": 138482
+      "count": 320359
     },
     {
       "predicate": "cvss-severity",
-      "count": 138482
+      "count": 139595
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 139595
     },
     {
       "predicate": "related-weakness",
-      "count": 133812
+      "count": 135008
     },
     {
       "predicate": "platform",
-      "count": 128834
+      "count": 132230
     },
     {
       "predicate": "affects-cpe",
-      "count": 79497
+      "count": 80666
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "PUBLISHED",
-      "count": 326571
+      "entity": "Vulnerability",
+      "count": 327684
     },
     {
-      "entity": "Vulnerability",
-      "count": 326571
+      "entity": "PUBLISHED",
+      "count": 327684
     },
     {
       "entity": "mitre",
-      "count": 112904
+      "count": 113018
     },
     {
       "entity": "Microsoft",
-      "count": 89699
+      "count": 91892
     },
     {
       "entity": "MEDIUM",
-      "count": 69599
+      "count": 70091
     },
     {
       "entity": "x64-based Systems",
-      "count": 64606
+      "count": 66659
     },
     {
       "entity": "Linux",
-      "count": 55902
+      "count": 55979
     },
     {
       "entity": "HIGH",
-      "count": 48330
+      "count": 48799
     },
     {
       "entity": "32-bit Systems",
-      "count": 23249
+      "count": 23674
     },
     {
       "entity": "CWE-79",
-      "count": 23025
+      "count": 23135
     },
     {
       "entity": "ARM64-based Systems",
-      "count": 17402
+      "count": 18115
     },
     {
       "entity": "Siemens",
-      "count": 16189
+      "count": 16499
     },
     {
       "entity": "Patchstack",
-      "count": 15941
-    },
-    {
-      "entity": "VulDB",
-      "count": 13398
+      "count": 15961
     },
     {
       "entity": "GitHub_M",
-      "count": 13378
+      "count": 13598
+    },
+    {
+      "entity": "VulDB",
+      "count": 13463
     }
   ],
   "crossSourceLinks": [
     {
       "from": "cve",
       "to": "cwe",
-      "count": 133812,
+      "count": 135008,
       "predicate": "related-weakness"
     },
     {
       "from": "cve",
       "to": "cpe",
-      "count": 79497,
+      "count": 80666,
       "predicate": "affects-cpe"
     },
     {
@@ -177,5 +177,5 @@
       "predicate": "product"
     }
   ],
-  "generatedAt": "2026-04-13T07:59:44Z"
+  "generatedAt": "2026-04-18T10:30:18Z"
 }

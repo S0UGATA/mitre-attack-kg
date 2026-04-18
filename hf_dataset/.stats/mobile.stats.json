@@ -1,7 +1,7 @@
 {
   "totalTriples": 5307,
   "uniqueSubjects": 509,
-  "uniqueObjects": 2078,
+  "uniqueObjects": 2077,
   "uniquePredicates": 19,
   "bySource": [
     {
@@ -27,10 +27,6 @@
       "count": 429
     },
     {
-      "predicate": "name",
-      "count": 385
-    },
-    {
       "predicate": "created",
       "count": 385
     },
@@ -39,11 +35,15 @@
       "count": 385
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "url",
       "count": 385
     },
     {
-      "predicate": "url",
+      "predicate": "name",
+      "count": 385
+    },
+    {
+      "predicate": "rdf:type",
       "count": 385
     },
     {
@@ -161,5 +161,5 @@
       "predicate": "detects"
     }
   ],
-  "generatedAt": "2026-04-13T07:59:36Z"
+  "generatedAt": "2026-04-18T10:30:11Z"
 }
