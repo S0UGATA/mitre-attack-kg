@@ -1,86 +1,86 @@
 {
-  "totalTriples": 655132,
-  "uniqueSubjects": 327566,
-  "uniqueObjects": 84738,
+  "totalTriples": 655422,
+  "uniqueSubjects": 327711,
+  "uniqueObjects": 84806,
   "uniquePredicates": 2,
   "bySource": [
     {
       "source": "cve",
-      "count": 655132
+      "count": 655422
     }
   ],
   "topPredicates": [
     {
       "predicate": "epss-score",
-      "count": 327566
+      "count": 327711
     },
     {
       "predicate": "epss-percentile",
-      "count": 327566
+      "count": 327711
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "0.00099",
-      "count": 1833
+      "count": 1832
     },
     {
       "entity": "0.00015",
-      "count": 1822
+      "count": 1819
     },
     {
       "entity": "0.00051",
-      "count": 1695
+      "count": 1689
     },
     {
       "entity": "0.00017",
-      "count": 1651
+      "count": 1654
     },
     {
       "entity": "0.00016",
-      "count": 1614
+      "count": 1612
     },
     {
       "entity": "0.00018",
-      "count": 1573
+      "count": 1569
     },
     {
       "entity": "0.00014",
-      "count": 1475
-    },
-    {
-      "entity": "0.00039",
-      "count": 1419
-    },
-    {
-      "entity": "0.00012",
-      "count": 1413
+      "count": 1465
     },
     {
       "entity": "0.00013",
-      "count": 1398
+      "count": 1440
+    },
+    {
+      "entity": "0.00039",
+      "count": 1412
     },
     {
       "entity": "0.00034",
-      "count": 1374
+      "count": 1382
     },
     {
-      "entity": "0.27483",
-      "count": 1347
+      "entity": "0.00012",
+      "count": 1370
+    },
+    {
+      "entity": "0.27468",
+      "count": 1348
     },
     {
       "entity": "0.00138",
-      "count": 1301
+      "count": 1336
+    },
+    {
+      "entity": "0.00036",
+      "count": 1280
     },
     {
       "entity": "0.00043",
-      "count": 1284
-    },
-    {
-      "entity": "0.00025",
-      "count": 1241
+      "count": 1280
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-18T10:30:18Z"
+  "generatedAt": "2026-04-19T12:08:23Z"
 }

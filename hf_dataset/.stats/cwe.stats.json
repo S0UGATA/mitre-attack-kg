@@ -39,15 +39,15 @@
       "count": 1212
     },
     {
+      "predicate": "abstraction",
+      "count": 944
+    },
+    {
       "predicate": "rdf:type",
       "count": 944
     },
     {
-      "predicate": "status",
-      "count": 944
-    },
-    {
-      "predicate": "abstraction",
+      "predicate": "description",
       "count": 944
     },
     {
@@ -55,7 +55,7 @@
       "count": 944
     },
     {
-      "predicate": "description",
+      "predicate": "status",
       "count": 944
     },
     {
@@ -153,5 +153,5 @@
       "predicate": "related-attack-pattern"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:18Z"
+  "generatedAt": "2026-04-19T12:08:23Z"
 }

@@ -4,20 +4,20 @@
     "capec": "capec_latest_20230124_1832.xml",
     "car": "car-master_1b922fe1527d",
     "cpe": "nvdcpe-2.0_20260418_0400",
-    "cve": "cve_extracted_2026-04-18_all_CVEs_at_midnight",
+    "cve": "cve_extracted_2026-04-19_all_CVEs_at_midnight",
     "cwe": "cwec_v4.19.1.xml",
     "d3fend": "d3fend_20260407_1948.json",
     "engage": "engage_attack_mapping_15343fed3525.json",
     "enterprise": "enterprise-attack_a9a83f7507b9.json",
-    "epss": "epss_scores-current.csv_20260417_1331.gz",
+    "epss": "epss_scores-current.csv_20260418_1331.gz",
     "exploitdb": "files_exploits_0dfa62bfc790.csv",
-    "ghsa": "ghsa_f2eee932227d",
+    "ghsa": "ghsa_cf6d9602d573",
     "ics": "ics-attack_a842e2e7635c.json",
     "kev": "known_exploited_vulnerabilities_20260416_1701.json",
     "misp_galaxy": "misp-galaxy_25392f7b109f",
     "mobile": "mobile-attack_aeca345f8229.json",
     "sigma": "sigma_rules_r2026-01-01",
-    "vulnrichment": "vulnrichment_ac9e56d155bb"
+    "vulnrichment": "vulnrichment_6ca958a22dc3"
   },
   "source_fingerprints": {
     "atlas": "etag:W/\"188146fe402796510ae5018ba3c4aeafb865c95202d8400a84740e06d7d9166f\"",
@@ -25,16 +25,17 @@
     "capec": "lm:Tue, 24 Jan 2023 18:32:31 GMT",
     "car": "sha:1b922fe1527d",
     "cpe": "lm:Sat, 18 Apr 2026 04:00:11 GMT",
-    "cve": "tag:cve_2026-04-18_0900Z",
+    "cve": "tag:cve_2026-04-19_1100Z",
     "cwe": "lm:Wed, 21 Jan 2026 10:22:51 GMT",
-    "d3fend": "lm:Tue, 07 Apr 2026 19:48:34 GMT",
+    "d3fend": "lm:Tue, 07 Apr 2026 19:48:35 GMT",
     "engage": "etag:W/\"bc78d959160b3ec4eb800ba43ce1a20c4818aff6105c5feaf4d81496ff419d08\"",
-    "epss": "lm:Fri, 17 Apr 2026 13:31:21 GMT",
+    "epss": "lm:Sat, 18 Apr 2026 13:31:16 GMT",
     "exploitdb": "etag:\"7dd12d0d23ab20fdef15c0b779f6c8f2\"",
-    "ghsa": "sha:f2eee932227d",
+    "f3": "sha:1835d4fda46b",
+    "ghsa": "sha:cf6d9602d573",
     "kev": "lm:Thu, 16 Apr 2026 17:01:07 GMT",
     "misp_galaxy": "sha:25392f7b109f",
     "sigma": "tag:r2026-01-01",
-    "vulnrichment": "sha:ac9e56d155bb"
+    "vulnrichment": "sha:6ca958a22dc3"
   }
 }

@@ -138,7 +138,7 @@ Security data from 17 sources represented as **Subject-Predicate-Object (SPO) tr
 
 Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
 
-*Last updated: 2026-04-18T10:29:58Z*
+*Last updated: 2026-04-19T12:08:02Z*
 
 ## Quick Start
 
@@ -160,21 +160,21 @@ print(ds["train"][0])
 | `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current |
 | `capec` | CAPEC attack patterns | 8,114 | Current |
 | `cwe` | CWE weaknesses | 14,565 | Current |
-| `cve` | CVE vulnerabilities | 3,587,722 | Current |
+| `cve` | CVE vulnerabilities | 3,588,035 | Current |
 | `cpe` | CPE platform enumeration | 12,592,910 | Current |
 | `d3fend` | D3FEND defensive techniques | 8,154 | Current |
 | `atlas` | ATLAS AI/ML techniques | 1,420 | Current |
 | `car` | CAR analytics | 1,617 | Current |
 | `engage` | ENGAGE adversary engagement | 1,464 | Current |
 | `f3` | F3 fraud techniques & tactics | ~1,000 | Current |
-| `epss` | EPSS exploit prediction scores | 655,132 | Current |
+| `epss` | EPSS exploit prediction scores | 655,422 | Current |
 | `kev` | KEV known exploited vulns | 17,187 | Current |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 666,575 | Current |
-| `ghsa` | GitHub Security Advisories | 336,556 | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 666,581 | Current |
+| `ghsa` | GitHub Security Advisories | 336,557 | Current |
 | `sigma` | Sigma detection rules | 32,750 | Current |
 | `exploitdb` | ExploitDB public exploits | 346,451 | Current |
 | `misp_galaxy` | MISP Galaxy threat intelligence clusters | 179,162 | Current |
-| `combined` | All sources merged (deduplicated) | 18,499,401 | Current |
+| `combined` | All sources merged (deduplicated) | 18,500,011 | Current |
 
 
 

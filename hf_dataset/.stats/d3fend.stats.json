@@ -27,11 +27,11 @@
       "count": 1965
     },
     {
-      "predicate": "d3fend-name",
+      "predicate": "d3fend-definition",
       "count": 1468
     },
     {
-      "predicate": "d3fend-definition",
+      "predicate": "d3fend-name",
       "count": 1468
     },
     {
@@ -93,11 +93,11 @@
       "count": 28
     },
     {
-      "entity": "T1546",
+      "entity": "ATTACKMobileCollectionTechnique",
       "count": 23
     },
     {
-      "entity": "ATTACKMobileCollectionTechnique",
+      "entity": "T1546",
       "count": 23
     },
     {
@@ -109,7 +109,7 @@
       "count": 20
     },
     {
-      "entity": "T1547",
+      "entity": "ImpactTechnique",
       "count": 20
     }
   ],
@@ -121,5 +121,5 @@
       "predicate": "restricts"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:18Z"
+  "generatedAt": "2026-04-19T12:08:23Z"
 }

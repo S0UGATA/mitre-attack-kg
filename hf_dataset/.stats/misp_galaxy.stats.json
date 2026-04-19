@@ -19,11 +19,11 @@
       "count": 35797
     },
     {
-      "predicate": "name",
+      "predicate": "galaxy",
       "count": 28400
     },
     {
-      "predicate": "galaxy",
+      "predicate": "name",
       "count": 28400
     },
     {
@@ -93,11 +93,11 @@
       "count": 5219
     },
     {
-      "entity": "MalpediaEntry",
+      "entity": "malpedia",
       "count": 3683
     },
     {
-      "entity": "malpedia",
+      "entity": "MalpediaEntry",
       "count": 3683
     },
     {
@@ -137,11 +137,11 @@
       "count": 1309
     },
     {
-      "entity": "NiceFrameworkTasks",
+      "entity": "nice-framework-tasks",
       "count": 1084
     },
     {
-      "entity": "nice-framework-tasks",
+      "entity": "NiceFrameworkTasks",
       "count": 1084
     }
   ],
@@ -153,5 +153,5 @@
       "predicate": "related-attack-id"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:19Z"
+  "generatedAt": "2026-04-19T12:08:24Z"
 }
