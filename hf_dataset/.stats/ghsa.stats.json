@@ -1,12 +1,12 @@
 {
-  "totalTriples": 336556,
+  "totalTriples": 336557,
   "uniqueSubjects": 29190,
-  "uniqueObjects": 144841,
+  "uniqueObjects": 144843,
   "uniquePredicates": 10,
   "bySource": [
     {
       "source": "ghsa",
-      "count": 336556
+      "count": 336557
     },
     {
       "source": "cwe",
@@ -14,7 +14,7 @@
     },
     {
       "source": "cve",
-      "count": 25531
+      "count": 25532
     },
     {
       "source": "attack",
@@ -39,11 +39,7 @@
       "count": 30326
     },
     {
-      "predicate": "date-modified",
-      "count": 29190
-    },
-    {
-      "predicate": "rdf:type",
+      "predicate": "severity",
       "count": 29190
     },
     {
@@ -51,7 +47,7 @@
       "count": 29190
     },
     {
-      "predicate": "severity",
+      "predicate": "rdf:type",
       "count": 29190
     },
     {
@@ -59,8 +55,12 @@
       "count": 29190
     },
     {
+      "predicate": "date-modified",
+      "count": 29190
+    },
+    {
       "predicate": "related-cve",
-      "count": 25527
+      "count": 25528
     }
   ],
   "topConnectedEntities": [
@@ -135,7 +135,7 @@
     {
       "from": "ghsa",
       "to": "cve",
-      "count": 25527,
+      "count": 25528,
       "predicate": "related-cve"
     },
     {
@@ -145,5 +145,5 @@
       "predicate": "summary"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:19Z"
+  "generatedAt": "2026-04-19T12:08:23Z"
 }

@@ -27,6 +27,10 @@
       "count": 2405
     },
     {
+      "predicate": "name",
+      "count": 2290
+    },
+    {
       "predicate": "url",
       "count": 2290
     },
@@ -40,10 +44,6 @@
     },
     {
       "predicate": "rdf:type",
-      "count": 2290
-    },
-    {
-      "predicate": "name",
       "count": 2290
     },
     {
@@ -165,5 +165,5 @@
       "predicate": "detects"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:11Z"
+  "generatedAt": "2026-04-19T12:08:15Z"
 }

@@ -23,11 +23,11 @@
       "count": 194
     },
     {
-      "predicate": "coverage-level",
+      "predicate": "detects-technique",
       "count": 159
     },
     {
-      "predicate": "detects-technique",
+      "predicate": "coverage-level",
       "count": 159
     },
     {
@@ -47,18 +47,6 @@
       "count": 108
     },
     {
-      "predicate": "rdf:type",
-      "count": 102
-    },
-    {
-      "predicate": "information-domain",
-      "count": 102
-    },
-    {
-      "predicate": "title",
-      "count": 102
-    },
-    {
       "predicate": "submission-date",
       "count": 102
     },
@@ -68,6 +56,18 @@
     },
     {
       "predicate": "maps-to-d3fend",
+      "count": 102
+    },
+    {
+      "predicate": "title",
+      "count": 102
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 102
+    },
+    {
+      "predicate": "information-domain",
       "count": 102
     }
   ],
@@ -129,7 +129,7 @@
       "count": 25
     },
     {
-      "entity": "CAR-2013-03-001",
+      "entity": "CAR-2020-05-003",
       "count": 24
     }
   ],
@@ -147,5 +147,5 @@
       "predicate": "maps-to-d3fend"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:11Z"
+  "generatedAt": "2026-04-19T12:08:15Z"
 }

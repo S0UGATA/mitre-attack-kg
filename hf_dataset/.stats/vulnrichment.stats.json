@@ -1,12 +1,12 @@
 {
-  "totalTriples": 666575,
-  "uniqueSubjects": 143215,
+  "totalTriples": 666581,
+  "uniqueSubjects": 143217,
   "uniqueObjects": 23591,
   "uniquePredicates": 7,
   "bySource": [
     {
       "source": "cve",
-      "count": 666575
+      "count": 666581
     },
     {
       "source": "cpe",
@@ -19,16 +19,16 @@
   ],
   "topPredicates": [
     {
+      "predicate": "ssvc-exploitation",
+      "count": 143221
+    },
+    {
       "predicate": "ssvc-automatable",
-      "count": 143219
+      "count": 143221
     },
     {
       "predicate": "ssvc-technical-impact",
-      "count": 143219
-    },
-    {
-      "predicate": "ssvc-exploitation",
-      "count": 143219
+      "count": 143221
     },
     {
       "predicate": "adp-affects-cpe",
@@ -50,7 +50,7 @@
   "topConnectedEntities": [
     {
       "entity": "partial",
-      "count": 94948
+      "count": 94950
     },
     {
       "entity": "CVE-2024-20399",
@@ -123,5 +123,5 @@
       "predicate": "adp-related-weakness"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:19Z"
+  "generatedAt": "2026-04-19T12:08:24Z"
 }

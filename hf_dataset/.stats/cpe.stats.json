@@ -15,15 +15,15 @@
   ],
   "topPredicates": [
     {
-      "predicate": "vendor",
-      "count": 1574114
-    },
-    {
       "predicate": "rdf:type",
       "count": 1574114
     },
     {
-      "predicate": "title",
+      "predicate": "vendor",
+      "count": 1574114
+    },
+    {
+      "predicate": "part",
       "count": 1574114
     },
     {
@@ -39,7 +39,7 @@
       "count": 1574114
     },
     {
-      "predicate": "part",
+      "predicate": "title",
       "count": 1574114
     },
     {
@@ -117,5 +117,5 @@
       "predicate": "title"
     }
   ],
-  "generatedAt": "2026-04-18T10:30:16Z"
+  "generatedAt": "2026-04-19T12:08:20Z"
 }
