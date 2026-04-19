@@ -16,6 +16,7 @@ tags:
 - atlas
 - car
 - engage
+- f3
 - epss
 - kev
 - vulnrichment
@@ -26,7 +27,7 @@ tags:
 - stix
 - threat-intelligence
 - triples
-pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB / MISP Galaxies)"
+pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / F3 / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB / MISP Galaxies)"
 size_categories:
 - 10M<n<100M
 configs:
@@ -79,6 +80,10 @@ configs:
   data_files:
   - split: train
     path: data/engage.parquet
+- config_name: f3
+  data_files:
+  - split: train
+    path: data/f3.parquet
 - config_name: epss
   data_files:
   - split: train
@@ -129,9 +134,9 @@ dataset_info:
 
 # Security Knowledge Graph Triples
 
-Security data from 16 sources represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
+Security data from 17 sources represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
 
-Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
+Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
 
 *Last updated: 2026-04-18T10:29:58Z*
 
@@ -161,6 +166,7 @@ print(ds["train"][0])
 | `atlas` | ATLAS AI/ML techniques | 1,420 | Current |
 | `car` | CAR analytics | 1,617 | Current |
 | `engage` | ENGAGE adversary engagement | 1,464 | Current |
+| `f3` | F3 fraud techniques & tactics | ~1,000 | Current |
 | `epss` | EPSS exploit prediction scores | 655,132 | Current |
 | `kev` | KEV known exploited vulns | 17,187 | Current |
 | `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 666,575 | Current |
@@ -188,6 +194,7 @@ print(ds["train"][0])
         |  |  +-- CAR (detects)
         |  |  +-- Sigma (detects)
         |  |  +-- ENGAGE (engages)
+        |  |  +-- F3 (fraud techniques)
         |  |  +-- ATLAS (related)
         |  |  +-- MISP Galaxies (cross-refs)
         |  |
@@ -223,7 +230,7 @@ Each row is an enriched triple with six string columns:
 | `subject` | Entity ID | `T1059.001`, `G0016`, `CAPEC-66`, `CWE-79`, `CVE-2024-1234`, `cpe:2.3:a:apache:httpd:*`, `D3-FE`, `AML.T0000`, `CAR-2024-01-001`, `EAC0001`, `GHSA-xxxx-yyyy-zzzz`, `EDB-16929` |
 | `predicate` | Property name or relationship type | `rdf:type`, `name`, `uses`, `mitigates`, `epss-score`, `counters`, `ssvc-exploitation`, `exploits-cve`, `detects-technique` |
 | `object` | Value or target entity ID | `Technique`, `PowerShell`, `T1059`, `CWE-89`, `0.97500`, `SecurityAdvisory`, `SigmaRule`, `Exploit` |
-| `source` | Originating dataset | `attack`, `cve`, `cwe`, `capec`, `epss`, `kev`, `ghsa`, `sigma`, `d3fend`, `atlas`, `car`, `engage`, `cpe`, `vulnrichment`, `exploitdb`, `misp_galaxy` |
+| `source` | Originating dataset | `attack`, `cve`, `cwe`, `capec`, `epss`, `kev`, `ghsa`, `sigma`, `d3fend`, `atlas`, `car`, `engage`, `f3`, `cpe`, `vulnrichment`, `exploitdb`, `misp_galaxy` |
 | `object_type` | Value type of the object | `string`, `id`, `enum`, `date`, `number`, `boolean`, `url` |
 | `meta` | Supplemental JSON metadata (empty string if none) | `{"references":["https://..."],"credits":[...]}`, `{"cvss_vector":"...","cvss_version":"3.1"}` |
 
@@ -354,6 +361,19 @@ Each row is an enriched triple with six string columns:
 | `vulnerability-of` | ATT&CK technique this adversary vulnerability applies to | `T1001` |
 | `addresses-vulnerability` | Addressed adversary vulnerability | `EAV0001` |
 
+### F3 Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `Tactic` or `Technique` | `Technique` |
+| `name` / `description` | Display name / full text | `Account Takeover` |
+| `shortname` | Tactic shortname | `positioning`, `monetization` |
+| `is-subtechnique` | Whether entity is a sub-technique | `true` |
+| `belongs-to-tactic` | Parent tactic | `FA0001` |
+| `subtechnique-of` | Parent technique | `F1001` |
+| `url` | F3 website URL | `https://ctid.mitre.org/fraud/techniques/F1001` |
+| `created` / `modified` | Timestamps | `2026-04-02T19:15:57.686Z` |
+
 ### EPSS Predicates
 
 | Predicate | Description | Example object value |
@@ -465,6 +485,7 @@ Each row is an enriched triple with six string columns:
 | ATLAS | [`ATLAS.yaml`](https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml) | YAML |
 | CAR | [`mitre-attack/car`](https://github.com/mitre-attack/car) | YAML (ZIP) |
 | ENGAGE | [`attack_mapping.json`](https://raw.githubusercontent.com/mitre/engage/main/Data/json/attack_mapping.json) | JSON |
+| F3 | [`fight-fraud-framework`](https://github.com/center-for-threat-informed-defense/fight-fraud-framework) | STIX 2.1 JSON |
 | EPSS | [`epss_scores-current.csv.gz`](https://epss.cyentia.com/epss_scores-current.csv.gz) | CSV (gzip) |
 | KEV | [`known_exploited_vulnerabilities.json`](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json) | JSON |
 | Vulnrichment | [`cisagov/vulnrichment`](https://github.com/cisagov/vulnrichment) | JSON 5.x (ZIP) |
@@ -488,7 +509,7 @@ pip install -r requirements.txt
 python src/convert.py
 ```
 
-This produces fresh Parquet files in `output/` from the latest data across all 16 sources.
+This produces fresh Parquet files in `output/` from the latest data across all 17 sources.
 
 ## Visualizer
 
@@ -622,6 +643,7 @@ This dataset is published under the Apache 2.0 license. The underlying source da
 | [ATLAS](https://github.com/mitre-atlas/atlas-data) | Apache 2.0 | © MITRE. |
 | [CAR](https://github.com/mitre-attack/car) | Apache 2.0 | © The MITRE Corporation. |
 | [ENGAGE](https://engage.mitre.org/) | Apache 2.0 ([GitHub repo](https://github.com/mitre/engage/blob/main/LICENSE.md)) / Custom restrictive ([website ToU](https://engage.mitre.org/terms-of-use/)) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. Note: the GitHub repo is licensed Apache 2.0, but the website terms restrict use to internal/non-commercial purposes. Clarification pending with MITRE. |
+| [F3](https://github.com/center-for-threat-informed-defense/fight-fraud-framework) | Apache 2.0 | © MITRE Engenuity, Center for Threat-Informed Defense. |
 | [EPSS](https://www.first.org/epss/) | Custom permissive (FIRST) | Jacobs, Romanosky, Edwards, Roytman, Adjerid (2021), *Exploit Prediction Scoring System*, Digital Threats Research and Practice, 2(3). See [first.org/epss](https://www.first.org/epss/). |
 | [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Public domain (U.S. Gov) | Source: CISA Known Exploited Vulnerabilities Catalog. |
 | [Vulnrichment](https://github.com/cisagov/vulnrichment) | CC0 1.0 Universal | Source: CISA Vulnrichment. |

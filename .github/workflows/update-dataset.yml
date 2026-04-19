@@ -246,7 +246,7 @@ jobs:
         run: |
           # Build --sources list from changed flags
           sources=""
-          for src in attack capec cwe cve cpe d3fend atlas car engage epss kev vulnrichment ghsa sigma exploitdb misp_galaxy; do
+          for src in attack capec cwe cve cpe d3fend atlas car engage f3 epss kev vulnrichment ghsa sigma exploitdb misp_galaxy; do
             case "$src" in
               attack)    [ "${{ steps.source_check.outputs.attack_changed }}" = "true" ] && sources="$sources attack" ;;
               capec)     [ "${{ steps.source_check.outputs.capec_changed }}" = "true" ] && sources="$sources capec" ;;

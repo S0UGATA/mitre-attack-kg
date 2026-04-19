@@ -38,6 +38,7 @@ ALL_SOURCES = (
     "atlas",
     "car",
     "engage",
+    "f3",
     "epss",
     "kev",
     "vulnrichment",
@@ -56,6 +57,7 @@ SOURCE_CONVERTERS = {
     "atlas": ("convert_atlas", "download_atlas", "extract_atlas_triples"),
     "car": ("convert_car", "download_car", "extract_car_triples"),
     "engage": ("convert_engage", "download_engage", "extract_engage_triples"),
+    "f3": ("convert_f3", "download_f3", "extract_f3_triples"),
     "epss": ("convert_epss", "download_epss", "extract_epss_triples"),
     "kev": ("convert_kev", "download_kev", "extract_kev_triples"),
     "vulnrichment": (

@@ -7,9 +7,9 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
 [![Visualizer](https://img.shields.io/badge/visualizer-security--kg--viz-orange)](https://s0ugata.github.io/security-kg-viz/)
 
-Convert security data from 16 sources into **Subject-Predicate-Object (SPO) knowledge-graph triples** in Parquet format.
+Convert security data from 17 sources into **Subject-Predicate-Object (SPO) knowledge-graph triples** in Parquet format.
 
-Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
+Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
 
 ## Data Flow
 
@@ -29,6 +29,7 @@ flowchart LR
     ATLY["ATLAS YAML"]:::src --> CONV
     CARY["CAR YAML"]:::src --> CONV
     ENGJ["ENGAGE JSON"]:::src --> CONV
+    F3J["F3 STIX JSON"]:::src --> CONV
     EPSC["EPSS CSV"]:::src --> CONV
     KEVJ["KEV JSON"]:::src --> CONV
     VULJ["Vulnrichment JSON"]:::src --> CONV
@@ -46,6 +47,7 @@ flowchart LR
     CONV --> ATL["atlas"]:::out --> CMB
     CONV --> CAR["car"]:::out --> CMB
     CONV --> ENG["engage"]:::out --> CMB
+    CONV --> F3["f3"]:::out --> CMB
     CONV --> EPS["epss"]:::out --> CMB
     CONV --> KEV["kev"]:::out --> CMB
     CONV --> VUL["vulnrichment"]:::out --> CMB
@@ -87,6 +89,7 @@ graph LR
     AN[Analytic]:::car -->|detects-technique| T
     AN -->|maps-to-d3fend| DT
     EA[EngagementActivity]:::engage -->|engages-technique| T
+    FT[F3 Technique]:::f3 -->|belongs-to-tactic| FTAC[F3 Tactic]:::f3
     AT[ATLAS Technique]:::atlas -->|related-attack-technique| T
 
     %% MISP Galaxy → ATT&CK + threat context
@@ -113,6 +116,7 @@ graph LR
     classDef d3fend fill:#d1fae5,stroke:#10b981,color:#064e3b
     classDef car fill:#fef9c3,stroke:#eab308,color:#713f12
     classDef engage fill:#ede9fe,stroke:#8b5cf6,color:#4c1d95
+    classDef f3 fill:#fbcfe8,stroke:#ec4899,color:#831843
     classDef atlas fill:#cffafe,stroke:#06b6d4,color:#164e63
     classDef epss fill:#f3f4f6,stroke:#6b7280,color:#374151
     classDef kev fill:#f3f4f6,stroke:#6b7280,color:#374151
@@ -127,7 +131,7 @@ graph LR
 # Install dependencies
 pip install -r requirements.txt
 
-# Convert everything (all 16 sources) and produce combined.parquet
+# Convert everything (all 17 sources) and produce combined.parquet
 python src/convert.py
 
 # Convert only ATT&CK
@@ -173,6 +177,7 @@ Output goes to `output/`:
 | `atlas.parquet` | ATLAS AI/ML techniques | ~1-2K |
 | `car.parquet` | CAR analytics | ~1-2K |
 | `engage.parquet` | ENGAGE adversary engagement | ~1-2K |
+| `f3.parquet` | F3 fraud techniques & tactics | ~1-2K |
 | `epss.parquet` | EPSS exploit prediction scores | ~600-700K |
 | `kev.parquet` | KEV known exploited vulns | ~15-20K |
 | `vulnrichment.parquet` | CISA Vulnrichment (SSVC, CVSS, CWE) | ~500K-1M |
@@ -191,6 +196,7 @@ ATT&CK <──> CAPEC <──> CWE <──> CVE <──> CPE
   ├── ATLAS (AI parallel)        ├── KEV (exploited)
   ├── CAR (detects)              ├── Vulnrichment (SSVC/CVSS)
   ├── ENGAGE (engages)           ├── GHSA (advisories)
+  ├── F3 (fraud techniques)
   ├── Sigma (detects)            ├── Sigma (related CVE)
   └── MISP Galaxies (cross-refs) └── ExploitDB (exploits)
 ```
@@ -214,7 +220,7 @@ Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.git
 
 ## Cross-Source Analysis Notebook
 
-The [cross-source visualizations notebook](tests/cross_source_visualizations.ipynb) demonstrates 16 analyses that are only possible because all 16 sources are merged into a single graph — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
+The [cross-source visualizations notebook](tests/cross_source_visualizations.ipynb) demonstrates 16 analyses that are only possible because all 17 sources are merged into a single graph — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
 
 ```bash
 pip install -e ".[viz]"
@@ -276,6 +282,7 @@ This project is licensed under Apache 2.0. The underlying source data is provide
 | [ATLAS](https://github.com/mitre-atlas/atlas-data) | Apache 2.0 | © MITRE. |
 | [CAR](https://github.com/mitre-attack/car) | Apache 2.0 | © The MITRE Corporation. |
 | [ENGAGE](https://engage.mitre.org/) | Apache 2.0 ([GitHub repo](https://github.com/mitre/engage/blob/main/LICENSE.md)) / Custom restrictive ([website ToU](https://engage.mitre.org/terms-of-use/)) | © The MITRE Corporation. Reproduced and distributed with the permission of The MITRE Corporation. Note: the GitHub repo is licensed Apache 2.0, but the website terms restrict use to internal/non-commercial purposes. Clarification pending with MITRE. |
+| [F3](https://github.com/center-for-threat-informed-defense/fight-fraud-framework) | Apache 2.0 | © MITRE Engenuity, Center for Threat-Informed Defense. |
 | [EPSS](https://www.first.org/epss/) | Custom permissive (FIRST) | Jacobs, Romanosky, Edwards, Roytman, Adjerid (2021), *Exploit Prediction Scoring System*, Digital Threats Research and Practice, 2(3). See [first.org/epss](https://www.first.org/epss/). |
 | [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) | Public domain (U.S. Gov) | Source: CISA Known Exploited Vulnerabilities Catalog. |
 | [Vulnrichment](https://github.com/cisagov/vulnrichment) | CC0 1.0 Universal | Source: CISA Vulnrichment. |
