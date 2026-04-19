@@ -184,6 +184,7 @@ jobs:
           ATLAS_CHANGED: ${{ steps.source_check.outputs.atlas_changed }}
           CAR_CHANGED: ${{ steps.source_check.outputs.car_changed }}
           ENGAGE_CHANGED: ${{ steps.source_check.outputs.engage_changed }}
+          F3_CHANGED: ${{ steps.source_check.outputs.f3_changed }}
           EPSS_CHANGED: ${{ steps.source_check.outputs.epss_changed }}
           KEV_CHANGED: ${{ steps.source_check.outputs.kev_changed }}
           VULNRICHMENT_CHANGED: ${{ steps.source_check.outputs.vulnrichment_changed }}
@@ -212,6 +213,7 @@ jobs:
               "atlas": ["atlas"],
               "car": ["car"],
               "engage": ["engage"],
+              "f3": ["f3"],
               "epss": ["epss"],
               "kev": ["kev"],
               "vulnrichment": ["vulnrichment"],
@@ -257,6 +259,7 @@ jobs:
               atlas)     [ "${{ steps.source_check.outputs.atlas_changed }}" = "true" ] && sources="$sources atlas" ;;
               car)       [ "${{ steps.source_check.outputs.car_changed }}" = "true" ] && sources="$sources car" ;;
               engage)    [ "${{ steps.source_check.outputs.engage_changed }}" = "true" ] && sources="$sources engage" ;;
+              f3)        [ "${{ steps.source_check.outputs.f3_changed }}" = "true" ] && sources="$sources f3" ;;
               epss)      [ "${{ steps.source_check.outputs.epss_changed }}" = "true" ] && sources="$sources epss" ;;
               kev)       [ "${{ steps.source_check.outputs.kev_changed }}" = "true" ] && sources="$sources kev" ;;
               vulnrichment) [ "${{ steps.source_check.outputs.vulnrichment_changed }}" = "true" ] && sources="$sources vulnrichment" ;;
@@ -326,7 +329,7 @@ jobs:
               "attack": ["enterprise", "mobile", "ics", "attack-all"],
               "capec": ["capec"], "cwe": ["cwe"], "cve": ["cve"], "cpe": ["cpe"],
               "d3fend": ["d3fend"], "atlas": ["atlas"], "car": ["car"],
-              "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
+              "engage": ["engage"], "f3": ["f3"], "epss": ["epss"], "kev": ["kev"],
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
               "misp_galaxy": ["misp_galaxy"],
@@ -365,7 +368,7 @@ jobs:
 
           parquet_names = [
               "attack-all", "capec", "cwe", "cve", "cpe",
-              "d3fend", "atlas", "car", "engage", "epss", "kev",
+              "d3fend", "atlas", "car", "engage", "f3", "epss", "kev",
               "vulnrichment", "ghsa", "sigma", "exploitdb", "misp_galaxy",
           ]
           output = Path("output")
@@ -408,7 +411,7 @@ jobs:
               "attack": ["enterprise", "mobile", "ics", "attack-all"],
               "capec": ["capec"], "cwe": ["cwe"], "cve": ["cve"], "cpe": ["cpe"],
               "d3fend": ["d3fend"], "atlas": ["atlas"], "car": ["car"],
-              "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
+              "engage": ["engage"], "f3": ["f3"], "epss": ["epss"], "kev": ["kev"],
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
               "misp_galaxy": ["misp_galaxy"],
@@ -422,7 +425,7 @@ jobs:
               "enterprise": 20_000, "mobile": 2_000, "ics": 1_500,
               "attack-all": 25_000, "capec": 4_000, "cwe": 7_000,
               "cve": 500_000, "cpe": 500_000, "d3fend": 500,
-              "atlas": 100, "car": 100, "engage": 100,
+              "atlas": 100, "car": 100, "engage": 100, "f3": 100,
               "epss": 100_000, "kev": 2_000, "vulnrichment": 100_000,
               "ghsa": 50_000, "sigma": 10_000, "exploitdb": 50_000,
               "misp_galaxy": 50_000,
@@ -494,6 +497,7 @@ jobs:
           ATLAS_CHANGED: ${{ steps.source_check.outputs.atlas_changed }}
           CAR_CHANGED: ${{ steps.source_check.outputs.car_changed }}
           ENGAGE_CHANGED: ${{ steps.source_check.outputs.engage_changed }}
+          F3_CHANGED: ${{ steps.source_check.outputs.f3_changed }}
           EPSS_CHANGED: ${{ steps.source_check.outputs.epss_changed }}
           KEV_CHANGED: ${{ steps.source_check.outputs.kev_changed }}
           VULNRICHMENT_CHANGED: ${{ steps.source_check.outputs.vulnrichment_changed }}
@@ -518,7 +522,7 @@ jobs:
               "attack": ["enterprise", "mobile", "ics", "attack-all"],
               "capec": ["capec"], "cwe": ["cwe"], "cve": ["cve"], "cpe": ["cpe"],
               "d3fend": ["d3fend"], "atlas": ["atlas"], "car": ["car"],
-              "engage": ["engage"], "epss": ["epss"], "kev": ["kev"],
+              "engage": ["engage"], "f3": ["f3"], "epss": ["epss"], "kev": ["kev"],
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
               "misp_galaxy": ["misp_galaxy"],

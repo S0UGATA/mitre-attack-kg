@@ -528,7 +528,7 @@ Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.git
 
 ## Cross-Source Analysis Notebook
 
-The repository includes a [Jupyter notebook](https://github.com/S0UGATA/security-kg/blob/main/tests/cross_source_visualizations.ipynb) with 16 cross-source analyses and visualizations built on `combined.parquet` — covering SSVC patch prioritization, defensive gap analysis, kill chain tactic coverage, exploit weaponization timelines, ransomware CWE pipelines, supply chain package risk, and more.
+The repository includes a [Jupyter notebook](https://github.com/S0UGATA/security-kg/blob/main/examples/cross_source_visualizations.ipynb) with 16 cross-source analyses and visualizations built on `combined.parquet` — covering SSVC patch prioritization, defensive gap analysis, kill chain tactic coverage, exploit weaponization timelines, ransomware CWE pipelines, supply chain package risk, and more.
 
 ## Example Queries
 

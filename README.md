@@ -11,59 +11,6 @@ Convert security data from 17 sources into **Subject-Predicate-Object (SPO) know
 
 Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
 
-## Data Flow
-
-```mermaid
----
-config:
-  layout: dagre
-  theme: neo
----
-flowchart LR
-    STIX["ATT&CK STIX JSON"]:::src --> CONV["convert.py"]:::conv
-    CXML["CAPEC XML"]:::src --> CONV
-    WXML["CWE XML"]:::src --> CONV
-    CVEJ["CVE JSON 5.x"]:::src --> CONV
-    CPEJ["CPE JSON"]:::src --> CONV
-    D3FJ["D3FEND JSON-LD"]:::src --> CONV
-    ATLY["ATLAS YAML"]:::src --> CONV
-    CARY["CAR YAML"]:::src --> CONV
-    ENGJ["ENGAGE JSON"]:::src --> CONV
-    F3J["F3 STIX JSON"]:::src --> CONV
-    EPSC["EPSS CSV"]:::src --> CONV
-    KEVJ["KEV JSON"]:::src --> CONV
-    VULJ["Vulnrichment JSON"]:::src --> CONV
-    GHSJ["GHSA JSON"]:::src --> CONV
-    SIGY["Sigma YAML"]:::src --> CONV
-    EDBC["ExploitDB CSV"]:::src --> CONV
-    MSPJ["MISP Galaxy JSON"]:::src --> CONV
-
-    CONV --> ATK["enterprise / mobile / ics / attack-all"]:::out --> CMB["combined.parquet"]:::conv
-    CONV --> CAP["capec"]:::out --> CMB
-    CONV --> CW["cwe"]:::out --> CMB
-    CONV --> CVE["cve"]:::out --> CMB
-    CONV --> CPE["cpe"]:::out --> CMB
-    CONV --> D3F["d3fend"]:::out --> CMB
-    CONV --> ATL["atlas"]:::out --> CMB
-    CONV --> CAR["car"]:::out --> CMB
-    CONV --> ENG["engage"]:::out --> CMB
-    CONV --> F3["f3"]:::out --> CMB
-    CONV --> EPS["epss"]:::out --> CMB
-    CONV --> KEV["kev"]:::out --> CMB
-    CONV --> VUL["vulnrichment"]:::out --> CMB
-    CONV --> GHS["ghsa"]:::out --> CMB
-    CONV --> SIG["sigma"]:::out --> CMB
-    CONV --> EDB["exploitdb"]:::out --> CMB
-    CONV --> MSG["misp_galaxy"]:::out --> CMB
-
-    CMB --> HF["HuggingFace Hub"]:::hf
-
-    classDef src fill:#dbeafe,stroke:#3b82f6,color:#1e3a5f
-    classDef conv fill:#f3f4f6,stroke:#6b7280,color:#374151
-    classDef out fill:#fef3c7,stroke:#f59e0b,color:#78350f
-    classDef hf fill:#d1fae5,stroke:#10b981,color:#064e3b
-```
-
 ## Knowledge Graph Structure
 
 ```mermaid
@@ -123,43 +70,44 @@ graph LR
     classDef misp fill:#fdf2f8,stroke:#db2777,color:#831843
 ```
 
-> Legend: <span style="color:#3b82f6">**Blue** = ATT&CK</span> · <span style="color:#f59e0b">**Amber** = CAPEC</span> · <span style="color:#ec4899">**Pink** = CWE</span> · <span style="color:#ef4444">**Red** = CVE</span> · <span style="color:#6366f1">**Indigo** = CPE</span> · <span style="color:#10b981">**Green** = D3FEND</span> · <span style="color:#06b6d4">**Cyan** = ATLAS</span> · <span style="color:#eab308">**Yellow** = CAR</span> · <span style="color:#8b5cf6">**Violet** = ENGAGE</span> · <span style="color:#db2777">**Fuchsia** = MISP Galaxies</span>
+> Legend: <span style="color:#3b82f6">**Blue** = ATT&CK</span> · <span style="color:#f59e0b">**Amber** = CAPEC</span> · <span style="color:#ec4899">**Pink** = CWE / F3</span> · <span style="color:#ef4444">**Red** = CVE</span> · <span style="color:#6366f1">**Indigo** = CPE</span> · <span style="color:#10b981">**Green** = D3FEND</span> · <span style="color:#06b6d4">**Cyan** = ATLAS</span> · <span style="color:#eab308">**Yellow** = CAR</span> · <span style="color:#8b5cf6">**Violet** = ENGAGE</span> · <span style="color:#db2777">**Fuchsia** = MISP Galaxies</span> · <span style="color:#6b7280">**Gray** = EPSS / KEV</span>
 
 ## Usage
 
 ```bash
-# Install dependencies
 pip install -r requirements.txt
 
-# Convert everything (all 17 sources) and produce combined.parquet
+# Convert all 17 sources → output/*.parquet + combined.parquet
 python src/convert.py
 
-# Convert only ATT&CK
-python src/convert.py --sources attack
-
-# Convert a single ATT&CK domain
-python src/convert.py --sources attack --domains enterprise
-
-# Convert only CAPEC and CWE (skip others)
-python src/convert.py --sources capec cwe
-
-# Convert CVE, EPSS, and KEV together
-python src/convert.py --sources cve epss kev
-
-# Skip combined.parquet generation
-python src/convert.py --no-combined
-
-# Run individual converters standalone
-python src/convert_attack.py
-python src/convert_capec.py
-python src/convert_cve.py
-python src/convert_kev.py
-
-# Use Parquet v1 format for backward compatibility (default is v2)
-python src/convert.py --parquet-format v1
+# Convert specific sources in parallel
+python src/convert.py --sources cve epss kev --parallel --workers 8
 ```
 
-Source files are cached in `source/` by default. Files are versioned using `Last-Modified` or `ETag` headers and only re-downloaded when the source has been updated. Sources that don't provide version headers are always re-downloaded.
+<details>
+<summary>All options</summary>
+
+| Option | Description |
+|--------|-------------|
+| `--sources <src ...>` | Sources to convert (default: all). Values: `attack capec cwe cve cpe d3fend atlas car engage f3 epss kev vulnrichment ghsa sigma exploitdb misp_galaxy` |
+| `--domains <dom ...>` | ATT&CK domains: `enterprise`, `mobile`, `ics` (default: all) |
+| `--output-dir <dir>` | Output directory (default: `output/`) |
+| `--cache-dir <dir>` | Source file cache (default: `source/`) |
+| `--parquet-format v1\|v2` | `v2` = Parquet 2.6 + snappy (default), `v1` = 1.0 + gzip |
+| `--no-combined` | Skip `combined.parquet` generation |
+| `--parallel` | Run conversions in parallel |
+| `--workers <n>` | Parallel workers (default: 4) |
+| `--force` | Re-convert even if source data hasn't changed |
+| `--limit <n>` | Limit each source to N triples (quick local testing) |
+| `--update-readme` | Update `hf_dataset/README.md` with triple counts |
+| `--no-stats` | Skip dashboard stats JSON generation |
+| `--log-dir <dir>` | Log file directory (default: `logs/`) |
+
+Individual converters also run standalone: `python src/convert_attack.py`, `python src/convert_cve.py`, etc.
+
+</details>
+
+Source files are cached in `source/` by default. Files are versioned using `Last-Modified` or `ETag` headers and only re-downloaded when the source has been updated.
 
 Output goes to `output/`:
 
@@ -201,30 +149,47 @@ ATT&CK <──> CAPEC <──> CWE <──> CVE <──> CPE
   └── MISP Galaxies (cross-refs) └── ExploitDB (exploits)
 ```
 
-## Tests
+## Examples
+
+### Graph Traversals
+
+The SPO triples support real graph queries via DuckDB recursive CTEs — multi-hop traversals, hierarchy walks, and cross-source chain analysis without a graph database.
 
 ```bash
-# Unit tests (no network access required)
-python -m pytest tests/ -v --ignore=tests/test_integration.py
-
-# Integration tests (downloads real ATT&CK data)
-python -m pytest tests/test_integration.py -v
-
-# All tests
-python -m pytest tests/ -v
+python examples/graph_traversals.py                          # all 8 queries
+python examples/graph_traversals.py --query exploit-to-defense  # single query
+python examples/graph_traversals.py --list                   # list queries
 ```
 
-## Visualizer
+| Query | Description |
+|-------|-------------|
+| `attack-path` | Technique → CAPEC → CWE multi-hop chain (recursive CTE) |
+| `defense-coverage` | All CAR/Sigma/D3FEND/Engage defenses per technique |
+| `cwe-hierarchy` | Walk CWE child-of tree to root pillar (recursive CTE) |
+| `vuln-risk` | CVE risk profile across EPSS, KEV, CVSS, Vulnrichment |
+| `exploit-to-defense` | Exploit → CVE → CWE → CAPEC → technique → defenses (5-hop) |
+| `threat-actor` | Threat actors → ATT&CK techniques → target platforms |
+| `sigma-gap` | ATT&CK techniques with vs without Sigma/CAR detection |
+| `stats` | Cross-source relationship density statistics |
 
-Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.github.io/security-kg-viz/).
+### Cross-Source Analysis Notebook
 
-## Cross-Source Analysis Notebook
-
-The [cross-source visualizations notebook](tests/cross_source_visualizations.ipynb) demonstrates 16 analyses that are only possible because all 17 sources are merged into a single graph — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
+The [cross-source visualizations notebook](examples/cross_source_visualizations.ipynb) demonstrates 16 analyses across all 17 sources — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
 
 ```bash
 pip install -e ".[viz]"
-jupyter notebook tests/cross_source_visualizations.ipynb
+jupyter notebook examples/cross_source_visualizations.ipynb
+```
+
+### Visualizer
+
+Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.github.io/security-kg-viz/).
+
+## Tests
+
+```bash
+python -m pytest tests/ -v --ignore=tests/test_integration.py  # unit tests
+python -m pytest tests/test_integration.py -v                   # integration (network)
 ```
 
 ## HuggingFace Dataset
@@ -237,12 +202,28 @@ See the [dataset card](hf_dataset/README.md) for schema details, example queries
 
 The following sources were researched and evaluated for inclusion. They are deferred for now but may be added in future versions.
 
-### High-Value Deferred Sources
+### High-Value Candidates
 
-| Source | Format | Why Deferred |
-|--------|--------|-------------|
-| [EUVD](https://euvd.enisa.europa.eu/) | JSON | EU vulnerability database, structured, CVE-linked. New (launched 2025), API still maturing. |
-| [OSV](https://osv.dev/) | JSON | Google's open-source vulnerability DB with bulk download. Focused on software packages rather than CVE-level vulnerabilities. |
+| Source | Format | Cross-links | License | Notes |
+|--------|--------|-------------|---------|-------|
+| [Nuclei Templates](https://github.com/projectdiscovery/nuclei-templates) | YAML (~12K files) | CVE, CWE, EPSS, CPE, KEV per template | MIT | ~3,600 CVE-tagged templates with CVSS classification blocks. Highest cross-link density of any candidate. |
+| [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) | YAML (~1,774 tests) | ATT&CK technique IDs | MIT | Every test keyed by ATT&CK technique. Adds test procedures, platforms, executor commands. |
+| [LOLBAS](https://github.com/LOLBAS-Project/LOLBAS) | YAML | ATT&CK technique IDs via `MitreID` | GPL-3.0 | Windows living-off-the-land binaries with abuse functions mapped to ATT&CK. |
+| [LOLDrivers](https://github.com/magicsword-io/LOLDrivers) | YAML (2,041 drivers) | ATT&CK via `MitreID`; some CVEs | Apache-2.0 | Vulnerable/malicious Windows drivers with file hashes and signer info. |
+| [NIST 800-53 + ATT&CK Mappings](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings) | STIX JSON + OSCAL | Control → ATT&CK technique | Apache-2.0 / Public domain | Bridges defensive controls to offensive techniques. CTID provides ready-made STIX mappings. |
+| [EUVD](https://euvd.enisa.europa.eu/) | JSON | CVE-linked | TBD | EU vulnerability database. New (launched 2025), API still maturing. |
+| [OSV](https://osv.dev/) | JSON | CVE, CWE, packages | CC-BY-4.0 | Google's open-source vulnerability DB with bulk download. Package-focused rather than CVE-level. |
+
+### Medium-Value Candidates
+
+| Source | Format | Cross-links | License | Notes |
+|--------|--------|-------------|---------|-------|
+| [GTFOBins](https://github.com/GTFOBins/GTFOBins.github.io) | YAML-in-Markdown (~400+ binaries) | ATT&CK via Navigator layer | GPL-3.0 | Linux counterpart to LOLBAS. Parsing slightly awkward (YAML front-matter in Markdown). |
+| [DISARM](https://github.com/DISARMFoundation/DISARMframeworks) | CSV + STIX | Mirrors ATT&CK structure | CC-BY-SA-4.0 | Disinformation tactics & techniques. Niche domain (info ops, not cyber). STIX format eases integration. |
+| [Caldera Stockpile](https://github.com/mitre/caldera) | YAML abilities | ATT&CK technique IDs | Apache-2.0 | Adversary emulation abilities mapped to ATT&CK. Smaller than Atomic Red Team, some overlap. |
+| [RE&CT](https://github.com/atc-project/atc-react) | YAML (~200 actions) | Response actions → ATT&CK techniques | Apache-2.0 | Defensive complement — incident response actions that counter specific ATT&CK techniques. |
+| [VERIS](https://github.com/vz-risk/veris) | JSON Schema + CSV | VERIS actions → ATT&CK mapping | CC | Incident taxonomy (Verizon DBIR vocabulary). Schema/vocabulary rather than entity database. |
+| [OWASP ASVS](https://github.com/OWASP/ASVS) | CSV | CWE mappings per requirement | CC-BY-SA-4.0 | Web-app security verification requirements. CWE cross-links need confirmation. |
 
 ### International Sources Investigated
 
@@ -259,13 +240,21 @@ The following sources were researched and evaluated for inclusion. They are defe
 | [CERT-EU](https://cert.europa.eu/) | EU | Threat landscape reports, limited machine-readable data. |
 | [BDU (FSTEC)](https://bdu.fstec.ru/) | Russia | Poor data quality, slow updates, access restrictions. |
 
-### Specialized / Niche Sources
+### Evaluated and Excluded
 
-| Source | Why Not Included |
-|--------|-----------------|
+| Source | Why Excluded |
+|--------|-------------|
 | [MAEC](https://maecproject.github.io/) | Malware attribute enumeration. Sparse community adoption, limited structured data available. |
 | [OVAL](https://oval.mitre.org/) | Compliance-focused XML definitions. Very large, focused on system configuration rather than threat context. |
 | [CCE](https://ncp.nist.gov/cce) | Configuration enumeration (Excel format). Narrow scope, limited cross-linking potential. |
+| [Abuse.ch](https://abuse.ch/) (ThreatFox/URLhaus/MalwareBazaar) | IOC feeds are ephemeral/high-volume and don't produce stable entity relationships for a KG. |
+| [Ransomware.live](https://www.ransomware.live/) | API-only, rate-limited, no bulk download. |
+| [PhishTank](https://phishtank.org/) | No cross-links to ATT&CK/CVE/CWE. Pure IOC feed. |
+| [Metasploit Modules](https://github.com/rapid7/metasploit-framework) | No machine-readable CVE mapping file. Would require Ruby AST parsing. |
+| [MITRE EMB3D](https://emb3d.mitre.org/) | Very niche (OT/embedded). Cross-links to ATT&CK/CWE unclear. Worth revisiting as it matures. |
+| [CIS Controls](https://www.cisecurity.org/controls) | No freely downloadable machine-readable data. Proprietary. |
+| [VulnCheck KEV](https://vulncheck.com/) | No confirmed public bulk data repository. Commercial. |
+| AttackIQ / SCYTHE / ANY.RUN / Triage | Commercial platforms, no open bulk data. |
 
 ## Source Licensing & Attribution
 
