@@ -192,6 +192,13 @@ jobs:
           SIGMA_CHANGED: ${{ steps.source_check.outputs.sigma_changed }}
           EXPLOITDB_CHANGED: ${{ steps.source_check.outputs.exploitdb_changed }}
           MISP_GALAXY_CHANGED: ${{ steps.source_check.outputs.misp_galaxy_changed }}
+          LOLBAS_CHANGED: ${{ steps.source_check.outputs.lolbas_changed }}
+          LOLDRIVERS_CHANGED: ${{ steps.source_check.outputs.loldrivers_changed }}
+          ATOMIC_CHANGED: ${{ steps.source_check.outputs.atomic_changed }}
+          NIST_800_53_CHANGED: ${{ steps.source_check.outputs.nist_800_53_changed }}
+          NUCLEI_CHANGED: ${{ steps.source_check.outputs.nuclei_changed }}
+          EUVD_CHANGED: ${{ steps.source_check.outputs.euvd_changed }}
+          OSV_CHANGED: ${{ steps.source_check.outputs.osv_changed }}
         run: |
           python - <<'PYEOF'
           import os, shutil
@@ -221,6 +228,13 @@ jobs:
               "sigma": ["sigma"],
               "exploitdb": ["exploitdb"],
               "misp_galaxy": ["misp_galaxy"],
+              "lolbas": ["lolbas"],
+              "loldrivers": ["loldrivers"],
+              "atomic": ["atomic"],
+              "nist_800_53": ["nist_800_53"],
+              "nuclei": ["nuclei"],
+              "euvd": ["euvd"],
+              "osv": ["osv"],
           }
 
           for source, files in source_files.items():
@@ -248,7 +262,7 @@ jobs:
         run: |
           # Build --sources list from changed flags
           sources=""
-          for src in attack capec cwe cve cpe d3fend atlas car engage f3 epss kev vulnrichment ghsa sigma exploitdb misp_galaxy; do
+          for src in attack capec cwe cve cpe d3fend atlas car engage f3 epss kev vulnrichment ghsa sigma exploitdb misp_galaxy lolbas loldrivers atomic nist_800_53 nuclei euvd osv; do
             case "$src" in
               attack)    [ "${{ steps.source_check.outputs.attack_changed }}" = "true" ] && sources="$sources attack" ;;
               capec)     [ "${{ steps.source_check.outputs.capec_changed }}" = "true" ] && sources="$sources capec" ;;
@@ -267,6 +281,13 @@ jobs:
               sigma)     [ "${{ steps.source_check.outputs.sigma_changed }}" = "true" ] && sources="$sources sigma" ;;
               exploitdb) [ "${{ steps.source_check.outputs.exploitdb_changed }}" = "true" ] && sources="$sources exploitdb" ;;
               misp_galaxy) [ "${{ steps.source_check.outputs.misp_galaxy_changed }}" = "true" ] && sources="$sources misp_galaxy" ;;
+              lolbas)    [ "${{ steps.source_check.outputs.lolbas_changed }}" = "true" ] && sources="$sources lolbas" ;;
+              loldrivers) [ "${{ steps.source_check.outputs.loldrivers_changed }}" = "true" ] && sources="$sources loldrivers" ;;
+              atomic)    [ "${{ steps.source_check.outputs.atomic_changed }}" = "true" ] && sources="$sources atomic" ;;
+              nist_800_53) [ "${{ steps.source_check.outputs.nist_800_53_changed }}" = "true" ] && sources="$sources nist_800_53" ;;
+              nuclei)    [ "${{ steps.source_check.outputs.nuclei_changed }}" = "true" ] && sources="$sources nuclei" ;;
+              euvd)      [ "${{ steps.source_check.outputs.euvd_changed }}" = "true" ] && sources="$sources euvd" ;;
+              osv)       [ "${{ steps.source_check.outputs.osv_changed }}" = "true" ] && sources="$sources osv" ;;
             esac
           done
           sources=$(echo $sources | xargs)
@@ -333,6 +354,9 @@ jobs:
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
               "misp_galaxy": ["misp_galaxy"],
+              "lolbas": ["lolbas"], "loldrivers": ["loldrivers"],
+              "atomic": ["atomic"], "nist_800_53": ["nist_800_53"],
+              "nuclei": ["nuclei"], "euvd": ["euvd"], "osv": ["osv"],
           }
 
           for source in failed:
@@ -370,6 +394,8 @@ jobs:
               "attack-all", "capec", "cwe", "cve", "cpe",
               "d3fend", "atlas", "car", "engage", "f3", "epss", "kev",
               "vulnrichment", "ghsa", "sigma", "exploitdb", "misp_galaxy",
+              "lolbas", "loldrivers", "atomic", "nist_800_53",
+              "nuclei", "euvd", "osv",
           ]
           output = Path("output")
           parquet_files = [output / f"{n}.parquet" for n in parquet_names if (output / f"{n}.parquet").exists()]
@@ -415,6 +441,9 @@ jobs:
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
               "misp_galaxy": ["misp_galaxy"],
+              "lolbas": ["lolbas"], "loldrivers": ["loldrivers"],
+              "atomic": ["atomic"], "nist_800_53": ["nist_800_53"],
+              "nuclei": ["nuclei"], "euvd": ["euvd"], "osv": ["osv"],
           }
           fallback_parquets = set()
           for src in failed_sources:
@@ -429,6 +458,9 @@ jobs:
               "epss": 100_000, "kev": 2_000, "vulnrichment": 100_000,
               "ghsa": 50_000, "sigma": 10_000, "exploitdb": 50_000,
               "misp_galaxy": 50_000,
+              "lolbas": 1_000, "loldrivers": 2_000,
+              "atomic": 5_000, "nist_800_53": 1_000,
+              "nuclei": 10_000, "euvd": 1_000, "osv": 100_000,
               "combined": 1_000_000,
           }
 
@@ -505,6 +537,13 @@ jobs:
           SIGMA_CHANGED: ${{ steps.source_check.outputs.sigma_changed }}
           EXPLOITDB_CHANGED: ${{ steps.source_check.outputs.exploitdb_changed }}
           MISP_GALAXY_CHANGED: ${{ steps.source_check.outputs.misp_galaxy_changed }}
+          LOLBAS_CHANGED: ${{ steps.source_check.outputs.lolbas_changed }}
+          LOLDRIVERS_CHANGED: ${{ steps.source_check.outputs.loldrivers_changed }}
+          ATOMIC_CHANGED: ${{ steps.source_check.outputs.atomic_changed }}
+          NIST_800_53_CHANGED: ${{ steps.source_check.outputs.nist_800_53_changed }}
+          NUCLEI_CHANGED: ${{ steps.source_check.outputs.nuclei_changed }}
+          EUVD_CHANGED: ${{ steps.source_check.outputs.euvd_changed }}
+          OSV_CHANGED: ${{ steps.source_check.outputs.osv_changed }}
         run: |
           python - <<'PYEOF'
           import json, os, shutil
@@ -526,6 +565,9 @@ jobs:
               "vulnrichment": ["vulnrichment"], "ghsa": ["ghsa"],
               "sigma": ["sigma"], "exploitdb": ["exploitdb"],
               "misp_galaxy": ["misp_galaxy"],
+              "lolbas": ["lolbas"], "loldrivers": ["loldrivers"],
+              "atomic": ["atomic"], "nist_800_53": ["nist_800_53"],
+              "nuclei": ["nuclei"], "euvd": ["euvd"], "osv": ["osv"],
           }
 
           # Identify which parquets actually need uploading

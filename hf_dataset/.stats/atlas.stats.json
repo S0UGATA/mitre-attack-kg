@@ -1,129 +1,106 @@
 {
-  "totalTriples": 1420,
-  "uniqueSubjects": 240,
-  "uniqueObjects": 547,
-  "uniquePredicates": 10,
+  "totalTriples": 100,
+  "uniqueSubjects": 17,
+  "uniqueObjects": 59,
+  "uniquePredicates": 7,
   "bySource": [
     {
       "source": "atlas",
-      "count": 1597
-    },
-    {
-      "source": "attack",
-      "count": 47
+      "count": 100
     }
   ],
   "topPredicates": [
     {
       "predicate": "rdf:type",
-      "count": 240
-    },
-    {
-      "predicate": "name",
-      "count": 240
+      "count": 17
     },
     {
       "predicate": "description",
-      "count": 183
+      "count": 17
     },
     {
       "predicate": "modified",
-      "count": 183
+      "count": 17
+    },
+    {
+      "predicate": "name",
+      "count": 17
     },
     {
       "predicate": "created",
-      "count": 183
-    },
-    {
-      "predicate": "maturity",
-      "count": 167
-    },
-    {
-      "predicate": "belongs-to-tactic",
-      "count": 111
-    },
-    {
-      "predicate": "subtechnique-of",
-      "count": 66
-    },
-    {
-      "predicate": "related-attack-technique",
-      "count": 33
+      "count": 17
     },
     {
       "predicate": "related-attack-tactic",
       "count": 14
+    },
+    {
+      "predicate": "maturity",
+      "count": 1
     }
   ],
   "topConnectedEntities": [
-    {
-      "entity": "Technique",
-      "count": 167
-    },
-    {
-      "entity": "demonstrated",
-      "count": 87
-    },
-    {
-      "entity": "2021-05-13",
-      "count": 73
-    },
-    {
-      "entity": "realized",
-      "count": 64
-    },
-    {
-      "entity": "CaseStudy",
-      "count": 57
-    },
-    {
-      "entity": "2025-03-12",
-      "count": 43
-    },
-    {
-      "entity": "2025-04-09",
-      "count": 43
-    },
-    {
-      "entity": "2023-10-25",
-      "count": 29
-    },
-    {
-      "entity": "2026-03-30",
-      "count": 29
-    },
-    {
-      "entity": "2025-09-30",
-      "count": 23
-    },
-    {
-      "entity": "AML.TA0007",
-      "count": 21
-    },
-    {
-      "entity": "AML.TA0003",
-      "count": 19
-    },
-    {
-      "entity": "feasible",
-      "count": 16
-    },
     {
       "entity": "Tactic",
       "count": 16
     },
     {
-      "entity": "AML.TA0008",
-      "count": 15
-    }
-  ],
-  "crossSourceLinks": [
+      "entity": "2025-04-09",
+      "count": 12
+    },
     {
-      "from": "atlas",
-      "to": "attack",
-      "count": 33,
-      "predicate": "related-attack-technique"
+      "entity": "2022-01-24",
+      "count": 10
+    },
+    {
+      "entity": "AML.TA0014",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0011",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0009",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0005",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0013",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0012",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0010",
+      "count": 6
+    },
+    {
+      "entity": "AML.T0000",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0007",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0002",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0015",
+      "count": 6
+    },
+    {
+      "entity": "AML.TA0004",
+      "count": 6
     }
   ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

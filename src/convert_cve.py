@@ -3,6 +3,7 @@
 import json
 import logging
 import re
+import shutil
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -10,9 +11,10 @@ import requests
 
 from common import (
     SOURCE_DIR,
+    Triple,
     extract_cvss_meta,
-    get_object_type,
     github_api_headers,
+    make_triple_fn,
     meta_json,
     safe_zip_extract,
 )
@@ -24,7 +26,7 @@ SOURCE = "cve"
 CVELIST_API = "https://api.github.com/repos/CVEProject/cvelistV5/releases/latest"
 
 
-def download_cve(cache_dir: str | None = None) -> str:
+def download_cve(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download CVE bulk ZIP from cvelistV5 GitHub releases.
 
     Returns the path to the extracted directory containing CVE JSON files.
@@ -57,12 +59,17 @@ def download_cve(cache_dir: str | None = None) -> str:
     extract_dir = cache / f"cve_extracted_{zip_base}"
 
     # Check if already downloaded and extracted
-    if extract_dir.exists() and next(extract_dir.rglob("CVE-*.json"), None) and zip_path.exists():
+    if (
+        not force_download
+        and extract_dir.exists()
+        and next(extract_dir.rglob("CVE-*.json"), None)
+        and zip_path.exists()
+    ):
         logger.info("Using cached CVE data at %s (release %s)", extract_dir, tag)
         return str(extract_dir)
 
     # Download the ZIP
-    if not zip_path.exists():
+    if force_download or not zip_path.exists():
         logger.info("Downloading %s (%d MB) ...", zip_name, asset["size"] // 1_000_000)
         download_url = asset["browser_download_url"]
         resp = requests.get(download_url, timeout=600, stream=True)
@@ -73,6 +80,8 @@ def download_cve(cache_dir: str | None = None) -> str:
         logger.info("Saved %s (%d bytes)", zip_path, zip_path.stat().st_size)
 
     # Extract (the release ZIP contains a nested cves.zip with the actual JSON files)
+    if force_download and extract_dir.exists():
+        shutil.rmtree(extract_dir)
     logger.info("Extracting %s ...", zip_path)
     extract_dir.mkdir(parents=True, exist_ok=True)
     safe_zip_extract(zip_path, extract_dir)
@@ -86,6 +95,19 @@ def download_cve(cache_dir: str | None = None) -> str:
 
     logger.info("Extracted CVE data to %s", extract_dir)
 
+    # Clean up old CVE zips and extraction dirs
+    for old in cache.glob("*_all_CVEs_at_midnight*"):
+        if old in (zip_path, extract_dir):
+            continue
+        try:
+            if old.is_dir():
+                shutil.rmtree(old)
+            else:
+                old.unlink()
+            logger.info("Cleaned up old CVE data %s", old)
+        except OSError:
+            pass
+
     return str(extract_dir)
 
 
@@ -95,11 +117,10 @@ def _parse_cwe_id(description: str) -> str | None:
     return match.group(1) if match else None
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _extract_single_cve(cve_data: dict) -> list[Triple]:
     """Extract triples from a single CVE JSON 5.x record."""
     meta = cve_data.get("cveMetadata", {})
     cve_id = meta.get("cveId", "")
@@ -133,7 +154,7 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, s
         if credit_entries:
             entity_meta["credits"] = credit_entries
 
-    triples: list[tuple[str, str, str, str, str, str]] = [
+    triples: list[Triple] = [
         _t(cve_id, "rdf:type", "Vulnerability", meta_json(entity_meta)),
     ]
 
@@ -193,7 +214,7 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, s
     return triples
 
 
-def extract_cve_triples(data_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+def extract_cve_triples(data_dir: str) -> Iterator[Triple]:
     """Yield SPO triples from all CVE JSON files in the extracted directory.
 
     Returns a generator to avoid loading millions of triples into memory.

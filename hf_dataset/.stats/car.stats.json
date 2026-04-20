@@ -1,151 +1,130 @@
 {
-  "totalTriples": 1617,
-  "uniqueSubjects": 102,
-  "uniqueObjects": 546,
+  "totalTriples": 100,
+  "uniqueSubjects": 5,
+  "uniqueObjects": 79,
   "uniquePredicates": 13,
   "bySource": [
     {
       "source": "car",
-      "count": 1617
-    },
-    {
-      "source": "attack",
-      "count": 646
-    },
-    {
-      "source": "d3fend",
-      "count": 102
+      "count": 100
     }
   ],
   "topPredicates": [
     {
+      "predicate": "detects-subtechnique",
+      "count": 19
+    },
+    {
       "predicate": "covers-tactic",
-      "count": 194
+      "count": 14
     },
     {
       "predicate": "detects-technique",
-      "count": 159
+      "count": 11
     },
     {
       "predicate": "coverage-level",
-      "count": 159
-    },
-    {
-      "predicate": "detects-subtechnique",
-      "count": 134
+      "count": 11
     },
     {
       "predicate": "platform",
-      "count": 129
-    },
-    {
-      "predicate": "subtype",
-      "count": 122
-    },
-    {
-      "predicate": "analytic-type",
-      "count": 108
-    },
-    {
-      "predicate": "submission-date",
-      "count": 102
-    },
-    {
-      "predicate": "description",
-      "count": 102
-    },
-    {
-      "predicate": "maps-to-d3fend",
-      "count": 102
-    },
-    {
-      "predicate": "title",
-      "count": 102
+      "count": 7
     },
     {
       "predicate": "rdf:type",
-      "count": 102
+      "count": 5
+    },
+    {
+      "predicate": "submission-date",
+      "count": 5
+    },
+    {
+      "predicate": "description",
+      "count": 5
+    },
+    {
+      "predicate": "analytic-type",
+      "count": 5
+    },
+    {
+      "predicate": "title",
+      "count": 5
     },
     {
       "predicate": "information-domain",
-      "count": 102
+      "count": 5
+    },
+    {
+      "predicate": "subtype",
+      "count": 4
+    },
+    {
+      "predicate": "maps-to-d3fend",
+      "count": 4
     }
   ],
   "topConnectedEntities": [
-    {
-      "entity": "Analytic",
-      "count": 114
-    },
-    {
-      "entity": "CAR-2013-04-002",
-      "count": 102
-    },
-    {
-      "entity": "Windows",
-      "count": 99
-    },
-    {
-      "entity": "TTP",
-      "count": 80
-    },
-    {
-      "entity": "Process",
-      "count": 73
-    },
-    {
-      "entity": "Host",
-      "count": 71
-    },
     {
       "entity": "CAR-2013-01-002",
       "count": 49
     },
     {
-      "entity": "D3-PSA",
-      "count": 48
+      "entity": "CAR-2013-01-003",
+      "count": 16
     },
     {
-      "entity": "TA0005",
-      "count": 42
+      "entity": "CAR-2013-02-008",
+      "count": 16
+    },
+    {
+      "entity": "CAR-2013-02-003",
+      "count": 13
     },
     {
       "entity": "TA0003",
-      "count": 37
+      "count": 7
     },
     {
-      "entity": "CAR-2016-03-001",
-      "count": 36
+      "entity": "CAR-2013-02-012",
+      "count": 6
+    },
+    {
+      "entity": "Analytic",
+      "count": 5
+    },
+    {
+      "entity": "Windows",
+      "count": 4
+    },
+    {
+      "entity": "Situational Awareness",
+      "count": 4
+    },
+    {
+      "entity": "Host",
+      "count": 3
     },
     {
       "entity": "TA0004",
-      "count": 27
+      "count": 2
     },
     {
-      "entity": "CAR-2013-05-003",
-      "count": 26
+      "entity": "2013/01/25",
+      "count": 2
     },
     {
-      "entity": "TA0007",
-      "count": 25
+      "entity": "TA0002",
+      "count": 2
     },
     {
-      "entity": "CAR-2020-05-003",
-      "count": 24
+      "entity": "D3-SICA",
+      "count": 1
+    },
+    {
+      "entity": "T1059.003",
+      "count": 1
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "car",
-      "to": "attack",
-      "count": 194,
-      "predicate": "covers-tactic"
-    },
-    {
-      "from": "car",
-      "to": "d3fend",
-      "count": 102,
-      "predicate": "maps-to-d3fend"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

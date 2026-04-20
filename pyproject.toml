@@ -43,7 +43,7 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["common", "convert", "convert_attack", "convert_atlas", "convert_capec", "convert_car", "convert_cpe", "convert_cve", "convert_cwe", "convert_d3fend", "convert_engage", "convert_epss", "convert_exploitdb", "convert_ghsa", "convert_kev", "convert_misp_galaxy", "convert_sigma", "convert_vulnrichment"]
+known-first-party = ["common", "convert", "convert_attack", "convert_atlas", "convert_atomic", "convert_capec", "convert_car", "convert_cpe", "convert_cve", "convert_cwe", "convert_d3fend", "convert_engage", "convert_epss", "convert_euvd", "convert_exploitdb", "convert_f3", "convert_ghsa", "convert_kev", "convert_lolbas", "convert_loldrivers", "convert_misp_galaxy", "convert_nist_800_53", "convert_nuclei", "convert_osv", "convert_sigma", "convert_vulnrichment"]
 
 [tool.pytest.ini_options]
 markers = [

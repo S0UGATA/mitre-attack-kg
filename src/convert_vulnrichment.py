@@ -5,25 +5,31 @@ import logging
 from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_github_zip, extract_cvss_meta, get_object_type
+from common import Triple, download_github_zip, extract_cvss_meta, make_triple_fn
 
 logger = logging.getLogger(__name__)
 
 SOURCE = "vulnrichment"
 
 
-def download_vulnrichment(cache_dir: str | None = None) -> str:
+def download_vulnrichment(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download Vulnrichment repo ZIP, returning path to the extracted directory."""
     return str(
-        download_github_zip("cisagov", "vulnrichment", "vulnrichment.zip", "develop", cache_dir)
+        download_github_zip(
+            "cisagov",
+            "vulnrichment",
+            "vulnrichment.zip",
+            "develop",
+            cache_dir,
+            force_download=force_download,
+        )
     )
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _extract_single_cve(cve_data: dict) -> list[Triple]:
     """Extract enrichment triples from a single Vulnrichment CVE JSON file."""
     meta = cve_data.get("cveMetadata", {})
     cve_id = meta.get("cveId", "")
@@ -34,7 +40,7 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, s
     if state == "REJECTED":
         return []
 
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for adp in cve_data.get("containers", {}).get("adp", []):
         # CVSS metrics from ADP
@@ -70,7 +76,7 @@ def _extract_single_cve(cve_data: dict) -> list[tuple[str, str, str, str, str, s
     return triples
 
 
-def extract_vulnrichment_triples(data_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+def extract_vulnrichment_triples(data_dir: str) -> Iterator[Triple]:
     """Yield SPO triples from all Vulnrichment CVE JSON files."""
     data_path = Path(data_dir)
     count = 0

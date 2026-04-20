@@ -1,143 +1,118 @@
 {
-  "totalTriples": 32750,
-  "uniqueSubjects": 3234,
-  "uniqueObjects": 8690,
-  "uniquePredicates": 11,
+  "totalTriples": 100,
+  "uniqueSubjects": 10,
+  "uniqueObjects": 52,
+  "uniquePredicates": 10,
   "bySource": [
     {
       "source": "sigma",
-      "count": 32750
-    },
-    {
-      "source": "attack",
-      "count": 3809
-    },
-    {
-      "source": "cve",
-      "count": 43
+      "count": 100
     }
   ],
   "topPredicates": [
     {
       "predicate": "detects-technique",
-      "count": 3808
+      "count": 13
     },
     {
       "predicate": "status",
-      "count": 3234
+      "count": 10
     },
     {
       "predicate": "title",
-      "count": 3234
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 3234
-    },
-    {
-      "predicate": "level",
-      "count": 3234
-    },
-    {
-      "predicate": "author",
-      "count": 3234
-    },
-    {
-      "predicate": "date",
-      "count": 3234
+      "count": 10
     },
     {
       "predicate": "description",
-      "count": 3234
+      "count": 10
     },
     {
-      "predicate": "logsource-product",
-      "count": 3080
+      "predicate": "rdf:type",
+      "count": 10
+    },
+    {
+      "predicate": "level",
+      "count": 10
+    },
+    {
+      "predicate": "author",
+      "count": 10
     },
     {
       "predicate": "logsource-category",
-      "count": 2558
+      "count": 9
     },
     {
-      "predicate": "logsource-service",
-      "count": 666
+      "predicate": "date",
+      "count": 9
+    },
+    {
+      "predicate": "logsource-product",
+      "count": 9
     }
   ],
   "topConnectedEntities": [
     {
+      "entity": "961d0ba2-3eea-4303-a930-2cf78bbfcc5e",
+      "count": 13
+    },
+    {
+      "entity": "d36f87ea-c403-44d2-aa79-1a0ac7c24456",
+      "count": 11
+    },
+    {
+      "entity": "0adc67e0-a68f-4ffd-9c43-28905aad5d6a",
+      "count": 11
+    },
+    {
+      "entity": "637f689e-b4a5-4a86-be0e-0100a0a33ba2",
+      "count": 10
+    },
+    {
       "entity": "SigmaRule",
-      "count": 3234
+      "count": 10
+    },
+    {
+      "entity": "0e7163d4-9e19-4fa7-9be6-000c61aad77a",
+      "count": 10
     },
     {
       "entity": "test",
-      "count": 2944
+      "count": 10
+    },
+    {
+      "entity": "f6451de4-df0a-41fa-8d72-b39f54a08db5",
+      "count": 10
+    },
+    {
+      "entity": "58cb02d5-78ce-4692-b3e1-dce850aae41a",
+      "count": 10
+    },
+    {
+      "entity": "41504465-5e3a-4a5b-a5b4-2a0baadd4463",
+      "count": 10
+    },
+    {
+      "entity": "pipe_created",
+      "count": 9
     },
     {
       "entity": "windows",
-      "count": 2517
+      "count": 9
     },
     {
-      "entity": "high",
-      "count": 1674
+      "entity": "1f7025a6-e747-4130-aac4-961eb47015f1",
+      "count": 9
     },
     {
-      "entity": "process_creation",
-      "count": 1418
-    },
-    {
-      "entity": "medium",
-      "count": 1389
+      "entity": "85adeb13-4fc9-4e68-8a4a-c7cb2c336eb7",
+      "count": 6
     },
     {
       "entity": "Nasreddine Bencherchali (Nextron Systems)",
-      "count": 579
-    },
-    {
-      "entity": "Florian Roth (Nextron Systems)",
-      "count": 371
-    },
-    {
-      "entity": "frack113",
-      "count": 262
-    },
-    {
-      "entity": "file_event",
-      "count": 209
-    },
-    {
-      "entity": "registry_set",
-      "count": 208
-    },
-    {
-      "entity": "experimental",
-      "count": 207
-    },
-    {
-      "entity": "T1059.001",
-      "count": 199
-    },
-    {
-      "entity": "critical",
-      "count": 171
-    },
-    {
-      "entity": "linux",
-      "count": 169
+      "count": 4
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "sigma",
-      "to": "attack",
-      "count": 3808,
-      "predicate": "detects-technique"
-    },
-    {
-      "from": "sigma",
-      "to": "cve",
-      "count": 43,
-      "predicate": "title"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:24Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
 }

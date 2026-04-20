@@ -1,173 +1,126 @@
 {
-  "totalTriples": 49622,
-  "uniqueSubjects": 3500,
-  "uniqueObjects": 14857,
-  "uniquePredicates": 21,
+  "totalTriples": 300,
+  "uniqueSubjects": 31,
+  "uniqueObjects": 159,
+  "uniquePredicates": 12,
   "bySource": [
     {
       "source": "attack",
-      "count": 72045
-    },
-    {
-      "source": "engage",
-      "count": 898
+      "count": 300
     }
   ],
   "topPredicates": [
     {
-      "predicate": "uses",
-      "count": 18937
-    },
-    {
       "predicate": "platform",
-      "count": 3602
-    },
-    {
-      "predicate": "modified",
-      "count": 2826
+      "count": 45
     },
     {
       "predicate": "rdf:type",
-      "count": 2826
+      "count": 31
     },
     {
-      "predicate": "name",
-      "count": 2826
+      "predicate": "modified",
+      "count": 30
     },
     {
       "predicate": "created",
-      "count": 2823
+      "count": 30
     },
     {
-      "predicate": "url",
-      "count": 2819
-    },
-    {
-      "predicate": "description",
-      "count": 2808
+      "predicate": "name",
+      "count": 30
     },
     {
       "predicate": "domain",
-      "count": 2719
+      "count": 29
     },
     {
-      "predicate": "mitigates",
-      "count": 1943
+      "predicate": "url",
+      "count": 29
+    },
+    {
+      "predicate": "description",
+      "count": 29
     },
     {
       "predicate": "is-subtechnique",
-      "count": 1120
+      "count": 29
     },
     {
       "predicate": "belongs-to-tactic",
-      "count": 1089
-    },
-    {
-      "predicate": "detects",
-      "count": 898
-    },
-    {
-      "predicate": "targets",
-      "count": 685
-    },
-    {
-      "predicate": "subtechnique-of",
-      "count": 524
-    },
-    {
-      "predicate": "alias",
-      "count": 408
-    },
-    {
-      "predicate": "deprecated",
-      "count": 318
+      "count": 13
     },
     {
       "predicate": "revoked",
-      "count": 193
+      "count": 4
     },
     {
-      "predicate": "revoked-by",
-      "count": 192
-    },
-    {
-      "predicate": "shortname",
-      "count": 40
-    },
-    {
-      "predicate": "attributed-to",
-      "count": 26
+      "predicate": "deprecated",
+      "count": 1
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "enterprise-attack",
-      "count": 2066
-    },
-    {
-      "entity": "Windows",
-      "count": 1278
-    },
-    {
       "entity": "Technique",
-      "count": 1120
+      "count": 31
     },
     {
-      "entity": "Malware",
-      "count": 830
+      "entity": "T1205.002",
+      "count": 14
     },
     {
-      "entity": "T1105",
-      "count": 522
+      "entity": "T1066",
+      "count": 13
     },
     {
-      "entity": "Linux",
-      "count": 514
+      "entity": "T1156",
+      "count": 12
     },
     {
-      "entity": "macOS",
-      "count": 510
+      "entity": "T1560.001",
+      "count": 12
     },
     {
-      "entity": "T1082",
-      "count": 426
+      "entity": "T1053.005",
+      "count": 12
     },
     {
-      "entity": "T1071.001",
-      "count": 424
+      "entity": "T1021.005",
+      "count": 12
+    },
+    {
+      "entity": "T1470",
+      "count": 11
+    },
+    {
+      "entity": "T1540",
+      "count": 11
+    },
+    {
+      "entity": "T1055.011",
+      "count": 11
+    },
+    {
+      "entity": "ics-attack",
+      "count": 11
     },
     {
       "entity": "mobile-attack",
-      "count": 386
+      "count": 10
     },
     {
-      "entity": "T1059.003",
-      "count": 385
+      "entity": "T1630",
+      "count": 10
     },
     {
-      "entity": "T1083",
-      "count": 377
+      "entity": "T1638",
+      "count": 10
     },
     {
-      "entity": "T1140",
-      "count": 346
-    },
-    {
-      "entity": "Mitigation",
-      "count": 334
-    },
-    {
-      "entity": "T1057",
-      "count": 326
+      "entity": "T1663",
+      "count": 10
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 898,
-      "predicate": "detects"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

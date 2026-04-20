@@ -1,0 +1,102 @@
+{
+  "totalTriples": 100,
+  "uniqueSubjects": 17,
+  "uniqueObjects": 44,
+  "uniquePredicates": 6,
+  "bySource": [
+    {
+      "source": "atomic",
+      "count": 100
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "rdf:type",
+      "count": 17
+    },
+    {
+      "predicate": "tests-technique",
+      "count": 17
+    },
+    {
+      "predicate": "description",
+      "count": 17
+    },
+    {
+      "predicate": "name",
+      "count": 17
+    },
+    {
+      "predicate": "platform",
+      "count": 16
+    },
+    {
+      "predicate": "executor",
+      "count": 16
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "AtomicTest",
+      "count": 17
+    },
+    {
+      "entity": "windows",
+      "count": 15
+    },
+    {
+      "entity": "powershell",
+      "count": 9
+    },
+    {
+      "entity": "T1003.001",
+      "count": 7
+    },
+    {
+      "entity": "T1003",
+      "count": 7
+    },
+    {
+      "entity": "4ff61684-ad91-405c-9fbc-048354ff1d07",
+      "count": 6
+    },
+    {
+      "entity": "dea6c349-f1c6-44f3-87a1-1ed33a59a607",
+      "count": 6
+    },
+    {
+      "entity": "c7921449-8b62-4c4d-8a83-d9281ac0190b",
+      "count": 6
+    },
+    {
+      "entity": "9e2173c0-ba26-4cdf-b0ed-8c54b27e3ad6",
+      "count": 6
+    },
+    {
+      "entity": "dddd4aca-bbed-46f0-984d-e4c5971c51ea",
+      "count": 6
+    },
+    {
+      "entity": "0b207037-813c-4444-ac3f-b597cf280a67",
+      "count": 6
+    },
+    {
+      "entity": "d400090a-d8ca-4be0-982e-c70598a23de9",
+      "count": 6
+    },
+    {
+      "entity": "2536dee2-12fb-459a-8c37-971844fa73be",
+      "count": 6
+    },
+    {
+      "entity": "0be2230c-9ab3-4ac2-8826-3199b9a0ebf8",
+      "count": 6
+    },
+    {
+      "entity": "7ae7102c-a099-45c8-b985-4c7a2d05790d",
+      "count": 6
+    }
+  ],
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
+}

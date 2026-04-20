@@ -5,34 +5,43 @@ from pathlib import Path
 
 import yaml
 
-from common import download_github_zip, get_object_type, meta_json
+from common import Triple, download_github_zip, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
 SOURCE = "car"
 
 
-def download_car(cache_dir: str | None = None) -> str:
+def download_car(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download CAR repo ZIP, returning path to the extraction directory."""
-    return str(download_github_zip("mitre-attack", "car", "car-master.zip", "master", cache_dir))
+    return str(
+        download_github_zip(
+            "mitre-attack",
+            "car",
+            "car-master.zip",
+            "master",
+            cache_dir,
+            force_download=force_download,
+        )
+    )
 
 
 def _find_analytics_dir(extract_dir: str) -> Path:
     """Locate the analytics directory inside the extraction."""
     base = Path(extract_dir)
-    analytics_dir = base / "car-master" / "analytics"
-    if not analytics_dir.exists():
-        for d in base.iterdir():
-            if d.is_dir() and (d / "analytics").exists():
-                return d / "analytics"
-    return analytics_dir
+    analytics = base / "analytics"
+    if analytics.exists():
+        return analytics
+    for d in base.iterdir():
+        if d.is_dir() and (d / "analytics").exists():
+            return d / "analytics"
+    return analytics
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def _analytic_triples(analytic: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _analytic_triples(analytic: dict) -> list[Triple]:
     """Extract triples from a single CAR analytic YAML."""
     aid = analytic.get("id", "")
     if not aid:
@@ -87,7 +96,7 @@ def _analytic_triples(analytic: dict) -> list[tuple[str, str, str, str, str, str
         triples.append(_t(aid, "analytic-type", atype))
 
     for cov in analytic.get("coverage", []):
-        tech = cov.get("technique", "")
+        tech = str(cov.get("technique", "")).upper()
         if tech:
             triples.append(_t(aid, "detects-technique", tech))
 
@@ -99,7 +108,7 @@ def _analytic_triples(analytic: dict) -> list[tuple[str, str, str, str, str, str
                 triples.append(_t(aid, "covers-tactic", tactic))
 
             for subtech in cov.get("subtechniques", []):
-                triples.append(_t(aid, "detects-subtechnique", subtech))
+                triples.append(_t(aid, "detects-subtechnique", str(subtech).upper()))
 
     for mapping in analytic.get("d3fend_mappings", []):
         d3f_id = mapping.get("id", "")
@@ -109,9 +118,9 @@ def _analytic_triples(analytic: dict) -> list[tuple[str, str, str, str, str, str
     return triples
 
 
-def extract_car_triples(extract_dir: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_car_triples(extract_dir: str) -> list[Triple]:
     """Extract SPO triples from all CAR analytic YAML files."""
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
     analytics_path = _find_analytics_dir(extract_dir)
 
     yaml_files = sorted(analytics_path.glob("*.yaml"))

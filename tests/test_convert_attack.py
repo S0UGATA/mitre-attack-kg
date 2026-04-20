@@ -7,6 +7,7 @@ import pytest
 
 from common import triples_to_dataframe
 from convert_attack import (
+    _build_id_map,
     _entity_triples,
     _resolve_id,
     convert_domain,
@@ -138,9 +139,27 @@ def fake_attack():
         FakeRelationship("attack-pattern--aaa", "subtechnique-of", "attack-pattern--bbb"),
         FakeRelationship("x-mitre-data-component--jjj", "detects", "attack-pattern--aaa"),
     ]
-    attack.get_objects_by_type.return_value = rels
+
+    all_objects = {
+        "attack-pattern": [t1, t2],
+        "x-mitre-tactic": [tactic],
+        "intrusion-set": [group],
+        "malware": [malware],
+        "tool": [tool],
+        "course-of-action": [mitigation],
+        "campaign": [campaign],
+        "x-mitre-data-source": [ds],
+        "x-mitre-data-component": [dc],
+        "relationship": rels,
+    }
+    attack.get_objects_by_type.side_effect = lambda t: all_objects.get(t, [])
 
     return attack
+
+
+@pytest.fixture
+def id_map(fake_attack):
+    return _build_id_map(fake_attack)
 
 
 # ---------------------------------------------------------------------------
@@ -149,11 +168,11 @@ def fake_attack():
 
 
 class TestResolveId:
-    def test_known_id(self, fake_attack):
-        assert _resolve_id(fake_attack, "attack-pattern--aaa") == "T1059.001"
+    def test_known_id(self, id_map):
+        assert _resolve_id(id_map, "attack-pattern--aaa") == "T1059.001"
 
-    def test_unknown_falls_back_to_stix_id(self, fake_attack):
-        assert _resolve_id(fake_attack, "unknown--zzz") == "unknown--zzz"
+    def test_unknown_falls_back_to_stix_id(self, id_map):
+        assert _resolve_id(id_map, "unknown--zzz") == "unknown--zzz"
 
 
 class TestEntityTriples:
@@ -161,9 +180,9 @@ class TestEntityTriples:
     def tactic_map(self):
         return {"execution": "TA0002"}
 
-    def test_technique_triples(self, fake_attack, tactic_map):
+    def test_technique_triples(self, fake_attack, id_map, tactic_map):
         obj = fake_attack.get_techniques()[0]
-        triples = _entity_triples(fake_attack, obj, "Technique", tactic_map)
+        triples = _entity_triples(id_map, obj, "Technique", tactic_map)
 
         subjects = {t[0] for t in triples}
         assert subjects == {"T1059.001"}
@@ -185,9 +204,9 @@ class TestEntityTriples:
         assert ("T1059.001", "is-subtechnique", "true") in triple_set
         assert ("T1059.001", "url", "https://attack.mitre.org/techniques/T1059/001") in triple_set
 
-    def test_group_aliases(self, fake_attack):
+    def test_group_aliases(self, fake_attack, id_map):
         obj = fake_attack.get_groups()[0]
-        triples = _entity_triples(fake_attack, obj, "Group")
+        triples = _entity_triples(id_map, obj, "Group")
 
         alias_triples = [(s, p, o) for s, p, o, *_ in triples if p == "alias"]
         alias_values = {o for _, _, o in alias_triples}
@@ -196,15 +215,15 @@ class TestEntityTriples:
         assert "Cozy Bear" in alias_values
         assert "The Dukes" in alias_values
 
-    def test_tactic_shortname(self, fake_attack):
+    def test_tactic_shortname(self, fake_attack, id_map):
         obj = fake_attack.get_tactics()[0]
-        triples = _entity_triples(fake_attack, obj, "Tactic")
+        triples = _entity_triples(id_map, obj, "Tactic")
         assert ("TA0002", "shortname", "execution") in {t[:3] for t in triples}
 
-    def test_six_tuple_source_and_object_type(self, fake_attack, tactic_map):
+    def test_six_tuple_source_and_object_type(self, fake_attack, id_map, tactic_map):
         """Verify source, object_type, and meta fields in 6-tuple output."""
         obj = fake_attack.get_techniques()[0]
-        triples = _entity_triples(fake_attack, obj, "Technique", tactic_map)
+        triples = _entity_triples(id_map, obj, "Technique", tactic_map)
 
         # All triples must have source="attack"
         assert all(t[3] == "attack" for t in triples)

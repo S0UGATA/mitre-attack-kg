@@ -32,3 +32,5 @@ source/
 # Conversion logs
 logs/
 /sonar-project.properties
+profile.prof
+profile.txt

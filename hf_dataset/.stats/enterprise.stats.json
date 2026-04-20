@@ -6,11 +6,7 @@
   "bySource": [
     {
       "source": "attack",
-      "count": 62515
-    },
-    {
-      "source": "engage",
-      "count": 691
+      "count": 42041
     }
   ],
   "topPredicates": [
@@ -27,19 +23,19 @@
       "count": 2405
     },
     {
-      "predicate": "name",
-      "count": 2290
-    },
-    {
-      "predicate": "url",
-      "count": 2290
-    },
-    {
       "predicate": "created",
       "count": 2290
     },
     {
       "predicate": "modified",
+      "count": 2290
+    },
+    {
+      "predicate": "name",
+      "count": 2290
+    },
+    {
+      "predicate": "url",
       "count": 2290
     },
     {
@@ -79,11 +75,11 @@
       "count": 287
     },
     {
-      "predicate": "revoked-by",
+      "predicate": "revoked",
       "count": 140
     },
     {
-      "predicate": "revoked",
+      "predicate": "revoked-by",
       "count": 140
     },
     {
@@ -157,13 +153,6 @@
       "count": 302
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 691,
-      "predicate": "detects"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

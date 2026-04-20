@@ -126,6 +126,7 @@ def download_file(
     cache_dir: str | None = None,
     *,
     version_override: str | None = None,
+    force_download: bool = False,
 ) -> Path:
     """Download a file with version-based caching. Returns the local path.
 
@@ -150,7 +151,7 @@ def download_file(
     if version:
         versioned_filename = f"{stem}_{version}{suffix}"
         versioned_path = cache / versioned_filename
-        if versioned_path.exists():
+        if not force_download and versioned_path.exists():
             logger.info("Using cached %s (up-to-date)", versioned_path)
             return versioned_path
     else:
@@ -173,27 +174,53 @@ def download_file(
     return versioned_path
 
 
-def download_gzip(url: str, filename: str, cache_dir: str | None = None) -> Path:
+def download_gzip(
+    url: str, filename: str, cache_dir: str | None = None, *, force_download: bool = False
+) -> Path:
     """Download a gzip-compressed file and decompress it. Returns path to decompressed file."""
-    gz_path = download_file(url, filename + ".gz", cache_dir)
+    gz_path = download_file(url, filename + ".gz", cache_dir, force_download=force_download)
     out_path = gz_path.with_suffix("")  # strip .gz
-    if out_path.exists():
+    if not force_download and out_path.exists():
         logger.info("Using cached decompressed %s", out_path)
         return out_path
     logger.info("Decompressing %s ...", gz_path)
     with gzip.open(gz_path, "rb") as f_in, open(out_path, "wb") as f_out:
         f_out.write(f_in.read())
     logger.info("Decompressed %s (%d bytes)", out_path, out_path.stat().st_size)
+
+    base_stem = filename
+    for old in gz_path.parent.glob(f"{base_stem}_*"):
+        if old != out_path and not old.name.endswith(".gz"):
+            try:
+                old.unlink()
+                logger.info("Cleaned up old decompressed file %s", old)
+            except OSError:
+                pass
+
     return out_path
 
 
-def download_tar_gz(url: str, filename: str, cache_dir: str | None = None) -> Path:
+def download_tar_gz(
+    url: str, filename: str, cache_dir: str | None = None, *, force_download: bool = False
+) -> Path:
     """Download a tar.gz and extract. Returns path to the extraction directory."""
-    tgz_path = download_file(url, filename, cache_dir)
+    tgz_path = download_file(url, filename, cache_dir, force_download=force_download)
     extract_dir = tgz_path.parent / tgz_path.stem.replace(".tar", "")
-    if extract_dir.exists() and any(extract_dir.iterdir()):
+    if not force_download and extract_dir.exists() and any(extract_dir.iterdir()):
         logger.info("Using cached extraction %s", extract_dir)
         return extract_dir
+
+    stem = Path(filename).stem.replace(".tar", "")
+    for old_dir in tgz_path.parent.glob(f"{stem}_*"):
+        if old_dir.is_dir() and old_dir != extract_dir:
+            try:
+                shutil.rmtree(old_dir)
+                logger.info("Cleaned up old extraction dir %s", old_dir)
+            except OSError:
+                pass
+
+    if force_download and extract_dir.exists():
+        shutil.rmtree(extract_dir)
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", tgz_path)
     with tarfile.open(tgz_path, "r:gz") as tar:
@@ -204,33 +231,50 @@ def download_tar_gz(url: str, filename: str, cache_dir: str | None = None) -> Pa
 
 def safe_zip_extract(zip_path: Path, extract_dir: Path) -> None:
     """Extract a ZIP file, rejecting entries with path traversal attempts."""
-    resolved = extract_dir.resolve()
+    resolved = os.path.realpath(extract_dir)
+    prefix = resolved + os.sep
     with zipfile.ZipFile(zip_path) as zf:
-        for member in zf.namelist():
-            target = (extract_dir / member).resolve()
-            if not str(target).startswith(str(resolved)):
-                raise ValueError(f"Zip entry {member!r} would escape extraction directory")
         for info in zf.infolist():
+            target = os.path.normpath(os.path.join(resolved, info.filename))
+            if target != resolved and not target.startswith(prefix):
+                raise ValueError(f"Zip entry {info.filename!r} would escape extraction directory")
             zf.extract(info, extract_dir)
-            extracted = extract_dir / info.filename
-            if info.is_dir():
-                os.chmod(extracted, 0o755)
-            else:
-                os.chmod(extracted, 0o644)
 
 
-def download_zip(url: str, filename: str, cache_dir: str | None = None) -> Path:
+def download_zip(
+    url: str, filename: str, cache_dir: str | None = None, *, force_download: bool = False
+) -> Path:
     """Download a ZIP and extract. Returns path to the extraction directory."""
-    zip_path = download_file(url, filename, cache_dir)
+    zip_path = download_file(url, filename, cache_dir, force_download=force_download)
     extract_dir = zip_path.parent / zip_path.stem
-    if extract_dir.exists() and any(extract_dir.iterdir()):
+    if not force_download and extract_dir.exists() and any(extract_dir.iterdir()):
         logger.info("Using cached extraction %s", extract_dir)
         return extract_dir
+
+    stem = Path(filename).stem
+    for old_dir in zip_path.parent.glob(f"{stem}_*"):
+        if old_dir.is_dir() and old_dir != extract_dir:
+            try:
+                shutil.rmtree(old_dir)
+                logger.info("Cleaned up old extraction dir %s", old_dir)
+            except OSError:
+                pass
+
+    if force_download and extract_dir.exists():
+        shutil.rmtree(extract_dir)
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
     safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
     return extract_dir
+
+
+def _unwrap_single_subdir(path: Path) -> Path:
+    """If *path* contains exactly one entry and it is a directory, return it."""
+    entries = list(path.iterdir())
+    if len(entries) == 1 and entries[0].is_dir():
+        return entries[0]
+    return path
 
 
 def download_github_zip(
@@ -239,6 +283,8 @@ def download_github_zip(
     filename: str,
     branch: str = "main",
     cache_dir: str | None = None,
+    *,
+    force_download: bool = False,
 ) -> Path:
     """Download a GitHub repo archive ZIP using a commit-SHA fingerprint.
 
@@ -260,11 +306,13 @@ def download_github_zip(
         )
         sha = None
 
-    zip_path = download_file(url, filename, cache_dir, version_override=sha)
+    zip_path = download_file(
+        url, filename, cache_dir, version_override=sha, force_download=force_download
+    )
     extract_dir = zip_path.parent / zip_path.stem
-    if extract_dir.exists() and any(extract_dir.iterdir()):
+    if not force_download and extract_dir.exists() and any(extract_dir.iterdir()):
         logger.info("Using cached extraction %s", extract_dir)
-        return extract_dir
+        return _unwrap_single_subdir(extract_dir)
 
     # Clean up old extraction dirs for previous versions
     stem = Path(filename).stem
@@ -276,11 +324,13 @@ def download_github_zip(
             except OSError:
                 pass
 
+    if force_download and extract_dir.exists():
+        shutil.rmtree(extract_dir)
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
     safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
-    return extract_dir
+    return _unwrap_single_subdir(extract_dir)
 
 
 # ---------------------------------------------------------------------------
@@ -362,6 +412,8 @@ PREDICATE_TYPES: dict[str, str] = {
     "detects-subtechnique": "id",
     "detects-technique": "id",
     "engages-technique": "id",
+    "mitigates-technique": "id",
+    "tests-technique": "id",
     "exploits-cve": "id",
     "maps-to-d3fend": "id",
     "maps-to-technique": "id",
@@ -397,7 +449,9 @@ PREDICATE_TYPES: dict[str, str] = {
     "analytic-type": "string",
     "assigner": "string",
     "author": "string",
+    "category": "string",
     "cfr-suspected-state-sponsor": "string",
+    "control-family": "string",
     "consequence-impact": "string",
     "consequence-scope": "string",
     "country": "string",
@@ -408,7 +462,10 @@ PREDICATE_TYPES: dict[str, str] = {
     "definition": "string",
     "description": "string",
     "domain": "string",
+    "ecosystem": "string",
+    "executor": "string",
     "fixed-in": "string",
+    "full-path": "string",
     "galaxy": "string",
     "information-domain": "string",
     "introduction-phase": "string",
@@ -421,9 +478,13 @@ PREDICATE_TYPES: dict[str, str] = {
     "logsource-category": "string",
     "logsource-product": "string",
     "logsource-service": "string",
+    "md5": "string",
     "name": "string",
     "platform": "string",
+    "privileges": "string",
     "product": "string",
+    "sha1": "string",
+    "sha256": "string",
     "shortname": "string",
     "subtype": "string",
     "summary": "string",
@@ -431,11 +492,15 @@ PREDICATE_TYPES: dict[str, str] = {
     "targets-country": "string",
     "targets-sector": "string",
     "title": "string",
+    "usecase": "string",
     "vendor": "string",
     "version": "string",
     # url
     "url": "url",
 }
+
+
+Triple = tuple[str, str, str, str, str, str]
 
 
 def get_object_type(predicate: str, default: str = "string") -> str:
@@ -448,11 +513,26 @@ def get_object_type(predicate: str, default: str = "string") -> str:
     return default
 
 
+def make_triple_fn(source: str, default_type: str = "string"):
+    """Return a triple-builder function bound to a specific source."""
+
+    def _t(s: str, p: str, o: str, m: str = "") -> Triple:
+        return (s, p, o, source, get_object_type(p, default_type), m)
+
+    return _t
+
+
 def meta_json(d: dict | None) -> str:
     """Convert a metadata dict to a compact JSON string, or empty string if None/empty."""
     if not d:
         return ""
     return json.dumps(d, separators=(",", ":"))
+
+
+def truncate_text(text: str, max_len: int = 2000) -> str:
+    """Strip and truncate text to max_len characters."""
+    text = text.strip()
+    return text[:max_len] if len(text) > max_len else text
 
 
 def extract_cvss_meta(metric: dict) -> tuple[dict | None, str]:
@@ -533,7 +613,7 @@ COLUMNS = ["subject", "predicate", "object", "source", "object_type", "meta"]
 
 
 def triples_to_dataframe(
-    triples: list[tuple[str, str, str, str, str, str]],
+    triples: list[Triple],
 ) -> pd.DataFrame:
     """Convert list of (subject, predicate, object, source, object_type, meta) tuples."""
     return pd.DataFrame(triples, columns=COLUMNS)
@@ -564,7 +644,7 @@ def write_triples_streaming(
     pq_opts = PARQUET_FORMATS[parquet_format]
     writer = None
     total = 0
-    batch: list[tuple[str, str, str, str, str, str]] = []
+    batch: list[Triple] = []
 
     def _flush(batch):
         cols = list(zip(*batch, strict=True))
@@ -607,32 +687,41 @@ def deduplicate_combined(
       - dup_unique: number of unique (s,p,o) triples that had duplicates
       - by_source: dict mapping source name to count of duplicate rows
     """
-    dup_mask = df.duplicated(subset=["subject", "predicate", "object"], keep=False)
+    key_cols = ["_s", "_p", "_o"]
+    df["_s"] = df["subject"].str.upper()
+    df["_p"] = df["predicate"].str.upper()
+    df["_o"] = df["object"].str.upper()
+
+    dup_mask = df.duplicated(subset=key_cols, keep=False)
     n_dup_rows = int(dup_mask.sum())
 
     if not n_dup_rows:
+        df.drop(columns=key_cols, inplace=True)
         return df, {"dup_rows": 0, "dup_unique": 0, "by_source": {}}
 
     dupes = df[dup_mask]
     stats = {
         "dup_rows": n_dup_rows,
-        "dup_unique": int(
-            dupes.drop_duplicates(subset=["subject", "predicate", "object"]).shape[0]
-        ),
+        "dup_unique": int(dupes.drop_duplicates(subset=key_cols).shape[0]),
         "by_source": dupes.groupby("source").size().sort_values(ascending=False).to_dict(),
     }
 
     merged = (
-        dupes.groupby(["subject", "predicate", "object"], sort=False)
+        dupes.groupby(key_cols, sort=False)
         .agg(
+            subject=("subject", "first"),
+            predicate=("predicate", "first"),
+            object=("object", "first"),
             source=("source", lambda x: ",".join(sorted(set(x)))),
             object_type=("object_type", "first"),
             meta=("meta", lambda x: merge_meta(list(x))),
         )
-        .reset_index()
+        .reset_index(drop=True)
     )
 
-    return pd.concat([df[~dup_mask], merged], ignore_index=True), stats
+    result = pd.concat([df[~dup_mask], merged], ignore_index=True)
+    result.drop(columns=key_cols, inplace=True, errors="ignore")
+    return result, stats
 
 
 # ---------------------------------------------------------------------------
@@ -714,6 +803,13 @@ SOURCE_FINGERPRINT_METHODS: dict[str, str] = {
     "sigma": "github_release:SigmaHQ/sigma",
     "exploitdb": "http:https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv",
     "misp_galaxy": "github_sha:MISP/misp-galaxy/main",
+    "lolbas": "github_sha:LOLBAS-Project/LOLBAS/master",
+    "loldrivers": "github_sha:magicsword-io/LOLDrivers/main",
+    "atomic": "github_sha:redcanaryco/atomic-red-team/master",
+    "nist_800_53": "github_sha:center-for-threat-informed-defense/mappings-explorer/main",
+    "nuclei": "github_sha:projectdiscovery/nuclei-templates/main",
+    "euvd": "http:https://euvdservices.enisa.europa.eu/api/kev/dump",
+    "osv": "http:https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip",
 }
 
 
@@ -814,6 +910,13 @@ ALL_PARQUET_NAMES = [
     "sigma",
     "exploitdb",
     "misp_galaxy",
+    "lolbas",
+    "loldrivers",
+    "atomic",
+    "nist_800_53",
+    "nuclei",
+    "euvd",
+    "osv",
     "combined",
 ]
 

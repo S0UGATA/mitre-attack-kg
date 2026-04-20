@@ -1,163 +1,130 @@
 {
-  "totalTriples": 8114,
-  "uniqueSubjects": 558,
-  "uniqueObjects": 1870,
-  "uniquePredicates": 16,
+  "totalTriples": 100,
+  "uniqueSubjects": 4,
+  "uniqueObjects": 61,
+  "uniquePredicates": 13,
   "bySource": [
     {
       "source": "capec",
-      "count": 8840
-    },
-    {
-      "source": "cwe",
-      "count": 1213
-    },
-    {
-      "source": "attack",
-      "count": 272
+      "count": 100
     }
   ],
   "topPredicates": [
     {
-      "predicate": "consequence-scope",
-      "count": 1392
+      "predicate": "related-weakness",
+      "count": 35
     },
     {
-      "predicate": "related-weakness",
-      "count": 1213
+      "predicate": "consequence-scope",
+      "count": 20
     },
     {
       "predicate": "consequence-impact",
-      "count": 891
-    },
-    {
-      "predicate": "status",
-      "count": 558
-    },
-    {
-      "predicate": "name",
-      "count": 558
-    },
-    {
-      "predicate": "abstraction",
-      "count": 558
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 558
-    },
-    {
-      "predicate": "description",
-      "count": 556
-    },
-    {
-      "predicate": "child-of",
-      "count": 532
-    },
-    {
-      "predicate": "severity",
-      "count": 488
-    },
-    {
-      "predicate": "likelihood",
-      "count": 344
-    },
-    {
-      "predicate": "maps-to-technique",
-      "count": 272
-    },
-    {
-      "predicate": "can-precede",
-      "count": 162
-    },
-    {
-      "predicate": "peer-of",
-      "count": 19
-    },
-    {
-      "predicate": "can-follow",
       "count": 10
     },
     {
-      "predicate": "can-also-be",
-      "count": 3
+      "predicate": "rdf:type",
+      "count": 4
+    },
+    {
+      "predicate": "severity",
+      "count": 4
+    },
+    {
+      "predicate": "status",
+      "count": 4
+    },
+    {
+      "predicate": "description",
+      "count": 4
+    },
+    {
+      "predicate": "likelihood",
+      "count": 4
+    },
+    {
+      "predicate": "child-of",
+      "count": 4
+    },
+    {
+      "predicate": "abstraction",
+      "count": 4
+    },
+    {
+      "predicate": "name",
+      "count": 4
+    },
+    {
+      "predicate": "can-precede",
+      "count": 2
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 1
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "AttackPattern",
-      "count": 558
+      "entity": "CAPEC-10",
+      "count": 32
+    },
+    {
+      "entity": "CAPEC-1",
+      "count": 30
+    },
+    {
+      "entity": "CAPEC-100",
+      "count": 25
+    },
+    {
+      "entity": "CAPEC-101",
+      "count": 14
     },
     {
       "entity": "Confidentiality",
-      "count": 475
-    },
-    {
-      "entity": "Draft",
-      "count": 402
+      "count": 7
     },
     {
       "entity": "High",
-      "count": 342
+      "count": 7
     },
     {
-      "entity": "Detailed",
-      "count": 316
+      "entity": "Draft",
+      "count": 4
     },
     {
-      "entity": "Integrity",
-      "count": 238
-    },
-    {
-      "entity": "Medium",
-      "count": 229
-    },
-    {
-      "entity": "Authorization",
-      "count": 227
-    },
-    {
-      "entity": "Access Control",
-      "count": 203
-    },
-    {
-      "entity": "Low",
-      "count": 199
-    },
-    {
-      "entity": "Read Data",
-      "count": 197
-    },
-    {
-      "entity": "Standard",
-      "count": 181
+      "entity": "AttackPattern",
+      "count": 4
     },
     {
       "entity": "Availability",
-      "count": 172
+      "count": 4
     },
     {
-      "entity": "Stable",
-      "count": 154
+      "entity": "Authorization",
+      "count": 3
+    },
+    {
+      "entity": "Integrity",
+      "count": 3
     },
     {
       "entity": "Gain Privileges",
-      "count": 142
-    }
-  ],
-  "crossSourceLinks": [
-    {
-      "from": "capec",
-      "to": "cwe",
-      "count": 1213,
-      "predicate": "related-weakness"
+      "count": 3
     },
     {
-      "from": "capec",
-      "to": "attack",
-      "count": 272,
-      "predicate": "maps-to-technique"
+      "entity": "Access Control",
+      "count": 3
+    },
+    {
+      "entity": "Unreliable Execution",
+      "count": 2
+    },
+    {
+      "entity": "CWE-119",
+      "count": 2
     }
   ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

@@ -7,7 +7,8 @@ import pandas as pd
 from mitreattack.stix20 import MitreAttackData
 
 from common import (
-    get_object_type,
+    Triple,
+    make_triple_fn,
     meta_json,
     triples_to_dataframe,
     write_parquet,
@@ -51,24 +52,34 @@ ENTITY_GETTERS = {
     "DataComponent": "get_datacomponents",
 }
 
-
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p, "id"), m)
+_t = make_triple_fn(SOURCE, "id")
 
 
-def download_stix(domain: str, cache_dir: str | None = None) -> str:
+def download_stix(
+    domain: str, cache_dir: str | None = None, *, force_download: bool = False
+) -> str:
     """Download a STIX JSON bundle, returning the local file path."""
     from common import download_file
 
     url = DOMAINS[domain]
-    path = download_file(url, f"{domain}-attack.json", cache_dir)
+    path = download_file(url, f"{domain}-attack.json", cache_dir, force_download=force_download)
     return str(path)
 
 
-def _resolve_id(attack: MitreAttackData, stix_id: str) -> str:
+def _build_id_map(attack: MitreAttackData) -> dict[str, str]:
+    """Pre-build a STIX UUID → ATT&CK ID lookup for all objects."""
+    id_map: dict[str, str] = {}
+    for stix_type in MitreAttackData.stix_types:
+        for obj in attack.get_objects_by_type(stix_type):
+            aid = attack.get_attack_id(obj.id)
+            if aid:
+                id_map[obj.id] = aid
+    return id_map
+
+
+def _resolve_id(id_map: dict[str, str], stix_id: str) -> str:
     """Resolve a STIX UUID to its ATT&CK ID (e.g. T1059.001). Falls back to STIX ID."""
-    attack_id = attack.get_attack_id(stix_id)
-    return attack_id if attack_id else stix_id
+    return id_map.get(stix_id, stix_id)
 
 
 def _extract_url(obj) -> str | None:
@@ -118,19 +129,19 @@ def _list_attr_triples(
     obj,
     attr: str,
     predicate: str,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Produce one triple per item in a list attribute, if it exists."""
     return [_t(sid, predicate, val) for val in getattr(obj, attr, [])]
 
 
 def _entity_triples(
-    attack: MitreAttackData,
+    id_map: dict[str, str],
     obj,
     label: str,
     tactic_map: dict[str, str] | None = None,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract property triples from a single STIX entity object."""
-    sid = _resolve_id(attack, obj.id)
+    sid = _resolve_id(id_map, obj.id)
 
     # Build meta for the rdf:type triple
     entity_meta: dict = {}
@@ -183,10 +194,10 @@ def _entity_triples(
     return triples
 
 
-def _build_tactic_map(attack: MitreAttackData, tactics: list) -> dict[str, str]:
+def _build_tactic_map(id_map: dict[str, str], tactics: list) -> dict[str, str]:
     """Build a mapping from tactic shortname to ATT&CK ID."""
     return {
-        tactic.x_mitre_shortname: _resolve_id(attack, tactic.id)
+        tactic.x_mitre_shortname: _resolve_id(id_map, tactic.id)
         for tactic in tactics
         if hasattr(tactic, "x_mitre_shortname")
     }
@@ -194,28 +205,30 @@ def _build_tactic_map(attack: MitreAttackData, tactics: list) -> dict[str, str]:
 
 def _all_entity_triples(
     attack: MitreAttackData,
+    id_map: dict[str, str],
     tactics: list,
     tactic_map: dict[str, str],
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract property triples for all entity types."""
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for label, getter_name in ENTITY_GETTERS.items():
         getter = getattr(attack, getter_name)
         if label == "Software":
             for obj in getter():
                 sw_label = STIX_TYPE_LABELS.get(obj.type, "Software")
-                triples.extend(_entity_triples(attack, obj, sw_label, tactic_map))
+                triples.extend(_entity_triples(id_map, obj, sw_label, tactic_map))
         else:
             for obj in tactics if label == "Tactic" else getter():
-                triples.extend(_entity_triples(attack, obj, label, tactic_map))
+                triples.extend(_entity_triples(id_map, obj, label, tactic_map))
 
     return triples
 
 
 def _all_relationship_triples(
     attack: MitreAttackData,
-) -> list[tuple[str, str, str, str, str, str]]:
+    id_map: dict[str, str],
+) -> list[Triple]:
     """Extract relationship triples from all STIX relationship objects."""
     triples = []
     for rel in attack.get_objects_by_type("relationship"):
@@ -224,9 +237,9 @@ def _all_relationship_triples(
             rel_meta["description"] = rel.description
         triples.append(
             _t(
-                _resolve_id(attack, rel.source_ref),
+                _resolve_id(id_map, rel.source_ref),
                 rel.relationship_type,
-                _resolve_id(attack, rel.target_ref),
+                _resolve_id(id_map, rel.target_ref),
                 meta_json(rel_meta),
             )
         )
@@ -235,13 +248,14 @@ def _all_relationship_triples(
 
 def extract_triples(
     attack: MitreAttackData,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract all SPO triples from a loaded MitreAttackData instance."""
+    id_map = _build_id_map(attack)
     tactics = attack.get_tactics()
-    tactic_map = _build_tactic_map(attack, tactics)
+    tactic_map = _build_tactic_map(id_map, tactics)
 
-    triples = _all_entity_triples(attack, tactics, tactic_map)
-    triples.extend(_all_relationship_triples(attack))
+    triples = _all_entity_triples(attack, id_map, tactics, tactic_map)
+    triples.extend(_all_relationship_triples(attack, id_map))
     return triples
 
 

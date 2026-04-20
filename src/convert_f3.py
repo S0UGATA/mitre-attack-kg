@@ -4,7 +4,7 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file, get_object_type
+from common import Triple, download_file, make_triple_fn
 
 logger = logging.getLogger(__name__)
 
@@ -13,13 +13,12 @@ SOURCE = "f3"
 F3_URL = "https://raw.githubusercontent.com/center-for-threat-informed-defense/fight-fraud-framework/main/public/f3-stix.json"
 
 
-def download_f3(cache_dir: str | None = None) -> str:
+def download_f3(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download F3 STIX 2.1 bundle, returning the local file path."""
-    return str(download_file(F3_URL, "f3-stix.json", cache_dir))
+    return str(download_file(F3_URL, "f3-stix.json", cache_dir, force_download=force_download))
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
 def _resolve_id(obj: dict) -> str:
@@ -30,7 +29,7 @@ def _resolve_id(obj: dict) -> str:
     return obj.get("id", "")
 
 
-def _tactic_triples(tactic: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _tactic_triples(tactic: dict) -> list[Triple]:
     """Extract triples from an F3 tactic (x-mitre-tactic)."""
     tid = _resolve_id(tactic)
     if not tid:
@@ -51,9 +50,7 @@ def _tactic_triples(tactic: dict) -> list[tuple[str, str, str, str, str, str]]:
     return triples
 
 
-def _technique_triples(
-    tech: dict, tactic_lookup: dict[str, str]
-) -> list[tuple[str, str, str, str, str, str]]:
+def _technique_triples(tech: dict, tactic_lookup: dict[str, str]) -> list[Triple]:
     """Extract triples from an F3 technique (attack-pattern)."""
     tid = _resolve_id(tech)
     if not tid:
@@ -85,7 +82,7 @@ def _technique_triples(
     return triples
 
 
-def extract_f3_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_f3_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from F3 STIX 2.1 bundle."""
     with open(json_path) as f:
         bundle = json.load(f)
@@ -112,7 +109,7 @@ def extract_f3_triples(json_path: str) -> list[tuple[str, str, str, str, str, st
         elif obj_type == "relationship":
             relationships.append(obj)
 
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for tactic in tactics:
         triples.extend(_tactic_triples(tactic))

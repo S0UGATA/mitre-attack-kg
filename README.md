@@ -7,9 +7,9 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
 [![Visualizer](https://img.shields.io/badge/visualizer-security--kg--viz-orange)](https://s0ugata.github.io/security-kg-viz/)
 
-Convert security data from 17 sources into **Subject-Predicate-Object (SPO) knowledge-graph triples** in Parquet format.
+Convert security data from 24 sources into **Subject-Predicate-Object (SPO) knowledge-graph triples** in Parquet format.
 
-Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
+Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy) · [LOLBAS](https://lolbas-project.github.io/) · [LOLDrivers](https://www.loldrivers.io/) · [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) · [NIST 800-53](https://github.com/center-for-threat-informed-defense/mappings-explorer) · [Nuclei](https://github.com/projectdiscovery/nuclei-templates) · [EUVD](https://euvd.enisa.europa.eu/) · [OSV](https://osv.dev/)
 
 ## Knowledge Graph Structure
 
@@ -17,7 +17,7 @@ Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/
 ---
 config:
   layout: dagre
-  theme: neo
+  theme: neutral
 ---
 graph LR
     %% ATT&CK core
@@ -31,29 +31,40 @@ graph LR
     MIT[Mitigation]:::attack -->|mitigates| T
     DC[DataComponent]:::attack -->|detects| T
 
-    %% Defense & detection → Technique
+    %% Defense & detection
     DT[DefensiveTechnique]:::d3fend -->|counters| T
     AN[Analytic]:::car -->|detects-technique| T
     AN -->|maps-to-d3fend| DT
     EA[EngagementActivity]:::engage -->|engages-technique| T
-    FT[F3 Technique]:::f3 -->|belongs-to-tactic| FTAC[F3 Tactic]:::f3
     AT[ATLAS Technique]:::atlas -->|related-attack-technique| T
 
-    %% MISP Galaxy → ATT&CK + threat context
+    %% Red team, binary abuse & controls
+    ART2[AtomicTest]:::atomic -->|tests-technique| T
+    LB[LOLBinary]:::lolbas -->|maps-to-technique| T
+    LD[LOLDriver]:::loldrivers -->|maps-to-technique| T
+    SC[SecurityControl]:::nist -->|mitigates-technique| T
+
+    %% Threat intel
     TA[ThreatActor]:::misp -->|related-attack-id| T
     TA -->|targets-country| CTR[Country]:::misp
     TA -->|targets-sector| SEC[Sector]:::misp
 
     %% CAPEC ↔ CWE bridge
     AP[Attack Pattern]:::capec -->|maps-to-technique| T
-    AP -->|related-weakness| W[Weakness]:::cwe
-    W -->|related-attack-pattern| AP
+    AP <-->|related| W[Weakness]:::cwe
 
     %% Vulnerability chain
     V[Vulnerability]:::cve -->|related-weakness| W
     V -->|affects-cpe| P[Platform]:::cpe
+    OV[OSVulnerability]:::osv -->|related-cve| V
+    OV -->|affects-package| PKG[Package]:::osv
     V -.->|epss-score| ES((EPSS)):::epss
     V -.->|kev| KE((KEV)):::kev
+    NT[NucleiTemplate]:::nuclei -->|related-cve| V
+    EU[EUVulnerability]:::euvd -->|related-cve| V
+
+    %% Standalone
+    FT[F3 Technique]:::f3 -->|belongs-to-tactic| FTAC[F3 Tactic]:::f3
 
     classDef attack fill:#dbeafe,stroke:#3b82f6,color:#1e3a5f
     classDef capec fill:#fef3c7,stroke:#f59e0b,color:#78350f
@@ -68,16 +79,23 @@ graph LR
     classDef epss fill:#f3f4f6,stroke:#6b7280,color:#374151
     classDef kev fill:#f3f4f6,stroke:#6b7280,color:#374151
     classDef misp fill:#fdf2f8,stroke:#db2777,color:#831843
+    classDef atomic fill:#fff7ed,stroke:#f97316,color:#7c2d12
+    classDef lolbas fill:#fef2f2,stroke:#dc2626,color:#7f1d1d
+    classDef loldrivers fill:#fef2f2,stroke:#b91c1c,color:#7f1d1d
+    classDef nist fill:#f0fdf4,stroke:#16a34a,color:#14532d
+    classDef nuclei fill:#eff6ff,stroke:#2563eb,color:#1e3a5f
+    classDef euvd fill:#fdf4ff,stroke:#a855f7,color:#581c87
+    classDef osv fill:#f0fdfa,stroke:#14b8a6,color:#134e4a
 ```
 
-> Legend: <span style="color:#3b82f6">**Blue** = ATT&CK</span> · <span style="color:#f59e0b">**Amber** = CAPEC</span> · <span style="color:#ec4899">**Pink** = CWE / F3</span> · <span style="color:#ef4444">**Red** = CVE</span> · <span style="color:#6366f1">**Indigo** = CPE</span> · <span style="color:#10b981">**Green** = D3FEND</span> · <span style="color:#06b6d4">**Cyan** = ATLAS</span> · <span style="color:#eab308">**Yellow** = CAR</span> · <span style="color:#8b5cf6">**Violet** = ENGAGE</span> · <span style="color:#db2777">**Fuchsia** = MISP Galaxies</span> · <span style="color:#6b7280">**Gray** = EPSS / KEV</span>
+> Legend: <span style="color:#3b82f6">**Blue** = ATT&CK</span> · <span style="color:#f59e0b">**Amber** = CAPEC</span> · <span style="color:#ec4899">**Pink** = CWE / F3</span> · <span style="color:#ef4444">**Red** = CVE</span> · <span style="color:#6366f1">**Indigo** = CPE</span> · <span style="color:#10b981">**Green** = D3FEND / NIST</span> · <span style="color:#06b6d4">**Cyan** = ATLAS</span> · <span style="color:#eab308">**Yellow** = CAR</span> · <span style="color:#8b5cf6">**Violet** = ENGAGE</span> · <span style="color:#db2777">**Fuchsia** = MISP Galaxies</span> · <span style="color:#6b7280">**Gray** = EPSS / KEV</span> · <span style="color:#f97316">**Orange** = Atomic Red Team</span> · <span style="color:#dc2626">**Scarlet** = LOLBAS / LOLDrivers</span> · <span style="color:#2563eb">**Royal Blue** = Nuclei</span> · <span style="color:#a855f7">**Purple** = EUVD</span> · <span style="color:#14b8a6">**Teal** = OSV</span>
 
 ## Usage
 
 ```bash
 pip install -r requirements.txt
 
-# Convert all 17 sources → output/*.parquet + combined.parquet
+# Convert all 24 sources → output/*.parquet + combined.parquet
 python src/convert.py
 
 # Convert specific sources in parallel
@@ -89,7 +107,7 @@ python src/convert.py --sources cve epss kev --parallel --workers 8
 
 | Option | Description |
 |--------|-------------|
-| `--sources <src ...>` | Sources to convert (default: all). Values: `attack capec cwe cve cpe d3fend atlas car engage f3 epss kev vulnrichment ghsa sigma exploitdb misp_galaxy` |
+| `--sources <src ...>` | Sources to convert (default: all). Values: `attack capec cwe cve cpe d3fend atlas car engage f3 epss kev vulnrichment ghsa sigma exploitdb misp_galaxy lolbas loldrivers atomic nist_800_53 nuclei euvd osv` |
 | `--domains <dom ...>` | ATT&CK domains: `enterprise`, `mobile`, `ics` (default: all) |
 | `--output-dir <dir>` | Output directory (default: `output/`) |
 | `--cache-dir <dir>` | Source file cache (default: `source/`) |
@@ -97,7 +115,8 @@ python src/convert.py --sources cve epss kev --parallel --workers 8
 | `--no-combined` | Skip `combined.parquet` generation |
 | `--parallel` | Run conversions in parallel |
 | `--workers <n>` | Parallel workers (default: 4) |
-| `--force` | Re-convert even if source data hasn't changed |
+| `--force-download` | Re-download source data even if cached version is up-to-date |
+| `--force-convert` | Re-convert even if source data hasn't changed |
 | `--limit <n>` | Limit each source to N triples (quick local testing) |
 | `--update-readme` | Update `hf_dataset/README.md` with triple counts |
 | `--no-stats` | Skip dashboard stats JSON generation |
@@ -133,7 +152,14 @@ Output goes to `output/`:
 | `sigma.parquet` | Sigma detection rules | ~30-40K |
 | `exploitdb.parquet` | ExploitDB public exploits | ~300-400K |
 | `misp_galaxy.parquet` | MISP Galaxy clusters | ~100-200K |
-| `combined.parquet` | All sources merged (deduplicated) | ~15-20M |
+| `lolbas.parquet` | LOLBAS living-off-the-land binaries | ~5-10K |
+| `loldrivers.parquet` | LOLDrivers vulnerable drivers | ~10-15K |
+| `atomic.parquet` | Atomic Red Team test procedures | ~15-20K |
+| `nist_800_53.parquet` | NIST 800-53 ATT&CK mappings | ~5-10K |
+| `nuclei.parquet` | Nuclei detection templates | ~30-40K |
+| `euvd.parquet` | EUVD EU vulnerability database | ~10-20K |
+| `osv.parquet` | OSV open-source vulnerabilities | ~500K-1M+ |
+| `combined.parquet` | All sources merged (deduplicated) | ~16-22M |
 
 ## Cross-Source Links
 
@@ -144,9 +170,13 @@ ATT&CK <──> CAPEC <──> CWE <──> CVE <──> CPE
   ├── ATLAS (AI parallel)        ├── KEV (exploited)
   ├── CAR (detects)              ├── Vulnrichment (SSVC/CVSS)
   ├── ENGAGE (engages)           ├── GHSA (advisories)
-  ├── F3 (fraud techniques)
+  ├── F3 (fraud techniques)      ├── Nuclei (templates)
   ├── Sigma (detects)            ├── Sigma (related CVE)
-  └── MISP Galaxies (cross-refs) └── ExploitDB (exploits)
+  ├── LOLBAS (maps-to)           ├── ExploitDB (exploits)
+  ├── LOLDrivers (maps-to)       ├── EUVD (EU vulns)
+  ├── Atomic Red Team (tests)    └── OSV (open-source vulns) ──> Packages
+  ├── NIST 800-53 (mitigates)
+  └── MISP Galaxies (cross-refs)
 ```
 
 ## Examples
@@ -174,7 +204,7 @@ python examples/graph_traversals.py --list                   # list queries
 
 ### Cross-Source Analysis Notebook
 
-The [cross-source visualizations notebook](examples/cross_source_visualizations.ipynb) demonstrates 16 analyses across all 17 sources — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
+The [cross-source visualizations notebook](examples/cross_source_visualizations.ipynb) demonstrates 16 analyses across all 24 sources — including SSVC patch prioritization, defensive gap analysis, kill chain coverage, exploit weaponization timelines, supply chain risk scoring, and more.
 
 ```bash
 pip install -e ".[viz]"
@@ -201,18 +231,6 @@ See the [dataset card](hf_dataset/README.md) for schema details, example queries
 ## Future Data Sources
 
 The following sources were researched and evaluated for inclusion. They are deferred for now but may be added in future versions.
-
-### High-Value Candidates
-
-| Source | Format | Cross-links | License | Notes |
-|--------|--------|-------------|---------|-------|
-| [Nuclei Templates](https://github.com/projectdiscovery/nuclei-templates) | YAML (~12K files) | CVE, CWE, EPSS, CPE, KEV per template | MIT | ~3,600 CVE-tagged templates with CVSS classification blocks. Highest cross-link density of any candidate. |
-| [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) | YAML (~1,774 tests) | ATT&CK technique IDs | MIT | Every test keyed by ATT&CK technique. Adds test procedures, platforms, executor commands. |
-| [LOLBAS](https://github.com/LOLBAS-Project/LOLBAS) | YAML | ATT&CK technique IDs via `MitreID` | GPL-3.0 | Windows living-off-the-land binaries with abuse functions mapped to ATT&CK. |
-| [LOLDrivers](https://github.com/magicsword-io/LOLDrivers) | YAML (2,041 drivers) | ATT&CK via `MitreID`; some CVEs | Apache-2.0 | Vulnerable/malicious Windows drivers with file hashes and signer info. |
-| [NIST 800-53 + ATT&CK Mappings](https://github.com/center-for-threat-informed-defense/attack-control-framework-mappings) | STIX JSON + OSCAL | Control → ATT&CK technique | Apache-2.0 / Public domain | Bridges defensive controls to offensive techniques. CTID provides ready-made STIX mappings. |
-| [EUVD](https://euvd.enisa.europa.eu/) | JSON | CVE-linked | TBD | EU vulnerability database. New (launched 2025), API still maturing. |
-| [OSV](https://osv.dev/) | JSON | CVE, CWE, packages | CC-BY-4.0 | Google's open-source vulnerability DB with bulk download. Package-focused rather than CVE-level. |
 
 ### Medium-Value Candidates
 
@@ -256,6 +274,12 @@ The following sources were researched and evaluated for inclusion. They are defe
 | [VulnCheck KEV](https://vulncheck.com/) | No confirmed public bulk data repository. Commercial. |
 | AttackIQ / SCYTHE / ANY.RUN / Triage | Commercial platforms, no open bulk data. |
 
+## Related Work
+
+[BRON](http://bron.alfa.csail.mit.edu/info.html) is a linked threat knowledge graph developed at MIT that bridges ATT&CK, CAPEC, CWE, CVE, and D3FEND into a unified graph structure. Its goals overlap significantly with this project — both aim to connect disparate security ontologies into a queryable knowledge graph. This project was started independently and covers a broader set of sources (24 vs BRON's 5) with a flat SPO triple design stored as Parquet rather than a property graph.
+
+This project grew out of the author's [master's thesis](https://nva.sikt.no/registration/019909f79c88-d8769c5c-dca1-4aba-a82a-3f149a8a94fb), which applied [KEPLER](https://arxiv.org/abs/1911.06136) (a joint knowledge-embedding and language model) to classify ATT&CK techniques from cyber threat intelligence reports. The thesis converted TRAM training data into KG triples enriched with ATT&CK metadata — tactics, technique names, and procedure examples — and showed that the KG-enhanced model outperformed a text-only baseline, validating the value of structured security knowledge for downstream ML tasks. security-kg extends that data pipeline to 24 sources, providing the broad, structured KG foundation that such models need at scale.
+
 ## Source Licensing & Attribution
 
 This project is licensed under Apache 2.0. The underlying source data is provided under various licenses as detailed below.
@@ -279,6 +303,13 @@ This project is licensed under Apache 2.0. The underlying source data is provide
 | [Sigma](https://github.com/SigmaHQ/sigma) | Detection Rule License 1.1 | Source: SigmaHQ. Licensed under [DRL 1.1](https://github.com/SigmaHQ/sigma/blob/master/LICENSE.Detection.Rules.md). Rule author attribution is preserved in triples. |
 | [ExploitDB](https://gitlab.com/exploit-database/exploitdb) | GPLv2+ | Source: OffSec ExploitDB. Derived factual metadata (IDs, CVE mappings, dates) extracted under [GPLv2+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html). |
 | [MISP Galaxies](https://github.com/MISP/misp-galaxy) | CC0 1.0 / BSD 2-Clause | Source: MISP Project. Dual-licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) and [BSD 2-Clause](https://opensource.org/licenses/BSD-2-Clause). |
+| [LOLBAS](https://github.com/LOLBAS-Project/LOLBAS) | GPL-3.0 | Source: LOLBAS Project. Licensed under [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html). |
+| [LOLDrivers](https://github.com/magicsword-io/LOLDrivers) | Apache 2.0 | Source: magicsword-io. |
+| [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) | MIT License | Source: Red Canary. Licensed under [MIT](https://opensource.org/licenses/MIT). |
+| [NIST 800-53 Mappings](https://github.com/center-for-threat-informed-defense/mappings-explorer) | Apache 2.0 | © MITRE Engenuity, Center for Threat-Informed Defense. |
+| [Nuclei Templates](https://github.com/projectdiscovery/nuclei-templates) | MIT License | Source: ProjectDiscovery. Licensed under [MIT](https://opensource.org/licenses/MIT). |
+| [EUVD](https://euvd.enisa.europa.eu/) | Public (ENISA) | Source: European Union Agency for Cybersecurity (ENISA). |
+| [OSV](https://osv.dev/) | CC BY 4.0 | Source: Google OSV. Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). |
 
 ## License
 

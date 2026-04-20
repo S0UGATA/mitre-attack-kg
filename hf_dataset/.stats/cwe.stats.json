@@ -1,157 +1,126 @@
 {
-  "totalTriples": 14565,
-  "uniqueSubjects": 944,
-  "uniqueObjects": 2807,
-  "uniquePredicates": 17,
+  "totalTriples": 100,
+  "uniqueSubjects": 7,
+  "uniqueObjects": 56,
+  "uniquePredicates": 12,
   "bySource": [
     {
       "source": "cwe",
-      "count": 16166
-    },
-    {
-      "source": "capec",
-      "count": 1212
+      "count": 100
     }
   ],
   "topPredicates": [
     {
-      "predicate": "consequence-impact",
-      "count": 2115
-    },
-    {
-      "predicate": "consequence-scope",
-      "count": 2030
-    },
-    {
-      "predicate": "introduction-phase",
-      "count": 1394
-    },
-    {
-      "predicate": "child-of",
-      "count": 1317
-    },
-    {
       "predicate": "platform",
-      "count": 1308
-    },
-    {
-      "predicate": "related-attack-pattern",
-      "count": 1212
-    },
-    {
-      "predicate": "abstraction",
-      "count": 944
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 944
-    },
-    {
-      "predicate": "description",
-      "count": 944
-    },
-    {
-      "predicate": "name",
-      "count": 944
-    },
-    {
-      "predicate": "status",
-      "count": 944
-    },
-    {
-      "predicate": "likelihood-of-exploit",
-      "count": 185
-    },
-    {
-      "predicate": "can-precede",
-      "count": 143
-    },
-    {
-      "predicate": "peer-of",
-      "count": 98
-    },
-    {
-      "predicate": "can-also-be",
-      "count": 27
-    },
-    {
-      "predicate": "requires",
       "count": 13
     },
     {
-      "predicate": "starts-with",
+      "predicate": "consequence-impact",
+      "count": 12
+    },
+    {
+      "predicate": "child-of",
+      "count": 11
+    },
+    {
+      "predicate": "consequence-scope",
+      "count": 10
+    },
+    {
+      "predicate": "introduction-phase",
+      "count": 8
+    },
+    {
+      "predicate": "related-attack-pattern",
+      "count": 8
+    },
+    {
+      "predicate": "name",
+      "count": 7
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 7
+    },
+    {
+      "predicate": "status",
+      "count": 7
+    },
+    {
+      "predicate": "description",
+      "count": 7
+    },
+    {
+      "predicate": "abstraction",
+      "count": 7
+    },
+    {
+      "predicate": "likelihood-of-exploit",
       "count": 3
     }
   ],
   "topConnectedEntities": [
     {
+      "entity": "CWE-1021",
+      "count": 23
+    },
+    {
+      "entity": "CWE-1007",
+      "count": 15
+    },
+    {
+      "entity": "CWE-1022",
+      "count": 14
+    },
+    {
+      "entity": "CWE-1004",
+      "count": 14
+    },
+    {
+      "entity": "CWE-102",
+      "count": 12
+    },
+    {
+      "entity": "CWE-1023",
+      "count": 12
+    },
+    {
+      "entity": "CWE-1024",
+      "count": 10
+    },
+    {
       "entity": "Weakness",
-      "count": 944
-    },
-    {
-      "entity": "Implementation",
-      "count": 850
-    },
-    {
-      "entity": "Base",
-      "count": 523
-    },
-    {
-      "entity": "Integrity",
-      "count": 505
+      "count": 7
     },
     {
       "entity": "Incomplete",
-      "count": 486
+      "count": 7
     },
     {
-      "entity": "Confidentiality",
-      "count": 471
+      "entity": "Implementation",
+      "count": 6
     },
     {
-      "entity": "Draft",
-      "count": 432
+      "entity": "Integrity",
+      "count": 4
     },
     {
-      "entity": "Architecture and Design",
-      "count": 364
-    },
-    {
-      "entity": "Availability",
-      "count": 320
+      "entity": "Web Based",
+      "count": 4
     },
     {
       "entity": "Variant",
-      "count": 292
+      "count": 3
     },
     {
-      "entity": "Access Control",
-      "count": 288
+      "entity": "Medium",
+      "count": 3
     },
     {
-      "entity": "Not Technology-Specific",
-      "count": 228
-    },
-    {
-      "entity": "Read Application Data",
-      "count": 203
-    },
-    {
-      "entity": "Bypass Protection Mechanism",
-      "count": 202
-    },
-    {
-      "entity": "Execute Unauthorized Code or Commands",
-      "count": 172
+      "entity": "Confidentiality",
+      "count": 3
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "cwe",
-      "to": "capec",
-      "count": 1212,
-      "predicate": "related-attack-pattern"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:23Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

@@ -5,7 +5,7 @@ import logging
 from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_tar_gz, get_object_type, meta_json
+from common import Triple, download_tar_gz, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
@@ -21,9 +21,11 @@ PART_LABELS = {
 }
 
 
-def download_cpe(cache_dir: str | None = None) -> str:
+def download_cpe(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download NVD CPE dictionary tar.gz, extract, and return path to extraction dir."""
-    extract_dir = download_tar_gz(CPE_URL, "nvdcpe-2.0.tar.gz", cache_dir)
+    extract_dir = download_tar_gz(
+        CPE_URL, "nvdcpe-2.0.tar.gz", cache_dir, force_download=force_download
+    )
     return str(extract_dir)
 
 
@@ -40,11 +42,10 @@ def _parse_cpe_uri(cpe_name: str) -> dict[str, str]:
     }
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def extract_cpe_triples(data_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+def extract_cpe_triples(data_dir: str) -> Iterator[Triple]:
     """Yield SPO triples from NVD CPE dictionary JSON files.
 
     Returns a generator to avoid loading millions of triples into memory.

@@ -7,9 +7,9 @@ from xml.etree import ElementTree as ET
 
 from common import (
     RELATION_PREDICATES,
-    SOURCE_DIR,
+    Triple,
     download_file,
-    get_object_type,
+    make_triple_fn,
     meta_json,
     xml_text,
 )
@@ -22,15 +22,19 @@ CWE_URL = "https://cwe.mitre.org/data/xml/cwec_latest.xml.zip"
 NS = {"cwe": "http://cwe.mitre.org/cwe-7", "xhtml": "http://www.w3.org/1999/xhtml"}
 
 
-def download_cwe(cache_dir: str | None = None) -> str:
+def download_cwe(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download CWE XML ZIP, extract, and return the local XML file path."""
-    search_dir = Path(cache_dir) if cache_dir else SOURCE_DIR
-    existing = list(search_dir.glob("cwec_*.xml"))
-    if existing:
+    zip_path = download_file(
+        CWE_URL, "cwec_latest.xml.zip", cache_dir, force_download=force_download
+    )
+    search_dir = zip_path.parent
+
+    # If an XML exists that was extracted after this zip was saved, it's current
+    existing = list(search_dir.glob("cwec_v*.xml"))
+    if existing and existing[0].stat().st_mtime >= zip_path.stat().st_mtime:
         logger.info("Using cached %s", existing[0])
         return str(existing[0])
 
-    zip_path = download_file(CWE_URL, "cwec_latest.xml.zip", cache_dir)
     with zipfile.ZipFile(zip_path) as zf:
         xml_name = next(
             (n for n in zf.namelist() if n.endswith(".xml")),
@@ -46,17 +50,25 @@ def download_cwe(cache_dir: str | None = None) -> str:
         xml_path = zip_path.parent / xml_name
 
     logger.info("Extracted %s (%d bytes)", xml_path, xml_path.stat().st_size)
+
+    for old in search_dir.glob("cwec_v*.xml"):
+        if old != xml_path:
+            try:
+                old.unlink()
+                logger.info("Cleaned up old CWE file %s", old)
+            except OSError:
+                pass
+
     return str(xml_path)
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
 def _property_triples(
     cwe_id: str,
     weakness: ET.Element,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract property triples from a single CWE weakness."""
     # Build entity-level meta
     entity_meta: dict = {}
@@ -138,9 +150,9 @@ def _property_triples(
 def _relationship_triples(
     cwe_id: str,
     weakness: ET.Element,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract relationship triples (CWE-CWE and CWE-CAPEC)."""
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for rel in weakness.findall(".//cwe:Related_Weakness", NS):
         pred = RELATION_PREDICATES.get(rel.get("Nature", ""))
@@ -159,9 +171,9 @@ def _relationship_triples(
 def _platform_triples(
     cwe_id: str,
     weakness: ET.Element,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract applicable platform triples."""
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
     platforms = weakness.find("cwe:Applicable_Platforms", NS)
     if platforms is None:
         return triples
@@ -178,9 +190,9 @@ def _platform_triples(
 def _consequence_triples(
     cwe_id: str,
     weakness: ET.Element,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract consequence and introduction phase triples."""
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for cons in weakness.findall(".//cwe:Consequence", NS):
         for scope in cons.findall("cwe:Scope", NS):
@@ -198,11 +210,11 @@ def _consequence_triples(
     return triples
 
 
-def extract_cwe_triples(xml_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_cwe_triples(xml_path: str) -> list[Triple]:
     """Extract SPO triples from CWE XML."""
     tree = ET.parse(xml_path)  # nosec B314 — trusted MITRE data
     root = tree.getroot()
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for weakness in root.findall(".//cwe:Weakness", NS):
         if weakness.get("Status", "") == "Deprecated":

@@ -1,0 +1,106 @@
+{
+  "totalTriples": 100,
+  "uniqueSubjects": 22,
+  "uniqueObjects": 44,
+  "uniquePredicates": 7,
+  "bySource": [
+    {
+      "source": "nuclei",
+      "count": 100
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "rdf:type",
+      "count": 22
+    },
+    {
+      "predicate": "name",
+      "count": 22
+    },
+    {
+      "predicate": "severity",
+      "count": 22
+    },
+    {
+      "predicate": "author",
+      "count": 22
+    },
+    {
+      "predicate": "description",
+      "count": 10
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 1
+    },
+    {
+      "predicate": "cvss-vector",
+      "count": 1
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "NucleiTemplate",
+      "count": 22
+    },
+    {
+      "entity": "info",
+      "count": 17
+    },
+    {
+      "entity": "daffainfo",
+      "count": 8
+    },
+    {
+      "entity": "dom-invader-xss",
+      "count": 7
+    },
+    {
+      "entity": "me_dheeraj (https://twitter.com/Dheerajmadhukar)",
+      "count": 6
+    },
+    {
+      "entity": "zip-path-overwrite",
+      "count": 5
+    },
+    {
+      "entity": "url-extension-inspector",
+      "count": 5
+    },
+    {
+      "entity": "xss-disable-mustache-escape",
+      "count": 5
+    },
+    {
+      "entity": "tar-extraction",
+      "count": 5
+    },
+    {
+      "entity": "express-lfr",
+      "count": 5
+    },
+    {
+      "entity": "python-scanner",
+      "count": 5
+    },
+    {
+      "entity": "js-analyse",
+      "count": 5
+    },
+    {
+      "entity": "admzip-path-overwrite",
+      "count": 5
+    },
+    {
+      "entity": "generic-path-traversal",
+      "count": 5
+    },
+    {
+      "entity": "tedroo-malware",
+      "count": 4
+    }
+  ],
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
+}

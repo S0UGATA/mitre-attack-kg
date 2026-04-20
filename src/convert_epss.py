@@ -6,26 +6,29 @@ import logging
 from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_file, get_object_type
+from common import Triple, download_file, make_triple_fn
 
 logger = logging.getLogger(__name__)
 
 SOURCE = "epss"
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
 EPSS_URL = "https://epss.cyentia.com/epss_scores-current.csv.gz"
 
 
-def download_epss(cache_dir: str | None = None) -> str:
+def download_epss(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download EPSS CSV (gzip), returning the local file path of the .gz file."""
-    return str(download_file(EPSS_URL, "epss_scores-current.csv.gz", cache_dir))
+    return str(
+        download_file(
+            EPSS_URL, "epss_scores-current.csv.gz", cache_dir, force_download=force_download
+        )
+    )
 
 
-def extract_epss_triples(gz_path: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+def extract_epss_triples(gz_path: str) -> Iterator[Triple]:
     """Yield SPO triples from EPSS gzipped CSV.
 
     The CSV has a comment line (starting with #) followed by:

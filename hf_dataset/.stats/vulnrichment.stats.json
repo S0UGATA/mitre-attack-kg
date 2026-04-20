@@ -1,127 +1,106 @@
 {
-  "totalTriples": 666581,
-  "uniqueSubjects": 143217,
-  "uniqueObjects": 23591,
+  "totalTriples": 100,
+  "uniqueSubjects": 17,
+  "uniqueObjects": 33,
   "uniquePredicates": 7,
   "bySource": [
     {
-      "source": "cve",
-      "count": 666581
-    },
-    {
-      "source": "cpe",
-      "count": 135437
-    },
-    {
-      "source": "cwe",
-      "count": 29963
+      "source": "vulnrichment",
+      "count": 100
     }
   ],
   "topPredicates": [
     {
       "predicate": "ssvc-exploitation",
-      "count": 143221
+      "count": 17
     },
     {
       "predicate": "ssvc-automatable",
-      "count": 143221
+      "count": 17
     },
     {
       "predicate": "ssvc-technical-impact",
-      "count": 143221
-    },
-    {
-      "predicate": "adp-affects-cpe",
-      "count": 135437
-    },
-    {
-      "predicate": "adp-cvss-base-score",
-      "count": 35759
+      "count": 17
     },
     {
       "predicate": "adp-cvss-severity",
-      "count": 35759
+      "count": 16
+    },
+    {
+      "predicate": "adp-cvss-base-score",
+      "count": 16
     },
     {
       "predicate": "adp-related-weakness",
-      "count": 29963
+      "count": 13
+    },
+    {
+      "predicate": "adp-affects-cpe",
+      "count": 4
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "partial",
-      "count": 94950
-    },
-    {
-      "entity": "CVE-2024-20399",
-      "count": 51532
-    },
-    {
-      "entity": "total",
-      "count": 48271
-    },
-    {
-      "entity": "poc",
-      "count": 32988
-    },
-    {
-      "entity": "yes",
-      "count": 32231
-    },
-    {
-      "entity": "MEDIUM",
-      "count": 15661
+      "count": 10
     },
     {
       "entity": "HIGH",
-      "count": 13626
+      "count": 9
     },
     {
-      "entity": "CVE-2024-20481",
-      "count": 7946
+      "entity": "CVE-2004-2154",
+      "count": 8
     },
     {
-      "entity": "CRITICAL",
-      "count": 5833
+      "entity": "yes",
+      "count": 8
     },
     {
-      "entity": "9.8",
-      "count": 4770
+      "entity": "CVE-2002-2024",
+      "count": 7
     },
     {
-      "entity": "7.5",
-      "count": 3907
+      "entity": "total",
+      "count": 7
     },
     {
-      "entity": "CWE-79",
-      "count": 3254
+      "entity": "CVE-2002-0051",
+      "count": 6
     },
     {
-      "entity": "8.8",
-      "count": 3082
+      "entity": "CVE-2004-0747",
+      "count": 6
     },
     {
-      "entity": "5.5",
-      "count": 2768
+      "entity": "CVE-2003-20001",
+      "count": 6
     },
     {
-      "entity": "6.5",
-      "count": 2673
+      "entity": "CVE-2004-2257",
+      "count": 6
+    },
+    {
+      "entity": "CVE-2002-0485",
+      "count": 6
+    },
+    {
+      "entity": "CVE-2003-0063",
+      "count": 6
+    },
+    {
+      "entity": "CVE-2004-1464",
+      "count": 6
+    },
+    {
+      "entity": "CVE-2004-0210",
+      "count": 6
+    },
+    {
+      "entity": "CVE-2004-1901",
+      "count": 6
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "cve",
-      "to": "cpe",
-      "count": 135437,
-      "predicate": "adp-affects-cpe"
-    },
-    {
-      "from": "cve",
-      "to": "cwe",
-      "count": 29963,
-      "predicate": "adp-related-weakness"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:24Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
 }

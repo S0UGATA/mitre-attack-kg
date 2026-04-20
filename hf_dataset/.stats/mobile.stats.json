@@ -6,11 +6,7 @@
   "bySource": [
     {
       "source": "attack",
-      "count": 6871
-    },
-    {
-      "source": "engage",
-      "count": 124
+      "count": 5307
     }
   ],
   "topPredicates": [
@@ -31,11 +27,11 @@
       "count": 385
     },
     {
-      "predicate": "name",
+      "predicate": "url",
       "count": 385
     },
     {
-      "predicate": "url",
+      "predicate": "name",
       "count": 385
     },
     {
@@ -153,13 +149,6 @@
       "count": 59
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 124,
-      "predicate": "detects"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

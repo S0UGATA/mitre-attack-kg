@@ -1,113 +1,102 @@
 {
-  "totalTriples": 1464,
-  "uniqueSubjects": 52,
-  "uniqueObjects": 258,
+  "totalTriples": 100,
+  "uniqueSubjects": 20,
+  "uniqueObjects": 38,
   "uniquePredicates": 6,
   "bySource": [
     {
       "source": "engage",
-      "count": 1572
-    },
-    {
-      "source": "attack",
-      "count": 1252
+      "count": 100
     }
   ],
   "topPredicates": [
     {
       "predicate": "vulnerability-of",
-      "count": 656
-    },
-    {
-      "predicate": "engages-technique",
-      "count": 596
-    },
-    {
-      "predicate": "addresses-vulnerability",
-      "count": 108
+      "count": 23
     },
     {
       "predicate": "rdf:type",
-      "count": 52
+      "count": 20
     },
     {
-      "predicate": "description",
-      "count": 29
+      "predicate": "engages-technique",
+      "count": 19
+    },
+    {
+      "predicate": "addresses-vulnerability",
+      "count": 18
     },
     {
       "predicate": "name",
-      "count": 23
+      "count": 10
+    },
+    {
+      "predicate": "description",
+      "count": 10
     }
   ],
   "topConnectedEntities": [
     {
+      "entity": "T1005",
+      "count": 13
+    },
+    {
       "entity": "EAC0005",
-      "count": 110
+      "count": 11
+    },
+    {
+      "entity": "EngagementActivity",
+      "count": 10
+    },
+    {
+      "entity": "AdversaryVulnerability",
+      "count": 10
+    },
+    {
+      "entity": "T1003",
+      "count": 10
+    },
+    {
+      "entity": "T1007",
+      "count": 9
     },
     {
       "entity": "EAV0001",
-      "count": 96
-    },
-    {
-      "entity": "EAV0019",
-      "count": 86
-    },
-    {
-      "entity": "EAC0018",
-      "count": 74
-    },
-    {
-      "entity": "EAV0017",
-      "count": 69
-    },
-    {
-      "entity": "EAV0007",
-      "count": 68
-    },
-    {
-      "entity": "EAC0011",
-      "count": 64
-    },
-    {
-      "entity": "EAC0015",
-      "count": 64
-    },
-    {
-      "entity": "EAC0014",
-      "count": 62
-    },
-    {
-      "entity": "EAV0010",
-      "count": 62
-    },
-    {
-      "entity": "EAV0013",
-      "count": 62
+      "count": 9
     },
     {
       "entity": "EAV0016",
-      "count": 62
+      "count": 8
+    },
+    {
+      "entity": "EAC0015",
+      "count": 8
+    },
+    {
+      "entity": "EAC0014",
+      "count": 8
+    },
+    {
+      "entity": "EAV0010",
+      "count": 7
+    },
+    {
+      "entity": "EAV0007",
+      "count": 7
     },
     {
       "entity": "EAV0002",
-      "count": 62
+      "count": 7
     },
     {
-      "entity": "EAC0016",
-      "count": 53
+      "entity": "T1001",
+      "count": 6
     },
     {
-      "entity": "EAV0020",
-      "count": 47
+      "entity": "EAV0017",
+      "count": 6
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 656,
-      "predicate": "vulnerability-of"
-    }
-  ],
-  "generatedAt": "2026-04-19T12:08:23Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:38Z"
 }

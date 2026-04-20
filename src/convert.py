@@ -46,6 +46,13 @@ ALL_SOURCES = (
     "sigma",
     "exploitdb",
     "misp_galaxy",
+    "lolbas",
+    "loldrivers",
+    "atomic",
+    "nist_800_53",
+    "nuclei",
+    "euvd",
+    "osv",
 )
 
 SOURCE_CONVERTERS = {
@@ -69,6 +76,13 @@ SOURCE_CONVERTERS = {
     "sigma": ("convert_sigma", "download_sigma", "extract_sigma_triples"),
     "exploitdb": ("convert_exploitdb", "download_exploitdb", "extract_exploitdb_triples"),
     "misp_galaxy": ("convert_misp_galaxy", "download_misp_galaxy", "extract_misp_galaxy_triples"),
+    "lolbas": ("convert_lolbas", "download_lolbas", "extract_lolbas_triples"),
+    "loldrivers": ("convert_loldrivers", "download_loldrivers", "extract_loldrivers_triples"),
+    "atomic": ("convert_atomic", "download_atomic", "extract_atomic_triples"),
+    "nist_800_53": ("convert_nist_800_53", "download_nist_800_53", "extract_nist_800_53_triples"),
+    "nuclei": ("convert_nuclei", "download_nuclei", "extract_nuclei_triples"),
+    "euvd": ("convert_euvd", "download_euvd", "extract_euvd_triples"),
+    "osv": ("convert_osv", "download_osv", "extract_osv_triples"),
 }
 
 LOG_FORMAT = "%(asctime)s [%(source)s] %(levelname)s: %(message)s"
@@ -136,7 +150,8 @@ def _convert_source(
     cache_dir: str,
     parquet_format: str,
     log_dir: str | None = None,
-    force: bool = False,
+    force_download: bool = False,
+    force_convert: bool = False,
     limit: int | None = None,
 ) -> tuple[str, str | None]:
     """Convert a single non-ATT&CK source. Runs in a worker process.
@@ -149,11 +164,13 @@ def _convert_source(
     logger.info("Starting %s conversion", source)
     mod_name, dl_name, ext_name = SOURCE_CONVERTERS[source]
     mod = __import__(mod_name)
-    path = getattr(mod, dl_name)(cache_dir)
+    path = getattr(mod, dl_name)(cache_dir, force_download=force_download)
 
     out_dir = Path(output_dir)
-    if not force and not source_changed(out_dir, source, path):
-        logger.info("Source %s unchanged, skipping conversion (use --force to override)", source)
+    if not force_convert and not source_changed(out_dir, source, path):
+        logger.info(
+            "Source %s unchanged, skipping conversion (use --force-convert to override)", source
+        )
         return source, None
 
     triples = getattr(mod, ext_name)(path)
@@ -173,7 +190,8 @@ def _convert_attack(
     cache_dir: str,
     parquet_format: str,
     log_dir: str | None = None,
-    force: bool = False,
+    force_download: bool = False,
+    force_convert: bool = False,
     limit: int | None = None,
 ) -> tuple[str, dict[str, str]]:
     """Convert all ATT&CK domains. Runs in a worker process.
@@ -190,10 +208,11 @@ def _convert_attack(
     attack_any_changed = False
 
     for domain in domains:
-        stix_path = download_stix(domain, cache_dir)
-        if not force and not source_changed(out_dir, domain, stix_path):
+        stix_path = download_stix(domain, cache_dir, force_download=force_download)
+        if not force_convert and not source_changed(out_dir, domain, stix_path):
             logger.info(
-                "Source %s unchanged, skipping conversion (use --force to override)", domain
+                "Source %s unchanged, skipping conversion (use --force-convert to override)",
+                domain,
             )
             existing = out_dir / f"{domain}.parquet"
             if existing.exists():
@@ -274,7 +293,12 @@ def main():
         help="Directory for log files (default: logs/)",
     )
     parser.add_argument(
-        "--force",
+        "--force-download",
+        action="store_true",
+        help="Force re-download of source data even if cached version is up-to-date",
+    )
+    parser.add_argument(
+        "--force-convert",
         action="store_true",
         help="Force re-conversion even if source data hasn't changed",
     )
@@ -319,7 +343,7 @@ def main():
     failed_sources: list[str] = []
 
     # Order sources so heaviest ones start first (maximizes parallel overlap)
-    HEAVY_SOURCES_ORDER = ["cve", "ghsa", "vulnrichment", "cpe", "attack"]
+    HEAVY_SOURCES_ORDER = ["cve", "ghsa", "vulnrichment", "cpe", "attack", "osv", "nuclei", "euvd"]
     non_attack = [s for s in args.sources if s != "attack" and s in SOURCE_CONVERTERS]
     has_attack = "attack" in args.sources
     all_sources = non_attack.copy()
@@ -349,7 +373,8 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                 ] = "attack"
@@ -364,7 +389,8 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                 ] = source
@@ -401,7 +427,8 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                     if attack_fps:
@@ -420,7 +447,8 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                     if fp:
@@ -429,6 +457,9 @@ def main():
                     logger.exception("Failed: %s", source)
                     failed_sources.append(source)
                 pbar.update(1)
+
+    # Restore main logger after per-source conversions replaced the filter
+    _setup_logging(args.log_dir, "main")
 
     # --- Combined (all sources) ---
     if not args.no_combined:

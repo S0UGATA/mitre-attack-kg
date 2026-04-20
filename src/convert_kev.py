@@ -4,7 +4,7 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file, get_object_type
+from common import Triple, download_file, make_triple_fn
 
 logger = logging.getLogger(__name__)
 
@@ -13,21 +13,27 @@ SOURCE = "kev"
 KEV_URL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
 
 
-def download_kev(cache_dir: str | None = None) -> str:
+def download_kev(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download KEV JSON, returning the local file path."""
-    return str(download_file(KEV_URL, "known_exploited_vulnerabilities.json", cache_dir))
+    return str(
+        download_file(
+            KEV_URL,
+            "known_exploited_vulnerabilities.json",
+            cache_dir,
+            force_download=force_download,
+        )
+    )
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def extract_kev_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_kev_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from CISA KEV JSON."""
     with open(json_path) as f:
         data = json.load(f)
 
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for vuln in data.get("vulnerabilities", []):
         cve_id = vuln.get("cveID", "")
