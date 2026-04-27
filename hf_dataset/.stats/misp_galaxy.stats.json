@@ -1,38 +1,38 @@
 {
-  "totalTriples": 179162,
-  "uniqueSubjects": 32036,
-  "uniqueObjects": 66236,
+  "totalTriples": 196489,
+  "uniqueSubjects": 36112,
+  "uniqueObjects": 72963,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 237560
+      "count": 255508
     },
     {
       "source": "attack",
-      "count": 4156
+      "count": 4158
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 35797
+      "count": 36418
     },
     {
       "predicate": "galaxy",
-      "count": 28400
+      "count": 32476
     },
     {
       "predicate": "name",
-      "count": 28400
+      "count": 32476
     },
     {
       "predicate": "rdf:type",
-      "count": 28400
+      "count": 32476
     },
     {
       "predicate": "description",
-      "count": 24024
+      "count": 28107
     },
     {
       "predicate": "uses",
@@ -40,7 +40,7 @@
     },
     {
       "predicate": "synonym",
-      "count": 4853
+      "count": 5180
     },
     {
       "predicate": "related-attack-id",
@@ -52,7 +52,7 @@
     },
     {
       "predicate": "country",
-      "count": 1200
+      "count": 1268
     },
     {
       "predicate": "targets-country",
@@ -85,27 +85,27 @@
   ],
   "topConnectedEntities": [
     {
-      "entity": "References",
-      "count": 5219
-    },
-    {
       "entity": "references",
       "count": 5219
     },
     {
-      "entity": "malpedia",
-      "count": 3683
+      "entity": "References",
+      "count": 5219
     },
     {
       "entity": "MalpediaEntry",
       "count": 3683
     },
     {
-      "entity": "SigmaRule",
-      "count": 3110
+      "entity": "malpedia",
+      "count": 3683
     },
     {
       "entity": "sigma-rules",
+      "count": 3110
+    },
+    {
+      "entity": "SigmaRule",
       "count": 3110
     },
     {
@@ -114,19 +114,27 @@
     },
     {
       "entity": "Ransomware",
-      "count": 2547
+      "count": 2548
     },
     {
-      "entity": "naics",
-      "count": 2125
+      "entity": "VerisFramework",
+      "count": 2207
+    },
+    {
+      "entity": "veris-framework",
+      "count": 2207
     },
     {
       "entity": "Naics",
       "count": 2125
     },
     {
+      "entity": "naics",
+      "count": 2125
+    },
+    {
       "entity": "Software",
-      "count": 1321
+      "count": 1323
     },
     {
       "entity": "software",
@@ -135,14 +143,6 @@
     {
       "entity": "misp:a07e62c0-be9c-5380-beac-9d298b0e735a",
       "count": 1309
-    },
-    {
-      "entity": "nice-framework-tasks",
-      "count": 1084
-    },
-    {
-      "entity": "NiceFrameworkTasks",
-      "count": 1084
     }
   ],
   "crossSourceLinks": [
@@ -153,5 +153,5 @@
       "predicate": "related-attack-id"
     }
   ],
-  "generatedAt": "2026-04-19T12:08:24Z"
+  "generatedAt": "2026-04-27T08:30:22Z"
 }
