@@ -31,10 +31,6 @@
       "count": 891
     },
     {
-      "predicate": "status",
-      "count": 558
-    },
-    {
       "predicate": "name",
       "count": 558
     },
@@ -44,6 +40,10 @@
     },
     {
       "predicate": "rdf:type",
+      "count": 558
+    },
+    {
+      "predicate": "status",
       "count": 558
     },
     {
@@ -159,5 +159,5 @@
       "predicate": "maps-to-technique"
     }
   ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "generatedAt": "2026-04-27T08:30:13Z"
 }

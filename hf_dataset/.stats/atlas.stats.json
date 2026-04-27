@@ -27,11 +27,11 @@
       "count": 183
     },
     {
-      "predicate": "modified",
+      "predicate": "created",
       "count": 183
     },
     {
-      "predicate": "created",
+      "predicate": "modified",
       "count": 183
     },
     {
@@ -113,7 +113,7 @@
       "count": 16
     },
     {
-      "entity": "AML.TA0008",
+      "entity": "AML.TA0006",
       "count": 15
     }
   ],
@@ -125,5 +125,5 @@
       "predicate": "related-attack-technique"
     }
   ],
-  "generatedAt": "2026-04-19T12:08:15Z"
+  "generatedAt": "2026-04-27T08:30:13Z"
 }

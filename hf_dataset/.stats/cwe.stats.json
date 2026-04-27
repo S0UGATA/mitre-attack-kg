@@ -39,7 +39,15 @@
       "count": 1212
     },
     {
+      "predicate": "status",
+      "count": 944
+    },
+    {
       "predicate": "abstraction",
+      "count": 944
+    },
+    {
+      "predicate": "name",
       "count": 944
     },
     {
@@ -48,14 +56,6 @@
     },
     {
       "predicate": "description",
-      "count": 944
-    },
-    {
-      "predicate": "name",
-      "count": 944
-    },
-    {
-      "predicate": "status",
       "count": 944
     },
     {
@@ -153,5 +153,5 @@
       "predicate": "related-attack-pattern"
     }
   ],
-  "generatedAt": "2026-04-19T12:08:23Z"
+  "generatedAt": "2026-04-27T08:30:21Z"
 }
