@@ -138,7 +138,7 @@ Security data from 17 sources represented as **Subject-Predicate-Object (SPO) tr
 
 Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
 
-*Last updated: 2026-04-19T12:08:02Z*
+*Last updated: 2026-04-27T08:30:00Z*
 
 ## Quick Start
 
@@ -160,21 +160,21 @@ print(ds["train"][0])
 | `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current |
 | `capec` | CAPEC attack patterns | 8,114 | Current |
 | `cwe` | CWE weaknesses | 14,565 | Current |
-| `cve` | CVE vulnerabilities | 3,588,035 | Current |
-| `cpe` | CPE platform enumeration | 12,592,910 | Current |
+| `cve` | CVE vulnerabilities | 3,622,414 | Current |
+| `cpe` | CPE platform enumeration | 12,669,910 | Current |
 | `d3fend` | D3FEND defensive techniques | 8,154 | Current |
 | `atlas` | ATLAS AI/ML techniques | 1,420 | Current |
 | `car` | CAR analytics | 1,617 | Current |
 | `engage` | ENGAGE adversary engagement | 1,464 | Current |
-| `f3` | F3 fraud techniques & tactics | ~1,000 | Current |
-| `epss` | EPSS exploit prediction scores | 655,422 | Current |
-| `kev` | KEV known exploited vulns | 17,187 | Current |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 666,581 | Current |
-| `ghsa` | GitHub Security Advisories | 336,557 | Current |
+| `f3` | F3 fraud techniques & tactics | 1,047 | Current |
+| `epss` | EPSS exploit prediction scores | 658,266 | Current |
+| `kev` | KEV known exploited vulns | 17,343 | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 670,832 | Current |
+| `ghsa` | GitHub Security Advisories | 338,240 | Current |
 | `sigma` | Sigma detection rules | 32,750 | Current |
-| `exploitdb` | ExploitDB public exploits | 346,451 | Current |
-| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 179,162 | Current |
-| `combined` | All sources merged (deduplicated) | 18,500,011 | Current |
+| `exploitdb` | ExploitDB public exploits | 346,471 | Current |
+| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 196,489 | Current |
+| `combined` | All sources merged (deduplicated) | 18,638,718 | Current |
 
 
 
