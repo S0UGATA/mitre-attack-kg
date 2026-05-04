@@ -1,50 +1,50 @@
 {
-  "totalTriples": 196489,
-  "uniqueSubjects": 36112,
-  "uniqueObjects": 72963,
+  "totalTriples": 197551,
+  "uniqueSubjects": 36206,
+  "uniqueObjects": 73117,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 255508
+      "count": 257492
     },
     {
       "source": "attack",
-      "count": 4158
+      "count": 4222
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 36418
+      "count": 36464
     },
     {
       "predicate": "galaxy",
-      "count": 32476
-    },
-    {
-      "predicate": "name",
-      "count": 32476
+      "count": 32498
     },
     {
       "predicate": "rdf:type",
-      "count": 32476
+      "count": 32498
+    },
+    {
+      "predicate": "name",
+      "count": 32498
     },
     {
       "predicate": "description",
-      "count": 28107
+      "count": 28112
     },
     {
       "predicate": "uses",
-      "count": 19740
+      "count": 20616
     },
     {
       "predicate": "synonym",
-      "count": 5180
+      "count": 5184
     },
     {
       "predicate": "related-attack-id",
-      "count": 3909
+      "count": 3973
     },
     {
       "predicate": "used-by",
@@ -52,7 +52,7 @@
     },
     {
       "predicate": "country",
-      "count": 1268
+      "count": 1269
     },
     {
       "predicate": "targets-country",
@@ -85,11 +85,11 @@
   ],
   "topConnectedEntities": [
     {
-      "entity": "references",
+      "entity": "References",
       "count": 5219
     },
     {
-      "entity": "References",
+      "entity": "references",
       "count": 5219
     },
     {
@@ -101,20 +101,20 @@
       "count": 3683
     },
     {
-      "entity": "sigma-rules",
-      "count": 3110
-    },
-    {
       "entity": "SigmaRule",
       "count": 3110
     },
     {
+      "entity": "sigma-rules",
+      "count": 3110
+    },
+    {
       "entity": "ransomware",
-      "count": 2733
+      "count": 2750
     },
     {
       "entity": "Ransomware",
-      "count": 2548
+      "count": 2565
     },
     {
       "entity": "VerisFramework",
@@ -125,11 +125,11 @@
       "count": 2207
     },
     {
-      "entity": "Naics",
+      "entity": "naics",
       "count": 2125
     },
     {
-      "entity": "naics",
+      "entity": "Naics",
       "count": 2125
     },
     {
@@ -149,9 +149,9 @@
     {
       "from": "misp_galaxy",
       "to": "attack",
-      "count": 3909,
+      "count": 3973,
       "predicate": "related-attack-id"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:22Z"
+  "generatedAt": "2026-05-04T08:52:09Z"
 }

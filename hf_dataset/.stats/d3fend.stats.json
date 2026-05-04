@@ -93,11 +93,11 @@
       "count": 28
     },
     {
-      "entity": "T1546",
+      "entity": "ATTACKMobileCollectionTechnique",
       "count": 23
     },
     {
-      "entity": "ATTACKMobileCollectionTechnique",
+      "entity": "T1546",
       "count": 23
     },
     {
@@ -121,5 +121,5 @@
       "predicate": "restricts"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:21Z"
+  "generatedAt": "2026-05-04T08:52:08Z"
 }

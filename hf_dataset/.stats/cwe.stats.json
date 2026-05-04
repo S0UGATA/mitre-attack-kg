@@ -1,12 +1,12 @@
 {
-  "totalTriples": 14565,
+  "totalTriples": 14583,
   "uniqueSubjects": 944,
   "uniqueObjects": 2807,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "cwe",
-      "count": 16166
+      "count": 16185
     },
     {
       "source": "capec",
@@ -16,35 +16,27 @@
   "topPredicates": [
     {
       "predicate": "consequence-impact",
-      "count": 2115
+      "count": 2120
     },
     {
       "predicate": "consequence-scope",
-      "count": 2030
+      "count": 2033
     },
     {
       "predicate": "introduction-phase",
-      "count": 1394
+      "count": 1398
     },
     {
       "predicate": "child-of",
-      "count": 1317
+      "count": 1318
     },
     {
       "predicate": "platform",
-      "count": 1308
+      "count": 1313
     },
     {
       "predicate": "related-attack-pattern",
       "count": 1212
-    },
-    {
-      "predicate": "status",
-      "count": 944
-    },
-    {
-      "predicate": "abstraction",
-      "count": 944
     },
     {
       "predicate": "name",
@@ -52,6 +44,14 @@
     },
     {
       "predicate": "rdf:type",
+      "count": 944
+    },
+    {
+      "predicate": "abstraction",
+      "count": 944
+    },
+    {
+      "predicate": "status",
       "count": 944
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "entity": "Implementation",
-      "count": 850
+      "count": 852
     },
     {
       "entity": "Base",
@@ -106,7 +106,7 @@
     },
     {
       "entity": "Confidentiality",
-      "count": 471
+      "count": 472
     },
     {
       "entity": "Draft",
@@ -114,7 +114,7 @@
     },
     {
       "entity": "Architecture and Design",
-      "count": 364
+      "count": 365
     },
     {
       "entity": "Availability",
@@ -126,7 +126,7 @@
     },
     {
       "entity": "Access Control",
-      "count": 288
+      "count": 289
     },
     {
       "entity": "Not Technology-Specific",
@@ -142,7 +142,7 @@
     },
     {
       "entity": "Execute Unauthorized Code or Commands",
-      "count": 172
+      "count": 173
     }
   ],
   "crossSourceLinks": [
@@ -153,5 +153,5 @@
       "predicate": "related-attack-pattern"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:21Z"
+  "generatedAt": "2026-05-04T08:52:08Z"
 }

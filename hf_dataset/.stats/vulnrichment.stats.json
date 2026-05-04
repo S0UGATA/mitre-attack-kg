@@ -1,56 +1,56 @@
 {
-  "totalTriples": 670832,
-  "uniqueSubjects": 144444,
-  "uniqueObjects": 23591,
+  "totalTriples": 670099,
+  "uniqueSubjects": 145377,
+  "uniqueObjects": 23590,
   "uniquePredicates": 7,
   "bySource": [
     {
       "source": "cve",
-      "count": 670832
+      "count": 670099
     },
     {
       "source": "cpe",
-      "count": 135436
+      "count": 135435
     },
     {
       "source": "cwe",
-      "count": 30228
+      "count": 30361
     }
   ],
   "topPredicates": [
     {
-      "predicate": "ssvc-automatable",
-      "count": 144448
-    },
-    {
       "predicate": "ssvc-technical-impact",
-      "count": 144448
+      "count": 145381
     },
     {
       "predicate": "ssvc-exploitation",
-      "count": 144448
+      "count": 145381
+    },
+    {
+      "predicate": "ssvc-automatable",
+      "count": 145381
     },
     {
       "predicate": "adp-affects-cpe",
-      "count": 135436
-    },
-    {
-      "predicate": "adp-cvss-base-score",
-      "count": 35912
+      "count": 135435
     },
     {
       "predicate": "adp-cvss-severity",
-      "count": 35912
+      "count": 34080
+    },
+    {
+      "predicate": "adp-cvss-base-score",
+      "count": 34080
     },
     {
       "predicate": "adp-related-weakness",
-      "count": 30228
+      "count": 30361
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "partial",
-      "count": 95822
+      "count": 96563
     },
     {
       "entity": "CVE-2024-20399",
@@ -58,23 +58,23 @@
     },
     {
       "entity": "total",
-      "count": 48626
+      "count": 48818
     },
     {
       "entity": "poc",
-      "count": 33391
+      "count": 33823
     },
     {
       "entity": "yes",
-      "count": 32561
+      "count": 32721
     },
     {
       "entity": "MEDIUM",
-      "count": 15731
+      "count": 14887
     },
     {
       "entity": "HIGH",
-      "count": 13680
+      "count": 12877
     },
     {
       "entity": "CVE-2024-20481",
@@ -82,46 +82,46 @@
     },
     {
       "entity": "CRITICAL",
-      "count": 5858
+      "count": 5677
     },
     {
       "entity": "9.8",
-      "count": 4786
+      "count": 4655
     },
     {
       "entity": "7.5",
-      "count": 3929
+      "count": 3838
     },
     {
       "entity": "CWE-79",
-      "count": 3262
+      "count": 3279
     },
     {
       "entity": "8.8",
-      "count": 3091
+      "count": 2974
     },
     {
       "entity": "5.5",
-      "count": 2768
+      "count": 2770
     },
     {
       "entity": "6.5",
-      "count": 2706
+      "count": 2462
     }
   ],
   "crossSourceLinks": [
     {
       "from": "cve",
       "to": "cpe",
-      "count": 135436,
+      "count": 135435,
       "predicate": "adp-affects-cpe"
     },
     {
       "from": "cve",
       "to": "cwe",
-      "count": 30228,
+      "count": 30361,
       "predicate": "adp-related-weakness"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:22Z"
+  "generatedAt": "2026-05-04T08:52:10Z"
 }

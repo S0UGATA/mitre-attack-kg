@@ -43,19 +43,19 @@
       "count": 29347
     },
     {
-      "predicate": "rdf:type",
-      "count": 29347
-    },
-    {
       "predicate": "severity",
       "count": 29347
     },
     {
-      "predicate": "date-published",
+      "predicate": "summary",
       "count": 29347
     },
     {
-      "predicate": "summary",
+      "predicate": "rdf:type",
+      "count": 29347
+    },
+    {
+      "predicate": "date-published",
       "count": 29347
     },
     {
@@ -145,5 +145,5 @@
       "predicate": "summary"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:22Z"
+  "generatedAt": "2026-05-04T08:52:09Z"
 }

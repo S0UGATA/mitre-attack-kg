@@ -51,7 +51,7 @@
       "count": 102
     },
     {
-      "predicate": "title",
+      "predicate": "description",
       "count": 102
     },
     {
@@ -59,15 +59,15 @@
       "count": 102
     },
     {
-      "predicate": "information-domain",
-      "count": 102
-    },
-    {
-      "predicate": "description",
+      "predicate": "title",
       "count": 102
     },
     {
       "predicate": "rdf:type",
+      "count": 102
+    },
+    {
+      "predicate": "information-domain",
       "count": 102
     }
   ],
@@ -147,5 +147,5 @@
       "predicate": "maps-to-d3fend"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:13Z"
+  "generatedAt": "2026-05-04T08:52:01Z"
 }
