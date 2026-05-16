@@ -1,70 +1,70 @@
 {
-  "totalTriples": 42041,
-  "uniqueSubjects": 2757,
-  "uniqueObjects": 12338,
+  "totalTriples": 43629,
+  "uniqueSubjects": 2830,
+  "uniqueObjects": 12741,
   "uniquePredicates": 20,
   "bySource": [
     {
       "source": "attack",
-      "count": 62515
+      "count": 65076
     },
     {
       "source": "engage",
-      "count": 691
+      "count": 697
     }
   ],
   "topPredicates": [
     {
       "predicate": "uses",
-      "count": 17270
+      "count": 18221
     },
     {
       "predicate": "platform",
-      "count": 3081
+      "count": 3206
     },
     {
       "predicate": "domain",
-      "count": 2405
-    },
-    {
-      "predicate": "name",
-      "count": 2290
-    },
-    {
-      "predicate": "url",
-      "count": 2290
-    },
-    {
-      "predicate": "created",
-      "count": 2290
-    },
-    {
-      "predicate": "modified",
-      "count": 2290
+      "count": 2424
     },
     {
       "predicate": "rdf:type",
-      "count": 2290
+      "count": 2357
+    },
+    {
+      "predicate": "name",
+      "count": 2357
+    },
+    {
+      "predicate": "url",
+      "count": 2357
+    },
+    {
+      "predicate": "created",
+      "count": 2357
+    },
+    {
+      "predicate": "modified",
+      "count": 2357
     },
     {
       "predicate": "description",
-      "count": 2286
+      "count": 2353
     },
     {
       "predicate": "mitigates",
-      "count": 1445
+      "count": 1448
     },
     {
       "predicate": "belongs-to-tactic",
-      "count": 1089
+      "count": 1090
     },
     {
       "predicate": "is-subtechnique",
-      "count": 835
+      "count": 858
     },
     {
       "predicate": "detects",
-      "count": 691
+      "count": 697
     },
     {
       "predicate": "subtechnique-of",
@@ -72,7 +72,7 @@
     },
     {
       "predicate": "alias",
-      "count": 406
+      "count": 428
     },
     {
       "predicate": "deprecated",
@@ -80,90 +80,90 @@
     },
     {
       "predicate": "revoked-by",
-      "count": 140
+      "count": 157
     },
     {
       "predicate": "revoked",
-      "count": 140
+      "count": 157
     },
     {
       "predicate": "attributed-to",
-      "count": 25
+      "count": 26
     },
     {
       "predicate": "shortname",
-      "count": 14
+      "count": 15
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "enterprise-attack",
-      "count": 2290
+      "count": 2301
     },
     {
       "entity": "Windows",
-      "count": 1261
+      "count": 1304
     },
     {
       "entity": "Technique",
-      "count": 835
+      "count": 858
     },
     {
       "entity": "Malware",
-      "count": 698
+      "count": 731
     },
     {
       "entity": "T1105",
-      "count": 523
+      "count": 540
     },
     {
       "entity": "Linux",
-      "count": 514
+      "count": 538
     },
     {
       "entity": "macOS",
-      "count": 510
+      "count": 523
     },
     {
       "entity": "T1082",
-      "count": 427
+      "count": 448
     },
     {
       "entity": "T1071.001",
-      "count": 424
+      "count": 437
     },
     {
       "entity": "T1059.003",
-      "count": 385
+      "count": 399
     },
     {
       "entity": "T1083",
-      "count": 378
+      "count": 392
     },
     {
       "entity": "T1140",
-      "count": 347
+      "count": 372
     },
     {
       "entity": "T1057",
-      "count": 327
+      "count": 341
     },
     {
       "entity": "T1070.004",
-      "count": 312
+      "count": 324
     },
     {
       "entity": "T1016",
-      "count": 302
+      "count": 310
     }
   ],
   "crossSourceLinks": [
     {
       "from": "engage",
       "to": "attack",
-      "count": 691,
+      "count": 697,
       "predicate": "detects"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:13Z"
+  "generatedAt": "2026-05-11T09:37:39Z"
 }

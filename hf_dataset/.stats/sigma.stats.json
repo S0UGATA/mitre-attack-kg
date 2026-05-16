@@ -1,16 +1,16 @@
 {
-  "totalTriples": 32750,
-  "uniqueSubjects": 3234,
-  "uniqueObjects": 8690,
+  "totalTriples": 33294,
+  "uniqueSubjects": 3283,
+  "uniqueObjects": 8821,
   "uniquePredicates": 11,
   "bySource": [
     {
       "source": "sigma",
-      "count": 32750
+      "count": 33294
     },
     {
       "source": "attack",
-      "count": 3809
+      "count": 3913
     },
     {
       "source": "cve",
@@ -20,116 +20,116 @@
   "topPredicates": [
     {
       "predicate": "detects-technique",
-      "count": 3808
-    },
-    {
-      "predicate": "status",
-      "count": 3234
-    },
-    {
-      "predicate": "title",
-      "count": 3234
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 3234
-    },
-    {
-      "predicate": "level",
-      "count": 3234
+      "count": 3912
     },
     {
       "predicate": "author",
-      "count": 3234
+      "count": 3283
     },
     {
-      "predicate": "date",
-      "count": 3234
+      "predicate": "title",
+      "count": 3283
     },
     {
       "predicate": "description",
-      "count": 3234
+      "count": 3283
+    },
+    {
+      "predicate": "status",
+      "count": 3283
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 3283
+    },
+    {
+      "predicate": "level",
+      "count": 3283
+    },
+    {
+      "predicate": "date",
+      "count": 3283
     },
     {
       "predicate": "logsource-product",
-      "count": 3080
+      "count": 3128
     },
     {
       "predicate": "logsource-category",
-      "count": 2558
+      "count": 2601
     },
     {
       "predicate": "logsource-service",
-      "count": 666
+      "count": 672
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "SigmaRule",
-      "count": 3234
+      "count": 3283
     },
     {
       "entity": "test",
-      "count": 2944
+      "count": 2942
     },
     {
       "entity": "windows",
-      "count": 2517
+      "count": 2543
     },
     {
       "entity": "high",
-      "count": 1674
+      "count": 1708
     },
     {
       "entity": "process_creation",
-      "count": 1418
+      "count": 1447
     },
     {
       "entity": "medium",
-      "count": 1389
+      "count": 1401
     },
     {
       "entity": "Nasreddine Bencherchali (Nextron Systems)",
-      "count": 579
+      "count": 578
     },
     {
       "entity": "Florian Roth (Nextron Systems)",
-      "count": 371
+      "count": 369
     },
     {
       "entity": "frack113",
-      "count": 262
+      "count": 261
+    },
+    {
+      "entity": "experimental",
+      "count": 258
     },
     {
       "entity": "file_event",
-      "count": 209
+      "count": 215
     },
     {
       "entity": "registry_set",
       "count": 208
     },
     {
-      "entity": "experimental",
-      "count": 207
-    },
-    {
       "entity": "T1059.001",
-      "count": 199
-    },
-    {
-      "entity": "critical",
-      "count": 171
+      "count": 200
     },
     {
       "entity": "linux",
-      "count": 169
+      "count": 178
+    },
+    {
+      "entity": "critical",
+      "count": 174
     }
   ],
   "crossSourceLinks": [
     {
       "from": "sigma",
       "to": "attack",
-      "count": 3808,
+      "count": 3912,
       "predicate": "detects-technique"
     },
     {
@@ -139,5 +139,5 @@
       "predicate": "title"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:22Z"
+  "generatedAt": "2026-05-11T09:37:47Z"
 }
