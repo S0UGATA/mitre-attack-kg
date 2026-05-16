@@ -185,14 +185,8 @@ class TestVulnrichmentTriples:
         # CVE-2024-0001 has no ADP container, but cveMetadata triples are still emitted
         assert ("CVE-2024-0001", "rdf:type", "Vulnerability") in ts
         # No ADP-specific enrichment triples
-        assert not any(
-            t[0] == "CVE-2024-0001" and t[1].startswith("adp-")
-            for t in triples
-        )
-        assert not any(
-            t[0] == "CVE-2024-0001" and t[1].startswith("ssvc-")
-            for t in triples
-        )
+        assert not any(t[0] == "CVE-2024-0001" and t[1].startswith("adp-") for t in triples)
+        assert not any(t[0] == "CVE-2024-0001" and t[1].startswith("ssvc-") for t in triples)
 
     def test_triple_count(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
