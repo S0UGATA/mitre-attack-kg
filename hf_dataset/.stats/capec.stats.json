@@ -6,15 +6,7 @@
   "bySource": [
     {
       "source": "capec",
-      "count": 8840
-    },
-    {
-      "source": "cwe",
-      "count": 1213
-    },
-    {
-      "source": "attack",
-      "count": 272
+      "count": 8114
     }
   ],
   "topPredicates": [
@@ -35,11 +27,11 @@
       "count": 558
     },
     {
-      "predicate": "status",
+      "predicate": "rdf:type",
       "count": 558
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "status",
       "count": 558
     },
     {
@@ -145,19 +137,6 @@
       "count": 142
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "capec",
-      "to": "cwe",
-      "count": 1213,
-      "predicate": "related-weakness"
-    },
-    {
-      "from": "capec",
-      "to": "attack",
-      "count": 272,
-      "predicate": "maps-to-technique"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:39Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:49Z"
 }

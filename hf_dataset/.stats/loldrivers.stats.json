@@ -1,110 +1,114 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 4,
-  "uniqueObjects": 92,
-  "uniquePredicates": 8,
+  "totalTriples": 11227,
+  "uniqueSubjects": 622,
+  "uniqueObjects": 6650,
+  "uniquePredicates": 9,
   "bySource": [
     {
       "source": "loldrivers",
-      "count": 100
+      "count": 11227
     }
   ],
   "topPredicates": [
     {
-      "predicate": "sha256",
-      "count": 28
-    },
-    {
       "predicate": "sha1",
-      "count": 27
+      "count": 2045
     },
     {
       "predicate": "md5",
-      "count": 27
+      "count": 2028
     },
     {
-      "predicate": "category",
-      "count": 4
-    },
-    {
-      "predicate": "name",
-      "count": 4
-    },
-    {
-      "predicate": "maps-to-technique",
-      "count": 4
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 4
+      "predicate": "sha256",
+      "count": 2027
     },
     {
       "predicate": "vendor",
-      "count": 2
+      "count": 1330
+    },
+    {
+      "predicate": "product",
+      "count": 1309
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 622
+    },
+    {
+      "predicate": "name",
+      "count": 622
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 622
+    },
+    {
+      "predicate": "category",
+      "count": 622
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "3aa6e630-59be-4a15-a30c-aaed4c1edaf0",
-      "count": 74
-    },
-    {
-      "entity": "651d1cdc-3e13-405f-b8b3-65cc70cef5a8",
-      "count": 11
-    },
-    {
-      "entity": "86b9c8d6-9c59-4fd4-befd-ab9a36a19e36",
-      "count": 8
-    },
-    {
-      "entity": "dbb58de1-a1e5-4c7f-8fe0-4033502b1c63",
-      "count": 7
+      "entity": "87752fb8-e9f6-4235-91e2-c4343677d817",
+      "count": 734
     },
     {
       "entity": "LOLDriver",
-      "count": 4
-    },
-    {
-      "entity": "vulnerable driver",
-      "count": 4
+      "count": 622
     },
     {
       "entity": "T1068",
-      "count": 3
+      "count": 599
     },
     {
-      "entity": "b62e2371158a082e239f5883bd6000d1",
-      "count": 1
+      "entity": "vulnerable driver",
+      "count": 510
     },
     {
-      "entity": "09e77d71d626574e6142894caca6e6dd",
-      "count": 1
+      "entity": "0f59ce3b-20ac-41ba-8010-2abc74827eb8",
+      "count": 504
     },
     {
-      "entity": "fc5d815dde49b85efb51e89af45dd011c044f72a",
-      "count": 1
+      "entity": "9bf033e4-7295-4b63-8772-638b76851741",
+      "count": 254
     },
     {
-      "entity": "442f12adebf7cb166b19e8aead2b0440450fd1f33f5db384a39776bb2656474a",
-      "count": 1
+      "entity": "16d8962b-cf96-432f-8a43-d41f06828f56",
+      "count": 229
     },
     {
-      "entity": "648adec580746afbbf59904c1e150c73",
-      "count": 1
+      "entity": "a7bba474-815f-49be-bddc-4d76a64c866c",
+      "count": 214
     },
     {
-      "entity": "51f002ee44e46889cf5b99a724dd10cc2bd3e22545e2a2cb3bd6b1dd3af5ba11",
-      "count": 1
+      "entity": "d35cb48d-2aca-4d7d-a194-f4566183bcd9",
+      "count": 209
     },
     {
-      "entity": "f0e21ababe63668fb3fbd02e90cd1fa9",
-      "count": 1
+      "entity": "043773c5-120a-4c6b-8485-8f1f5c47fd3e",
+      "count": 199
     },
     {
-      "entity": "53b9e423baf946983d03ce309ec5e006ba18c9956dcd97c68a8b714d18c8ffcf",
-      "count": 1
+      "entity": "351ff5ca-f07b-4eb6-9300-d5d31514defb",
+      "count": 169
+    },
+    {
+      "entity": "855ade1f-8a9e-4c9d-ab8e-d7e409609852",
+      "count": 164
+    },
+    {
+      "entity": "0567c6c4-282f-406f-9369-7f876b899c25",
+      "count": 159
+    },
+    {
+      "entity": "cpuz.sys",
+      "count": 149
+    },
+    {
+      "entity": "mimidrv.sys",
+      "count": 146
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "generatedAt": "2026-05-16T19:55:55Z"
 }

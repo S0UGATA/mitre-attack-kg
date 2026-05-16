@@ -1,102 +1,118 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 6,
-  "uniqueObjects": 51,
-  "uniquePredicates": 6,
+  "totalTriples": 6523684,
+  "uniqueSubjects": 479014,
+  "uniqueObjects": 760538,
+  "uniquePredicates": 10,
   "bySource": [
     {
       "source": "osv",
-      "count": 100
+      "count": 6523684
     }
   ],
   "topPredicates": [
     {
       "predicate": "affects-package",
-      "count": 41
+      "count": 2658005
     },
     {
       "predicate": "ecosystem",
-      "count": 40
+      "count": 847779
     },
     {
-      "predicate": "date-published",
-      "count": 6
-    },
-    {
-      "predicate": "date-modified",
-      "count": 6
+      "predicate": "fixed-in",
+      "count": 822467
     },
     {
       "predicate": "rdf:type",
-      "count": 6
+      "count": 502695
+    },
+    {
+      "predicate": "date-modified",
+      "count": 502695
+    },
+    {
+      "predicate": "date-published",
+      "count": 502695
+    },
+    {
+      "predicate": "summary",
+      "count": 350953
     },
     {
       "predicate": "cvss-vector",
-      "count": 1
+      "count": 238330
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 50053
+    },
+    {
+      "predicate": "related-cve",
+      "count": 48012
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "ALPINE-CVE-2012-0804",
-      "count": 27
-    },
-    {
-      "entity": "ALPINE-CVE-2010-3846",
-      "count": 27
-    },
-    {
-      "entity": "ALPINE-CVE-2012-2738",
-      "count": 15
-    },
-    {
-      "entity": "ALPINE-CVE-2009-3895",
-      "count": 13
-    },
-    {
-      "entity": "ALPINE-CVE-2006-20001",
-      "count": 12
-    },
-    {
-      "entity": "ALPINE-CVE-2012-2812",
-      "count": 6
-    },
-    {
       "entity": "OSVulnerability",
-      "count": 6
+      "count": 502695
     },
     {
-      "entity": "Alpine:v3.10",
-      "count": 5
+      "entity": "npm",
+      "count": 218945
     },
     {
-      "entity": "Alpine:v3.8",
-      "count": 4
+      "entity": "2025-11-11",
+      "count": 154654
     },
     {
-      "entity": "Alpine:v3.11",
-      "count": 4
+      "entity": "2025-11-12",
+      "count": 94026
     },
     {
-      "entity": "Alpine:v3.9",
-      "count": 4
+      "entity": "2025-08-14",
+      "count": 68430
     },
     {
-      "entity": "2025-11-19",
-      "count": 4
+      "entity": "Debian:13",
+      "count": 42445
     },
     {
-      "entity": "Alpine:v3.15",
-      "count": 3
+      "entity": "medium",
+      "count": 42156
     },
     {
-      "entity": "Alpine:v3.14",
-      "count": 3
+      "entity": "2026-04-28",
+      "count": 41747
     },
     {
-      "entity": "Alpine:v3.12",
-      "count": 3
+      "entity": "Debian:14",
+      "count": 41124
+    },
+    {
+      "entity": "Debian:12",
+      "count": 41021
+    },
+    {
+      "entity": "Debian:11",
+      "count": 40356
+    },
+    {
+      "entity": "Linux",
+      "count": 35396
+    },
+    {
+      "entity": "Linux/Kernel",
+      "count": 35396
+    },
+    {
+      "entity": "Ubuntu:16.04:LTS",
+      "count": 33372
+    },
+    {
+      "entity": "2026-04-10",
+      "count": 30967
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "generatedAt": "2026-05-16T19:55:56Z"
 }

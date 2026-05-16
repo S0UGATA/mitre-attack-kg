@@ -1,82 +1,90 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 100,
-  "uniqueObjects": 1,
-  "uniquePredicates": 1,
+  "totalTriples": 4788,
+  "uniqueSubjects": 1596,
+  "uniqueObjects": 2015,
+  "uniquePredicates": 3,
   "bySource": [
     {
       "source": "euvd",
-      "count": 100
+      "count": 4788
     }
   ],
   "topPredicates": [
     {
       "predicate": "rdf:type",
-      "count": 100
+      "count": 1596
+    },
+    {
+      "predicate": "related-cve",
+      "count": 1596
+    },
+    {
+      "predicate": "date-published",
+      "count": 1596
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "EUVulnerability",
-      "count": 100
+      "count": 1596
     },
     {
-      "entity": "EUVD-2019-8642",
-      "count": 1
+      "entity": "2021-11-03",
+      "count": 287
     },
     {
-      "entity": "EUVD-2014-0527",
-      "count": 1
+      "entity": "2022-03-03",
+      "count": 95
     },
     {
-      "entity": "EUVD-2024-28025",
-      "count": 1
+      "entity": "2022-03-25",
+      "count": 66
     },
     {
-      "entity": "EUVD-2018-17200",
-      "count": 1
+      "entity": "2022-06-08",
+      "count": 35
     },
     {
-      "entity": "EUVD-2021-30752",
-      "count": 1
+      "entity": "2022-05-25",
+      "count": 34
     },
     {
-      "entity": "EUVD-2013-0652",
-      "count": 1
+      "entity": "2022-03-28",
+      "count": 32
     },
     {
-      "entity": "EUVD-2022-43955",
-      "count": 1
+      "entity": "2022-05-23",
+      "count": 21
     },
     {
-      "entity": "EUVD-2020-0451",
-      "count": 1
+      "entity": "2022-05-24",
+      "count": 20
     },
     {
-      "entity": "EUVD-2013-4907",
-      "count": 1
+      "entity": "2022-03-15",
+      "count": 15
     },
     {
-      "entity": "EUVD-2023-2363",
-      "count": 1
+      "entity": "2022-01-10",
+      "count": 15
     },
     {
-      "entity": "EUVD-2021-23331",
-      "count": 1
+      "entity": "2022-02-10",
+      "count": 15
     },
     {
-      "entity": "EUVD-2015-7655",
-      "count": 1
+      "entity": "2021-12-10",
+      "count": 13
     },
     {
-      "entity": "EUVD-2019-1563",
-      "count": 1
+      "entity": "2022-01-18",
+      "count": 13
     },
     {
-      "entity": "EUVD-2023-2533",
-      "count": 1
+      "entity": "2022-03-07",
+      "count": 11
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "generatedAt": "2026-05-16T19:55:55Z"
 }
