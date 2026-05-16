@@ -1,9 +1,11 @@
-"""CLI orchestrator: Security Data → KG Triples (Parquet)."""
+"""CLI orchestrator: Security Data -> KG Triples (Parquet)."""
 
 import argparse
+import contextlib
 import itertools
 import json
 import logging
+import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import UTC, datetime
@@ -134,14 +136,20 @@ def _setup_logging(log_dir: Path | None, source: str = "main", file_mode: str = 
 
     filt = SourceFilter(source)
 
-    console = logging.StreamHandler()
+    # On Windows the console stream may use a narrow codec (e.g. cp1252).
+    # Reconfigure to UTF-8 with replacement so Unicode chars never crash emit().
+    if hasattr(sys.stderr, "reconfigure"):
+        with contextlib.suppress(Exception):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+    console = logging.StreamHandler(sys.stderr)
     console.setFormatter(ColorFormatter(datefmt=LOG_DATEFMT))
     console.addFilter(filt)
     root.addHandler(console)
 
     if log_dir:
         log_dir.mkdir(parents=True, exist_ok=True)
-        fh = logging.FileHandler(log_dir / f"{source}.log", mode=file_mode)
+        fh = logging.FileHandler(log_dir / f"{source}.log", mode=file_mode, encoding="utf-8")
         fh.setFormatter(logging.Formatter(LOG_FORMAT, datefmt=LOG_DATEFMT))
         fh.addFilter(filt)
         root.addHandler(fh)
@@ -240,7 +248,7 @@ def _convert_attack(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Security Data → KG Triples (Parquet)")
+    parser = argparse.ArgumentParser(description="Security Data -> KG Triples (Parquet)")
     parser.add_argument(
         "--domains",
         nargs="+",
@@ -503,7 +511,7 @@ def main():
                     logger.info("  %-20s %d rows", src, count)
 
             logger.info(
-                "Combined: %d triples from %d sources → %d after deduplication (-%d)",
+                "Combined: %d triples from %d sources -> %d after deduplication (-%d)",
                 total_before,
                 len(parquet_files),
                 len(combined_df),
