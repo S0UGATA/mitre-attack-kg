@@ -1,9 +1,11 @@
-"""CLI orchestrator: Security Data → KG Triples (Parquet)."""
+"""CLI orchestrator: Security Data -> KG Triples (Parquet)."""
 
 import argparse
+import contextlib
 import itertools
 import json
 import logging
+import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import UTC, datetime
@@ -46,6 +48,13 @@ ALL_SOURCES = (
     "sigma",
     "exploitdb",
     "misp_galaxy",
+    "lolbas",
+    "loldrivers",
+    "atomic",
+    "nist_800_53",
+    "nuclei",
+    "euvd",
+    "osv",
 )
 
 SOURCE_CONVERTERS = {
@@ -69,6 +78,13 @@ SOURCE_CONVERTERS = {
     "sigma": ("convert_sigma", "download_sigma", "extract_sigma_triples"),
     "exploitdb": ("convert_exploitdb", "download_exploitdb", "extract_exploitdb_triples"),
     "misp_galaxy": ("convert_misp_galaxy", "download_misp_galaxy", "extract_misp_galaxy_triples"),
+    "lolbas": ("convert_lolbas", "download_lolbas", "extract_lolbas_triples"),
+    "loldrivers": ("convert_loldrivers", "download_loldrivers", "extract_loldrivers_triples"),
+    "atomic": ("convert_atomic", "download_atomic", "extract_atomic_triples"),
+    "nist_800_53": ("convert_nist_800_53", "download_nist_800_53", "extract_nist_800_53_triples"),
+    "nuclei": ("convert_nuclei", "download_nuclei", "extract_nuclei_triples"),
+    "euvd": ("convert_euvd", "download_euvd", "extract_euvd_triples"),
+    "osv": ("convert_osv", "download_osv", "extract_osv_triples"),
 }
 
 LOG_FORMAT = "%(asctime)s [%(source)s] %(levelname)s: %(message)s"
@@ -107,24 +123,33 @@ class SourceFilter(logging.Filter):
         return True
 
 
-def _setup_logging(log_dir: Path | None, source: str = "main") -> None:
+def _setup_logging(log_dir: Path | None, source: str = "main", file_mode: str = "w") -> None:
     """Configure logging with console + optional file output, tagged by source."""
     root = logging.getLogger()
     root.setLevel(logging.INFO)
 
-    # Remove existing handlers (important for worker processes)
+    # Explicitly flush and close existing handlers before replacing them
+    for handler in root.handlers[:]:
+        handler.flush()
+        handler.close()
     root.handlers.clear()
 
     filt = SourceFilter(source)
 
-    console = logging.StreamHandler()
+    # On Windows the console stream may use a narrow codec (e.g. cp1252).
+    # Reconfigure to UTF-8 with replacement so Unicode chars never crash emit().
+    if hasattr(sys.stderr, "reconfigure"):
+        with contextlib.suppress(Exception):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+    console = logging.StreamHandler(sys.stderr)
     console.setFormatter(ColorFormatter(datefmt=LOG_DATEFMT))
     console.addFilter(filt)
     root.addHandler(console)
 
     if log_dir:
         log_dir.mkdir(parents=True, exist_ok=True)
-        fh = logging.FileHandler(log_dir / f"{source}.log", mode="w")
+        fh = logging.FileHandler(log_dir / f"{source}.log", mode=file_mode, encoding="utf-8")
         fh.setFormatter(logging.Formatter(LOG_FORMAT, datefmt=LOG_DATEFMT))
         fh.addFilter(filt)
         root.addHandler(fh)
@@ -136,7 +161,8 @@ def _convert_source(
     cache_dir: str,
     parquet_format: str,
     log_dir: str | None = None,
-    force: bool = False,
+    force_download: bool = False,
+    force_convert: bool = False,
     limit: int | None = None,
 ) -> tuple[str, str | None]:
     """Convert a single non-ATT&CK source. Runs in a worker process.
@@ -149,11 +175,13 @@ def _convert_source(
     logger.info("Starting %s conversion", source)
     mod_name, dl_name, ext_name = SOURCE_CONVERTERS[source]
     mod = __import__(mod_name)
-    path = getattr(mod, dl_name)(cache_dir)
+    path = getattr(mod, dl_name)(cache_dir, force_download=force_download)
 
     out_dir = Path(output_dir)
-    if not force and not source_changed(out_dir, source, path):
-        logger.info("Source %s unchanged, skipping conversion (use --force to override)", source)
+    if not force_convert and not source_changed(out_dir, source, path):
+        logger.info(
+            "Source %s unchanged, skipping conversion (use --force-convert to override)", source
+        )
         return source, None
 
     triples = getattr(mod, ext_name)(path)
@@ -173,7 +201,8 @@ def _convert_attack(
     cache_dir: str,
     parquet_format: str,
     log_dir: str | None = None,
-    force: bool = False,
+    force_download: bool = False,
+    force_convert: bool = False,
     limit: int | None = None,
 ) -> tuple[str, dict[str, str]]:
     """Convert all ATT&CK domains. Runs in a worker process.
@@ -190,10 +219,11 @@ def _convert_attack(
     attack_any_changed = False
 
     for domain in domains:
-        stix_path = download_stix(domain, cache_dir)
-        if not force and not source_changed(out_dir, domain, stix_path):
+        stix_path = download_stix(domain, cache_dir, force_download=force_download)
+        if not force_convert and not source_changed(out_dir, domain, stix_path):
             logger.info(
-                "Source %s unchanged, skipping conversion (use --force to override)", domain
+                "Source %s unchanged, skipping conversion (use --force-convert to override)",
+                domain,
             )
             existing = out_dir / f"{domain}.parquet"
             if existing.exists():
@@ -218,7 +248,7 @@ def _convert_attack(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Security Data → KG Triples (Parquet)")
+    parser = argparse.ArgumentParser(description="Security Data -> KG Triples (Parquet)")
     parser.add_argument(
         "--domains",
         nargs="+",
@@ -274,7 +304,12 @@ def main():
         help="Directory for log files (default: logs/)",
     )
     parser.add_argument(
-        "--force",
+        "--force-download",
+        action="store_true",
+        help="Force re-download of source data even if cached version is up-to-date",
+    )
+    parser.add_argument(
+        "--force-convert",
         action="store_true",
         help="Force re-conversion even if source data hasn't changed",
     )
@@ -319,7 +354,7 @@ def main():
     failed_sources: list[str] = []
 
     # Order sources so heaviest ones start first (maximizes parallel overlap)
-    HEAVY_SOURCES_ORDER = ["cve", "ghsa", "vulnrichment", "cpe", "attack"]
+    HEAVY_SOURCES_ORDER = ["cve", "ghsa", "vulnrichment", "cpe", "attack", "osv", "nuclei", "euvd"]
     non_attack = [s for s in args.sources if s != "attack" and s in SOURCE_CONVERTERS]
     has_attack = "attack" in args.sources
     all_sources = non_attack.copy()
@@ -349,7 +384,8 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                 ] = "attack"
@@ -364,7 +400,8 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                 ] = source
@@ -401,12 +438,17 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                     if attack_fps:
                         save_fingerprints(attack_fps)
                 except Exception:
+                    # Restore main logger before logging — _convert_attack switched it to
+                    # "attack" as its first action, so without this the traceback would
+                    # be written to attack.log instead of main.log.
+                    _setup_logging(args.log_dir, "main", file_mode="a")
                     logger.exception("Failed: attack")
                     failed_sources.append("attack")
                 pbar.update(1)
@@ -420,15 +462,23 @@ def main():
                         cache_dir,
                         args.parquet_format,
                         log_dir_str,
-                        args.force,
+                        args.force_download,
+                        args.force_convert,
                         args.limit,
                     )
                     if fp:
                         save_fingerprint(source, fp)
                 except Exception:
+                    # Restore main logger before logging — _convert_source switched it to
+                    # the source's logger as its first action; without this the traceback
+                    # would be written to <source>.log instead of main.log.
+                    _setup_logging(args.log_dir, "main", file_mode="a")
                     logger.exception("Failed: %s", source)
                     failed_sources.append(source)
                 pbar.update(1)
+
+    # Restore main logger after per-source conversions replaced the filter
+    _setup_logging(args.log_dir, "main", file_mode="a")
 
     # --- Combined (all sources) ---
     if not args.no_combined:
@@ -461,7 +511,7 @@ def main():
                     logger.info("  %-20s %d rows", src, count)
 
             logger.info(
-                "Combined: %d triples from %d sources → %d after deduplication (-%d)",
+                "Combined: %d triples from %d sources -> %d after deduplication (-%d)",
                 total_before,
                 len(parquet_files),
                 len(combined_df),

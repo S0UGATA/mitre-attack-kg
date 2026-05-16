@@ -1,0 +1,114 @@
+{
+  "totalTriples": 100,
+  "uniqueSubjects": 9,
+  "uniqueObjects": 67,
+  "uniquePredicates": 9,
+  "bySource": [
+    {
+      "source": "lolbas",
+      "count": 100
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "full-path",
+      "count": 20
+    },
+    {
+      "predicate": "usecase",
+      "count": 11
+    },
+    {
+      "predicate": "category",
+      "count": 11
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 11
+    },
+    {
+      "predicate": "platform",
+      "count": 10
+    },
+    {
+      "predicate": "privileges",
+      "count": 10
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 9
+    },
+    {
+      "predicate": "description",
+      "count": 9
+    },
+    {
+      "predicate": "name",
+      "count": 9
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "Regsvcs.exe",
+      "count": 18
+    },
+    {
+      "entity": "Ftp.exe",
+      "count": 16
+    },
+    {
+      "entity": "Dfsvc.exe",
+      "count": 13
+    },
+    {
+      "entity": "OneDriveStandaloneUpdater.exe",
+      "count": 12
+    },
+    {
+      "entity": "write.exe",
+      "count": 12
+    },
+    {
+      "entity": "Query.exe",
+      "count": 11
+    },
+    {
+      "entity": "wt.exe",
+      "count": 10
+    },
+    {
+      "entity": "OfflineScannerShell.exe",
+      "count": 10
+    },
+    {
+      "entity": "LOLBinary",
+      "count": 9
+    },
+    {
+      "entity": "User",
+      "count": 8
+    },
+    {
+      "entity": "Rasautou.exe",
+      "count": 7
+    },
+    {
+      "entity": "Execute",
+      "count": 7
+    },
+    {
+      "entity": "T1218",
+      "count": 4
+    },
+    {
+      "entity": "Windows vista, Windows 7, Windows 8, Windows 8.1, Windows 10, Windows 11",
+      "count": 3
+    },
+    {
+      "entity": "Execute dll file and bypass Application whitelisting",
+      "count": 2
+    }
+  ],
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
+}

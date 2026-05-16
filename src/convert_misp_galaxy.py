@@ -6,15 +6,13 @@ import re
 from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_github_zip, get_object_type, meta_json
+from common import Triple, download_github_zip, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
 SOURCE = "misp_galaxy"
 
-
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
 # Clusters to skip (not security-relevant)
@@ -78,9 +76,18 @@ KNOWN_RELATION_TYPES = frozenset(
 _ATTACK_ID_RE = re.compile(r"^[TGSC]\d{4}(\.\d{3})?$")
 
 
-def download_misp_galaxy(cache_dir: str | None = None) -> str:
+def download_misp_galaxy(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download MISP Galaxy repo ZIP, returning path to the extracted directory."""
-    return str(download_github_zip("MISP", "misp-galaxy", "misp-galaxy.zip", "main", cache_dir))
+    return str(
+        download_github_zip(
+            "MISP",
+            "misp-galaxy",
+            "misp-galaxy.zip",
+            "main",
+            cache_dir,
+            force_download=force_download,
+        )
+    )
 
 
 def _type_to_label(galaxy_type: str) -> str:
@@ -95,25 +102,23 @@ def _type_to_label(galaxy_type: str) -> str:
 def _find_clusters_dir(extract_dir: str) -> Path:
     """Locate the clusters/ directory inside the extracted repo."""
     base = Path(extract_dir)
-    # download_github_zip extracts to a subdirectory like misp-galaxy-main/
-    for candidate in [base / "clusters", *base.iterdir()]:
-        if candidate.is_dir() and (candidate / "clusters").is_dir():
-            return candidate / "clusters"
-        if candidate.name == "clusters" and candidate.is_dir():
-            return candidate
+    clusters = base / "clusters"
+    if clusters.is_dir():
+        return clusters
+    for d in base.iterdir():
+        if d.is_dir() and (d / "clusters").is_dir():
+            return d / "clusters"
     raise FileNotFoundError(f"No clusters/ directory found in {extract_dir}")
 
 
-def _value_triples(
-    entry: dict, galaxy_type: str, is_mitre: bool
-) -> list[tuple[str, str, str, str, str, str]]:
+def _value_triples(entry: dict, galaxy_type: str, is_mitre: bool) -> list[Triple]:
     """Extract triples from a single cluster value entry."""
     uuid = entry.get("uuid", "")
     if not uuid:
         return []
 
     subject = f"misp:{uuid}"
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
     entry_meta = entry.get("meta", {})
 
     # Entity property triples (skip for MITRE clusters to avoid ATT&CK duplication)
@@ -139,7 +144,7 @@ def _value_triples(
             if syn:
                 triples.append(_t(subject, "synonym", str(syn)))
                 if _ATTACK_ID_RE.match(str(syn)):
-                    triples.append(_t(subject, "related-attack-id", str(syn)))
+                    triples.append(_t(subject, "related-attack-id", str(syn).upper()))
 
         if entry_meta.get("country"):
             triples.append(_t(subject, "country", str(entry_meta["country"])))
@@ -169,7 +174,7 @@ def _value_triples(
     # Cross-link to ATT&CK via external_id (MITRE clusters)
     ext_id = entry_meta.get("external_id", "")
     if ext_id and _ATTACK_ID_RE.match(ext_id):
-        triples.append(_t(subject, "related-attack-id", ext_id))
+        triples.append(_t(subject, "related-attack-id", ext_id.upper()))
 
     # Relationship triples from the `related` array
     for rel in entry.get("related", []):
@@ -184,7 +189,7 @@ def _value_triples(
     return triples
 
 
-def extract_misp_galaxy_triples(extract_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+def extract_misp_galaxy_triples(extract_dir: str) -> Iterator[Triple]:
     """Yield SPO triples from all MISP Galaxy cluster JSON files."""
     clusters_dir = _find_clusters_dir(extract_dir)
     cluster_files = sorted(clusters_dir.glob("*.json"))

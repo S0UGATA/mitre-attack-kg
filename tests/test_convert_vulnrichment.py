@@ -178,12 +178,21 @@ class TestVulnrichmentTriples:
 
         assert "CVE-2024-9999" not in subjects
 
-    def test_no_adp_produces_no_triples(self, sample_cve_dir):
+    def test_no_adp_still_emits_metadata(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))
-        subjects = {t[0] for t in triples}
+        ts = {t[:3] for t in triples}
 
-        # CVE-2024-0001 has no ADP container, so no enrichment triples
-        assert "CVE-2024-0001" not in subjects
+        # CVE-2024-0001 has no ADP container, but cveMetadata triples are still emitted
+        assert ("CVE-2024-0001", "rdf:type", "Vulnerability") in ts
+        # No ADP-specific enrichment triples
+        assert not any(
+            t[0] == "CVE-2024-0001" and t[1].startswith("adp-")
+            for t in triples
+        )
+        assert not any(
+            t[0] == "CVE-2024-0001" and t[1].startswith("ssvc-")
+            for t in triples
+        )
 
     def test_triple_count(self, sample_cve_dir):
         triples = list(extract_vulnrichment_triples(sample_cve_dir))

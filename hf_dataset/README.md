@@ -24,10 +24,17 @@ tags:
 - sigma
 - exploitdb
 - misp-galaxy
+- lolbas
+- loldrivers
+- atomic-red-team
+- nist-800-53
+- nuclei
+- euvd
+- osv
 - stix
 - threat-intelligence
 - triples
-pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / F3 / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB / MISP Galaxies)"
+pretty_name: "Security Knowledge Graph Triples (ATT&CK / CAPEC / CWE / CVE / CPE / D3FEND / ATLAS / CAR / ENGAGE / F3 / EPSS / KEV / Vulnrichment / GHSA / Sigma / ExploitDB / MISP Galaxies / LOLBAS / LOLDrivers / Atomic Red Team / NIST 800-53 / Nuclei / EUVD / OSV)"
 size_categories:
 - 10M<n<100M
 configs:
@@ -112,6 +119,34 @@ configs:
   data_files:
   - split: train
     path: data/misp_galaxy.parquet
+- config_name: lolbas
+  data_files:
+  - split: train
+    path: data/lolbas.parquet
+- config_name: loldrivers
+  data_files:
+  - split: train
+    path: data/loldrivers.parquet
+- config_name: atomic
+  data_files:
+  - split: train
+    path: data/atomic.parquet
+- config_name: nist_800_53
+  data_files:
+  - split: train
+    path: data/nist_800_53.parquet
+- config_name: nuclei
+  data_files:
+  - split: train
+    path: data/nuclei.parquet
+- config_name: euvd
+  data_files:
+  - split: train
+    path: data/euvd.parquet
+- config_name: osv
+  data_files:
+  - split: train
+    path: data/osv.parquet
 - config_name: combined
   data_files:
   - split: train
@@ -134,11 +169,11 @@ dataset_info:
 
 # Security Knowledge Graph Triples
 
-Security data from 17 sources represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
+Security data from 24 sources represented as **Subject-Predicate-Object (SPO) triples** in Parquet format, ready for knowledge-graph construction, graph-ML, RAG pipelines, and threat-intelligence analysis.
 
-Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy)
+Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy) · [LOLBAS](https://lolbas-project.github.io/) · [LOLDrivers](https://www.loldrivers.io/) · [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) · [NIST 800-53](https://github.com/center-for-threat-informed-defense/mappings-explorer) · [Nuclei](https://github.com/projectdiscovery/nuclei-templates) · [EUVD](https://euvd.enisa.europa.eu/) · [OSV](https://osv.dev/)
 
-*Last updated: 2026-05-11T09:37:26Z*
+*Last updated: 2026-04-19T12:08:02Z*
 
 ## Quick Start
 
@@ -154,27 +189,34 @@ print(ds["train"][0])
 
 | Config | Description | Est. Triples | Status |
 |--------|-------------|-------------|--------|
-| `enterprise` (default) | Enterprise ATT&CK | 43,629 | Current |
-| `mobile` | Mobile ATT&CK | 5,574 | Current |
-| `ics` | ICS ATT&CK | 4,249 | Current |
-| `attack-all` | ATT&CK combined (deduplicated) | 51,793 | Current |
+| `enterprise` (default) | Enterprise ATT&CK | 42,041 | Current |
+| `mobile` | Mobile ATT&CK | 5,307 | Current |
+| `ics` | ICS ATT&CK | 3,756 | Current |
+| `attack-all` | ATT&CK combined (deduplicated) | 49,622 | Current |
 | `capec` | CAPEC attack patterns | 8,114 | Current |
-| `cwe` | CWE weaknesses | 14,583 | Current |
-| `cve` | CVE vulnerabilities | 3,661,182 | Current |
-| `cpe` | CPE platform enumeration | 12,826,110 | Current |
+| `cwe` | CWE weaknesses | 14,565 | Current |
+| `cve` | CVE vulnerabilities | 3,588,035 | Current |
+| `cpe` | CPE platform enumeration | 12,592,910 | Current |
 | `d3fend` | D3FEND defensive techniques | 8,154 | Current |
-| `atlas` | ATLAS AI/ML techniques | 1,442 | Current |
+| `atlas` | ATLAS AI/ML techniques | 1,420 | Current |
 | `car` | CAR analytics | 1,617 | Current |
 | `engage` | ENGAGE adversary engagement | 1,464 | Current |
-| `f3` | F3 fraud techniques & tactics | 1,047 | Current |
-| `epss` | EPSS exploit prediction scores | 663,744 | Current |
-| `kev` | KEV known exploited vulns | 17,420 | Current |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 674,255 | Current |
-| `ghsa` | GitHub Security Advisories | 348,653 | Current |
-| `sigma` | Sigma detection rules | 33,294 | Current |
-| `exploitdb` | ExploitDB public exploits | 346,775 | Current |
-| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 199,993 | Current |
-| `combined` | All sources merged (deduplicated) | 18,859,640 | Current |
+| `f3` | F3 fraud techniques & tactics | ~1,000 | Current |
+| `epss` | EPSS exploit prediction scores | 655,422 | Current |
+| `kev` | KEV known exploited vulns | 17,187 | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 666,581 | Current |
+| `ghsa` | GitHub Security Advisories | 336,557 | Current |
+| `sigma` | Sigma detection rules | 32,750 | Current |
+| `exploitdb` | ExploitDB public exploits | 346,451 | Current |
+| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 179,162 | Current |
+| `lolbas` | LOLBAS living-off-the-land binaries | ~3,000 | Current |
+| `loldrivers` | LOLDrivers vulnerable/malicious drivers | ~5,000 | Current |
+| `atomic` | Atomic Red Team test definitions | ~15,000 | Current |
+| `nist_800_53` | NIST 800-53 → ATT&CK control mappings | ~6,000 | Current |
+| `nuclei` | Nuclei vulnerability detection templates | ~100,000 | Current |
+| `euvd` | EUVD European vulnerability database | ~3,000 | Current |
+| `osv` | OSV open-source vulnerabilities (23 ecosystems) | ~1,000,000 | Current |
+| `combined` | All sources merged (deduplicated) | ~20,000,000 | Current |
 
 
 
@@ -197,6 +239,10 @@ print(ds["train"][0])
         |  |  +-- F3 (fraud techniques)
         |  |  +-- ATLAS (related)
         |  |  +-- MISP Galaxies (cross-refs)
+        |  |  +-- LOLBAS (maps-to)
+        |  |  +-- LOLDrivers (maps-to)
+        |  |  +-- Atomic Red Team (tests)
+        |  |  +-- NIST 800-53 (mitigates)
         |  |
         |  +-- Mitigation (mitigates)
         |  +-- DataComponent (detects)
@@ -219,6 +265,9 @@ print(ds["train"][0])
                    GHSA (advisory)
                    Vulnrichment (SSVC)
                    ExploitDB (exploit)
+                   Nuclei (detection template)
+                   EUVD (EU advisory)
+                   OSV (open-source vuln)
 ```
 
 ## Schema
@@ -227,10 +276,10 @@ Each row is an enriched triple with six string columns:
 
 | Column | Description | Examples |
 |--------|-------------|----------|
-| `subject` | Entity ID | `T1059.001`, `G0016`, `CAPEC-66`, `CWE-79`, `CVE-2024-1234`, `cpe:2.3:a:apache:httpd:*`, `D3-FE`, `AML.T0000`, `CAR-2024-01-001`, `EAC0001`, `GHSA-xxxx-yyyy-zzzz`, `EDB-16929` |
+| `subject` | Entity ID | `T1059.001`, `G0016`, `CAPEC-66`, `CWE-79`, `CVE-2024-1234`, `cpe:2.3:a:apache:httpd:*`, `D3-FE`, `AML.T0000`, `CAR-2024-01-001`, `EAC0001`, `GHSA-xxxx-yyyy-zzzz`, `EDB-16929`, `Msbuild.exe`, `EUVD-2025-4893`, `AC-2`, `PYSEC-2024-1234` |
 | `predicate` | Property name or relationship type | `rdf:type`, `name`, `uses`, `mitigates`, `epss-score`, `counters`, `ssvc-exploitation`, `exploits-cve`, `detects-technique` |
 | `object` | Value or target entity ID | `Technique`, `PowerShell`, `T1059`, `CWE-89`, `0.97500`, `SecurityAdvisory`, `SigmaRule`, `Exploit` |
-| `source` | Originating dataset | `attack`, `cve`, `cwe`, `capec`, `epss`, `kev`, `ghsa`, `sigma`, `d3fend`, `atlas`, `car`, `engage`, `f3`, `cpe`, `vulnrichment`, `exploitdb`, `misp_galaxy` |
+| `source` | Originating dataset | `attack`, `cve`, `cwe`, `capec`, `epss`, `kev`, `ghsa`, `sigma`, `d3fend`, `atlas`, `car`, `engage`, `f3`, `cpe`, `vulnrichment`, `exploitdb`, `misp_galaxy`, `lolbas`, `loldrivers`, `atomic`, `nist_800_53`, `nuclei`, `euvd`, `osv` |
 | `object_type` | Value type of the object | `string`, `id`, `enum`, `date`, `number`, `boolean`, `url` |
 | `meta` | Supplemental JSON metadata (empty string if none) | `{"references":["https://..."],"credits":[...]}`, `{"cvss_vector":"...","cvss_version":"3.1"}` |
 
@@ -470,6 +519,95 @@ Each row is an enriched triple with six string columns:
 | `misp-related` | Generic relationship | `misp:<uuid>` |
 | `related-attack-id` | Cross-link to ATT&CK | `T1059.001`, `G0006` |
 
+### LOLBAS Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `LOLBinary` | `LOLBinary` |
+| `name` | Binary display name | `Msbuild.exe` |
+| `description` | Binary description | `Used to compile and execute code` |
+| `maps-to-technique` | Mapped ATT&CK technique | `T1127.001` |
+| `category` | Use category | `Execute`, `Download` |
+| `usecase` | Use case description | `Compile and run code` |
+| `privileges` | Required privileges | `User` |
+| `platform` | Target platform | `Windows` |
+| `full-path` | File system path | `C:\Windows\Microsoft.NET\...` |
+
+### LOLDrivers Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `LOLDriver` | `LOLDriver` |
+| `name` | Driver name | `RTCore64.sys` |
+| `category` | Driver category | `vulnerable driver`, `malicious driver` |
+| `maps-to-technique` | Mapped ATT&CK technique | `T1068` |
+| `usecase` | Use case description | `Exploits` |
+| `privileges` | Required privileges | `kernel` |
+| `platform` | Target platform | `Windows` |
+| `sha256` / `sha1` / `md5` | Sample hashes | `01...af` |
+| `vendor` / `product` | Driver vendor/product | `Micro-Star Int'l Co.`, `RTCore64` |
+
+### Atomic Red Team Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `AtomicTest` | `AtomicTest` |
+| `name` | Test name | `Mimikatz - Cred Dump` |
+| `description` | Test description | `Runs Mimikatz to dump credentials` |
+| `tests-technique` | Tested ATT&CK technique | `T1003.001` |
+| `platform` | Supported platform | `windows`, `linux`, `macos` |
+| `executor` | Execution method | `powershell`, `sh`, `command_prompt` |
+
+### NIST 800-53 Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `SecurityControl` | `SecurityControl` |
+| `name` | Control name | `Account Management` |
+| `description` | Control description | `Manage system accounts...` |
+| `control-family` | Control family | `AC`, `SI`, `AU` |
+| `mitigates-technique` | Mitigated ATT&CK technique | `T1078` |
+
+### Nuclei Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `NucleiTemplate` | `NucleiTemplate` |
+| `name` | Template name | `Apache Struts2 RCE` |
+| `description` | Template description | `Detects Apache Struts2 RCE...` |
+| `severity` | Detection severity | `critical`, `high`, `medium`, `low`, `info` |
+| `author` | Template author | `pdteam` |
+| `related-weakness` | Related CWE | `CWE-94` |
+| `related-cve` | Related CVE | `CVE-2023-1234` |
+| `cvss-base-score` | CVSS base score | `9.8` |
+| `cvss-vector` | CVSS vector string | `CVSS:3.1/AV:N/AC:L/...` |
+
+### EUVD Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `EUVulnerability` | `EUVulnerability` |
+| `description` | Vulnerability description | `A remote code execution...` |
+| `date-published` | Publication date | `2025-01-15` |
+| `cvss-base-score` | CVSS base score | `9.8` |
+| `cvss-vector` | CVSS vector string | `CVSS:3.1/AV:N/AC:L/...` |
+| `epss-score` | EPSS score | `0.95` |
+| `related-cve` | Related CVE | `CVE-2025-1234` |
+| `vendor` / `product` | Affected vendor/product | `Apache`, `HTTP Server` |
+
+### OSV Predicates
+
+| Predicate | Description | Example object value |
+|-----------|-------------|---------------------|
+| `rdf:type` | `OSVulnerability` | `OSVulnerability` |
+| `summary` | Vulnerability summary | `XSS in example-package` |
+| `date-published` / `date-modified` | Timestamps | `2024-01-15T00:00:00Z` |
+| `related-cve` | Related CVE | `CVE-2024-1234` |
+| `related-weakness` | Related CWE | `CWE-79` |
+| `affects-package` | Affected package (ecosystem/name) | `PyPI/requests` |
+| `ecosystem` | Package ecosystem | `PyPI`, `npm`, `Go`, `crates.io` |
+| `cvss-vector` | CVSS vector string | `CVSS:3.1/AV:N/AC:L/...` |
+
 ## Dataset Creation
 
 ### Source Data
@@ -493,6 +631,13 @@ Each row is an enriched triple with six string columns:
 | Sigma | [`SigmaHQ/sigma`](https://github.com/SigmaHQ/sigma/releases) | YAML (ZIP) |
 | ExploitDB | [`files_exploits.csv`](https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv) | CSV |
 | MISP Galaxies | [`MISP/misp-galaxy`](https://github.com/MISP/misp-galaxy) | JSON (ZIP) |
+| LOLBAS | [`LOLBAS-Project/LOLBAS`](https://github.com/LOLBAS-Project/LOLBAS) | YAML (ZIP) |
+| LOLDrivers | [`magicsword-io/LOLDrivers`](https://github.com/magicsword-io/LOLDrivers) | YAML (ZIP) |
+| Atomic Red Team | [`redcanaryco/atomic-red-team`](https://github.com/redcanaryco/atomic-red-team) | YAML (ZIP) |
+| NIST 800-53 | [`mappings-explorer`](https://github.com/center-for-threat-informed-defense/mappings-explorer) | JSON (ZIP) |
+| Nuclei | [`projectdiscovery/nuclei-templates`](https://github.com/projectdiscovery/nuclei-templates) | YAML (ZIP) |
+| EUVD | [`euvdservices.enisa.europa.eu`](https://euvdservices.enisa.europa.eu/api/kev/dump) | JSON |
+| OSV | [`osv.dev`](https://osv.dev/) | JSON (per-ecosystem ZIPs) |
 
 ### Conversion Pipeline
 
@@ -509,7 +654,7 @@ pip install -r requirements.txt
 python src/convert.py
 ```
 
-This produces fresh Parquet files in `output/` from the latest data across all 17 sources.
+This produces fresh Parquet files in `output/` from the latest data across all 24 sources.
 
 ## Visualizer
 
@@ -651,6 +796,13 @@ This dataset is published under the Apache 2.0 license. The underlying source da
 | [Sigma](https://github.com/SigmaHQ/sigma) | Detection Rule License 1.1 | Source: SigmaHQ. Licensed under [DRL 1.1](https://github.com/SigmaHQ/sigma/blob/master/LICENSE.Detection.Rules.md). Rule author attribution is preserved in triples. |
 | [ExploitDB](https://gitlab.com/exploit-database/exploitdb) | GPLv2+ | Source: OffSec ExploitDB. Derived factual metadata (IDs, CVE mappings, dates) extracted under [GPLv2+](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html). |
 | [MISP Galaxies](https://github.com/MISP/misp-galaxy) | CC0 1.0 / BSD 2-Clause | Source: MISP Project. Dual-licensed under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) and [BSD 2-Clause](https://opensource.org/licenses/BSD-2-Clause). |
+| [LOLBAS](https://github.com/LOLBAS-Project/LOLBAS) | GPLv3 | Source: LOLBAS Project. Licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html). |
+| [LOLDrivers](https://github.com/magicsword-io/LOLDrivers) | Apache 2.0 | Source: LOLDrivers (magicsword.io). |
+| [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) | MIT License | Source: Red Canary Atomic Red Team. Licensed under [MIT](https://opensource.org/licenses/MIT). |
+| [NIST 800-53 Mappings](https://github.com/center-for-threat-informed-defense/mappings-explorer) | Apache 2.0 | © MITRE Engenuity, Center for Threat-Informed Defense. |
+| [Nuclei Templates](https://github.com/projectdiscovery/nuclei-templates) | MIT License | Source: ProjectDiscovery Nuclei Templates. Licensed under [MIT](https://opensource.org/licenses/MIT). |
+| [EUVD](https://euvd.enisa.europa.eu/) | Public (ENISA) | Source: ENISA European Vulnerability Database. Data published by the European Union Agency for Cybersecurity. |
+| [OSV](https://osv.dev/) | CC BY 4.0 | Source: OSV (osv.dev). Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). |
 
 ## License
 

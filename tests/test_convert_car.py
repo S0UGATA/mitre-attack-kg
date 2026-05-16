@@ -54,8 +54,7 @@ SAMPLE_ANALYTIC_NO_ID = {
 
 @pytest.fixture
 def sample_analytics_dir(tmp_path):
-    # Mimic extraction layout: <extract_dir>/car-master/analytics/
-    d = tmp_path / "car-master" / "analytics"
+    d = tmp_path / "analytics"
     d.mkdir(parents=True)
     (d / "CAR-2024-01-001.yaml").write_text(yaml.dump(SAMPLE_ANALYTIC_1))
     (d / "CAR-2024-02-001.yaml").write_text(yaml.dump(SAMPLE_ANALYTIC_2))

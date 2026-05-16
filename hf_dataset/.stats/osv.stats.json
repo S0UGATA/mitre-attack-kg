@@ -1,0 +1,102 @@
+{
+  "totalTriples": 100,
+  "uniqueSubjects": 6,
+  "uniqueObjects": 51,
+  "uniquePredicates": 6,
+  "bySource": [
+    {
+      "source": "osv",
+      "count": 100
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "affects-package",
+      "count": 41
+    },
+    {
+      "predicate": "ecosystem",
+      "count": 40
+    },
+    {
+      "predicate": "date-published",
+      "count": 6
+    },
+    {
+      "predicate": "date-modified",
+      "count": 6
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 6
+    },
+    {
+      "predicate": "cvss-vector",
+      "count": 1
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "ALPINE-CVE-2012-0804",
+      "count": 27
+    },
+    {
+      "entity": "ALPINE-CVE-2010-3846",
+      "count": 27
+    },
+    {
+      "entity": "ALPINE-CVE-2012-2738",
+      "count": 15
+    },
+    {
+      "entity": "ALPINE-CVE-2009-3895",
+      "count": 13
+    },
+    {
+      "entity": "ALPINE-CVE-2006-20001",
+      "count": 12
+    },
+    {
+      "entity": "ALPINE-CVE-2012-2812",
+      "count": 6
+    },
+    {
+      "entity": "OSVulnerability",
+      "count": 6
+    },
+    {
+      "entity": "Alpine:v3.10",
+      "count": 5
+    },
+    {
+      "entity": "Alpine:v3.8",
+      "count": 4
+    },
+    {
+      "entity": "Alpine:v3.11",
+      "count": 4
+    },
+    {
+      "entity": "Alpine:v3.9",
+      "count": 4
+    },
+    {
+      "entity": "2025-11-19",
+      "count": 4
+    },
+    {
+      "entity": "Alpine:v3.15",
+      "count": 3
+    },
+    {
+      "entity": "Alpine:v3.14",
+      "count": 3
+    },
+    {
+      "entity": "Alpine:v3.12",
+      "count": 3
+    }
+  ],
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
+}

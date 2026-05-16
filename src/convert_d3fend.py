@@ -4,7 +4,7 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file, get_object_type, meta_json
+from common import Triple, download_file, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
@@ -13,13 +13,12 @@ SOURCE = "d3fend"
 D3FEND_URL = "https://d3fend.mitre.org/ontologies/d3fend.json"
 
 
-def download_d3fend(cache_dir: str | None = None) -> str:
+def download_d3fend(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download D3FEND JSON-LD, returning the local file path."""
-    return str(download_file(D3FEND_URL, "d3fend.json", cache_dir))
+    return str(download_file(D3FEND_URL, "d3fend.json", cache_dir, force_download=force_download))
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
 def _extract_subclass_ids(node: dict) -> list[str]:
@@ -34,13 +33,13 @@ def _extract_subclass_ids(node: dict) -> list[str]:
     ]
 
 
-def extract_d3fend_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_d3fend_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from D3FEND JSON-LD ontology."""
-    with open(json_path) as f:
+    with open(json_path, encoding="utf-8") as f:
         data = json.load(f)
 
     graph = data.get("@graph", [])
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
     attack_ids: set[str] = set()
     deferred_refs: list[tuple[str, str, str]] = []
 

@@ -3,7 +3,7 @@
 import logging
 from xml.etree import ElementTree as ET
 
-from common import RELATION_PREDICATES, download_file, get_object_type, meta_json, xml_text
+from common import RELATION_PREDICATES, Triple, download_file, make_triple_fn, meta_json, xml_text
 
 logger = logging.getLogger(__name__)
 
@@ -13,16 +13,17 @@ CAPEC_URL = "https://capec.mitre.org/data/xml/capec_latest.xml"
 NS = {"capec": "http://capec.mitre.org/capec-3", "xhtml": "http://www.w3.org/1999/xhtml"}
 
 
-def download_capec(cache_dir: str | None = None) -> str:
+def download_capec(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download CAPEC XML, returning the local file path."""
-    return str(download_file(CAPEC_URL, "capec_latest.xml", cache_dir))
+    return str(
+        download_file(CAPEC_URL, "capec_latest.xml", cache_dir, force_download=force_download)
+    )
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def _property_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, str, str, str, str]]:
+def _property_triples(capec_id: str, ap: ET.Element) -> list[Triple]:
     """Extract property triples from a single CAPEC attack pattern."""
     # Build entity-level meta
     entity_meta: dict = {}
@@ -75,9 +76,9 @@ def _property_triples(capec_id: str, ap: ET.Element) -> list[tuple[str, str, str
 def _relationship_triples(
     capec_id: str,
     ap: ET.Element,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract relationship triples (CAPEC-CAPEC, CAPEC-CWE, CAPEC-ATT&CK)."""
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for rel in ap.findall(".//capec:Related_Attack_Pattern", NS):
         pred = RELATION_PREDICATES.get(rel.get("Nature", ""))
@@ -102,9 +103,9 @@ def _relationship_triples(
 def _consequence_triples(
     capec_id: str,
     ap: ET.Element,
-) -> list[tuple[str, str, str, str, str, str]]:
+) -> list[Triple]:
     """Extract consequence triples (scope and impact)."""
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
     for cons in ap.findall(".//capec:Consequence", NS):
         for scope in cons.findall("capec:Scope", NS):
             if scope.text:
@@ -115,11 +116,11 @@ def _consequence_triples(
     return triples
 
 
-def extract_capec_triples(xml_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_capec_triples(xml_path: str) -> list[Triple]:
     """Extract SPO triples from CAPEC XML."""
     tree = ET.parse(xml_path)  # nosec B314 — trusted MITRE data
     root = tree.getroot()
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for ap in root.findall(".//capec:Attack_Pattern", NS):
         if ap.get("Status", "") in ("Deprecated", "Obsolete"):

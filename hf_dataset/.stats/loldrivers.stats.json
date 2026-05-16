@@ -1,0 +1,110 @@
+{
+  "totalTriples": 100,
+  "uniqueSubjects": 4,
+  "uniqueObjects": 92,
+  "uniquePredicates": 8,
+  "bySource": [
+    {
+      "source": "loldrivers",
+      "count": 100
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "sha256",
+      "count": 28
+    },
+    {
+      "predicate": "sha1",
+      "count": 27
+    },
+    {
+      "predicate": "md5",
+      "count": 27
+    },
+    {
+      "predicate": "category",
+      "count": 4
+    },
+    {
+      "predicate": "name",
+      "count": 4
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 4
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 4
+    },
+    {
+      "predicate": "vendor",
+      "count": 2
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "3aa6e630-59be-4a15-a30c-aaed4c1edaf0",
+      "count": 74
+    },
+    {
+      "entity": "651d1cdc-3e13-405f-b8b3-65cc70cef5a8",
+      "count": 11
+    },
+    {
+      "entity": "86b9c8d6-9c59-4fd4-befd-ab9a36a19e36",
+      "count": 8
+    },
+    {
+      "entity": "dbb58de1-a1e5-4c7f-8fe0-4033502b1c63",
+      "count": 7
+    },
+    {
+      "entity": "LOLDriver",
+      "count": 4
+    },
+    {
+      "entity": "vulnerable driver",
+      "count": 4
+    },
+    {
+      "entity": "T1068",
+      "count": 3
+    },
+    {
+      "entity": "b62e2371158a082e239f5883bd6000d1",
+      "count": 1
+    },
+    {
+      "entity": "09e77d71d626574e6142894caca6e6dd",
+      "count": 1
+    },
+    {
+      "entity": "fc5d815dde49b85efb51e89af45dd011c044f72a",
+      "count": 1
+    },
+    {
+      "entity": "442f12adebf7cb166b19e8aead2b0440450fd1f33f5db384a39776bb2656474a",
+      "count": 1
+    },
+    {
+      "entity": "648adec580746afbbf59904c1e150c73",
+      "count": 1
+    },
+    {
+      "entity": "51f002ee44e46889cf5b99a724dd10cc2bd3e22545e2a2cb3bd6b1dd3af5ba11",
+      "count": 1
+    },
+    {
+      "entity": "f0e21ababe63668fb3fbd02e90cd1fa9",
+      "count": 1
+    },
+    {
+      "entity": "53b9e423baf946983d03ce309ec5e006ba18c9956dcd97c68a8b714d18c8ffcf",
+      "count": 1
+    }
+  ],
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
+}

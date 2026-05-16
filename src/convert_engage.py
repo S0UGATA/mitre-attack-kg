@@ -4,7 +4,7 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file, get_object_type
+from common import Triple, download_file, make_triple_fn
 
 logger = logging.getLogger(__name__)
 
@@ -13,21 +13,24 @@ SOURCE = "engage"
 ENGAGE_URL = "https://raw.githubusercontent.com/mitre/engage/main/Data/json/attack_mapping.json"
 
 
-def download_engage(cache_dir: str | None = None) -> str:
+def download_engage(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download ENGAGE JSON, returning the local file path."""
-    return str(download_file(ENGAGE_URL, "engage_attack_mapping.json", cache_dir))
+    return str(
+        download_file(
+            ENGAGE_URL, "engage_attack_mapping.json", cache_dir, force_download=force_download
+        )
+    )
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def extract_engage_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_engage_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from MITRE ENGAGE JSON."""
-    with open(json_path) as f:
+    with open(json_path, encoding="utf-8") as f:
         data = json.load(f)
 
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
     seen_eac: set[str] = set()
     seen_eav: set[str] = set()
     seen_rels: set[tuple[str, str, str]] = set()

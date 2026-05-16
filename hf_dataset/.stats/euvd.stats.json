@@ -1,0 +1,82 @@
+{
+  "totalTriples": 100,
+  "uniqueSubjects": 100,
+  "uniqueObjects": 1,
+  "uniquePredicates": 1,
+  "bySource": [
+    {
+      "source": "euvd",
+      "count": 100
+    }
+  ],
+  "topPredicates": [
+    {
+      "predicate": "rdf:type",
+      "count": 100
+    }
+  ],
+  "topConnectedEntities": [
+    {
+      "entity": "EUVulnerability",
+      "count": 100
+    },
+    {
+      "entity": "EUVD-2019-8642",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2014-0527",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2024-28025",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2018-17200",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2021-30752",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2013-0652",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2022-43955",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2020-0451",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2013-4907",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2023-2363",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2021-23331",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2015-7655",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2019-1563",
+      "count": 1
+    },
+    {
+      "entity": "EUVD-2023-2533",
+      "count": 1
+    }
+  ],
+  "crossSourceLinks": [],
+  "generatedAt": "2026-04-19T21:10:39Z"
+}

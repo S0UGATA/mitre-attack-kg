@@ -16,6 +16,7 @@ from common import (
     _github_release_tag,
     _remote_version,
     _ts_from_http_date,
+    _unwrap_single_subdir,
     check_sources_changed,
     deduplicate_combined,
     download_file,
@@ -202,6 +203,49 @@ class TestDownloadGithubZip:
 
         result = download_github_zip("owner", "repo", "test.zip", "main", str(tmp_path))
         assert result.is_dir()
+
+    @patch("common._github_commit_sha", return_value="abcdef123456")
+    @patch("common.requests.get")
+    def test_unwraps_nested_github_archive(self, mock_get, mock_sha, tmp_path):
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as zf:
+            zf.writestr("repo-main/README.md", "hello")
+            zf.writestr("repo-main/src/code.py", "pass")
+        zip_bytes = buf.getvalue()
+
+        mock_resp = MagicMock()
+        mock_resp.iter_content = MagicMock(return_value=[zip_bytes])
+        mock_resp.raise_for_status = MagicMock()
+        mock_get.return_value = mock_resp
+
+        result = download_github_zip("owner", "repo", "test.zip", "main", str(tmp_path))
+        assert result.name == "repo-main"
+        assert (result / "README.md").exists()
+        assert (result / "src" / "code.py").exists()
+
+
+class TestUnwrapSingleSubdir:
+    def test_unwraps_single_subdir(self, tmp_path):
+        inner = tmp_path / "repo-main"
+        inner.mkdir()
+        (inner / "file.txt").write_text("x")
+        assert _unwrap_single_subdir(tmp_path) == inner
+
+    def test_no_unwrap_with_files(self, tmp_path):
+        inner = tmp_path / "repo-main"
+        inner.mkdir()
+        (tmp_path / "file.txt").write_text("x")
+        assert _unwrap_single_subdir(tmp_path) == tmp_path
+
+    def test_no_unwrap_multiple_dirs(self, tmp_path):
+        (tmp_path / "dir1").mkdir()
+        (tmp_path / "dir2").mkdir()
+        assert _unwrap_single_subdir(tmp_path) == tmp_path
+
+    def test_no_unwrap_empty(self, tmp_path):
+        empty = tmp_path / "empty"
+        empty.mkdir()
+        assert _unwrap_single_subdir(empty) == empty
 
 
 class TestGithubHelpers:
@@ -545,3 +589,23 @@ class TestDeduplicateCombined:
         _, stats = deduplicate_combined(df)
         assert stats["by_source"]["cve"] == 2
         assert stats["by_source"]["ghsa"] == 1
+
+    def test_case_insensitive_dedup(self):
+        df = pd.DataFrame(
+            {
+                "subject": ["CVE-2024-1234", "cve-2024-1234"],
+                "predicate": ["related-weakness", "related-weakness"],
+                "object": ["CWE-79", "cwe-79"],
+                "source": ["cve", "ghsa"],
+                "object_type": ["id", "id"],
+                "meta": ["", ""],
+            }
+        )
+        result, stats = deduplicate_combined(df)
+        assert len(result) == 1
+        assert stats["dup_rows"] == 2
+        row = result.iloc[0]
+        assert row["subject"] == "CVE-2024-1234"
+        assert row["object"] == "CWE-79"
+        assert "cve" in row["source"]
+        assert "ghsa" in row["source"]

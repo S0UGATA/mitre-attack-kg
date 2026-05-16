@@ -5,7 +5,7 @@ from pathlib import Path
 
 import yaml
 
-from common import download_file, get_object_type, meta_json
+from common import Triple, download_file, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
@@ -14,16 +14,15 @@ SOURCE = "atlas"
 ATLAS_URL = "https://raw.githubusercontent.com/mitre-atlas/atlas-data/main/dist/ATLAS.yaml"
 
 
-def download_atlas(cache_dir: str | None = None) -> str:
+def download_atlas(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download ATLAS YAML, returning the local file path."""
-    return str(download_file(ATLAS_URL, "ATLAS.yaml", cache_dir))
+    return str(download_file(ATLAS_URL, "ATLAS.yaml", cache_dir, force_download=force_download))
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def _tactic_triples(tactic: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _tactic_triples(tactic: dict) -> list[Triple]:
     """Extract triples from a single ATLAS tactic."""
     tid = tactic.get("id", "")
     if not tid:
@@ -46,7 +45,7 @@ def _tactic_triples(tactic: dict) -> list[tuple[str, str, str, str, str, str]]:
     return triples
 
 
-def _technique_triples(tech: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _technique_triples(tech: dict) -> list[Triple]:
     """Extract triples from a single ATLAS technique or subtechnique."""
     tid = tech.get("id", "")
     if not tid:
@@ -77,7 +76,7 @@ def _technique_triples(tech: dict) -> list[tuple[str, str, str, str, str, str]]:
     return triples
 
 
-def _case_study_triples(case: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _case_study_triples(case: dict) -> list[Triple]:
     """Extract triples from a case study."""
     cid = case.get("id", "")
     if not cid:
@@ -104,7 +103,7 @@ def _case_study_triples(case: dict) -> list[tuple[str, str, str, str, str, str]]
     return triples
 
 
-def _mitigation_triples(mit: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _mitigation_triples(mit: dict) -> list[Triple]:
     """Extract triples from a mitigation."""
     mid = mit.get("id", "")
     if not mid:
@@ -122,12 +121,12 @@ def _mitigation_triples(mit: dict) -> list[tuple[str, str, str, str, str, str]]:
     return triples
 
 
-def extract_atlas_triples(yaml_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_atlas_triples(yaml_path: str) -> list[Triple]:
     """Extract SPO triples from ATLAS YAML."""
-    with open(yaml_path) as f:
+    with open(yaml_path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for matrix in data.get("matrices", []):
         for tactic in matrix.get("tactics", []):

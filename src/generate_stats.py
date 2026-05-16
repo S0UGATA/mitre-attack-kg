@@ -44,6 +44,13 @@ KNOWN_FILES = [
     "sigma.parquet",
     "misp_galaxy.parquet",
     "vulnrichment.parquet",
+    "lolbas.parquet",
+    "loldrivers.parquet",
+    "atomic.parquet",
+    "nist_800_53.parquet",
+    "nuclei.parquet",
+    "euvd.parquet",
+    "osv.parquet",
 ]
 
 # Maps parquet filenames to source IDs used by the viz app.
@@ -60,39 +67,8 @@ FILE_TO_SOURCE_ID: dict[str, str] = {
     **_ATTACK_SOURCE_IDS,
 }
 
-# Source detection SQL — must stay in sync with detectSource() in
-# security-kg-viz/src/lib/constants.ts and Dashboard.tsx SOURCE_CASE_SQL.
-SOURCE_CASE_SQL = """
-  CASE
-    WHEN {col} LIKE 'T__%' AND regexp_matches({col}, '^T\\d+') THEN 'attack'
-    WHEN {col} LIKE 'TA%' AND regexp_matches({col}, '^TA\\d+') THEN 'attack'
-    WHEN {col} LIKE 'G%' AND regexp_matches({col}, '^G\\d+') THEN 'attack'
-    WHEN {col} LIKE 'S%' AND regexp_matches({col}, '^S\\d+') THEN 'attack'
-    WHEN {col} LIKE 'M%' AND regexp_matches({col}, '^M\\d+') THEN 'attack'
-    WHEN {col} LIKE 'DS%' AND regexp_matches({col}, '^DS\\d+') THEN 'attack'
-    WHEN regexp_matches({col}, '^C\\d{{4}}') THEN 'attack'
-    WHEN {col} LIKE 'DC%' AND regexp_matches({col}, '^DC\\d+') THEN 'attack'
-    WHEN {col} LIKE 'CAPEC-%' THEN 'capec'
-    WHEN {col} LIKE 'CWE-%' THEN 'cwe'
-    WHEN {col} LIKE 'CVE-%' THEN 'cve'
-    WHEN {col} LIKE 'cpe:%' OR {col} LIKE 'CPE:%' THEN 'cpe'
-    WHEN {col} LIKE 'D3-%' THEN 'd3fend'
-    WHEN {col} LIKE 'AML.%' THEN 'atlas'
-    WHEN {col} LIKE 'CAR-%' THEN 'car'
-    WHEN regexp_matches({col}, '^E[AV][CV]\\d+') THEN 'engage'
-    WHEN {col} LIKE 'DET%' AND regexp_matches({col}, '^DET\\d+') THEN 'engage'
-    WHEN {col} LIKE 'GHSA-%' THEN 'ghsa'
-    WHEN {col} LIKE 'EDB-%' THEN 'exploitdb'
-    WHEN {col} LIKE 'misp:%' THEN 'misp_galaxy'
-    WHEN regexp_matches({col},
-      '^[0-9a-f]{{8}}-[0-9a-f]{{4}}-[0-9a-f]{{4}}-[0-9a-f]{{4}}-[0-9a-f]{{12}}$'
-    ) THEN 'sigma'
-    ELSE 'literal'
-  END
-"""
 
-SUBJECT_SOURCE = SOURCE_CASE_SQL.format(col="subject")
-OBJECT_SOURCE = SOURCE_CASE_SQL.format(col="object")
+MULTI_SOURCE_FILES = {"combined.parquet", "attack-all.parquet"}
 
 
 def generate_stats(parquet_path: Path) -> dict:
@@ -121,39 +97,38 @@ def generate_stats(parquet_path: Path) -> dict:
     ).fetchall()
     top_predicates = [{"predicate": r[0], "count": r[1]} for r in pred_rows]
 
-    # Query 3: source distribution + cross-source links (single scan with SOURCE_CASE_SQL)
-    source_rows = con.execute(
-        f"""
-        WITH sourced AS (
-            SELECT {SUBJECT_SOURCE} AS src, {OBJECT_SOURCE} AS dst, predicate
-            FROM kg
-        )
-        SELECT 'dist' AS kind, source, NULL AS dst, NULL AS pred, SUM(cnt) AS cnt FROM (
-            SELECT src AS source, COUNT(*) AS cnt FROM sourced GROUP BY src
-            UNION ALL
-            SELECT dst AS source, COUNT(*) AS cnt FROM sourced GROUP BY dst
-        )
-        WHERE source != 'literal'
-        GROUP BY source
-        UNION ALL
-        SELECT 'cross' AS kind, src, dst, predicate, COUNT(*) AS cnt
-        FROM sourced
-        WHERE src != dst AND src != 'literal' AND dst != 'literal'
-        GROUP BY src, dst, predicate
-        QUALIFY ROW_NUMBER() OVER (PARTITION BY src, dst ORDER BY COUNT(*) DESC) = 1
-        """
+    # Query 3: source distribution (from the source column directly)
+    dist_rows = con.execute(
+        "SELECT source, COUNT(*) AS cnt FROM kg GROUP BY source ORDER BY cnt DESC"
     ).fetchall()
-    by_source = []
+    by_source = [{"source": r[0], "count": r[1]} for r in dist_rows]
+
+    # Query 4: cross-source links — only meaningful for multi-source files
     cross_source_links = []
-    for row in source_rows:
-        if row[0] == "dist":
-            by_source.append({"source": row[1], "count": row[4]})
-        else:
-            cross_source_links.append(
-                {"from": row[1], "to": row[2], "count": row[4], "predicate": row[3]}
+    if parquet_path.name in MULTI_SOURCE_FILES:
+        cross_rows = con.execute(
+            """
+            WITH obj_sources AS (
+                SELECT DISTINCT subject AS id, source FROM kg
+            ),
+            id_refs AS (
+                SELECT source, predicate, object FROM kg WHERE object_type = 'id'
             )
-    by_source.sort(key=lambda x: x["count"], reverse=True)
-    cross_source_links.sort(key=lambda x: x["count"], reverse=True)
+            SELECT ir.source AS src, os.source AS dst, ir.predicate, COUNT(*) AS cnt
+            FROM id_refs ir
+            JOIN obj_sources os ON ir.object = os.id
+            WHERE ir.source != os.source
+            GROUP BY ir.source, os.source, ir.predicate
+            QUALIFY ROW_NUMBER() OVER (
+                PARTITION BY ir.source, os.source ORDER BY COUNT(*) DESC
+            ) = 1
+            ORDER BY cnt DESC
+            """
+        ).fetchall()
+        cross_source_links = [
+            {"from": r[0], "to": r[1], "count": r[3], "predicate": r[2]} for r in cross_rows
+        ]
+
     # Query 5: top 15 connected entities (filtered junk)
     entity_rows = con.execute(
         """

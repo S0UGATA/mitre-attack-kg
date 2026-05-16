@@ -1,8 +1,8 @@
 [project]
 name = "security-kg"
 version = "2.0.0"
-description = "Convert security data (ATT&CK, CAPEC, CWE, CVE, CPE, D3FEND, ATLAS, CAR, ENGAGE, EPSS, KEV, Vulnrichment, GHSA, Sigma, ExploitDB, MISP Galaxies) into SPO knowledge-graph triples (Parquet)"
-requires-python = ">=3.11"
+description = "Convert 24 security data sources (ATT&CK, CAPEC, CWE, CVE, CPE, D3FEND, ATLAS, CAR, ENGAGE, F3, EPSS, KEV, Vulnrichment, GHSA, Sigma, ExploitDB, MISP Galaxies, LOLBAS, LOLDrivers, Atomic Red Team, NIST 800-53, Nuclei, EUVD, OSV) into Subject-Predicate-Object knowledge-graph triples (Parquet)"
+requires-python = ">=3.12"
 license = "Apache-2.0"
 authors = [{ name = "Sougata Bhattacharya" }]
 dependencies = [
@@ -27,7 +27,7 @@ viz = [
 ]
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 line-length = 100
 src = ["src", "tests"]
 
@@ -43,7 +43,7 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["common", "convert", "convert_attack", "convert_atlas", "convert_capec", "convert_car", "convert_cpe", "convert_cve", "convert_cwe", "convert_d3fend", "convert_engage", "convert_epss", "convert_exploitdb", "convert_ghsa", "convert_kev", "convert_misp_galaxy", "convert_sigma", "convert_vulnrichment"]
+known-first-party = ["common", "convert", "convert_attack", "convert_atlas", "convert_atomic", "convert_capec", "convert_car", "convert_cpe", "convert_cve", "convert_cwe", "convert_d3fend", "convert_engage", "convert_epss", "convert_euvd", "convert_exploitdb", "convert_f3", "convert_ghsa", "convert_kev", "convert_lolbas", "convert_loldrivers", "convert_misp_galaxy", "convert_nist_800_53", "convert_nuclei", "convert_osv", "convert_sigma", "convert_vulnrichment"]
 
 [tool.pytest.ini_options]
 markers = [

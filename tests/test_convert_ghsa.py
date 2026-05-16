@@ -76,8 +76,7 @@ SAMPLE_ADVISORY_NO_ID = {
 
 @pytest.fixture
 def sample_advisory_dir(tmp_path):
-    # Mimic extraction layout: <extract_dir>/advisory-database-main/advisories/github-reviewed/
-    reviewed = tmp_path / "advisory-database-main" / "advisories" / "github-reviewed"
+    reviewed = tmp_path / "advisories" / "github-reviewed"
 
     d1 = reviewed / "2024" / "01" / "GHSA-xxxx-yyyy-zzzz"
     d1.mkdir(parents=True)
