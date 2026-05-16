@@ -816,6 +816,7 @@ def source_changed(output_dir: Path, source: str, source_path: str) -> bool:
 #   "github_sha:<owner>/<repo>/<branch>" - GitHub commit SHA
 #   "github_release:<owner>/<repo>" - GitHub latest release tag
 #   "http:<url>" - Last-Modified / ETag from HTTP HEAD
+#   "http_get_hash:<url>" - SHA-256 of full GET response (for APIs without caching headers)
 SOURCE_FINGERPRINT_METHODS: dict[str, str] = {
     "attack": "github_sha:mitre-attack/attack-stix-data/master",
     "capec": "http:https://capec.mitre.org/data/xml/capec_latest.xml",
@@ -839,7 +840,7 @@ SOURCE_FINGERPRINT_METHODS: dict[str, str] = {
     "atomic": "github_sha:redcanaryco/atomic-red-team/master",
     "nist_800_53": "github_sha:center-for-threat-informed-defense/mappings-explorer/main",
     "nuclei": "github_sha:projectdiscovery/nuclei-templates/main",
-    "euvd": "http:https://euvdservices.enisa.europa.eu/api/kev/dump",
+    "euvd": "http_get_hash:https://euvdservices.enisa.europa.eu/api/kev/dump",
     "osv": "http:https://osv-vulnerabilities.storage.googleapis.com/PyPI/all.zip",
 }
 
@@ -867,6 +868,14 @@ def get_remote_fingerprint(source: str) -> str:
             owner, repo = parts[0], parts[1]
             tag = _github_release_tag(owner, repo)
             return f"tag:{tag}"
+        if method.startswith("http_get_hash:"):
+            # For endpoints that don't serve Last-Modified/ETag headers.
+            # Downloads the full response and returns a short SHA-256 hash.
+            url = method[len("http_get_hash:") :]
+            resp = requests.get(url, timeout=60, allow_redirects=True)
+            resp.raise_for_status()
+            digest = hashlib.sha256(resp.content).hexdigest()[:16]
+            return f"hash:{digest}"
         if method.startswith("http:"):
             url = method[len("http:") :]
             head = requests.head(url, timeout=30, allow_redirects=True)
