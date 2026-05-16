@@ -1,100 +1,88 @@
 {
-  "totalTriples": 348653,
-  "uniqueSubjects": 30261,
-  "uniqueObjects": 149822,
+  "totalTriples": 352619,
+  "uniqueSubjects": 30602,
+  "uniqueObjects": 151655,
   "uniquePredicates": 10,
   "bySource": [
     {
       "source": "ghsa",
-      "count": 348653
-    },
-    {
-      "source": "cwe",
-      "count": 34289
-    },
-    {
-      "source": "cve",
-      "count": 26638
-    },
-    {
-      "source": "attack",
-      "count": 5
+      "count": 352619
     }
   ],
   "topPredicates": [
     {
       "predicate": "affects-package",
-      "count": 55807
+      "count": 56367
     },
     {
       "predicate": "fixed-in",
-      "count": 48883
+      "count": 49388
     },
     {
       "predicate": "related-weakness",
-      "count": 34289
+      "count": 34760
     },
     {
       "predicate": "cvss-vector",
-      "count": 31735
-    },
-    {
-      "predicate": "summary",
-      "count": 30261
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 30261
-    },
-    {
-      "predicate": "date-published",
-      "count": 30261
+      "count": 32144
     },
     {
       "predicate": "date-modified",
-      "count": 30261
+      "count": 30602
     },
     {
       "predicate": "severity",
-      "count": 30261
+      "count": 30602
+    },
+    {
+      "predicate": "summary",
+      "count": 30602
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 30602
+    },
+    {
+      "predicate": "date-published",
+      "count": 30602
     },
     {
       "predicate": "related-cve",
-      "count": 26634
+      "count": 26950
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "SecurityAdvisory",
-      "count": 30261
+      "count": 30602
     },
     {
       "entity": "MODERATE",
-      "count": 13319
+      "count": 13444
     },
     {
       "entity": "HIGH",
-      "count": 10650
+      "count": 10809
     },
     {
       "entity": "CWE-79",
-      "count": 4495
+      "count": 4537
     },
     {
       "entity": "CRITICAL",
-      "count": 4121
+      "count": 4166
     },
     {
       "entity": "LOW",
-      "count": 2171
+      "count": 2183
     },
     {
       "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-      "count": 2028
+      "count": 2043
     },
     {
       "entity": "CWE-22",
-      "count": 1673
+      "count": 1692
     },
     {
       "entity": "Packagist/magento/community-edition",
@@ -102,48 +90,29 @@
     },
     {
       "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "count": 1427
+      "count": 1441
+    },
+    {
+      "entity": "CWE-20",
+      "count": 1330
     },
     {
       "entity": "PyPI/tensorflow",
       "count": 1324
     },
     {
+      "entity": "CWE-200",
+      "count": 1322
+    },
+    {
       "entity": "Packagist/moodle/moodle",
       "count": 1322
     },
     {
-      "entity": "CWE-20",
-      "count": 1316
-    },
-    {
       "entity": "PyPI/tensorflow-gpu",
       "count": 1311
-    },
-    {
-      "entity": "PyPI/tensorflow-cpu",
-      "count": 1307
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "ghsa",
-      "to": "cwe",
-      "count": 34289,
-      "predicate": "related-weakness"
-    },
-    {
-      "from": "ghsa",
-      "to": "cve",
-      "count": 26634,
-      "predicate": "related-cve"
-    },
-    {
-      "from": "ghsa",
-      "to": "attack",
-      "count": 5,
-      "predicate": "summary"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:47Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:54Z"
 }

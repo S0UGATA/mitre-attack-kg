@@ -1,16 +1,12 @@
 {
-  "totalTriples": 4249,
+  "totalTriples": 4266,
   "uniqueSubjects": 387,
-  "uniqueObjects": 1491,
+  "uniqueObjects": 1440,
   "uniquePredicates": 20,
   "bySource": [
     {
       "source": "attack",
-      "count": 4789
-    },
-    {
-      "source": "engage",
-      "count": 97
+      "count": 4266
     }
   ],
   "topPredicates": [
@@ -24,14 +20,14 @@
     },
     {
       "predicate": "domain",
-      "count": 378
+      "count": 395
     },
     {
       "predicate": "uses",
       "count": 293
     },
     {
-      "predicate": "created",
+      "predicate": "name",
       "count": 290
     },
     {
@@ -43,7 +39,7 @@
       "count": 290
     },
     {
-      "predicate": "name",
+      "predicate": "created",
       "count": 290
     },
     {
@@ -83,11 +79,11 @@
       "count": 12
     },
     {
-      "predicate": "revoked",
+      "predicate": "revoked-by",
       "count": 11
     },
     {
-      "predicate": "revoked-by",
+      "predicate": "revoked",
       "count": 11
     },
     {
@@ -98,19 +94,19 @@
   "topConnectedEntities": [
     {
       "entity": "ics-attack",
-      "count": 281
+      "count": 290
     },
     {
       "entity": "Technique",
       "count": 118
     },
     {
-      "entity": "2020-05-21 17:43:26.506000+00:00",
+      "entity": "enterprise-attack",
       "count": 82
     },
     {
-      "entity": "enterprise-attack",
-      "count": 76
+      "entity": "2020-05-21 17:43:26.506000+00:00",
+      "count": 82
     },
     {
       "entity": "A0017",
@@ -145,11 +141,11 @@
       "count": 51
     },
     {
-      "entity": "A0005",
+      "entity": "A0009",
       "count": 48
     },
     {
-      "entity": "A0009",
+      "entity": "A0005",
       "count": 48
     },
     {
@@ -157,13 +153,6 @@
       "count": 47
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 97,
-      "predicate": "detects"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:39Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:49Z"
 }

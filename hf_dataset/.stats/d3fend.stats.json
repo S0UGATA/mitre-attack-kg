@@ -5,16 +5,8 @@
   "uniquePredicates": 8,
   "bySource": [
     {
-      "source": "attack",
-      "count": 5045
-    },
-    {
       "source": "d3fend",
-      "count": 1184
-    },
-    {
-      "source": "atlas",
-      "count": 703
+      "count": 8154
     }
   ],
   "topPredicates": [
@@ -93,11 +85,11 @@
       "count": 28
     },
     {
-      "entity": "ATTACKMobileCollectionTechnique",
+      "entity": "T1546",
       "count": 23
     },
     {
-      "entity": "T1546",
+      "entity": "ATTACKMobileCollectionTechnique",
       "count": 23
     },
     {
@@ -105,21 +97,14 @@
       "count": 21
     },
     {
-      "entity": "T1547",
+      "entity": "ImpactTechnique",
       "count": 20
     },
     {
-      "entity": "ImpactTechnique",
+      "entity": "T1547",
       "count": 20
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "d3fend",
-      "to": "attack",
-      "count": 1,
-      "predicate": "restricts"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:46Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:54Z"
 }

@@ -1,114 +1,114 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 9,
-  "uniqueObjects": 67,
+  "totalTriples": 3601,
+  "uniqueSubjects": 234,
+  "uniqueObjects": 1434,
   "uniquePredicates": 9,
   "bySource": [
     {
       "source": "lolbas",
-      "count": 100
+      "count": 3601
     }
   ],
   "topPredicates": [
     {
       "predicate": "full-path",
-      "count": 20
+      "count": 579
     },
     {
       "predicate": "usecase",
-      "count": 11
-    },
-    {
-      "predicate": "category",
-      "count": 11
-    },
-    {
-      "predicate": "maps-to-technique",
-      "count": 11
+      "count": 464
     },
     {
       "predicate": "platform",
-      "count": 10
+      "count": 464
+    },
+    {
+      "predicate": "category",
+      "count": 464
     },
     {
       "predicate": "privileges",
-      "count": 10
+      "count": 464
     },
     {
-      "predicate": "rdf:type",
-      "count": 9
+      "predicate": "maps-to-technique",
+      "count": 464
     },
     {
       "predicate": "description",
-      "count": 9
+      "count": 234
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 234
     },
     {
       "predicate": "name",
-      "count": 9
+      "count": 234
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "Regsvcs.exe",
-      "count": 18
-    },
-    {
-      "entity": "Ftp.exe",
-      "count": 16
-    },
-    {
-      "entity": "Dfsvc.exe",
-      "count": 13
-    },
-    {
-      "entity": "OneDriveStandaloneUpdater.exe",
-      "count": 12
-    },
-    {
-      "entity": "write.exe",
-      "count": 12
-    },
-    {
-      "entity": "Query.exe",
-      "count": 11
-    },
-    {
-      "entity": "wt.exe",
-      "count": 10
-    },
-    {
-      "entity": "OfflineScannerShell.exe",
-      "count": 10
-    },
-    {
-      "entity": "LOLBinary",
-      "count": 9
-    },
-    {
       "entity": "User",
-      "count": 8
-    },
-    {
-      "entity": "Rasautou.exe",
-      "count": 7
+      "count": 403
     },
     {
       "entity": "Execute",
-      "count": 7
+      "count": 246
     },
     {
-      "entity": "T1218",
-      "count": 4
+      "entity": "LOLBinary",
+      "count": 234
     },
     {
       "entity": "Windows vista, Windows 7, Windows 8, Windows 8.1, Windows 10, Windows 11",
-      "count": 3
+      "count": 115
     },
     {
-      "entity": "Execute dll file and bypass Application whitelisting",
-      "count": 2
+      "entity": "Windows 10, Windows 11",
+      "count": 107
+    },
+    {
+      "entity": "T1218",
+      "count": 89
+    },
+    {
+      "entity": "Windows",
+      "count": 75
+    },
+    {
+      "entity": "Update.exe",
+      "count": 70
+    },
+    {
+      "entity": "T1105",
+      "count": 69
+    },
+    {
+      "entity": "Download",
+      "count": 59
+    },
+    {
+      "entity": "T1127",
+      "count": 52
+    },
+    {
+      "entity": "AWL Bypass",
+      "count": 49
+    },
+    {
+      "entity": "Administrator",
+      "count": 41
+    },
+    {
+      "entity": "Certutil.exe",
+      "count": 41
+    },
+    {
+      "entity": "T1202",
+      "count": 37
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "generatedAt": "2026-05-16T19:55:55Z"
 }

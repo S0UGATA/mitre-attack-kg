@@ -1,181 +1,130 @@
 {
-  "totalTriples": 3661182,
-  "uniqueSubjects": 331941,
-  "uniqueObjects": 916254,
+  "totalTriples": 3694416,
+  "uniqueSubjects": 333708,
+  "uniqueObjects": 924192,
   "uniquePredicates": 13,
   "bySource": [
     {
       "source": "cve",
-      "count": 3661231
-    },
-    {
-      "source": "cwe",
-      "count": 138818
-    },
-    {
-      "source": "cpe",
-      "count": 81769
-    },
-    {
-      "source": "attack",
-      "count": 479
-    },
-    {
-      "source": "d3fend",
-      "count": 4
-    },
-    {
-      "source": "engage",
-      "count": 1
+      "count": 3694416
     }
   ],
   "topPredicates": [
     {
       "predicate": "product",
-      "count": 507238
+      "count": 513397
     },
     {
       "predicate": "vendor",
-      "count": 507209
-    },
-    {
-      "predicate": "date-published",
-      "count": 331941
+      "count": 513368
     },
     {
       "predicate": "assigner",
-      "count": 331941
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 331941
-    },
-    {
-      "predicate": "state",
-      "count": 331941
+      "count": 333708
     },
     {
       "predicate": "date-updated",
-      "count": 331941
+      "count": 333708
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 333708
+    },
+    {
+      "predicate": "date-published",
+      "count": 333708
+    },
+    {
+      "predicate": "state",
+      "count": 333708
     },
     {
       "predicate": "description",
-      "count": 324493
+      "count": 326133
     },
     {
       "predicate": "cvss-base-score",
-      "count": 154767
+      "count": 156523
     },
     {
       "predicate": "cvss-severity",
-      "count": 154767
+      "count": 156523
     },
     {
       "predicate": "related-weakness",
-      "count": 138656
+      "count": 140343
     },
     {
       "predicate": "platform",
-      "count": 132578
+      "count": 134538
     },
     {
       "predicate": "affects-cpe",
-      "count": 81769
+      "count": 85051
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "PUBLISHED",
-      "count": 331941
+      "entity": "Vulnerability",
+      "count": 333708
     },
     {
-      "entity": "Vulnerability",
-      "count": 331941
+      "entity": "PUBLISHED",
+      "count": 333708
     },
     {
       "entity": "mitre",
-      "count": 113320
+      "count": 113427
     },
     {
       "entity": "Microsoft",
-      "count": 91917
+      "count": 93219
     },
     {
       "entity": "MEDIUM",
-      "count": 77745
+      "count": 78503
     },
     {
       "entity": "x64-based Systems",
-      "count": 66659
+      "count": 67801
     },
     {
       "entity": "Linux",
-      "count": 60307
+      "count": 60405
     },
     {
       "entity": "HIGH",
-      "count": 54767
+      "count": 55533
     },
     {
       "entity": "32-bit Systems",
-      "count": 23674
+      "count": 23933
     },
     {
       "entity": "CWE-79",
-      "count": 23421
+      "count": 23554
     },
     {
       "entity": "ARM64-based Systems",
-      "count": 18115
+      "count": 18448
     },
     {
       "entity": "Siemens",
-      "count": 16499
+      "count": 17574
     },
     {
       "entity": "Patchstack",
-      "count": 15991
+      "count": 16002
     },
     {
       "entity": "GitHub_M",
-      "count": 14305
+      "count": 14811
     },
     {
-      "entity": "VulDB",
-      "count": 14082
+      "entity": "Red Hat",
+      "count": 14754
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "cve",
-      "to": "cwe",
-      "count": 138656,
-      "predicate": "related-weakness"
-    },
-    {
-      "from": "cve",
-      "to": "cpe",
-      "count": 81769,
-      "predicate": "affects-cpe"
-    },
-    {
-      "from": "cve",
-      "to": "attack",
-      "count": 413,
-      "predicate": "product"
-    },
-    {
-      "from": "cve",
-      "to": "d3fend",
-      "count": 4,
-      "predicate": "product"
-    },
-    {
-      "from": "cve",
-      "to": "engage",
-      "count": 1,
-      "predicate": "product"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:46Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:54Z"
 }

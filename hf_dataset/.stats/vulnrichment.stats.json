@@ -1,127 +1,126 @@
 {
-  "totalTriples": 674255,
-  "uniqueSubjects": 146509,
-  "uniqueObjects": 23591,
-  "uniquePredicates": 7,
+  "totalTriples": 1423437,
+  "uniqueSubjects": 148454,
+  "uniqueObjects": 26776,
+  "uniquePredicates": 12,
   "bySource": [
     {
-      "source": "cve",
-      "count": 674255
-    },
-    {
-      "source": "cpe",
-      "count": 135435
-    },
-    {
-      "source": "cwe",
-      "count": 30563
+      "source": "vulnrichment",
+      "count": 1423437
     }
   ],
   "topPredicates": [
     {
-      "predicate": "ssvc-automatable",
-      "count": 146513
-    },
-    {
       "predicate": "ssvc-technical-impact",
-      "count": 146513
+      "count": 148457
     },
     {
       "predicate": "ssvc-exploitation",
-      "count": 146513
+      "count": 148457
+    },
+    {
+      "predicate": "ssvc-automatable",
+      "count": 148457
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 148454
+    },
+    {
+      "predicate": "state",
+      "count": 148454
+    },
+    {
+      "predicate": "date-updated",
+      "count": 148454
+    },
+    {
+      "predicate": "assigner",
+      "count": 148454
+    },
+    {
+      "predicate": "date-published",
+      "count": 148348
     },
     {
       "predicate": "adp-affects-cpe",
-      "count": 135435
+      "count": 135409
     },
     {
       "predicate": "adp-cvss-severity",
-      "count": 34359
+      "count": 34776
     },
     {
       "predicate": "adp-cvss-base-score",
-      "count": 34359
+      "count": 34776
     },
     {
       "predicate": "adp-related-weakness",
-      "count": 30563
+      "count": 30941
     }
   ],
   "topConnectedEntities": [
     {
+      "entity": "PUBLISHED",
+      "count": 148454
+    },
+    {
+      "entity": "Vulnerability",
+      "count": 148454
+    },
+    {
       "entity": "partial",
-      "count": 97305
+      "count": 98588
     },
     {
       "entity": "CVE-2024-20399",
-      "count": 51532
+      "count": 51537
     },
     {
       "entity": "total",
-      "count": 49208
+      "count": 49869
     },
     {
       "entity": "poc",
-      "count": 34211
+      "count": 34701
     },
     {
       "entity": "yes",
-      "count": 33062
+      "count": 33529
+    },
+    {
+      "entity": "mitre",
+      "count": 20870
+    },
+    {
+      "entity": "Patchstack",
+      "count": 15416
     },
     {
       "entity": "MEDIUM",
-      "count": 14994
+      "count": 15209
     },
     {
       "entity": "HIGH",
-      "count": 13007
+      "count": 13171
+    },
+    {
+      "entity": "VulDB",
+      "count": 12602
+    },
+    {
+      "entity": "GitHub_M",
+      "count": 12538
+    },
+    {
+      "entity": "Wordfence",
+      "count": 9548
     },
     {
       "entity": "CVE-2024-20481",
-      "count": 7946
-    },
-    {
-      "entity": "CRITICAL",
-      "count": 5706
-    },
-    {
-      "entity": "9.8",
-      "count": 4672
-    },
-    {
-      "entity": "7.5",
-      "count": 3870
-    },
-    {
-      "entity": "CWE-79",
-      "count": 3305
-    },
-    {
-      "entity": "8.8",
-      "count": 3018
-    },
-    {
-      "entity": "5.5",
-      "count": 2772
-    },
-    {
-      "entity": "6.5",
-      "count": 2478
+      "count": 7951
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "cve",
-      "to": "cpe",
-      "count": 135435,
-      "predicate": "adp-affects-cpe"
-    },
-    {
-      "from": "cve",
-      "to": "cwe",
-      "count": 30563,
-      "predicate": "adp-related-weakness"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:48Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:55Z"
 }

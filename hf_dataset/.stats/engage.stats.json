@@ -6,11 +6,7 @@
   "bySource": [
     {
       "source": "engage",
-      "count": 1572
-    },
-    {
-      "source": "attack",
-      "count": 1252
+      "count": 1464
     }
   ],
   "topPredicates": [
@@ -65,11 +61,11 @@
       "count": 68
     },
     {
-      "entity": "EAC0015",
+      "entity": "EAC0011",
       "count": 64
     },
     {
-      "entity": "EAC0011",
+      "entity": "EAC0015",
       "count": 64
     },
     {
@@ -81,11 +77,11 @@
       "count": 62
     },
     {
-      "entity": "EAV0010",
+      "entity": "EAV0013",
       "count": 62
     },
     {
-      "entity": "EAV0013",
+      "entity": "EAV0010",
       "count": 62
     },
     {
@@ -101,13 +97,6 @@
       "count": 47
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 656,
-      "predicate": "vulnerability-of"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:46Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:54Z"
 }
