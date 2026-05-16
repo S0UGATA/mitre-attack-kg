@@ -1,126 +1,173 @@
 {
-  "totalTriples": 300,
-  "uniqueSubjects": 31,
-  "uniqueObjects": 159,
-  "uniquePredicates": 12,
+  "totalTriples": 51793,
+  "uniqueSubjects": 3613,
+  "uniqueObjects": 15410,
+  "uniquePredicates": 21,
   "bySource": [
     {
       "source": "attack",
-      "count": 300
+      "count": 75388
+    },
+    {
+      "source": "engage",
+      "count": 918
     }
   ],
   "topPredicates": [
     {
-      "predicate": "platform",
-      "count": 45
+      "predicate": "uses",
+      "count": 19989
     },
     {
-      "predicate": "rdf:type",
-      "count": 31
+      "predicate": "platform",
+      "count": 3729
     },
     {
       "predicate": "modified",
-      "count": 30
+      "count": 2919
     },
     {
-      "predicate": "created",
-      "count": 30
+      "predicate": "rdf:type",
+      "count": 2919
     },
     {
       "predicate": "name",
-      "count": 30
+      "count": 2919
     },
     {
-      "predicate": "domain",
-      "count": 29
+      "predicate": "created",
+      "count": 2916
     },
     {
       "predicate": "url",
-      "count": 29
+      "count": 2912
     },
     {
       "predicate": "description",
-      "count": 29
+      "count": 2901
+    },
+    {
+      "predicate": "domain",
+      "count": 2761
+    },
+    {
+      "predicate": "mitigates",
+      "count": 2017
     },
     {
       "predicate": "is-subtechnique",
-      "count": 29
+      "count": 1166
     },
     {
       "predicate": "belongs-to-tactic",
-      "count": 13
+      "count": 1090
     },
     {
-      "predicate": "revoked",
-      "count": 4
+      "predicate": "detects",
+      "count": 918
+    },
+    {
+      "predicate": "targets",
+      "count": 842
+    },
+    {
+      "predicate": "subtechnique-of",
+      "count": 542
+    },
+    {
+      "predicate": "alias",
+      "count": 430
     },
     {
       "predicate": "deprecated",
-      "count": 1
+      "count": 318
+    },
+    {
+      "predicate": "revoked",
+      "count": 219
+    },
+    {
+      "predicate": "revoked-by",
+      "count": 218
+    },
+    {
+      "predicate": "shortname",
+      "count": 41
+    },
+    {
+      "predicate": "attributed-to",
+      "count": 27
     }
   ],
   "topConnectedEntities": [
     {
+      "entity": "enterprise-attack",
+      "count": 2077
+    },
+    {
+      "entity": "Windows",
+      "count": 1321
+    },
+    {
       "entity": "Technique",
-      "count": 31
+      "count": 1166
     },
     {
-      "entity": "T1205.002",
-      "count": 14
+      "entity": "Malware",
+      "count": 865
     },
     {
-      "entity": "T1066",
-      "count": 13
+      "entity": "T1105",
+      "count": 539
     },
     {
-      "entity": "T1156",
-      "count": 12
+      "entity": "Linux",
+      "count": 538
     },
     {
-      "entity": "T1560.001",
-      "count": 12
+      "entity": "macOS",
+      "count": 523
     },
     {
-      "entity": "T1053.005",
-      "count": 12
+      "entity": "T1082",
+      "count": 447
     },
     {
-      "entity": "T1021.005",
-      "count": 12
-    },
-    {
-      "entity": "T1470",
-      "count": 11
-    },
-    {
-      "entity": "T1540",
-      "count": 11
-    },
-    {
-      "entity": "T1055.011",
-      "count": 11
-    },
-    {
-      "entity": "ics-attack",
-      "count": 11
+      "entity": "T1071.001",
+      "count": 437
     },
     {
       "entity": "mobile-attack",
-      "count": 10
+      "count": 403
     },
     {
-      "entity": "T1630",
-      "count": 10
+      "entity": "T1059.003",
+      "count": 399
     },
     {
-      "entity": "T1638",
-      "count": 10
+      "entity": "T1083",
+      "count": 391
     },
     {
-      "entity": "T1663",
-      "count": 10
+      "entity": "T1140",
+      "count": 371
+    },
+    {
+      "entity": "T1057",
+      "count": 340
+    },
+    {
+      "entity": "Mitigation",
+      "count": 334
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:38Z"
+  "crossSourceLinks": [
+    {
+      "from": "engage",
+      "to": "attack",
+      "count": 918,
+      "predicate": "detects"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:39Z"
 }

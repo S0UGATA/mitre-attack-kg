@@ -1,122 +1,133 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 9,
-  "uniqueObjects": 56,
+  "totalTriples": 17420,
+  "uniqueSubjects": 1590,
+  "uniqueObjects": 6107,
   "uniquePredicates": 11,
   "bySource": [
     {
-      "source": "kev",
-      "count": 100
+      "source": "cve",
+      "count": 17420
+    },
+    {
+      "source": "cwe",
+      "count": 1520
     }
   ],
   "topPredicates": [
     {
-      "predicate": "related-weakness",
-      "count": 10
+      "predicate": "kev-required-action",
+      "count": 1590
     },
     {
       "predicate": "kev-date-added",
-      "count": 9
+      "count": 1590
     },
     {
       "predicate": "kev-notes",
-      "count": 9
-    },
-    {
-      "predicate": "kev-vendor",
-      "count": 9
-    },
-    {
-      "predicate": "kev-required-action",
-      "count": 9
-    },
-    {
-      "predicate": "kev-description",
-      "count": 9
-    },
-    {
-      "predicate": "kev-due-date",
-      "count": 9
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 9
+      "count": 1590
     },
     {
       "predicate": "kev-ransomware-use",
-      "count": 9
+      "count": 1590
     },
     {
-      "predicate": "kev-product",
-      "count": 9
+      "predicate": "rdf:type",
+      "count": 1590
+    },
+    {
+      "predicate": "kev-due-date",
+      "count": 1590
+    },
+    {
+      "predicate": "kev-vendor",
+      "count": 1590
     },
     {
       "predicate": "kev-name",
-      "count": 9
+      "count": 1590
+    },
+    {
+      "predicate": "kev-description",
+      "count": 1590
+    },
+    {
+      "predicate": "kev-product",
+      "count": 1590
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 1520
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "CVE-2026-34197",
-      "count": 12
-    },
-    {
-      "entity": "CVE-2012-1854",
-      "count": 11
-    },
-    {
-      "entity": "CVE-2023-21529",
-      "count": 11
-    },
-    {
-      "entity": "CVE-2020-9715",
-      "count": 11
-    },
-    {
-      "entity": "CVE-2023-36424",
-      "count": 11
-    },
-    {
-      "entity": "CVE-2009-0238",
-      "count": 11
-    },
-    {
-      "entity": "CVE-2026-32201",
-      "count": 11
-    },
-    {
-      "entity": "CVE-2025-60710",
-      "count": 11
-    },
-    {
-      "entity": "CVE-2026-21643",
-      "count": 11
-    },
-    {
-      "entity": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
-      "count": 9
-    },
-    {
       "entity": "KnownExploitedVulnerability",
-      "count": 9
+      "count": 1590
     },
     {
-      "entity": "2026-04-13",
-      "count": 6
+      "entity": "Apply updates per vendor instructions.",
+      "count": 893
     },
     {
       "entity": "Microsoft",
-      "count": 6
+      "count": 370
     },
     {
-      "entity": "2026-04-27",
-      "count": 5
+      "entity": "Known",
+      "count": 318
+    },
+    {
+      "entity": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
+      "count": 296
+    },
+    {
+      "entity": "2021-11-03",
+      "count": 287
+    },
+    {
+      "entity": "Apply mitigations per vendor instructions or discontinue use of the product if mitigations are unavailable.",
+      "count": 259
+    },
+    {
+      "entity": "2022-05-03",
+      "count": 189
+    },
+    {
+      "entity": "Windows",
+      "count": 169
     },
     {
       "entity": "CWE-20",
-      "count": 2
+      "count": 116
+    },
+    {
+      "entity": "2021-11-17",
+      "count": 102
+    },
+    {
+      "entity": "CWE-78",
+      "count": 101
+    },
+    {
+      "entity": "CWE-787",
+      "count": 99
+    },
+    {
+      "entity": "2022-03-03",
+      "count": 95
+    },
+    {
+      "entity": "Apple",
+      "count": 93
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "crossSourceLinks": [
+    {
+      "from": "cve",
+      "to": "cwe",
+      "count": 1520,
+      "predicate": "related-weakness"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:47Z"
 }

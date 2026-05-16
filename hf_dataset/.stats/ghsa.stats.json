@@ -1,118 +1,149 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 10,
-  "uniqueObjects": 77,
+  "totalTriples": 348653,
+  "uniqueSubjects": 30261,
+  "uniqueObjects": 149822,
   "uniquePredicates": 10,
   "bySource": [
     {
       "source": "ghsa",
-      "count": 100
+      "count": 348653
+    },
+    {
+      "source": "cwe",
+      "count": 34289
+    },
+    {
+      "source": "cve",
+      "count": 26638
+    },
+    {
+      "source": "attack",
+      "count": 5
     }
   ],
   "topPredicates": [
     {
-      "predicate": "related-weakness",
-      "count": 11
-    },
-    {
-      "predicate": "cvss-vector",
-      "count": 11
-    },
-    {
-      "predicate": "severity",
-      "count": 10
-    },
-    {
-      "predicate": "summary",
-      "count": 10
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 10
-    },
-    {
-      "predicate": "related-cve",
-      "count": 10
-    },
-    {
-      "predicate": "date-published",
-      "count": 10
-    },
-    {
-      "predicate": "date-modified",
-      "count": 10
-    },
-    {
       "predicate": "affects-package",
-      "count": 10
+      "count": 55807
     },
     {
       "predicate": "fixed-in",
-      "count": 8
+      "count": 48883
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 34289
+    },
+    {
+      "predicate": "cvss-vector",
+      "count": 31735
+    },
+    {
+      "predicate": "summary",
+      "count": 30261
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 30261
+    },
+    {
+      "predicate": "date-published",
+      "count": 30261
+    },
+    {
+      "predicate": "date-modified",
+      "count": 30261
+    },
+    {
+      "predicate": "severity",
+      "count": 30261
+    },
+    {
+      "predicate": "related-cve",
+      "count": 26634
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "GHSA-3jq8-jg75-rqv6",
-      "count": 11
-    },
-    {
-      "entity": "GHSA-mr4x-c4v9-x729",
-      "count": 11
-    },
-    {
-      "entity": "GHSA-2xpp-75vr-22vq",
-      "count": 10
-    },
-    {
-      "entity": "GHSA-8p8g-f9vg-r7xr",
-      "count": 10
-    },
-    {
       "entity": "SecurityAdvisory",
-      "count": 10
+      "count": 30261
     },
     {
-      "entity": "GHSA-j379-9jr9-w5cq",
-      "count": 10
-    },
-    {
-      "entity": "GHSA-9448-c9wq-jg9v",
-      "count": 10
-    },
-    {
-      "entity": "GHSA-43fp-vwwg-qgv6",
-      "count": 10
-    },
-    {
-      "entity": "GHSA-rmm5-g63h-m6g9",
-      "count": 10
-    },
-    {
-      "entity": "GHSA-h4x4-5qp2-wp46",
-      "count": 9
-    },
-    {
-      "entity": "GHSA-9fcp-vcq9-9h2h",
-      "count": 9
+      "entity": "MODERATE",
+      "count": 13319
     },
     {
       "entity": "HIGH",
-      "count": 6
+      "count": 10650
     },
     {
-      "entity": "Maven/org.apache.nifi:nifi@1.8.0",
-      "count": 2
+      "entity": "CWE-79",
+      "count": 4495
+    },
+    {
+      "entity": "CRITICAL",
+      "count": 4121
+    },
+    {
+      "entity": "LOW",
+      "count": 2171
+    },
+    {
+      "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "count": 2028
+    },
+    {
+      "entity": "CWE-22",
+      "count": 1673
+    },
+    {
+      "entity": "Packagist/magento/community-edition",
+      "count": 1563
+    },
+    {
+      "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+      "count": 1427
+    },
+    {
+      "entity": "PyPI/tensorflow",
+      "count": 1324
+    },
+    {
+      "entity": "Packagist/moodle/moodle",
+      "count": 1322
     },
     {
       "entity": "CWE-20",
-      "count": 2
+      "count": 1316
     },
     {
-      "entity": "CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-      "count": 2
+      "entity": "PyPI/tensorflow-gpu",
+      "count": 1311
+    },
+    {
+      "entity": "PyPI/tensorflow-cpu",
+      "count": 1307
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "crossSourceLinks": [
+    {
+      "from": "ghsa",
+      "to": "cwe",
+      "count": 34289,
+      "predicate": "related-weakness"
+    },
+    {
+      "from": "ghsa",
+      "to": "cve",
+      "count": 26634,
+      "predicate": "related-cve"
+    },
+    {
+      "from": "ghsa",
+      "to": "attack",
+      "count": 5,
+      "predicate": "summary"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:47Z"
 }

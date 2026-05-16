@@ -1,106 +1,125 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 25,
-  "uniqueObjects": 76,
-  "uniquePredicates": 7,
+  "totalTriples": 8154,
+  "uniqueSubjects": 1934,
+  "uniqueObjects": 4285,
+  "uniquePredicates": 8,
   "bySource": [
     {
+      "source": "attack",
+      "count": 5045
+    },
+    {
       "source": "d3fend",
-      "count": 100
+      "count": 1184
+    },
+    {
+      "source": "atlas",
+      "count": 703
     }
   ],
   "topPredicates": [
     {
-      "predicate": "rdf:type",
-      "count": 25
-    },
-    {
       "predicate": "child-of",
-      "count": 24
+      "count": 2124
     },
     {
-      "predicate": "d3fend-name",
-      "count": 21
+      "predicate": "rdf:type",
+      "count": 1965
     },
     {
       "predicate": "d3fend-definition",
-      "count": 20
+      "count": 1468
+    },
+    {
+      "predicate": "d3fend-name",
+      "count": 1468
     },
     {
       "predicate": "name",
-      "count": 4
+      "count": 497
     },
     {
       "predicate": "definition",
-      "count": 4
+      "count": 493
     },
     {
       "predicate": "synonym",
-      "count": 2
+      "count": 138
+    },
+    {
+      "predicate": "restricts",
+      "count": 1
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "OffensiveTechnique",
-      "count": 21
-    },
-    {
-      "entity": "D3-DI",
-      "count": 6
-    },
-    {
-      "entity": "D3-EPL",
-      "count": 4
-    },
-    {
-      "entity": "T1027.017",
-      "count": 4
-    },
-    {
-      "entity": "DE-0003.02",
-      "count": 4
-    },
-    {
-      "entity": "T1547.009",
-      "count": 4
-    },
-    {
-      "entity": "T1114.002",
-      "count": 4
-    },
-    {
-      "entity": "T0805",
-      "count": 4
-    },
-    {
-      "entity": "T1128",
-      "count": 4
-    },
-    {
-      "entity": "IA-0003",
-      "count": 4
-    },
-    {
-      "entity": "T1016",
-      "count": 4
-    },
-    {
-      "entity": "REC-0005.01",
-      "count": 4
+      "count": 1468
     },
     {
       "entity": "DefensiveTechnique",
-      "count": 4
+      "count": 527
     },
     {
-      "entity": "T1641.001",
-      "count": 4
+      "entity": "DefenseEvasionTechnique",
+      "count": 93
     },
     {
-      "entity": "AML.T0084.002",
-      "count": 4
+      "entity": "PersistenceTechnique",
+      "count": 74
+    },
+    {
+      "entity": "PrivilegeEscalationTechnique",
+      "count": 41
+    },
+    {
+      "entity": "ExecutionTechnique",
+      "count": 39
+    },
+    {
+      "entity": "DiscoveryTechnique",
+      "count": 35
+    },
+    {
+      "entity": "ATTACKMobileDefenseEvasionTechnique",
+      "count": 31
+    },
+    {
+      "entity": "CredentialAccessTechnique",
+      "count": 30
+    },
+    {
+      "entity": "CommandAndControlTechnique",
+      "count": 28
+    },
+    {
+      "entity": "ATTACKMobileCollectionTechnique",
+      "count": 23
+    },
+    {
+      "entity": "T1546",
+      "count": 23
+    },
+    {
+      "entity": "T1027",
+      "count": 21
+    },
+    {
+      "entity": "T1547",
+      "count": 20
+    },
+    {
+      "entity": "ImpactTechnique",
+      "count": 20
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:38Z"
+  "crossSourceLinks": [
+    {
+      "from": "d3fend",
+      "to": "attack",
+      "count": 1,
+      "predicate": "restricts"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:46Z"
 }

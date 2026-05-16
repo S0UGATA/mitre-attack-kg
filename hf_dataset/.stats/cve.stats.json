@@ -1,110 +1,181 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 13,
-  "uniqueObjects": 40,
-  "uniquePredicates": 8,
+  "totalTriples": 3661182,
+  "uniqueSubjects": 331941,
+  "uniqueObjects": 916254,
+  "uniquePredicates": 13,
   "bySource": [
     {
       "source": "cve",
-      "count": 100
+      "count": 3661231
+    },
+    {
+      "source": "cwe",
+      "count": 138818
+    },
+    {
+      "source": "cpe",
+      "count": 81769
+    },
+    {
+      "source": "attack",
+      "count": 479
+    },
+    {
+      "source": "d3fend",
+      "count": 4
+    },
+    {
+      "source": "engage",
+      "count": 1
     }
   ],
   "topPredicates": [
     {
-      "predicate": "date-published",
-      "count": 13
-    },
-    {
-      "predicate": "date-updated",
-      "count": 13
-    },
-    {
-      "predicate": "state",
-      "count": 13
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 13
-    },
-    {
-      "predicate": "assigner",
-      "count": 12
-    },
-    {
       "predicate": "product",
-      "count": 12
+      "count": 507238
     },
     {
       "predicate": "vendor",
-      "count": 12
+      "count": 507209
+    },
+    {
+      "predicate": "date-published",
+      "count": 331941
+    },
+    {
+      "predicate": "assigner",
+      "count": 331941
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 331941
+    },
+    {
+      "predicate": "state",
+      "count": 331941
+    },
+    {
+      "predicate": "date-updated",
+      "count": 331941
     },
     {
       "predicate": "description",
-      "count": 12
+      "count": 324493
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 154767
+    },
+    {
+      "predicate": "cvss-severity",
+      "count": 154767
+    },
+    {
+      "predicate": "related-weakness",
+      "count": 138656
+    },
+    {
+      "predicate": "platform",
+      "count": 132578
+    },
+    {
+      "predicate": "affects-cpe",
+      "count": 81769
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "PUBLISHED",
-      "count": 13
+      "count": 331941
     },
     {
       "entity": "Vulnerability",
-      "count": 13
+      "count": 331941
     },
     {
       "entity": "mitre",
-      "count": 12
+      "count": 113320
     },
     {
-      "entity": "CVE-2004-2471",
-      "count": 8
+      "entity": "Microsoft",
+      "count": 91917
     },
     {
-      "entity": "CVE-2004-2099",
-      "count": 8
+      "entity": "MEDIUM",
+      "count": 77745
     },
     {
-      "entity": "CVE-2004-2719",
-      "count": 8
+      "entity": "x64-based Systems",
+      "count": 66659
     },
     {
-      "entity": "CVE-2004-2758",
-      "count": 8
+      "entity": "Linux",
+      "count": 60307
     },
     {
-      "entity": "CVE-2004-2308",
-      "count": 8
+      "entity": "HIGH",
+      "count": 54767
     },
     {
-      "entity": "CVE-2004-2426",
-      "count": 8
+      "entity": "32-bit Systems",
+      "count": 23674
     },
     {
-      "entity": "CVE-2004-2534",
-      "count": 8
+      "entity": "CWE-79",
+      "count": 23421
     },
     {
-      "entity": "CVE-2004-2021",
-      "count": 8
+      "entity": "ARM64-based Systems",
+      "count": 18115
     },
     {
-      "entity": "CVE-2004-2076",
-      "count": 8
+      "entity": "Siemens",
+      "count": 16499
     },
     {
-      "entity": "CVE-2004-2133",
-      "count": 8
+      "entity": "Patchstack",
+      "count": 15991
     },
     {
-      "entity": "CVE-2004-2563",
-      "count": 8
+      "entity": "GitHub_M",
+      "count": 14305
     },
     {
-      "entity": "CVE-2004-2164",
-      "count": 8
+      "entity": "VulDB",
+      "count": 14082
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:38Z"
+  "crossSourceLinks": [
+    {
+      "from": "cve",
+      "to": "cwe",
+      "count": 138656,
+      "predicate": "related-weakness"
+    },
+    {
+      "from": "cve",
+      "to": "cpe",
+      "count": 81769,
+      "predicate": "affects-cpe"
+    },
+    {
+      "from": "cve",
+      "to": "attack",
+      "count": 413,
+      "predicate": "product"
+    },
+    {
+      "from": "cve",
+      "to": "d3fend",
+      "count": 4,
+      "predicate": "product"
+    },
+    {
+      "from": "cve",
+      "to": "engage",
+      "count": 1,
+      "predicate": "product"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:46Z"
 }

@@ -1,110 +1,121 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 13,
-  "uniqueObjects": 33,
+  "totalTriples": 12826110,
+  "uniqueSubjects": 1603264,
+  "uniqueObjects": 2685216,
   "uniquePredicates": 8,
   "bySource": [
     {
       "source": "cpe",
-      "count": 100
+      "count": 12826124
+    },
+    {
+      "source": "attack",
+      "count": 1152
     }
   ],
   "topPredicates": [
     {
-      "predicate": "part",
-      "count": 13
+      "predicate": "created",
+      "count": 1603264
     },
     {
       "predicate": "vendor",
-      "count": 13
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 13
-    },
-    {
-      "predicate": "product",
-      "count": 13
-    },
-    {
-      "predicate": "created",
-      "count": 12
+      "count": 1603264
     },
     {
       "predicate": "title",
-      "count": 12
+      "count": 1603264
     },
     {
-      "predicate": "version",
-      "count": 12
+      "predicate": "rdf:type",
+      "count": 1603264
+    },
+    {
+      "predicate": "part",
+      "count": 1603264
+    },
+    {
+      "predicate": "product",
+      "count": 1603264
     },
     {
       "predicate": "modified",
-      "count": 12
+      "count": 1603264
+    },
+    {
+      "predicate": "version",
+      "count": 1603262
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "2025-06-17T17:27:10.060",
-      "count": 24
+      "entity": "Platform",
+      "count": 1603264
     },
     {
       "entity": "application",
-      "count": 13
+      "count": 1404862
     },
     {
-      "entity": "Platform",
-      "count": 13
+      "entity": "operating_system",
+      "count": 137338
     },
     {
-      "entity": "cpe:2.3:a:one_time_password_project:one_time_password:8.x-1.3:*:*:*:*:drupal:*:*",
-      "count": 8
+      "entity": "hardware",
+      "count": 61141
     },
     {
-      "entity": "cpe:2.3:a:one_time_password_project:one_time_password:8.x-1.2:*:*:*:*:drupal:*:*",
-      "count": 8
+      "entity": "cisco",
+      "count": 35023
     },
     {
-      "entity": "cpe:2.3:a:piwik_project:piwik:1.0.3:*:*:*:pro:drupal:*:*",
-      "count": 8
+      "entity": "vim",
+      "count": 30928
     },
     {
-      "entity": "cpe:2.3:a:piwik_project:piwik:1.0.0:*:*:*:pro:drupal:*:*",
-      "count": 8
+      "entity": "hp",
+      "count": 22205
     },
     {
-      "entity": "cpe:2.3:a:piwik_project:piwik:1.1.1:*:*:*:pro:drupal:*:*",
-      "count": 8
+      "entity": "microsoft",
+      "count": 18413
     },
     {
-      "entity": "cpe:2.3:a:one_time_password_project:one_time_password:8.x-1.0:*:*:*:*:drupal:*:*",
-      "count": 8
+      "entity": "apache",
+      "count": 17298
     },
     {
-      "entity": "cpe:2.3:a:one_time_password_project:one_time_password:2.0.0:*:*:*:*:drupal:*:*",
-      "count": 8
+      "entity": "jenkins",
+      "count": 17295
     },
     {
-      "entity": "cpe:2.3:a:piwik_project:piwik:1.0.4:*:*:*:pro:drupal:*:*",
-      "count": 8
+      "entity": "ibm",
+      "count": 17203
     },
     {
-      "entity": "cpe:2.3:a:one_time_password_project:one_time_password:8.x-1.1:*:*:*:*:drupal:*:*",
-      "count": 8
+      "entity": "intel",
+      "count": 14477
     },
     {
-      "entity": "cpe:2.3:a:piwik_project:piwik:1.0.2:*:*:*:pro:drupal:*:*",
-      "count": 8
+      "entity": "google",
+      "count": 14038
     },
     {
-      "entity": "cpe:2.3:a:piwik_project:piwik:1.0.1:*:*:*:pro:drupal:*:*",
-      "count": 8
+      "entity": "redhat",
+      "count": 11612
     },
     {
-      "entity": "cpe:2.3:a:piwik_project:piwik:1.1.0:*:*:*:pro:drupal:*:*",
-      "count": 8
+      "entity": "1.0.0",
+      "count": 11519
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:38Z"
+  "crossSourceLinks": [
+    {
+      "from": "cpe",
+      "to": "attack",
+      "count": 1152,
+      "predicate": "title"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:44Z"
 }

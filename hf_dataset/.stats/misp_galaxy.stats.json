@@ -1,106 +1,157 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 17,
-  "uniqueObjects": 61,
-  "uniquePredicates": 7,
+  "totalTriples": 199993,
+  "uniqueSubjects": 36653,
+  "uniqueObjects": 73993,
+  "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 100
+      "count": 260585
+    },
+    {
+      "source": "attack",
+      "count": 4222
     }
   ],
   "topPredicates": [
     {
+      "predicate": "misp-related",
+      "count": 37055
+    },
+    {
       "predicate": "rdf:type",
-      "count": 17
+      "count": 32945
     },
     {
       "predicate": "name",
-      "count": 17
+      "count": 32945
     },
     {
       "predicate": "galaxy",
-      "count": 16
-    },
-    {
-      "predicate": "country",
-      "count": 16
+      "count": 32945
     },
     {
       "predicate": "description",
-      "count": 16
+      "count": 28559
+    },
+    {
+      "predicate": "uses",
+      "count": 20616
     },
     {
       "predicate": "synonym",
-      "count": 10
+      "count": 5184
     },
     {
-      "predicate": "misp-related",
-      "count": 8
+      "predicate": "related-attack-id",
+      "count": 3973
+    },
+    {
+      "predicate": "used-by",
+      "count": 2235
+    },
+    {
+      "predicate": "country",
+      "count": 1272
+    },
+    {
+      "predicate": "targets-country",
+      "count": 918
+    },
+    {
+      "predicate": "subtechnique-of",
+      "count": 563
+    },
+    {
+      "predicate": "targets-sector",
+      "count": 394
+    },
+    {
+      "predicate": "attribution-confidence",
+      "count": 165
+    },
+    {
+      "predicate": "cfr-suspected-state-sponsor",
+      "count": 101
+    },
+    {
+      "predicate": "targets",
+      "count": 84
+    },
+    {
+      "predicate": "variant-of",
+      "count": 39
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "360netThreatActor",
-      "count": 17
+      "entity": "References",
+      "count": 5219
     },
     {
-      "entity": "360net-threat-actor",
-      "count": 16
+      "entity": "references",
+      "count": 5219
     },
     {
-      "entity": "misp:231a81cd-4e24-590b-b084-1a4715b30d67",
-      "count": 12
+      "entity": "malpedia",
+      "count": 3683
     },
     {
-      "entity": "misp:ad1a6df6-2251-5e47-a245-8693c1ace8fb",
-      "count": 9
+      "entity": "MalpediaEntry",
+      "count": 3683
     },
     {
-      "entity": "misp:98df38d1-f83c-5c28-ad11-75aa6b493fe7",
-      "count": 8
+      "entity": "SigmaRule",
+      "count": 3132
     },
     {
-      "entity": "misp:e6f4af06-fbb5-5471-82ae-b0bdb4d446ce",
-      "count": 8
+      "entity": "sigma-rules",
+      "count": 3132
     },
     {
-      "entity": "mideast",
-      "count": 7
+      "entity": "ransomware",
+      "count": 2750
     },
     {
-      "entity": "misp:7094494b-a91b-532f-9968-082fa683bfc4",
-      "count": 6
+      "entity": "Ransomware",
+      "count": 2565
     },
     {
-      "entity": "misp:03e70e52-ec27-5961-bb53-d4c8c737addc",
-      "count": 5
+      "entity": "veris-framework",
+      "count": 2207
     },
     {
-      "entity": "misp:671197ae-ba70-5a81-90a5-1ba5e2ad6f76",
-      "count": 5
+      "entity": "VerisFramework",
+      "count": 2207
     },
     {
-      "entity": "misp:c111ae65-f889-56b0-b266-f54342977da5",
-      "count": 5
+      "entity": "naics",
+      "count": 2125
     },
     {
-      "entity": "misp:b3b6f113-fe2c-5d75-ba41-b333ce726f4a",
-      "count": 5
+      "entity": "Naics",
+      "count": 2125
     },
     {
-      "entity": "misp:e66dfa3d-3295-503c-bdea-64d88e2b310d",
-      "count": 5
+      "entity": "Software",
+      "count": 1323
     },
     {
-      "entity": "misp:51954972-101b-5213-971c-b335ceb810ea",
-      "count": 5
+      "entity": "software",
+      "count": 1321
     },
     {
-      "entity": "misp:ce0bcfbd-9924-5c82-9ad3-845db745e7f7",
-      "count": 5
+      "entity": "misp:a07e62c0-be9c-5380-beac-9d298b0e735a",
+      "count": 1309
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "crossSourceLinks": [
+    {
+      "from": "misp_galaxy",
+      "to": "attack",
+      "count": 3973,
+      "predicate": "related-attack-id"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:47Z"
 }

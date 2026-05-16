@@ -1,86 +1,86 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 50,
-  "uniqueObjects": 100,
+  "totalTriples": 663744,
+  "uniqueSubjects": 331872,
+  "uniqueObjects": 85010,
   "uniquePredicates": 2,
   "bySource": [
     {
-      "source": "epss",
-      "count": 100
+      "source": "cve",
+      "count": 663744
     }
   ],
   "topPredicates": [
     {
       "predicate": "epss-score",
-      "count": 50
+      "count": 331872
     },
     {
       "predicate": "epss-percentile",
-      "count": 50
+      "count": 331872
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "CVE-1999-0014",
-      "count": 2
+      "entity": "0.00017",
+      "count": 1959
     },
     {
-      "entity": "CVE-1999-0015",
-      "count": 2
+      "entity": "0.00015",
+      "count": 1814
     },
     {
-      "entity": "CVE-1999-0036",
-      "count": 2
+      "entity": "0.00013",
+      "count": 1766
     },
     {
-      "entity": "CVE-1999-0040",
-      "count": 2
+      "entity": "0.00018",
+      "count": 1717
     },
     {
-      "entity": "CVE-1999-0050",
-      "count": 2
+      "entity": "0.00016",
+      "count": 1709
     },
     {
-      "entity": "CVE-1999-0002",
-      "count": 2
+      "entity": "0.00014",
+      "count": 1620
     },
     {
-      "entity": "CVE-1999-0030",
-      "count": 2
+      "entity": "0.00039",
+      "count": 1396
     },
     {
-      "entity": "CVE-1999-0034",
-      "count": 2
+      "entity": "0.0002",
+      "count": 1335
     },
     {
-      "entity": "CVE-1999-0001",
-      "count": 2
+      "entity": "0.00012",
+      "count": 1313
     },
     {
-      "entity": "CVE-1999-0026",
-      "count": 2
+      "entity": "0.00099",
+      "count": 1295
     },
     {
-      "entity": "CVE-1999-0032",
-      "count": 2
+      "entity": "0.00047",
+      "count": 1265
     },
     {
-      "entity": "CVE-1999-0047",
-      "count": 2
+      "entity": "0.00043",
+      "count": 1260
     },
     {
-      "entity": "CVE-1999-0016",
-      "count": 2
+      "entity": "0.00032",
+      "count": 1237
     },
     {
-      "entity": "CVE-1999-0018",
-      "count": 2
+      "entity": "0.00019",
+      "count": 1233
     },
     {
-      "entity": "CVE-1999-0025",
-      "count": 2
+      "entity": "0.00051",
+      "count": 1213
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "generatedAt": "2026-05-11T09:37:47Z"
 }

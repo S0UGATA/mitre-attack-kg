@@ -1,126 +1,157 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 7,
-  "uniqueObjects": 56,
-  "uniquePredicates": 12,
+  "totalTriples": 14583,
+  "uniqueSubjects": 944,
+  "uniqueObjects": 2807,
+  "uniquePredicates": 17,
   "bySource": [
     {
       "source": "cwe",
-      "count": 100
+      "count": 16185
+    },
+    {
+      "source": "capec",
+      "count": 1212
     }
   ],
   "topPredicates": [
     {
-      "predicate": "platform",
-      "count": 13
-    },
-    {
       "predicate": "consequence-impact",
-      "count": 12
-    },
-    {
-      "predicate": "child-of",
-      "count": 11
+      "count": 2120
     },
     {
       "predicate": "consequence-scope",
-      "count": 10
+      "count": 2033
     },
     {
       "predicate": "introduction-phase",
-      "count": 8
+      "count": 1398
+    },
+    {
+      "predicate": "child-of",
+      "count": 1318
+    },
+    {
+      "predicate": "platform",
+      "count": 1313
     },
     {
       "predicate": "related-attack-pattern",
-      "count": 8
-    },
-    {
-      "predicate": "name",
-      "count": 7
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 7
-    },
-    {
-      "predicate": "status",
-      "count": 7
+      "count": 1212
     },
     {
       "predicate": "description",
-      "count": 7
+      "count": 944
+    },
+    {
+      "predicate": "status",
+      "count": 944
+    },
+    {
+      "predicate": "name",
+      "count": 944
     },
     {
       "predicate": "abstraction",
-      "count": 7
+      "count": 944
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 944
     },
     {
       "predicate": "likelihood-of-exploit",
+      "count": 185
+    },
+    {
+      "predicate": "can-precede",
+      "count": 143
+    },
+    {
+      "predicate": "peer-of",
+      "count": 98
+    },
+    {
+      "predicate": "can-also-be",
+      "count": 27
+    },
+    {
+      "predicate": "requires",
+      "count": 13
+    },
+    {
+      "predicate": "starts-with",
       "count": 3
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "CWE-1021",
-      "count": 23
-    },
-    {
-      "entity": "CWE-1007",
-      "count": 15
-    },
-    {
-      "entity": "CWE-1022",
-      "count": 14
-    },
-    {
-      "entity": "CWE-1004",
-      "count": 14
-    },
-    {
-      "entity": "CWE-102",
-      "count": 12
-    },
-    {
-      "entity": "CWE-1023",
-      "count": 12
-    },
-    {
-      "entity": "CWE-1024",
-      "count": 10
-    },
-    {
       "entity": "Weakness",
-      "count": 7
-    },
-    {
-      "entity": "Incomplete",
-      "count": 7
+      "count": 944
     },
     {
       "entity": "Implementation",
-      "count": 6
+      "count": 852
+    },
+    {
+      "entity": "Base",
+      "count": 523
     },
     {
       "entity": "Integrity",
-      "count": 4
+      "count": 505
     },
     {
-      "entity": "Web Based",
-      "count": 4
-    },
-    {
-      "entity": "Variant",
-      "count": 3
-    },
-    {
-      "entity": "Medium",
-      "count": 3
+      "entity": "Incomplete",
+      "count": 486
     },
     {
       "entity": "Confidentiality",
-      "count": 3
+      "count": 472
+    },
+    {
+      "entity": "Draft",
+      "count": 432
+    },
+    {
+      "entity": "Architecture and Design",
+      "count": 365
+    },
+    {
+      "entity": "Availability",
+      "count": 320
+    },
+    {
+      "entity": "Variant",
+      "count": 292
+    },
+    {
+      "entity": "Access Control",
+      "count": 289
+    },
+    {
+      "entity": "Not Technology-Specific",
+      "count": 228
+    },
+    {
+      "entity": "Read Application Data",
+      "count": 203
+    },
+    {
+      "entity": "Bypass Protection Mechanism",
+      "count": 202
+    },
+    {
+      "entity": "Execute Unauthorized Code or Commands",
+      "count": 173
     }
   ],
-  "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:38Z"
+  "crossSourceLinks": [
+    {
+      "from": "cwe",
+      "to": "capec",
+      "count": 1212,
+      "predicate": "related-attack-pattern"
+    }
+  ],
+  "generatedAt": "2026-05-11T09:37:46Z"
 }
