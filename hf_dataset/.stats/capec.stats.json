@@ -35,7 +35,7 @@
       "count": 558
     },
     {
-      "predicate": "abstraction",
+      "predicate": "status",
       "count": 558
     },
     {
@@ -43,7 +43,7 @@
       "count": 558
     },
     {
-      "predicate": "status",
+      "predicate": "abstraction",
       "count": 558
     },
     {
@@ -159,5 +159,5 @@
       "predicate": "maps-to-technique"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:13Z"
+  "generatedAt": "2026-05-11T09:37:39Z"
 }

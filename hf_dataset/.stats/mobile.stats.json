@@ -1,12 +1,12 @@
 {
-  "totalTriples": 5307,
-  "uniqueSubjects": 509,
-  "uniqueObjects": 2077,
+  "totalTriples": 5574,
+  "uniqueSubjects": 530,
+  "uniqueObjects": 2203,
   "uniquePredicates": 19,
   "bySource": [
     {
       "source": "attack",
-      "count": 6871
+      "count": 7217
     },
     {
       "source": "engage",
@@ -16,39 +16,39 @@
   "topPredicates": [
     {
       "predicate": "uses",
-      "count": 1420
-    },
-    {
-      "predicate": "platform",
-      "count": 430
+      "count": 1496
     },
     {
       "predicate": "domain",
-      "count": 429
+      "count": 470
     },
     {
-      "predicate": "modified",
-      "count": 385
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 385
+      "predicate": "platform",
+      "count": 435
     },
     {
       "predicate": "name",
-      "count": 385
+      "count": 406
     },
     {
       "predicate": "created",
-      "count": 385
+      "count": 406
+    },
+    {
+      "predicate": "modified",
+      "count": 406
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 406
     },
     {
       "predicate": "url",
-      "count": 385
+      "count": 406
     },
     {
       "predicate": "description",
-      "count": 371
+      "count": 391
     },
     {
       "predicate": "is-subtechnique",
@@ -64,15 +64,15 @@
     },
     {
       "predicate": "alias",
-      "count": 60
+      "count": 76
     },
     {
       "predicate": "revoked",
-      "count": 53
+      "count": 55
     },
     {
       "predicate": "revoked-by",
-      "count": 52
+      "count": 54
     },
     {
       "predicate": "subtechnique-of",
@@ -94,11 +94,11 @@
   "topConnectedEntities": [
     {
       "entity": "mobile-attack",
-      "count": 385
+      "count": 403
     },
     {
       "entity": "Android",
-      "count": 266
+      "count": 270
     },
     {
       "entity": "Technique",
@@ -110,47 +110,47 @@
     },
     {
       "entity": "Malware",
-      "count": 121
+      "count": 125
     },
     {
       "entity": "T1636.004",
-      "count": 86
+      "count": 89
     },
     {
       "entity": "T1430",
-      "count": 75
+      "count": 77
     },
     {
       "entity": "T1636.003",
-      "count": 69
+      "count": 72
     },
     {
       "entity": "T1426",
-      "count": 68
+      "count": 70
     },
     {
       "entity": "T1429",
-      "count": 65
+      "count": 67
     },
     {
       "entity": "T1533",
-      "count": 64
+      "count": 66
     },
     {
       "entity": "T1418",
-      "count": 63
-    },
-    {
-      "entity": "T1422",
-      "count": 61
+      "count": 66
     },
     {
       "entity": "T1437.001",
-      "count": 60
+      "count": 62
+    },
+    {
+      "entity": "T1422",
+      "count": 62
     },
     {
       "entity": "T1406",
-      "count": 59
+      "count": 61
     }
   ],
   "crossSourceLinks": [
@@ -161,5 +161,5 @@
       "predicate": "detects"
     }
   ],
-  "generatedAt": "2026-04-27T08:30:13Z"
+  "generatedAt": "2026-05-11T09:37:39Z"
 }
