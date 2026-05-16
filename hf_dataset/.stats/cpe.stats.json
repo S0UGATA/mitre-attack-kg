@@ -1,68 +1,68 @@
 {
-  "totalTriples": 12826110,
-  "uniqueSubjects": 1603264,
-  "uniqueObjects": 2685216,
-  "uniquePredicates": 8,
+  "totalTriples": 13090728,
+  "uniqueSubjects": 1707793,
+  "uniqueObjects": 2695652,
+  "uniquePredicates": 9,
   "bySource": [
     {
       "source": "cpe",
-      "count": 12826124
-    },
-    {
-      "source": "attack",
-      "count": 1152
+      "count": 13090728
     }
   ],
   "topPredicates": [
     {
+      "predicate": "rdf:type",
+      "count": 1707793
+    },
+    {
       "predicate": "created",
-      "count": 1603264
+      "count": 1612524
     },
     {
       "predicate": "vendor",
-      "count": 1603264
+      "count": 1612524
     },
     {
       "predicate": "title",
-      "count": 1603264
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 1603264
+      "count": 1612524
     },
     {
       "predicate": "part",
-      "count": 1603264
-    },
-    {
-      "predicate": "product",
-      "count": 1603264
+      "count": 1612524
     },
     {
       "predicate": "modified",
-      "count": 1603264
+      "count": 1612524
+    },
+    {
+      "predicate": "product",
+      "count": 1612524
     },
     {
       "predicate": "version",
-      "count": 1603262
+      "count": 1612522
+    },
+    {
+      "predicate": "deprecated",
+      "count": 95269
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "Platform",
-      "count": 1603264
+      "count": 1707793
     },
     {
       "entity": "application",
-      "count": 1404862
+      "count": 1413871
     },
     {
       "entity": "operating_system",
-      "count": 137338
+      "count": 137545
     },
     {
       "entity": "hardware",
-      "count": 61141
+      "count": 61185
     },
     {
       "entity": "cisco",
@@ -70,7 +70,7 @@
     },
     {
       "entity": "vim",
-      "count": 30928
+      "count": 31104
     },
     {
       "entity": "hp",
@@ -78,11 +78,11 @@
     },
     {
       "entity": "microsoft",
-      "count": 18413
+      "count": 18628
     },
     {
       "entity": "apache",
-      "count": 17298
+      "count": 17652
     },
     {
       "entity": "jenkins",
@@ -102,20 +102,13 @@
     },
     {
       "entity": "redhat",
-      "count": 11612
+      "count": 11642
     },
     {
       "entity": "1.0.0",
-      "count": 11519
+      "count": 11614
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "cpe",
-      "to": "attack",
-      "count": 1152,
-      "predicate": "title"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:44Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:52Z"
 }

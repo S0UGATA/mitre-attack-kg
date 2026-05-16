@@ -6,11 +6,7 @@
   "bySource": [
     {
       "source": "cwe",
-      "count": 16185
-    },
-    {
-      "source": "capec",
-      "count": 1212
+      "count": 14583
     }
   ],
   "topPredicates": [
@@ -39,15 +35,11 @@
       "count": 1212
     },
     {
-      "predicate": "description",
-      "count": 944
-    },
-    {
-      "predicate": "status",
-      "count": 944
-    },
-    {
       "predicate": "name",
+      "count": 944
+    },
+    {
+      "predicate": "rdf:type",
       "count": 944
     },
     {
@@ -55,7 +47,11 @@
       "count": 944
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "description",
+      "count": 944
+    },
+    {
+      "predicate": "status",
       "count": 944
     },
     {
@@ -145,13 +141,6 @@
       "count": 173
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "cwe",
-      "to": "capec",
-      "count": 1212,
-      "predicate": "related-attack-pattern"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:46Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:54Z"
 }

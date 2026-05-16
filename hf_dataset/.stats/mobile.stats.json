@@ -1,16 +1,12 @@
 {
-  "totalTriples": 5574,
+  "totalTriples": 5579,
   "uniqueSubjects": 530,
-  "uniqueObjects": 2203,
+  "uniqueObjects": 2164,
   "uniquePredicates": 19,
   "bySource": [
     {
       "source": "attack",
-      "count": 7217
-    },
-    {
-      "source": "engage",
-      "count": 124
+      "count": 5579
     }
   ],
   "topPredicates": [
@@ -20,14 +16,14 @@
     },
     {
       "predicate": "domain",
-      "count": 470
+      "count": 475
     },
     {
       "predicate": "platform",
       "count": 435
     },
     {
-      "predicate": "name",
+      "predicate": "url",
       "count": 406
     },
     {
@@ -39,11 +35,11 @@
       "count": 406
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "name",
       "count": 406
     },
     {
-      "predicate": "url",
+      "predicate": "rdf:type",
       "count": 406
     },
     {
@@ -94,7 +90,7 @@
   "topConnectedEntities": [
     {
       "entity": "mobile-attack",
-      "count": 403
+      "count": 406
     },
     {
       "entity": "Android",
@@ -153,13 +149,6 @@
       "count": 61
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 124,
-      "predicate": "detects"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:39Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:49Z"
 }

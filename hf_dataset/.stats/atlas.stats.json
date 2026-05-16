@@ -6,11 +6,7 @@
   "bySource": [
     {
       "source": "atlas",
-      "count": 1622
-    },
-    {
-      "source": "attack",
-      "count": 48
+      "count": 1442
     }
   ],
   "topPredicates": [
@@ -77,11 +73,11 @@
       "count": 57
     },
     {
-      "entity": "2025-04-09",
+      "entity": "2025-03-12",
       "count": 43
     },
     {
-      "entity": "2025-03-12",
+      "entity": "2025-04-09",
       "count": 43
     },
     {
@@ -117,13 +113,6 @@
       "count": 15
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "atlas",
-      "to": "attack",
-      "count": 34,
-      "predicate": "related-attack-technique"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:39Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:49Z"
 }

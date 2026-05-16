@@ -1,16 +1,12 @@
 {
-  "totalTriples": 199993,
-  "uniqueSubjects": 36653,
-  "uniqueObjects": 73993,
+  "totalTriples": 200046,
+  "uniqueSubjects": 36665,
+  "uniqueObjects": 74018,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 260585
-    },
-    {
-      "source": "attack",
-      "count": 4222
+      "count": 200046
     }
   ],
   "topPredicates": [
@@ -19,20 +15,20 @@
       "count": 37055
     },
     {
+      "predicate": "galaxy",
+      "count": 32957
+    },
+    {
       "predicate": "rdf:type",
-      "count": 32945
+      "count": 32957
     },
     {
       "predicate": "name",
-      "count": 32945
-    },
-    {
-      "predicate": "galaxy",
-      "count": 32945
+      "count": 32957
     },
     {
       "predicate": "description",
-      "count": 28559
+      "count": 28570
     },
     {
       "predicate": "uses",
@@ -52,7 +48,7 @@
     },
     {
       "predicate": "country",
-      "count": 1272
+      "count": 1274
     },
     {
       "predicate": "targets-country",
@@ -80,16 +76,16 @@
     },
     {
       "predicate": "variant-of",
-      "count": 39
+      "count": 43
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "References",
+      "entity": "references",
       "count": 5219
     },
     {
-      "entity": "references",
+      "entity": "References",
       "count": 5219
     },
     {
@@ -117,11 +113,11 @@
       "count": 2565
     },
     {
-      "entity": "veris-framework",
+      "entity": "VerisFramework",
       "count": 2207
     },
     {
-      "entity": "VerisFramework",
+      "entity": "veris-framework",
       "count": 2207
     },
     {
@@ -145,13 +141,6 @@
       "count": 1309
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "misp_galaxy",
-      "to": "attack",
-      "count": 3973,
-      "predicate": "related-attack-id"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:47Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:54Z"
 }

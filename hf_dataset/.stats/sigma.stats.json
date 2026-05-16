@@ -7,24 +7,12 @@
     {
       "source": "sigma",
       "count": 33294
-    },
-    {
-      "source": "attack",
-      "count": 3913
-    },
-    {
-      "source": "cve",
-      "count": 43
     }
   ],
   "topPredicates": [
     {
       "predicate": "detects-technique",
       "count": 3912
-    },
-    {
-      "predicate": "author",
-      "count": 3283
     },
     {
       "predicate": "title",
@@ -35,19 +23,23 @@
       "count": 3283
     },
     {
-      "predicate": "status",
-      "count": 3283
-    },
-    {
       "predicate": "rdf:type",
       "count": 3283
     },
     {
-      "predicate": "level",
+      "predicate": "date",
       "count": 3283
     },
     {
-      "predicate": "date",
+      "predicate": "author",
+      "count": 3283
+    },
+    {
+      "predicate": "status",
+      "count": 3283
+    },
+    {
+      "predicate": "level",
       "count": 3283
     },
     {
@@ -125,19 +117,6 @@
       "count": 174
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "sigma",
-      "to": "attack",
-      "count": 3912,
-      "predicate": "detects-technique"
-    },
-    {
-      "from": "sigma",
-      "to": "cve",
-      "count": 43,
-      "predicate": "title"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:47Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:54Z"
 }

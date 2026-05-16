@@ -1,98 +1,98 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 6,
-  "uniqueObjects": 71,
+  "totalTriples": 4786,
+  "uniqueSubjects": 102,
+  "uniqueObjects": 601,
   "uniquePredicates": 5,
   "bySource": [
     {
       "source": "nist_800_53",
-      "count": 100
+      "count": 4786
     }
   ],
   "topPredicates": [
     {
       "predicate": "mitigates-technique",
-      "count": 76
-    },
-    {
-      "predicate": "name",
-      "count": 6
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 6
-    },
-    {
-      "predicate": "control-family",
-      "count": 6
+      "count": 4378
     },
     {
       "predicate": "description",
-      "count": 6
+      "count": 102
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 102
+    },
+    {
+      "predicate": "control-family",
+      "count": 102
+    },
+    {
+      "predicate": "name",
+      "count": 102
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "AC-16",
-      "count": 46
+      "entity": "SI-4",
+      "count": 326
     },
     {
-      "entity": "AC-17",
-      "count": 31
+      "entity": "CM-6",
+      "count": 298
     },
     {
-      "entity": "AC-12",
-      "count": 8
+      "entity": "CM-2",
+      "count": 240
     },
     {
-      "entity": "AC-10",
-      "count": 8
+      "entity": "AC-3",
+      "count": 229
     },
     {
-      "entity": "AC-11",
-      "count": 7
+      "entity": "AC-6",
+      "count": 209
     },
     {
-      "entity": "AC",
-      "count": 6
+      "entity": "CM-7",
+      "count": 195
     },
     {
-      "entity": "AC-14",
-      "count": 6
+      "entity": "CA-7",
+      "count": 190
     },
     {
-      "entity": "SecurityControl",
-      "count": 6
+      "entity": "SI-3",
+      "count": 180
     },
     {
-      "entity": "T1137.002",
-      "count": 3
+      "entity": "SI-7",
+      "count": 177
     },
     {
-      "entity": "T1021.001",
-      "count": 3
+      "entity": "AC-2",
+      "count": 166
     },
     {
-      "entity": "T1070.001",
-      "count": 2
+      "entity": "IA-2",
+      "count": 158
     },
     {
-      "entity": "T1040",
-      "count": 2
+      "entity": "AC-5",
+      "count": 155
     },
     {
-      "entity": "T1114.001",
-      "count": 2
+      "entity": "CM-5",
+      "count": 147
     },
     {
-      "entity": "T1020.001",
-      "count": 2
+      "entity": "SC-7",
+      "count": 146
     },
     {
-      "entity": "T1114.003",
-      "count": 2
+      "entity": "AC-4",
+      "count": 143
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "generatedAt": "2026-05-16T19:55:55Z"
 }

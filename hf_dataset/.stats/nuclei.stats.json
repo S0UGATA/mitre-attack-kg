@@ -1,106 +1,114 @@
 {
-  "totalTriples": 100,
-  "uniqueSubjects": 22,
-  "uniqueObjects": 44,
-  "uniquePredicates": 7,
+  "totalTriples": 96483,
+  "uniqueSubjects": 12520,
+  "uniqueObjects": 44513,
+  "uniquePredicates": 9,
   "bySource": [
     {
       "source": "nuclei",
-      "count": 100
+      "count": 96483
     }
   ],
   "topPredicates": [
     {
+      "predicate": "url",
+      "count": 23480
+    },
+    {
       "predicate": "rdf:type",
-      "count": 22
-    },
-    {
-      "predicate": "name",
-      "count": 22
-    },
-    {
-      "predicate": "severity",
-      "count": 22
+      "count": 12520
     },
     {
       "predicate": "author",
-      "count": 22
+      "count": 12520
+    },
+    {
+      "predicate": "name",
+      "count": 12520
+    },
+    {
+      "predicate": "severity",
+      "count": 12520
     },
     {
       "predicate": "description",
-      "count": 10
-    },
-    {
-      "predicate": "cvss-base-score",
-      "count": 1
+      "count": 10970
     },
     {
       "predicate": "cvss-vector",
+      "count": 6411
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 5541
+    },
+    {
+      "predicate": "related-weakness",
       "count": 1
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "NucleiTemplate",
-      "count": 22
+      "count": 12520
     },
     {
       "entity": "info",
-      "count": 17
+      "count": 4819
     },
     {
-      "entity": "daffainfo",
-      "count": 8
+      "entity": "high",
+      "count": 2706
     },
     {
-      "entity": "dom-invader-xss",
-      "count": 7
+      "entity": "medium",
+      "count": 2705
     },
     {
-      "entity": "me_dheeraj (https://twitter.com/Dheerajmadhukar)",
-      "count": 6
+      "entity": "critical",
+      "count": 1748
     },
     {
-      "entity": "zip-path-overwrite",
-      "count": 5
+      "entity": "9.8",
+      "count": 1095
     },
     {
-      "entity": "url-extension-inspector",
-      "count": 5
+      "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "count": 995
     },
     {
-      "entity": "xss-disable-mustache-escape",
-      "count": 5
+      "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N",
+      "count": 909
     },
     {
-      "entity": "tar-extraction",
-      "count": 5
+      "entity": "6.1",
+      "count": 858
     },
     {
-      "entity": "express-lfr",
-      "count": 5
+      "entity": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N",
+      "count": 827
     },
     {
-      "entity": "python-scanner",
-      "count": 5
+      "entity": "DhiyaneshDK",
+      "count": 787
     },
     {
-      "entity": "js-analyse",
-      "count": 5
+      "entity": "7.5",
+      "count": 763
     },
     {
-      "entity": "admzip-path-overwrite",
-      "count": 5
+      "entity": "dwisiswant0",
+      "count": 752
     },
     {
-      "entity": "generic-path-traversal",
-      "count": 5
+      "entity": "princechaddha",
+      "count": 729
     },
     {
-      "entity": "tedroo-malware",
-      "count": 4
+      "entity": "pussycat0x",
+      "count": 699
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-04-19T21:10:39Z"
+  "generatedAt": "2026-05-16T19:55:55Z"
 }

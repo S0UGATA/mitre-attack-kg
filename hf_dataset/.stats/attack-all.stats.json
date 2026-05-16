@@ -1,30 +1,22 @@
 {
-  "totalTriples": 51793,
+  "totalTriples": 51907,
   "uniqueSubjects": 3613,
-  "uniqueObjects": 15410,
-  "uniquePredicates": 21,
+  "uniqueObjects": 14821,
+  "uniquePredicates": 22,
   "bySource": [
     {
       "source": "attack",
-      "count": 75388
-    },
-    {
-      "source": "engage",
-      "count": 918
+      "count": 51907
     }
   ],
   "topPredicates": [
     {
       "predicate": "uses",
-      "count": 19989
+      "count": 19988
     },
     {
       "predicate": "platform",
       "count": 3729
-    },
-    {
-      "predicate": "modified",
-      "count": 2919
     },
     {
       "predicate": "rdf:type",
@@ -32,6 +24,10 @@
     },
     {
       "predicate": "name",
+      "count": 2919
+    },
+    {
+      "predicate": "modified",
       "count": 2919
     },
     {
@@ -48,7 +44,7 @@
     },
     {
       "predicate": "domain",
-      "count": 2761
+      "count": 2838
     },
     {
       "predicate": "mitigates",
@@ -95,6 +91,10 @@
       "count": 41
     },
     {
+      "predicate": "impact-type",
+      "count": 38
+    },
+    {
       "predicate": "attributed-to",
       "count": 27
     }
@@ -102,7 +102,7 @@
   "topConnectedEntities": [
     {
       "entity": "enterprise-attack",
-      "count": 2077
+      "count": 2133
     },
     {
       "entity": "Windows",
@@ -138,7 +138,7 @@
     },
     {
       "entity": "mobile-attack",
-      "count": 403
+      "count": 411
     },
     {
       "entity": "T1059.003",
@@ -161,13 +161,6 @@
       "count": 334
     }
   ],
-  "crossSourceLinks": [
-    {
-      "from": "engage",
-      "to": "attack",
-      "count": 918,
-      "predicate": "detects"
-    }
-  ],
-  "generatedAt": "2026-05-11T09:37:39Z"
+  "crossSourceLinks": [],
+  "generatedAt": "2026-05-16T19:55:49Z"
 }
