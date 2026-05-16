@@ -2,13 +2,21 @@
 
 import logging
 import re
+import shutil
 from collections.abc import Iterator
 from pathlib import Path
 
 import requests
 import yaml
 
-from common import SOURCE_DIR, get_object_type, github_api_headers, meta_json, safe_zip_extract
+from common import (
+    SOURCE_DIR,
+    Triple,
+    github_api_headers,
+    make_triple_fn,
+    meta_json,
+    safe_zip_extract,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -16,12 +24,10 @@ SOURCE = "sigma"
 
 SIGMA_RELEASES_API = "https://api.github.com/repos/SigmaHQ/sigma/releases/latest"
 
-
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
-def download_sigma(cache_dir: str | None = None) -> str:
+def download_sigma(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download sigma_all_rules.zip from the latest SigmaHQ release.
 
     Returns path to the extraction directory containing YAML rule files.
@@ -49,11 +55,11 @@ def download_sigma(cache_dir: str | None = None) -> str:
     zip_path = cache / zip_name
     extract_dir = cache / f"sigma_rules_{tag}"
 
-    if extract_dir.exists() and next(extract_dir.rglob("*.yml"), None):
+    if not force_download and extract_dir.exists() and next(extract_dir.rglob("*.yml"), None):
         logger.info("Using cached Sigma rules at %s (release %s)", extract_dir, tag)
         return str(extract_dir)
 
-    if not zip_path.exists():
+    if force_download or not zip_path.exists():
         logger.info("Downloading %s (%d KB) ...", asset["name"], asset["size"] // 1000)
         download_url = asset["browser_download_url"]
         resp = requests.get(download_url, timeout=300)
@@ -61,6 +67,30 @@ def download_sigma(cache_dir: str | None = None) -> str:
         zip_path.write_bytes(resp.content)
         logger.info("Saved %s (%d bytes)", zip_path, len(resp.content))
 
+    # Clean up old Sigma zips and extraction dirs
+    for old in cache.glob("sigma_all_rules_*"):
+        if old in (zip_path, extract_dir):
+            continue
+        try:
+            if old.is_dir():
+                shutil.rmtree(old)
+            else:
+                old.unlink()
+            logger.info("Cleaned up old Sigma data %s", old)
+        except OSError:
+            pass
+    for old in cache.glob("sigma_rules_*"):
+        if old == extract_dir:
+            continue
+        try:
+            if old.is_dir():
+                shutil.rmtree(old)
+            logger.info("Cleaned up old Sigma data %s", old)
+        except OSError:
+            pass
+
+    if force_download and extract_dir.exists():
+        shutil.rmtree(extract_dir)
     logger.info("Extracting %s ...", zip_path)
     extract_dir.mkdir(parents=True, exist_ok=True)
     safe_zip_extract(zip_path, extract_dir)
@@ -75,7 +105,7 @@ _TECHNIQUE_RE = re.compile(r"^attack\.t(\d{4}(?:\.\d{3})?)$", re.IGNORECASE)
 _CVE_RE = re.compile(r"^cve\.(\d{4}\.\d+)$", re.IGNORECASE)
 
 
-def _rule_triples(rule: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _rule_triples(rule: dict) -> list[Triple]:
     """Extract triples from a single Sigma rule."""
     rule_id = rule.get("id", "")
     if not rule_id:
@@ -90,7 +120,7 @@ def _rule_triples(rule: dict) -> list[tuple[str, str, str, str, str, str]]:
     if refs and isinstance(refs, list):
         entity_meta["references"] = [str(r) for r in refs if r]
 
-    triples: list[tuple[str, str, str, str, str, str]] = [
+    triples: list[Triple] = [
         _t(rule_id, "rdf:type", "SigmaRule", meta_json(entity_meta)),
     ]
 
@@ -130,13 +160,13 @@ def _rule_triples(rule: dict) -> list[tuple[str, str, str, str, str, str]]:
         # CVE reference: cve.2024.1234
         match = _CVE_RE.match(tag_str)
         if match:
-            cve_id = "CVE-" + match.group(1).replace(".", "-", 1)
+            cve_id = "CVE-" + match.group(1).replace(".", "-", 1).upper()
             triples.append(_t(rule_id, "related-cve", cve_id))
 
     return triples
 
 
-def extract_sigma_triples(rules_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+def extract_sigma_triples(rules_dir: str) -> Iterator[Triple]:
     """Yield SPO triples from all Sigma rule YAML files."""
     rules_path = Path(rules_dir)
 
@@ -145,7 +175,7 @@ def extract_sigma_triples(rules_dir: str) -> Iterator[tuple[str, str, str, str, 
 
     for yaml_file in yaml_files:
         try:
-            with open(yaml_file) as f:
+            with open(yaml_file, encoding="utf-8") as f:
                 rule = yaml.safe_load(f)
             if rule and isinstance(rule, dict):
                 yield from _rule_triples(rule)

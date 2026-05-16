@@ -5,36 +5,44 @@ import logging
 from collections.abc import Iterator
 from pathlib import Path
 
-from common import download_github_zip, get_object_type, meta_json
+from common import Triple, download_github_zip, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
 SOURCE = "ghsa"
 
+_t = make_triple_fn(SOURCE)
 
-def download_ghsa(cache_dir: str | None = None) -> str:
+
+def download_ghsa(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download GHSA advisory database ZIP, returning path to the extraction directory."""
-    return str(download_github_zip("github", "advisory-database", "ghsa.zip", "main", cache_dir))
+    return str(
+        download_github_zip(
+            "github",
+            "advisory-database",
+            "ghsa.zip",
+            "main",
+            cache_dir,
+            force_download=force_download,
+        )
+    )
 
 
 def _find_reviewed_dir(extract_dir: str) -> Path:
     """Locate the github-reviewed advisories directory inside the extraction."""
     base = Path(extract_dir)
-    reviewed_dir = base / "advisory-database-main" / "advisories" / "github-reviewed"
-    if not reviewed_dir.exists():
-        for d in base.iterdir():
-            if d.is_dir():
-                candidate = d / "advisories" / "github-reviewed"
-                if candidate.exists():
-                    return candidate
-    return reviewed_dir
+    reviewed = base / "advisories" / "github-reviewed"
+    if reviewed.exists():
+        return reviewed
+    for d in base.iterdir():
+        if d.is_dir():
+            candidate = d / "advisories" / "github-reviewed"
+            if candidate.exists():
+                return candidate
+    return reviewed
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
-
-
-def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _extract_single_advisory(advisory: dict) -> list[Triple]:
     """Extract triples from a single GHSA advisory (OSV format)."""
     ghsa_id = advisory.get("id", "")
     if not ghsa_id:
@@ -62,7 +70,7 @@ def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str, str, s
         if credit_entries:
             entity_meta["credits"] = credit_entries
 
-    triples: list[tuple[str, str, str, str, str, str]] = [
+    triples: list[Triple] = [
         _t(ghsa_id, "rdf:type", "SecurityAdvisory", meta_json(entity_meta)),
     ]
 
@@ -76,8 +84,8 @@ def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str, str, s
 
     # CVE aliases
     for alias in advisory.get("aliases", []):
-        if alias.startswith("CVE-"):
-            triples.append(_t(ghsa_id, "related-cve", alias))
+        if alias.upper().startswith("CVE-"):
+            triples.append(_t(ghsa_id, "related-cve", alias.upper()))
 
     # Severity (CVSS)
     for sev in advisory.get("severity", []):
@@ -92,7 +100,7 @@ def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str, str, s
 
     # CWE IDs
     for cwe_id in db_specific.get("cwe_ids", []):
-        triples.append(_t(ghsa_id, "related-weakness", cwe_id))
+        triples.append(_t(ghsa_id, "related-weakness", str(cwe_id).upper()))
 
     # Affected packages
     for affected in advisory.get("affected", []):
@@ -133,7 +141,7 @@ def _extract_single_advisory(advisory: dict) -> list[tuple[str, str, str, str, s
     return triples
 
 
-def extract_ghsa_triples(extract_dir: str) -> Iterator[tuple[str, str, str, str, str, str]]:
+def extract_ghsa_triples(extract_dir: str) -> Iterator[Triple]:
     """Yield SPO triples from all GHSA advisory JSON files."""
     data_path = _find_reviewed_dir(extract_dir)
     count = 0
@@ -144,7 +152,7 @@ def extract_ghsa_triples(extract_dir: str) -> Iterator[tuple[str, str, str, str,
             logger.info("  processed %d advisories", count)
 
         try:
-            with open(json_file) as f:
+            with open(json_file, encoding="utf-8") as f:
                 advisory = json.load(f)
             yield from _extract_single_advisory(advisory)
         except (json.JSONDecodeError, KeyError, ValueError, OSError) as e:

@@ -141,11 +141,16 @@ class TestCpeTriples:
         assert (cpe_name, "rdf:type", "Platform") in ts
         assert (cpe_name, "part", "hardware") in ts
 
-    def test_deprecated_excluded(self, sample_json_dir):
+    def test_deprecated_emits_type_and_flag(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))
-        subjects = {t[0] for t in triples}
+        ts = {t[:3] for t in triples}
+        dep_cpe = "cpe:2.3:a:oldvendor:oldproduct:1.0:*:*:*:*:*:*:*"
 
-        assert "cpe:2.3:a:oldvendor:oldproduct:1.0:*:*:*:*:*:*:*" not in subjects
+        # Deprecated entries are now emitted with rdf:type + deprecated flag
+        assert (dep_cpe, "rdf:type", "Platform") in ts
+        assert (dep_cpe, "deprecated", "true") in ts
+        # But no component triples (vendor/product/version) for deprecated entries
+        assert (dep_cpe, "vendor", "oldvendor") not in ts
 
     def test_empty_cpe_name_excluded(self, sample_json_dir):
         triples = list(extract_cpe_triples(sample_json_dir))

@@ -4,7 +4,7 @@ import json
 import logging
 from pathlib import Path
 
-from common import download_file, get_object_type
+from common import Triple, download_file, make_triple_fn
 
 logger = logging.getLogger(__name__)
 
@@ -13,13 +13,12 @@ SOURCE = "f3"
 F3_URL = "https://raw.githubusercontent.com/center-for-threat-informed-defense/fight-fraud-framework/main/public/f3-stix.json"
 
 
-def download_f3(cache_dir: str | None = None) -> str:
+def download_f3(cache_dir: str | None = None, *, force_download: bool = False) -> str:
     """Download F3 STIX 2.1 bundle, returning the local file path."""
-    return str(download_file(F3_URL, "f3-stix.json", cache_dir))
+    return str(download_file(F3_URL, "f3-stix.json", cache_dir, force_download=force_download))
 
 
-def _t(s: str, p: str, o: str, m: str = "") -> tuple[str, str, str, str, str, str]:
-    return (s, p, o, SOURCE, get_object_type(p), m)
+_t = make_triple_fn(SOURCE)
 
 
 def _resolve_id(obj: dict) -> str:
@@ -30,7 +29,7 @@ def _resolve_id(obj: dict) -> str:
     return obj.get("id", "")
 
 
-def _tactic_triples(tactic: dict) -> list[tuple[str, str, str, str, str, str]]:
+def _tactic_triples(tactic: dict) -> list[Triple]:
     """Extract triples from an F3 tactic (x-mitre-tactic)."""
     tid = _resolve_id(tactic)
     if not tid:
@@ -47,13 +46,15 @@ def _tactic_triples(tactic: dict) -> list[tuple[str, str, str, str, str, str]]:
         triples.append(_t(tid, "modified", tactic["modified"]))
     if tactic.get("x_mitre_shortname"):
         triples.append(_t(tid, "shortname", tactic["x_mitre_shortname"]))
+    if tactic.get("revoked"):
+        triples.append(_t(tid, "revoked", "true"))
+    if tactic.get("x_mitre_deprecated"):
+        triples.append(_t(tid, "deprecated", "true"))
 
     return triples
 
 
-def _technique_triples(
-    tech: dict, tactic_lookup: dict[str, str]
-) -> list[tuple[str, str, str, str, str, str]]:
+def _technique_triples(tech: dict, tactic_lookup: dict[str, str]) -> list[Triple]:
     """Extract triples from an F3 technique (attack-pattern)."""
     tid = _resolve_id(tech)
     if not tid:
@@ -71,6 +72,15 @@ def _technique_triples(
     if tech.get("x_mitre_is_subtechnique"):
         triples.append(_t(tid, "is-subtechnique", "true"))
 
+    if tech.get("revoked"):
+        triples.append(_t(tid, "revoked", "true"))
+    if tech.get("x_mitre_deprecated"):
+        triples.append(_t(tid, "deprecated", "true"))
+    for alias in tech.get("aliases", []):
+        alias_str = str(alias)
+        if alias_str != tech.get("name"):
+            triples.append(_t(tid, "alias", alias_str))
+
     for phase in tech.get("kill_chain_phases", []):
         if phase.get("kill_chain_name") == "mitre-f3":
             tactic_id = tactic_lookup.get(phase.get("phase_name", ""))
@@ -85,9 +95,9 @@ def _technique_triples(
     return triples
 
 
-def extract_f3_triples(json_path: str) -> list[tuple[str, str, str, str, str, str]]:
+def extract_f3_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from F3 STIX 2.1 bundle."""
-    with open(json_path) as f:
+    with open(json_path, encoding="utf-8") as f:
         bundle = json.load(f)
 
     objects = bundle.get("objects", [])
@@ -112,7 +122,7 @@ def extract_f3_triples(json_path: str) -> list[tuple[str, str, str, str, str, st
         elif obj_type == "relationship":
             relationships.append(obj)
 
-    triples: list[tuple[str, str, str, str, str, str]] = []
+    triples: list[Triple] = []
 
     for tactic in tactics:
         triples.extend(_tactic_triples(tactic))
