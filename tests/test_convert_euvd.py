@@ -52,18 +52,14 @@ class TestEuvdTriples:
 
     def test_sources_in_meta(self, sample_file):
         triples = list(extract_euvd_triples(sample_file))
-        type_triples = [
-            t for t in triples if t[0] == "EUVD-2025-4893" and t[1] == "rdf:type"
-        ]
+        type_triples = [t for t in triples if t[0] == "EUVD-2025-4893" and t[1] == "rdf:type"]
         assert len(type_triples) == 1
         meta = json.loads(type_triples[0][5])
         assert meta["sources"] == ["cisa_kev"]
 
     def test_empty_sources_no_meta(self, sample_file):
         triples = list(extract_euvd_triples(sample_file))
-        type_triples = [
-            t for t in triples if t[0] == "EUVD-2025-0001" and t[1] == "rdf:type"
-        ]
+        type_triples = [t for t in triples if t[0] == "EUVD-2025-0001" and t[1] == "rdf:type"]
         assert len(type_triples) == 1
         assert type_triples[0][5] == ""  # no meta when sources is empty
 
