@@ -175,7 +175,7 @@ def extract_sigma_triples(rules_dir: str) -> Iterator[Triple]:
 
     for yaml_file in yaml_files:
         try:
-            with open(yaml_file) as f:
+            with open(yaml_file, encoding="utf-8") as f:
                 rule = yaml.safe_load(f)
             if rule and isinstance(rule, dict):
                 yield from _rule_triples(rule)

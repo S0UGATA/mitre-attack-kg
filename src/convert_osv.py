@@ -3,6 +3,7 @@
 import json
 import logging
 import shutil
+import zipfile
 from collections.abc import Iterator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -12,6 +13,7 @@ from common import (
     Triple,
     download_file,
     make_triple_fn,
+    meta_json,
     safe_zip_extract,
     truncate_text,
 )
@@ -32,7 +34,6 @@ ECOSYSTEMS = [
     "GIT",
     "GitHub Actions",
     "Go",
-    "Haskell",
     "Hex",
     "Linux",
     "Maven",
@@ -74,7 +75,15 @@ def _download_ecosystem(osv_dir: Path, ecosystem: str, *, force_download: bool =
         shutil.rmtree(extract_dir)
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
-    safe_zip_extract(zip_path, extract_dir)
+    try:
+        safe_zip_extract(zip_path, extract_dir)
+    except zipfile.BadZipFile:
+        logger.warning("Re-downloading after corrupt zip: %s", zip_path.name)
+        if extract_dir.exists():
+            shutil.rmtree(extract_dir)
+        zip_path = download_file(url, zip_name, str(osv_dir), force_download=True)
+        extract_dir.mkdir(parents=True, exist_ok=True)
+        safe_zip_extract(zip_path, extract_dir)
 
 
 def download_osv(cache_dir: str | None = None, *, force_download: bool = False) -> str:
@@ -142,7 +151,22 @@ def _vuln_triples(record: dict) -> list[Triple]:
             pkg_key = f"{ecosystem}/{pkg_name}"
             if pkg_key not in seen_packages:
                 seen_packages.add(pkg_key)
-                triples.append(_t(eid, "affects-package", pkg_key))
+                # Collect version ranges from all range entries for this package
+                pkg_meta: dict = {}
+                for rng in affected.get("ranges", []):
+                    if not isinstance(rng, dict):
+                        continue
+                    for event in rng.get("events", []):
+                        if not isinstance(event, dict):
+                            continue
+                        introduced = event.get("introduced", "")
+                        if introduced and introduced != "0":
+                            pkg_meta.setdefault("introduced", []).append(introduced)
+                        fixed = event.get("fixed", "")
+                        if fixed:
+                            pkg_meta.setdefault("fixed", []).append(fixed)
+                            triples.append(_t(eid, "fixed-in", f"{pkg_key}@{fixed}"))
+                triples.append(_t(eid, "affects-package", pkg_key, meta_json(pkg_meta)))
         if ecosystem and ecosystem not in seen_ecosystems:
             seen_ecosystems.add(ecosystem)
             triples.append(_t(eid, "ecosystem", str(ecosystem)))
@@ -171,7 +195,7 @@ def extract_osv_triples(
 
         for json_file in sorted(extract_dir.glob("*.json")):
             try:
-                with open(json_file) as f:
+                with open(json_file, encoding="utf-8") as f:
                     record = json.load(f)
                 if record and isinstance(record, dict):
                     yield from _vuln_triples(record)

@@ -89,7 +89,7 @@ def extract_lolbas_triples(repo_dir: str) -> Iterator[Triple]:
 
     for yaml_file in yaml_files:
         try:
-            with open(yaml_file) as f:
+            with open(yaml_file, encoding="utf-8") as f:
                 data = yaml.safe_load(f)
             if data and isinstance(data, dict):
                 yield from _binary_triples(data)

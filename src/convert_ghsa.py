@@ -152,7 +152,7 @@ def extract_ghsa_triples(extract_dir: str) -> Iterator[Triple]:
             logger.info("  processed %d advisories", count)
 
         try:
-            with open(json_file) as f:
+            with open(json_file, encoding="utf-8") as f:
                 advisory = json.load(f)
             yield from _extract_single_advisory(advisory)
         except (json.JSONDecodeError, KeyError, ValueError, OSError) as e:

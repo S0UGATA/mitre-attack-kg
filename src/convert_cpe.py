@@ -59,7 +59,7 @@ def extract_cpe_triples(data_dir: str) -> Iterator[Triple]:
 
     for json_file in json_files:
         logger.info("Processing %s ...", json_file)
-        with open(json_file) as f:
+        with open(json_file, encoding="utf-8") as f:
             data = json.load(f)
 
         products = data.get("products", [])
@@ -74,8 +74,7 @@ def extract_cpe_triples(data_dir: str) -> Iterator[Triple]:
             if not cpe_name:
                 continue
 
-            if cpe.get("deprecated", False):
-                continue
+            is_deprecated = bool(cpe.get("deprecated", False))
 
             # Entity-level meta: references
             entity_meta: dict = {}
@@ -86,6 +85,10 @@ def extract_cpe_triples(data_dir: str) -> Iterator[Triple]:
                     entity_meta["references"] = ref_urls
 
             yield _t(cpe_name, "rdf:type", "Platform", meta_json(entity_meta))
+
+            if is_deprecated:
+                yield _t(cpe_name, "deprecated", "true")
+                continue
 
             # Parse and add components
             components = _parse_cpe_uri(cpe_name)

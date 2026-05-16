@@ -123,7 +123,7 @@ def _mitigation_triples(mit: dict) -> list[Triple]:
 
 def extract_atlas_triples(yaml_path: str) -> list[Triple]:
     """Extract SPO triples from ATLAS YAML."""
-    with open(yaml_path) as f:
+    with open(yaml_path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     triples: list[Triple] = []

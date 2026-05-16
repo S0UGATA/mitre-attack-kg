@@ -27,7 +27,7 @@ _t = make_triple_fn(SOURCE)
 
 def extract_engage_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from MITRE ENGAGE JSON."""
-    with open(json_path) as f:
+    with open(json_path, encoding="utf-8") as f:
         data = json.load(f)
 
     triples: list[Triple] = []

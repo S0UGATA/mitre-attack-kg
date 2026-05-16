@@ -35,7 +35,7 @@ def _extract_subclass_ids(node: dict) -> list[str]:
 
 def extract_d3fend_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from D3FEND JSON-LD ontology."""
-    with open(json_path) as f:
+    with open(json_path, encoding="utf-8") as f:
         data = json.load(f)
 
     graph = data.get("@graph", [])

@@ -230,15 +230,25 @@ def download_tar_gz(
 
 
 def safe_zip_extract(zip_path: Path, extract_dir: Path) -> None:
-    """Extract a ZIP file, rejecting entries with path traversal attempts."""
+    """Extract a ZIP file, rejecting entries with path traversal attempts.
+
+    If the zip is corrupt (truncated download), deletes it so the caller can
+    re-download, then re-raises ``zipfile.BadZipFile``.
+    """
     resolved = os.path.realpath(extract_dir)
     prefix = resolved + os.sep
-    with zipfile.ZipFile(zip_path) as zf:
-        for info in zf.infolist():
-            target = os.path.normpath(os.path.join(resolved, info.filename))
-            if target != resolved and not target.startswith(prefix):
-                raise ValueError(f"Zip entry {info.filename!r} would escape extraction directory")
-            zf.extract(info, extract_dir)
+    try:
+        with zipfile.ZipFile(zip_path) as zf:
+            for info in zf.infolist():
+                target = os.path.normpath(os.path.join(resolved, info.filename))
+                if target != resolved and not target.startswith(prefix):
+                    msg = f"Zip entry {info.filename!r} would escape extraction directory"
+                    raise ValueError(msg)
+                zf.extract(info, extract_dir)
+    except zipfile.BadZipFile:
+        logger.warning("Corrupt zip deleted: %s — will re-download on retry", zip_path)
+        zip_path.unlink(missing_ok=True)
+        raise
 
 
 def download_zip(
@@ -264,7 +274,15 @@ def download_zip(
         shutil.rmtree(extract_dir)
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
-    safe_zip_extract(zip_path, extract_dir)
+    try:
+        safe_zip_extract(zip_path, extract_dir)
+    except zipfile.BadZipFile:
+        logger.warning("Re-downloading after corrupt zip: %s", zip_path.name)
+        if extract_dir.exists():
+            shutil.rmtree(extract_dir)
+        zip_path = download_file(url, filename, cache_dir, force_download=True)
+        extract_dir.mkdir(parents=True, exist_ok=True)
+        safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
     return extract_dir
 
@@ -328,7 +346,15 @@ def download_github_zip(
         shutil.rmtree(extract_dir)
     extract_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Extracting %s ...", zip_path)
-    safe_zip_extract(zip_path, extract_dir)
+    try:
+        safe_zip_extract(zip_path, extract_dir)
+    except zipfile.BadZipFile:
+        logger.warning("Re-downloading after corrupt zip: %s", zip_path.name)
+        if extract_dir.exists():
+            shutil.rmtree(extract_dir)
+        zip_path = download_file(url, filename, cache_dir, force_download=True)
+        extract_dir.mkdir(parents=True, exist_ok=True)
+        safe_zip_extract(zip_path, extract_dir)
     logger.info("Extracted to %s", extract_dir)
     return _unwrap_single_subdir(extract_dir)
 
@@ -392,6 +418,7 @@ PREDICATE_TYPES: dict[str, str] = {
     "likelihood-of-exploit": "enum",
     "maturity": "enum",
     "part": "enum",
+    "permissions-required": "enum",
     "rdf:type": "enum",
     "severity": "enum",
     "state": "enum",
@@ -428,6 +455,8 @@ PREDICATE_TYPES: dict[str, str] = {
     "related-cve": "id",
     "related-weakness": "id",
     "requires": "id",
+    "restricts": "id",
+    "revoked-by": "id",
     "similar-to": "id",
     "starts-with": "id",
     "subtechnique-of": "id",
@@ -459,6 +488,7 @@ PREDICATE_TYPES: dict[str, str] = {
     "cvss-vector": "string",
     "d3fend-definition": "string",
     "d3fend-name": "string",
+    "data-source": "string",
     "definition": "string",
     "description": "string",
     "domain": "string",
@@ -467,6 +497,7 @@ PREDICATE_TYPES: dict[str, str] = {
     "fixed-in": "string",
     "full-path": "string",
     "galaxy": "string",
+    "impact-type": "string",
     "information-domain": "string",
     "introduction-phase": "string",
     "kev-description": "string",
@@ -669,12 +700,12 @@ def write_triples_streaming(
                 writer = pq.ParquetWriter(path, PARQUET_SCHEMA, **pq_opts)
             writer.write_table(_flush(batch))
             total += len(batch)
+
+        logger.info("Wrote %s (%d triples, format=%s)", path, total, parquet_format)
+        return total
     finally:
         if writer is not None:
             writer.close()
-
-    logger.info("Wrote %s (%d triples, format=%s)", path, total, parquet_format)
-    return total
 
 
 def deduplicate_combined(
@@ -719,7 +750,7 @@ def deduplicate_combined(
         .reset_index(drop=True)
     )
 
-    result = pd.concat([df[~dup_mask], merged], ignore_index=True)
+    result: pd.DataFrame = pd.concat([df.loc[~dup_mask], merged], ignore_index=True)
     result.drop(columns=key_cols, inplace=True, errors="ignore")
     return result, stats
 

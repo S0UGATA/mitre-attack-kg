@@ -46,6 +46,10 @@ def _tactic_triples(tactic: dict) -> list[Triple]:
         triples.append(_t(tid, "modified", tactic["modified"]))
     if tactic.get("x_mitre_shortname"):
         triples.append(_t(tid, "shortname", tactic["x_mitre_shortname"]))
+    if tactic.get("revoked"):
+        triples.append(_t(tid, "revoked", "true"))
+    if tactic.get("x_mitre_deprecated"):
+        triples.append(_t(tid, "deprecated", "true"))
 
     return triples
 
@@ -68,6 +72,15 @@ def _technique_triples(tech: dict, tactic_lookup: dict[str, str]) -> list[Triple
     if tech.get("x_mitre_is_subtechnique"):
         triples.append(_t(tid, "is-subtechnique", "true"))
 
+    if tech.get("revoked"):
+        triples.append(_t(tid, "revoked", "true"))
+    if tech.get("x_mitre_deprecated"):
+        triples.append(_t(tid, "deprecated", "true"))
+    for alias in tech.get("aliases", []):
+        alias_str = str(alias)
+        if alias_str != tech.get("name"):
+            triples.append(_t(tid, "alias", alias_str))
+
     for phase in tech.get("kill_chain_phases", []):
         if phase.get("kill_chain_name") == "mitre-f3":
             tactic_id = tactic_lookup.get(phase.get("phase_name", ""))
@@ -84,7 +97,7 @@ def _technique_triples(tech: dict, tactic_lookup: dict[str, str]) -> list[Triple
 
 def extract_f3_triples(json_path: str) -> list[Triple]:
     """Extract SPO triples from F3 STIX 2.1 bundle."""
-    with open(json_path) as f:
+    with open(json_path, encoding="utf-8") as f:
         bundle = json.load(f)
 
     objects = bundle.get("objects", [])

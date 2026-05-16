@@ -74,7 +74,7 @@ def extract_atomic_triples(
 
     for yaml_file in yaml_files:
         try:
-            with open(yaml_file) as f:
+            with open(yaml_file, encoding="utf-8") as f:
                 data = yaml.safe_load(f)
             if not data or not isinstance(data, dict):
                 continue

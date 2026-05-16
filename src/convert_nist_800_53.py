@@ -59,7 +59,7 @@ def extract_nist_800_53_triples(
 
     logger.info("Using mapping file: %s", mapping_file)
 
-    with open(mapping_file) as f:
+    with open(mapping_file, encoding="utf-8") as f:
         data = json.load(f)
 
     mapping_objects = data.get("mapping_objects", [])

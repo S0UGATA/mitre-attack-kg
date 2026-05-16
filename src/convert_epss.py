@@ -6,7 +6,7 @@ import logging
 from collections.abc import Iterator
 from pathlib import Path
 
-from common import Triple, download_file, make_triple_fn
+from common import Triple, download_file, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +35,21 @@ def extract_epss_triples(gz_path: str) -> Iterator[Triple]:
     cve,epss,percentile
     CVE-2024-1234,0.00036,0.12345
     """
+    # First pass: parse comment line for model metadata
+    epss_meta: dict = {}
     with gzip.open(gz_path, "rt") as f:
-        # Skip comment lines (start with #)
+        for line in f:
+            if line.startswith("#"):
+                for part in line[1:].strip().split(","):
+                    k, _, v = part.partition(":")
+                    if k and v:
+                        epss_meta[k.strip()] = v.strip()
+            else:
+                break
+    meta_str = meta_json(epss_meta)
+
+    # Second pass: read CSV rows
+    with gzip.open(gz_path, "rt") as f:
         lines = (line for line in f if not line.startswith("#"))
         reader = csv.DictReader(lines)
 
@@ -49,9 +62,9 @@ def extract_epss_triples(gz_path: str) -> Iterator[Triple]:
             percentile = row.get("percentile", "").strip()
 
             if epss:
-                yield _t(cve_id, "epss-score", epss)
+                yield _t(cve_id, "epss-score", epss, meta_str)
             if percentile:
-                yield _t(cve_id, "epss-percentile", percentile)
+                yield _t(cve_id, "epss-percentile", percentile, meta_str)
 
 
 if __name__ == "__main__":

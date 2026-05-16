@@ -3,7 +3,7 @@
 [![CI](https://github.com/S0UGATA/security-kg/actions/workflows/ci.yml/badge.svg)](https://github.com/S0UGATA/security-kg/actions/workflows/ci.yml)
 [![Dataset Update](https://github.com/S0UGATA/security-kg/actions/workflows/update-dataset.yml/badge.svg)](https://github.com/S0UGATA/security-kg/actions/workflows/update-dataset.yml)
 [![HuggingFace](https://img.shields.io/badge/dataset-HuggingFace-yellow)](https://huggingface.co/datasets/s0u9ata/security-kg)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue)](https://www.python.org/downloads/)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE)
 [![Visualizer](https://img.shields.io/badge/visualizer-security--kg--viz-orange)](https://s0ugata.github.io/security-kg-viz/)
 

@@ -128,7 +128,7 @@ def extract_car_triples(extract_dir: str) -> list[Triple]:
 
     for yaml_file in yaml_files:
         try:
-            with open(yaml_file) as f:
+            with open(yaml_file, encoding="utf-8") as f:
                 analytic = yaml.safe_load(f)
             if analytic:
                 triples.extend(_analytic_triples(analytic))

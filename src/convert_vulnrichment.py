@@ -42,6 +42,17 @@ def _extract_single_cve(cve_data: dict) -> list[Triple]:
 
     triples: list[Triple] = []
 
+    # Entity-level triples from cveMetadata
+    triples.append(_t(cve_id, "rdf:type", "Vulnerability"))
+    if meta.get("datePublished"):
+        triples.append(_t(cve_id, "date-published", str(meta["datePublished"])[:10]))
+    if meta.get("dateUpdated"):
+        triples.append(_t(cve_id, "date-updated", str(meta["dateUpdated"])[:10]))
+    if state:
+        triples.append(_t(cve_id, "state", state))
+    if meta.get("assignerShortName"):
+        triples.append(_t(cve_id, "assigner", meta["assignerShortName"]))
+
     for adp in cve_data.get("containers", {}).get("adp", []):
         # CVSS metrics from ADP
         for metric in adp.get("metrics", []):
@@ -87,7 +98,7 @@ def extract_vulnrichment_triples(data_dir: str) -> Iterator[Triple]:
             logger.info("  processed %d CVEs", count)
 
         try:
-            with open(json_file) as f:
+            with open(json_file, encoding="utf-8") as f:
                 cve_data = json.load(f)
             yield from _extract_single_cve(cve_data)
         except (json.JSONDecodeError, KeyError, ValueError, OSError) as e:

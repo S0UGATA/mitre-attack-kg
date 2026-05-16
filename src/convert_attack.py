@@ -167,6 +167,11 @@ def _entity_triples(
 
     triples.extend(_list_attr_triples(sid, obj, "x_mitre_platforms", "platform"))
     triples.extend(_list_attr_triples(sid, obj, "x_mitre_domains", "domain"))
+    triples.extend(
+        _list_attr_triples(sid, obj, "x_mitre_permissions_required", "permissions-required")
+    )
+    triples.extend(_list_attr_triples(sid, obj, "x_mitre_impact_type", "impact-type"))
+    triples.extend(_list_attr_triples(sid, obj, "x_mitre_data_sources", "data-source"))
 
     for alias in getattr(obj, "aliases", []):
         if alias != obj.name:

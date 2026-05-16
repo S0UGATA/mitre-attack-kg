@@ -1,8 +1,8 @@
 [project]
 name = "security-kg"
 version = "2.0.0"
-description = "Convert security data (ATT&CK, CAPEC, CWE, CVE, CPE, D3FEND, ATLAS, CAR, ENGAGE, EPSS, KEV, Vulnrichment, GHSA, Sigma, ExploitDB, MISP Galaxies) into SPO knowledge-graph triples (Parquet)"
-requires-python = ">=3.11"
+description = "Convert 24 security data sources (ATT&CK, CAPEC, CWE, CVE, CPE, D3FEND, ATLAS, CAR, ENGAGE, F3, EPSS, KEV, Vulnrichment, GHSA, Sigma, ExploitDB, MISP Galaxies, LOLBAS, LOLDrivers, Atomic Red Team, NIST 800-53, Nuclei, EUVD, OSV) into Subject-Predicate-Object knowledge-graph triples (Parquet)"
+requires-python = ">=3.12"
 license = "Apache-2.0"
 authors = [{ name = "Sougata Bhattacharya" }]
 dependencies = [
@@ -27,7 +27,7 @@ viz = [
 ]
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 line-length = 100
 src = ["src", "tests"]
 

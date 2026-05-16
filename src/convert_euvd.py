@@ -5,7 +5,7 @@ import logging
 from collections.abc import Iterator
 from pathlib import Path
 
-from common import SOURCE_DIR, Triple, download_file, make_triple_fn, meta_json, truncate_text
+from common import SOURCE_DIR, Triple, download_file, make_triple_fn, meta_json
 
 logger = logging.getLogger(__name__)
 
@@ -29,51 +29,25 @@ def _vuln_triples(record: dict) -> list[Triple]:
         return []
 
     eid = str(euvd_id)
+
+    # The /api/kev/dump endpoint returns only 4 fields per record.
+    # Capture all available data.
+    entity_meta: dict = {}
+    sources = record.get("sources", [])
+    if sources:
+        entity_meta["sources"] = sources
+
     triples: list[Triple] = [
-        _t(eid, "rdf:type", "EUVulnerability"),
+        _t(eid, "rdf:type", "EUVulnerability", meta_json(entity_meta)),
     ]
 
-    desc = record.get("description")
-    if desc:
-        text = truncate_text(str(desc))
-        triples.append(_t(eid, "description", text))
+    cve_id = record.get("cveId", "")
+    if cve_id:
+        triples.append(_t(eid, "related-cve", str(cve_id).strip().upper()))
 
-    date_pub = record.get("datePublished")
-    if date_pub:
-        triples.append(_t(eid, "date-published", str(date_pub)))
-
-    base_score = record.get("baseScore")
-    if base_score is not None:
-        score_meta: dict = {}
-        version = record.get("baseScoreVersion")
-        if version:
-            score_meta["cvss_version"] = str(version)
-        triples.append(_t(eid, "cvss-base-score", str(base_score), meta_json(score_meta)))
-
-    vector = record.get("baseScoreVector")
-    if vector:
-        triples.append(_t(eid, "cvss-vector", str(vector)))
-
-    epss = record.get("epss")
-    if epss is not None:
-        triples.append(_t(eid, "epss-score", str(epss)))
-
-    aliases = record.get("aliases", "")
-    if aliases:
-        for alias in str(aliases).split("\n"):
-            alias = alias.strip().upper()
-            if alias.startswith("CVE-"):
-                triples.append(_t(eid, "related-cve", alias))
-
-    for product_entry in record.get("productList", []):
-        if not isinstance(product_entry, dict):
-            continue
-        vendor = product_entry.get("vendor")
-        if vendor:
-            triples.append(_t(eid, "vendor", str(vendor)))
-        product = product_entry.get("product")
-        if product:
-            triples.append(_t(eid, "product", str(product)))
+    date_added = record.get("dateAdded", "")
+    if date_added:
+        triples.append(_t(eid, "date-published", str(date_added)))
 
     return triples
 
@@ -84,7 +58,7 @@ def extract_euvd_triples(
     path = Path(data_path)
     logger.info("Reading EUVD data from %s", path)
 
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         data = json.load(f)
 
     if isinstance(data, list):

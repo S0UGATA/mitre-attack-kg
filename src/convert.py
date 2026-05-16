@@ -121,12 +121,15 @@ class SourceFilter(logging.Filter):
         return True
 
 
-def _setup_logging(log_dir: Path | None, source: str = "main") -> None:
+def _setup_logging(log_dir: Path | None, source: str = "main", file_mode: str = "w") -> None:
     """Configure logging with console + optional file output, tagged by source."""
     root = logging.getLogger()
     root.setLevel(logging.INFO)
 
-    # Remove existing handlers (important for worker processes)
+    # Explicitly flush and close existing handlers before replacing them
+    for handler in root.handlers[:]:
+        handler.flush()
+        handler.close()
     root.handlers.clear()
 
     filt = SourceFilter(source)
@@ -138,7 +141,7 @@ def _setup_logging(log_dir: Path | None, source: str = "main") -> None:
 
     if log_dir:
         log_dir.mkdir(parents=True, exist_ok=True)
-        fh = logging.FileHandler(log_dir / f"{source}.log", mode="w")
+        fh = logging.FileHandler(log_dir / f"{source}.log", mode=file_mode)
         fh.setFormatter(logging.Formatter(LOG_FORMAT, datefmt=LOG_DATEFMT))
         fh.addFilter(filt)
         root.addHandler(fh)
@@ -434,6 +437,10 @@ def main():
                     if attack_fps:
                         save_fingerprints(attack_fps)
                 except Exception:
+                    # Restore main logger before logging — _convert_attack switched it to
+                    # "attack" as its first action, so without this the traceback would
+                    # be written to attack.log instead of main.log.
+                    _setup_logging(args.log_dir, "main", file_mode="a")
                     logger.exception("Failed: attack")
                     failed_sources.append("attack")
                 pbar.update(1)
@@ -454,12 +461,16 @@ def main():
                     if fp:
                         save_fingerprint(source, fp)
                 except Exception:
+                    # Restore main logger before logging — _convert_source switched it to
+                    # the source's logger as its first action; without this the traceback
+                    # would be written to <source>.log instead of main.log.
+                    _setup_logging(args.log_dir, "main", file_mode="a")
                     logger.exception("Failed: %s", source)
                     failed_sources.append(source)
                 pbar.update(1)
 
     # Restore main logger after per-source conversions replaced the filter
-    _setup_logging(args.log_dir, "main")
+    _setup_logging(args.log_dir, "main", file_mode="a")
 
     # --- Combined (all sources) ---
     if not args.no_combined:

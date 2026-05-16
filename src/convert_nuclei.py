@@ -86,10 +86,12 @@ def _template_triples(data: dict) -> list[Triple]:
             cwe_set.add(f"CWE-{cwe_match.group(1)}")
             continue
 
-        if not is_cve:
-            cve_match = _CVE_TAG_RE.match(tag_str)
-            if cve_match:
-                cve_set.add(f"CVE-{cve_match.group(1).upper()}")
+        cve_match = _CVE_TAG_RE.match(tag_str)
+        if cve_match:
+            cve_id_from_tag = f"CVE-{cve_match.group(1).upper()}"
+            # For CVE-named templates, skip self-reference but keep other CVE refs
+            if not is_cve or cve_id_from_tag != eid:
+                cve_set.add(cve_id_from_tag)
 
     for cwe in classification.get("cwe-id") or []:
         if isinstance(cwe, str):
@@ -97,12 +99,12 @@ def _template_triples(data: dict) -> list[Triple]:
             if cwe_str.startswith("CWE-"):
                 cwe_set.add(cwe_str)
 
-    if not is_cve:
-        for cve in classification.get("cve-id") or []:
-            if isinstance(cve, str):
-                cve_str = cve.strip().upper()
-                if cve_str.startswith("CVE-"):
-                    cve_set.add(cve_str)
+    for cve in classification.get("cve-id") or []:
+        if isinstance(cve, str):
+            cve_str = cve.strip().upper()
+            # For CVE-named templates, skip self-reference but keep other CVE refs
+            if cve_str.startswith("CVE-") and (not is_cve or cve_str != eid):
+                cve_set.add(cve_str)
 
     for cwe in sorted(cwe_set):
         triples.append(_t(eid, "related-weakness", cwe))
@@ -116,6 +118,10 @@ def _template_triples(data: dict) -> list[Triple]:
     cvss_metrics = classification.get("cvss-metrics")
     if cvss_metrics:
         triples.append(_t(eid, "cvss-vector", str(cvss_metrics)))
+
+    for ref in info.get("reference") or []:
+        if isinstance(ref, str) and (ref.startswith("http://") or ref.startswith("https://")):
+            triples.append(_t(eid, "url", ref))
 
     return triples
 
@@ -136,7 +142,7 @@ def extract_nuclei_triples(
 
     for yaml_file in yaml_files:
         try:
-            with open(yaml_file) as f:
+            with open(yaml_file, encoding="utf-8") as f:
                 data = yaml.safe_load(f)
             if data and isinstance(data, dict):
                 yield from _template_triples(data)

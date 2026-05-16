@@ -228,7 +228,7 @@ def extract_cve_triples(data_dir: str) -> Iterator[Triple]:
             logger.info("  processed %d CVEs", count)
 
         try:
-            with open(json_file) as f:
+            with open(json_file, encoding="utf-8") as f:
                 cve_data = json.load(f)
             yield from _extract_single_cve(cve_data)
         except (json.JSONDecodeError, KeyError, ValueError, OSError) as e:
