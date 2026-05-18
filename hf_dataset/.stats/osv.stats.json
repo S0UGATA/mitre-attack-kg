@@ -1,46 +1,46 @@
 {
-  "totalTriples": 6523684,
-  "uniqueSubjects": 479014,
-  "uniqueObjects": 760538,
+  "totalTriples": 6524346,
+  "uniqueSubjects": 479074,
+  "uniqueObjects": 760671,
   "uniquePredicates": 10,
   "bySource": [
     {
       "source": "osv",
-      "count": 6523684
+      "count": 6524346
     }
   ],
   "topPredicates": [
     {
       "predicate": "affects-package",
-      "count": 2658005
+      "count": 2658100
     },
     {
       "predicate": "ecosystem",
-      "count": 847779
+      "count": 847858
     },
     {
       "predicate": "fixed-in",
-      "count": 822467
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 502695
-    },
-    {
-      "predicate": "date-modified",
-      "count": 502695
+      "count": 822679
     },
     {
       "predicate": "date-published",
-      "count": 502695
+      "count": 502755
+    },
+    {
+      "predicate": "date-modified",
+      "count": 502755
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 502755
     },
     {
       "predicate": "summary",
-      "count": 350953
+      "count": 351004
     },
     {
       "predicate": "cvss-vector",
-      "count": 238330
+      "count": 238337
     },
     {
       "predicate": "related-weakness",
@@ -48,17 +48,17 @@
     },
     {
       "predicate": "related-cve",
-      "count": 48012
+      "count": 48050
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "OSVulnerability",
-      "count": 502695
+      "count": 502755
     },
     {
       "entity": "npm",
-      "count": 218945
+      "count": 218962
     },
     {
       "entity": "2025-11-11",
@@ -74,7 +74,7 @@
     },
     {
       "entity": "Debian:13",
-      "count": 42445
+      "count": 42453
     },
     {
       "entity": "medium",
@@ -82,26 +82,26 @@
     },
     {
       "entity": "2026-04-28",
-      "count": 41747
+      "count": 41724
     },
     {
       "entity": "Debian:14",
-      "count": 41124
+      "count": 41132
     },
     {
       "entity": "Debian:12",
-      "count": 41021
+      "count": 41026
     },
     {
       "entity": "Debian:11",
-      "count": 40356
-    },
-    {
-      "entity": "Linux",
-      "count": 35396
+      "count": 40363
     },
     {
       "entity": "Linux/Kernel",
+      "count": 35396
+    },
+    {
+      "entity": "Linux",
       "count": 35396
     },
     {
@@ -114,5 +114,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:56Z"
+  "generatedAt": "2026-05-18T09:58:51Z"
 }

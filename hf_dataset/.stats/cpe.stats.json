@@ -23,10 +23,6 @@
       "count": 1612524
     },
     {
-      "predicate": "title",
-      "count": 1612524
-    },
-    {
       "predicate": "part",
       "count": 1612524
     },
@@ -36,6 +32,10 @@
     },
     {
       "predicate": "product",
+      "count": 1612524
+    },
+    {
+      "predicate": "title",
       "count": 1612524
     },
     {
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:52Z"
+  "generatedAt": "2026-05-18T09:58:47Z"
 }

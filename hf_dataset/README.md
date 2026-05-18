@@ -173,7 +173,7 @@ Security data from 24 sources represented as **Subject-Predicate-Object (SPO) tr
 
 Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy) · [LOLBAS](https://lolbas-project.github.io/) · [LOLDrivers](https://www.loldrivers.io/) · [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) · [NIST 800-53](https://github.com/center-for-threat-informed-defense/mappings-explorer) · [Nuclei](https://github.com/projectdiscovery/nuclei-templates) · [EUVD](https://euvd.enisa.europa.eu/) · [OSV](https://osv.dev/)
 
-*Last updated: 2026-05-16T19:55:37Z*
+*Last updated: 2026-05-18T09:58:32Z*
 
 ## Quick Start
 
@@ -195,28 +195,28 @@ print(ds["train"][0])
 | `attack-all` | ATT&CK combined (deduplicated) | 51,907 | Current |
 | `capec` | CAPEC attack patterns | 8,114 | Current |
 | `cwe` | CWE weaknesses | 14,583 | Current |
-| `cve` | CVE vulnerabilities | 3,694,416 | Current |
+| `cve` | CVE vulnerabilities | 3,696,000 | Current |
 | `cpe` | CPE platform enumeration | 13,090,728 | Current |
 | `d3fend` | D3FEND defensive techniques | 8,154 | Current |
 | `atlas` | ATLAS AI/ML techniques | 1,442 | Current |
 | `car` | CAR analytics | 1,617 | Current |
 | `engage` | ENGAGE adversary engagement | 1,464 | Current |
 | `f3` | F3 fraud techniques & tactics | 1,047 | Current |
-| `epss` | EPSS exploit prediction scores | 667,422 | Current |
+| `epss` | EPSS exploit prediction scores | 667,556 | Current |
 | `kev` | KEV known exploited vulns | 17,442 | Current |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 1,423,437 | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 1,423,464 | Current |
 | `ghsa` | GitHub Security Advisories | 352,619 | Current |
 | `sigma` | Sigma detection rules | 33,294 | Current |
 | `exploitdb` | ExploitDB public exploits | 346,849 | Current |
-| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 200,046 | Current |
+| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 199,650 | Current |
 | `lolbas` | LOLBAS living-off-the-land binaries | 3,601 | Current |
 | `loldrivers` | LOLDrivers vulnerable/malicious drivers | 11,227 | Current |
 | `atomic` | Atomic Red Team test definitions | 10,937 | Current |
 | `nist_800_53` | NIST 800-53 → ATT&CK control mappings | 4,786 | Current |
-| `nuclei` | Nuclei vulnerability detection templates | 96,483 | Current |
+| `nuclei` | Nuclei vulnerability detection templates | 96,501 | Current |
 | `euvd` | EUVD European vulnerability database | 4,788 | Current |
-| `osv` | OSV open-source vulnerabilities (23 ecosystems) | 6,523,684 | Current |
-| `combined` | All sources merged (deduplicated) | 26,570,087 | Current |
+| `osv` | OSV open-source vulnerabilities (23 ecosystems) | 6,524,346 | Current |
+| `combined` | All sources merged (deduplicated) | 26,572,116 | Current |
 
 
 

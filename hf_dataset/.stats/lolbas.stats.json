@@ -15,7 +15,7 @@
       "count": 579
     },
     {
-      "predicate": "usecase",
+      "predicate": "privileges",
       "count": 464
     },
     {
@@ -23,20 +23,16 @@
       "count": 464
     },
     {
-      "predicate": "category",
-      "count": 464
-    },
-    {
-      "predicate": "privileges",
-      "count": 464
-    },
-    {
       "predicate": "maps-to-technique",
       "count": 464
     },
     {
-      "predicate": "description",
-      "count": 234
+      "predicate": "usecase",
+      "count": 464
+    },
+    {
+      "predicate": "category",
+      "count": 464
     },
     {
       "predicate": "rdf:type",
@@ -44,6 +40,10 @@
     },
     {
       "predicate": "name",
+      "count": 234
+    },
+    {
+      "predicate": "description",
       "count": 234
     }
   ],
@@ -97,11 +97,11 @@
       "count": 49
     },
     {
-      "entity": "Administrator",
+      "entity": "Certutil.exe",
       "count": 41
     },
     {
-      "entity": "Certutil.exe",
+      "entity": "Administrator",
       "count": 41
     },
     {
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:55Z"
+  "generatedAt": "2026-05-18T09:58:50Z"
 }

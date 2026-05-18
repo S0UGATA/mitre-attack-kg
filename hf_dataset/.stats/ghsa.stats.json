@@ -27,11 +27,11 @@
       "count": 32144
     },
     {
-      "predicate": "date-modified",
+      "predicate": "severity",
       "count": 30602
     },
     {
-      "predicate": "severity",
+      "predicate": "date-published",
       "count": 30602
     },
     {
@@ -39,11 +39,11 @@
       "count": 30602
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "date-modified",
       "count": 30602
     },
     {
-      "predicate": "date-published",
+      "predicate": "rdf:type",
       "count": 30602
     },
     {
@@ -101,11 +101,11 @@
       "count": 1324
     },
     {
-      "entity": "CWE-200",
+      "entity": "Packagist/moodle/moodle",
       "count": 1322
     },
     {
-      "entity": "Packagist/moodle/moodle",
+      "entity": "CWE-200",
       "count": 1322
     },
     {
@@ -114,5 +114,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:54Z"
+  "generatedAt": "2026-05-18T09:58:49Z"
 }

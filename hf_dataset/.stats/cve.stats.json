@@ -1,58 +1,58 @@
 {
-  "totalTriples": 3694416,
-  "uniqueSubjects": 333708,
-  "uniqueObjects": 924192,
+  "totalTriples": 3696000,
+  "uniqueSubjects": 333821,
+  "uniqueObjects": 924585,
   "uniquePredicates": 13,
   "bySource": [
     {
       "source": "cve",
-      "count": 3694416
+      "count": 3696000
     }
   ],
   "topPredicates": [
     {
       "predicate": "product",
-      "count": 513397
+      "count": 513510
     },
     {
       "predicate": "vendor",
-      "count": 513368
-    },
-    {
-      "predicate": "assigner",
-      "count": 333708
-    },
-    {
-      "predicate": "date-updated",
-      "count": 333708
+      "count": 513481
     },
     {
       "predicate": "rdf:type",
-      "count": 333708
+      "count": 333821
     },
     {
-      "predicate": "date-published",
-      "count": 333708
+      "predicate": "assigner",
+      "count": 333821
     },
     {
       "predicate": "state",
-      "count": 333708
+      "count": 333821
+    },
+    {
+      "predicate": "date-published",
+      "count": 333821
+    },
+    {
+      "predicate": "date-updated",
+      "count": 333821
     },
     {
       "predicate": "description",
-      "count": 326133
-    },
-    {
-      "predicate": "cvss-base-score",
-      "count": 156523
+      "count": 326246
     },
     {
       "predicate": "cvss-severity",
-      "count": 156523
+      "count": 156775
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 156775
     },
     {
       "predicate": "related-weakness",
-      "count": 140343
+      "count": 140479
     },
     {
       "predicate": "platform",
@@ -60,21 +60,21 @@
     },
     {
       "predicate": "affects-cpe",
-      "count": 85051
+      "count": 85091
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "Vulnerability",
-      "count": 333708
+      "count": 333821
     },
     {
       "entity": "PUBLISHED",
-      "count": 333708
+      "count": 333821
     },
     {
       "entity": "mitre",
-      "count": 113427
+      "count": 113428
     },
     {
       "entity": "Microsoft",
@@ -82,7 +82,7 @@
     },
     {
       "entity": "MEDIUM",
-      "count": 78503
+      "count": 78641
     },
     {
       "entity": "x64-based Systems",
@@ -94,7 +94,7 @@
     },
     {
       "entity": "HIGH",
-      "count": 55533
+      "count": 55628
     },
     {
       "entity": "32-bit Systems",
@@ -102,7 +102,7 @@
     },
     {
       "entity": "CWE-79",
-      "count": 23554
+      "count": 23568
     },
     {
       "entity": "ARM64-based Systems",
@@ -126,5 +126,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:54Z"
+  "generatedAt": "2026-05-18T09:58:49Z"
 }

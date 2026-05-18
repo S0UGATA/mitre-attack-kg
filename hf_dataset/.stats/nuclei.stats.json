@@ -1,42 +1,42 @@
 {
-  "totalTriples": 96483,
-  "uniqueSubjects": 12520,
-  "uniqueObjects": 44513,
+  "totalTriples": 96501,
+  "uniqueSubjects": 12523,
+  "uniqueObjects": 44521,
   "uniquePredicates": 9,
   "bySource": [
     {
       "source": "nuclei",
-      "count": 96483
+      "count": 96501
     }
   ],
   "topPredicates": [
     {
       "predicate": "url",
-      "count": 23480
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 12520
-    },
-    {
-      "predicate": "author",
-      "count": 12520
+      "count": 23482
     },
     {
       "predicate": "name",
-      "count": 12520
+      "count": 12523
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 12523
+    },
+    {
+      "predicate": "author",
+      "count": 12523
     },
     {
       "predicate": "severity",
-      "count": 12520
+      "count": 12523
     },
     {
       "predicate": "description",
-      "count": 10970
+      "count": 10973
     },
     {
       "predicate": "cvss-vector",
-      "count": 6411
+      "count": 6412
     },
     {
       "predicate": "cvss-base-score",
@@ -50,19 +50,19 @@
   "topConnectedEntities": [
     {
       "entity": "NucleiTemplate",
-      "count": 12520
+      "count": 12523
     },
     {
       "entity": "info",
-      "count": 4819
+      "count": 4820
+    },
+    {
+      "entity": "medium",
+      "count": 2706
     },
     {
       "entity": "high",
       "count": 2706
-    },
-    {
-      "entity": "medium",
-      "count": 2705
     },
     {
       "entity": "critical",
@@ -86,7 +86,7 @@
     },
     {
       "entity": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N",
-      "count": 827
+      "count": 828
     },
     {
       "entity": "DhiyaneshDK",
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:55Z"
+  "generatedAt": "2026-05-18T09:58:50Z"
 }

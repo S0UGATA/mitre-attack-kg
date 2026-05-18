@@ -35,15 +35,7 @@
       "count": 1212
     },
     {
-      "predicate": "name",
-      "count": 944
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 944
-    },
-    {
-      "predicate": "abstraction",
+      "predicate": "status",
       "count": 944
     },
     {
@@ -51,7 +43,15 @@
       "count": 944
     },
     {
-      "predicate": "status",
+      "predicate": "abstraction",
+      "count": 944
+    },
+    {
+      "predicate": "name",
+      "count": 944
+    },
+    {
+      "predicate": "rdf:type",
       "count": 944
     },
     {
@@ -142,5 +142,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:54Z"
+  "generatedAt": "2026-05-18T09:58:49Z"
 }

@@ -15,6 +15,10 @@
       "count": 1952
     },
     {
+      "predicate": "executor",
+      "count": 1797
+    },
+    {
       "predicate": "rdf:type",
       "count": 1797
     },
@@ -28,10 +32,6 @@
     },
     {
       "predicate": "tests-technique",
-      "count": 1797
-    },
-    {
-      "predicate": "executor",
       "count": 1797
     }
   ],
@@ -93,10 +93,10 @@
       "count": 25
     },
     {
-      "entity": "T1087.002",
+      "entity": "iaas:aws",
       "count": 24
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:55Z"
+  "generatedAt": "2026-05-18T09:58:50Z"
 }

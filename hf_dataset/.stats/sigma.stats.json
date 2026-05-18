@@ -23,7 +23,7 @@
       "count": 3283
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "status",
       "count": 3283
     },
     {
@@ -31,15 +31,15 @@
       "count": 3283
     },
     {
-      "predicate": "author",
-      "count": 3283
-    },
-    {
-      "predicate": "status",
-      "count": 3283
-    },
-    {
       "predicate": "level",
+      "count": 3283
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 3283
+    },
+    {
+      "predicate": "author",
       "count": 3283
     },
     {
@@ -118,5 +118,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:54Z"
+  "generatedAt": "2026-05-18T09:58:49Z"
 }

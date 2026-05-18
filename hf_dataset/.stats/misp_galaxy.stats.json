@@ -1,12 +1,12 @@
 {
-  "totalTriples": 200046,
-  "uniqueSubjects": 36665,
-  "uniqueObjects": 74018,
+  "totalTriples": 199650,
+  "uniqueSubjects": 36566,
+  "uniqueObjects": 73844,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 200046
+      "count": 199650
     }
   ],
   "topPredicates": [
@@ -15,20 +15,20 @@
       "count": 37055
     },
     {
-      "predicate": "galaxy",
-      "count": 32957
-    },
-    {
       "predicate": "rdf:type",
-      "count": 32957
+      "count": 32858
     },
     {
       "predicate": "name",
-      "count": 32957
+      "count": 32858
+    },
+    {
+      "predicate": "galaxy",
+      "count": 32858
     },
     {
       "predicate": "description",
-      "count": 28570
+      "count": 28471
     },
     {
       "predicate": "uses",
@@ -81,27 +81,27 @@
   ],
   "topConnectedEntities": [
     {
-      "entity": "references",
-      "count": 5219
-    },
-    {
       "entity": "References",
       "count": 5219
     },
     {
-      "entity": "malpedia",
-      "count": 3683
+      "entity": "references",
+      "count": 5219
     },
     {
       "entity": "MalpediaEntry",
       "count": 3683
     },
     {
-      "entity": "SigmaRule",
-      "count": 3132
+      "entity": "malpedia",
+      "count": 3683
     },
     {
       "entity": "sigma-rules",
+      "count": 3132
+    },
+    {
+      "entity": "SigmaRule",
       "count": 3132
     },
     {
@@ -113,19 +113,19 @@
       "count": 2565
     },
     {
-      "entity": "VerisFramework",
-      "count": 2207
-    },
-    {
       "entity": "veris-framework",
       "count": 2207
     },
     {
-      "entity": "naics",
-      "count": 2125
+      "entity": "VerisFramework",
+      "count": 2207
     },
     {
       "entity": "Naics",
+      "count": 2125
+    },
+    {
+      "entity": "naics",
       "count": 2125
     },
     {
@@ -142,5 +142,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:54Z"
+  "generatedAt": "2026-05-18T09:58:50Z"
 }
