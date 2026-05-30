@@ -1,44 +1,44 @@
 {
-  "totalTriples": 10937,
-  "uniqueSubjects": 1797,
-  "uniqueObjects": 3833,
+  "totalTriples": 10944,
+  "uniqueSubjects": 1798,
+  "uniqueObjects": 3835,
   "uniquePredicates": 6,
   "bySource": [
     {
       "source": "atomic",
-      "count": 10937
+      "count": 10944
     }
   ],
   "topPredicates": [
     {
       "predicate": "platform",
-      "count": 1952
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 1797
-    },
-    {
-      "predicate": "name",
-      "count": 1797
-    },
-    {
-      "predicate": "description",
-      "count": 1797
+      "count": 1954
     },
     {
       "predicate": "tests-technique",
-      "count": 1797
+      "count": 1798
+    },
+    {
+      "predicate": "name",
+      "count": 1798
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1798
+    },
+    {
+      "predicate": "description",
+      "count": 1798
     },
     {
       "predicate": "executor",
-      "count": 1797
+      "count": 1798
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "AtomicTest",
-      "count": 1797
+      "count": 1798
     },
     {
       "entity": "windows",
@@ -58,15 +58,15 @@
     },
     {
       "entity": "linux",
-      "count": 397
+      "count": 398
     },
     {
       "entity": "macos",
-      "count": 247
+      "count": 248
     },
     {
       "entity": "bash",
-      "count": 126
+      "count": 127
     },
     {
       "entity": "T1112",
@@ -93,10 +93,10 @@
       "count": 25
     },
     {
-      "entity": "T1087.002",
+      "entity": "iaas:aws",
       "count": 24
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:55Z"
+  "generatedAt": "2026-05-25T10:02:14Z"
 }

@@ -1,34 +1,34 @@
 {
-  "totalTriples": 200046,
-  "uniqueSubjects": 36665,
-  "uniqueObjects": 74018,
+  "totalTriples": 201429,
+  "uniqueSubjects": 36943,
+  "uniqueObjects": 74731,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 200046
+      "count": 201429
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 37055
+      "count": 37323
     },
     {
       "predicate": "galaxy",
-      "count": 32957
+      "count": 33235
     },
     {
       "predicate": "rdf:type",
-      "count": 32957
+      "count": 33235
     },
     {
       "predicate": "name",
-      "count": 32957
+      "count": 33235
     },
     {
       "predicate": "description",
-      "count": 28570
+      "count": 28848
     },
     {
       "predicate": "uses",
@@ -48,7 +48,7 @@
     },
     {
       "predicate": "country",
-      "count": 1274
+      "count": 1277
     },
     {
       "predicate": "targets-country",
@@ -97,11 +97,11 @@
       "count": 3683
     },
     {
-      "entity": "SigmaRule",
+      "entity": "sigma-rules",
       "count": 3132
     },
     {
-      "entity": "sigma-rules",
+      "entity": "SigmaRule",
       "count": 3132
     },
     {
@@ -121,11 +121,11 @@
       "count": 2207
     },
     {
-      "entity": "naics",
+      "entity": "Naics",
       "count": 2125
     },
     {
-      "entity": "Naics",
+      "entity": "naics",
       "count": 2125
     },
     {
@@ -142,5 +142,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-16T19:55:54Z"
+  "generatedAt": "2026-05-25T10:02:14Z"
 }
