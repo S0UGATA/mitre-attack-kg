@@ -1,6 +1,6 @@
-# Copilot Instructions
+# AGENTS.md
 
-Guidance for GitHub Copilot (and other AI agents) when working in this repository. Optimized for agents — be concise, verify before editing, prefer tools over guesses.
+Guidance for AI coding agents working in this repository. Optimized for agents — be concise, verify before editing, prefer tools over guesses.
 
 ## Project Overview
 
@@ -188,4 +188,4 @@ Integration tests in `tests/test_integration.py` are network-dependent and exclu
 
 ---
 
-For more detail, see `README.md`. This file is mirrored to `CLAUDE.md` and `AGENTS.md` — keep all three in sync when editing.
+For more detail, see `README.md`. This file is mirrored to `CLAUDE.md` and `.github/copilot-instructions.md` — keep all three in sync when editing.

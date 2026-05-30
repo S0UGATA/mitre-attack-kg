@@ -5,6 +5,38 @@ description = "Convert 24 security data sources (ATT&CK, CAPEC, CWE, CVE, CPE, D
 requires-python = ">=3.12"
 license = "Apache-2.0"
 authors = [{ name = "Sougata Bhattacharya" }]
+keywords = [
+    "knowledge-graph",
+    "cybersecurity",
+    "threat-intelligence",
+    "mitre-attack",
+    "capec",
+    "cwe",
+    "cve",
+    "cpe",
+    "d3fend",
+    "atlas",
+    "car",
+    "engage",
+    "f3",
+    "epss",
+    "kev",
+    "vulnrichment",
+    "ghsa",
+    "sigma",
+    "exploitdb",
+    "misp-galaxy",
+    "lolbas",
+    "loldrivers",
+    "atomic-red-team",
+    "nist-800-53",
+    "nuclei",
+    "euvd",
+    "osv",
+    "stix",
+    "triples",
+    "parquet",
+]
 dependencies = [
     "mitreattack-python>=5.0.0",
     "pandas>=2.0.0",
