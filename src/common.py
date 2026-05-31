@@ -651,8 +651,19 @@ def triples_to_dataframe(
 
 
 def write_parquet(df: pd.DataFrame, path: Path, parquet_format: str = "v2") -> None:
-    """Write a DataFrame of triples to a Parquet file."""
+    """Write a DataFrame of triples to a Parquet file.
+
+    Rows are sorted by ``subject`` (with ``predicate`` as a stable secondary key)
+    so that Parquet row-group ``min``/``max`` statistics yield narrow,
+    mostly-non-overlapping ranges.  This enables row-group pruning for
+    subject-keyed predicates (e.g. ``WHERE subject = 'CVE-2024-1234'``), which
+    is the dominant query shape used by the DuckDB-WASM viz client.
+    """
     pq_opts = PARQUET_FORMATS[parquet_format]
+    if len(df) and {"subject", "predicate"}.issubset(df.columns):
+        df = df.sort_values(
+            ["subject", "predicate"], kind="stable", ignore_index=True
+        )
     table = pa.table(
         {col: df[col] for col in COLUMNS},
         schema=PARQUET_SCHEMA,
@@ -671,6 +682,11 @@ def write_triples_streaming(
 
     Each triple is a 6-tuple: (subject, predicate, object, source, object_type, meta).
     Avoids loading all triples into memory at once.  Returns the total written.
+
+    Each batch is sorted by ``subject`` (then ``predicate``) before being
+    written.  Globally the file is not fully ordered, but each row group ends
+    up with a narrow ``subject`` ``min``/``max`` range, which is enough for
+    DuckDB / Parquet readers to prune row groups on subject-keyed predicates.
     """
     pq_opts = PARQUET_FORMATS[parquet_format]
     writer = None
@@ -678,6 +694,9 @@ def write_triples_streaming(
     batch: list[Triple] = []
 
     def _flush(batch):
+        # Sort by subject (primary) and predicate (secondary) so row groups
+        # within this shard get tight min/max stats for pruning.
+        batch.sort(key=lambda t: (t[0], t[1]))
         cols = list(zip(*batch, strict=True))
         return pa.table(
             {name: list(col) for name, col in zip(COLUMNS, cols, strict=True)},
