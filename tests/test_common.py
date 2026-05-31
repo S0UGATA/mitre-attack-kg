@@ -29,6 +29,8 @@ from common import (
     meta_json,
     save_metadata,
     source_changed,
+    write_parquet,
+    write_triples_streaming,
 )
 
 
@@ -609,3 +611,65 @@ class TestDeduplicateCombined:
         assert row["object"] == "CWE-79"
         assert "cve" in row["source"]
         assert "ghsa" in row["source"]
+
+
+class TestParquetSubjectSort:
+    """Verify Parquet outputs are sorted by subject so row-group min/max stats enable pruning."""
+
+    def _make_df(self, subjects, predicates=None):
+        n = len(subjects)
+        predicates = predicates or ["name"] * n
+        return pd.DataFrame(
+            {
+                "subject": subjects,
+                "predicate": predicates,
+                "object": [f"o{i}" for i in range(n)],
+                "source": ["s"] * n,
+                "object_type": ["string"] * n,
+                "meta": [""] * n,
+            }
+        )
+
+    def test_write_parquet_sorts_by_subject(self, tmp_path):
+        import pyarrow.parquet as pq
+
+        df = self._make_df(["C", "A", "B", "A"], ["p2", "p1", "p1", "p0"])
+        out = tmp_path / "x.parquet"
+        write_parquet(df, out)
+        table = pq.read_table(out)
+        subs = table.column("subject").to_pylist()
+        preds = table.column("predicate").to_pylist()
+        assert subs == sorted(subs)
+        # Stable secondary sort by predicate
+        assert (subs, preds) == (["A", "A", "B", "C"], ["p0", "p1", "p1", "p2"])
+
+    def test_write_parquet_empty(self, tmp_path):
+        import pyarrow.parquet as pq
+
+        df = self._make_df([])
+        out = tmp_path / "empty.parquet"
+        write_parquet(df, out)
+        assert pq.read_table(out).num_rows == 0
+
+    def test_streaming_sorts_each_batch(self, tmp_path):
+        import pyarrow.parquet as pq
+
+        # Two batches; sorting is per-batch, so global order is not guaranteed,
+        # but each batch (row group) must be sorted by subject.
+        batch1 = [("C", "p", "o", "s", "string", ""),
+                  ("A", "p", "o", "s", "string", ""),
+                  ("B", "p", "o", "s", "string", "")]
+        batch2 = [("Z", "p", "o", "s", "string", ""),
+                  ("M", "p", "o", "s", "string", "")]
+        out = tmp_path / "stream.parquet"
+        total = write_triples_streaming(
+            iter(batch1 + batch2), out, batch_size=3
+        )
+        assert total == 5
+
+        pf = pq.ParquetFile(out)
+        assert pf.num_row_groups == 2
+        rg0_subs = pf.read_row_group(0).column("subject").to_pylist()
+        rg1_subs = pf.read_row_group(1).column("subject").to_pylist()
+        assert rg0_subs == sorted(rg0_subs) == ["A", "B", "C"]
+        assert rg1_subs == sorted(rg1_subs) == ["M", "Z"]
