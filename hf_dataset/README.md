@@ -660,6 +660,30 @@ This produces fresh Parquet files in `output/` from the latest data across all 2
 
 Explore the Parquet files interactively at [security-kg-viz](https://s0ugata.github.io/security-kg-viz/).
 
+### Pre-computed neighborhoods (`neighborhoods/`)
+
+For the most-connected entities in `combined.parquet`, this dataset ships
+pre-rendered multi-hop neighborhood JSONs the visualizer can fetch directly,
+skipping the DuckDB-WASM + Parquet path entirely for hot lookups:
+
+```
+neighborhoods/
+  T1059.json              # array of Triple objects (depth=2, limit=500)
+  T1059.001.json
+  CVE-2024-1234.json
+  CAPEC-100.json
+  ...
+  index.json              # { source, fingerprint, depth, limit, entities: [...] }
+```
+
+Each `<entity>.json` is the same shape the viz already builds from
+`q.entityNeighborhood()` — an array of `{subject, predicate, object, source,
+object_type, object_canonical}`. Filenames use a reversible slug (characters
+outside `[A-Za-z0-9._-]` are `_xx` hex-escaped); `index.json` is the
+authoritative mapping from entity → filename and includes a parquet
+fingerprint for cache invalidation. The bundle is regenerated each weekly
+refresh whenever `combined.parquet` changes.
+
 ## Use Cases
 
 - **Knowledge Graph Construction**: Load triples into Neo4j, RDFLib, or NetworkX for graph queries

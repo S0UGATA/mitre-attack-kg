@@ -516,6 +516,14 @@ jobs:
         run: |
           python src/generate_stats.py --output-dir output --stats-dir hf_dataset/.stats
 
+      - name: Pre-compute top-N entity neighborhoods
+        if: steps.source_check.outputs.any_changed == 'true' && inputs.no_stats != true
+        run: |
+          python src/generate_neighborhoods.py \
+            --output-dir output \
+            --neighborhoods-dir hf_dataset/.neighborhoods \
+            --parquet combined.parquet
+
       - name: Upload to HuggingFace Hub
         if: steps.source_check.outputs.any_changed == 'true'
         env:
@@ -597,6 +605,15 @@ jobs:
                   shutil.copy(sf, stats_dst / sf.name)
                   print(f"Staging {sf.name}")
 
+          # Copy pre-computed neighborhood JSONs (top-N hot entities + index)
+          neigh_src = Path("hf_dataset/.neighborhoods")
+          if neigh_src.is_dir():
+              neigh_dst = staging / "neighborhoods"
+              neigh_dst.mkdir(exist_ok=True)
+              for nf in neigh_src.glob("*.json"):
+                  shutil.copy(nf, neigh_dst / nf.name)
+              print(f"Staging {sum(1 for _ in neigh_dst.glob('*.json'))} neighborhood JSONs")
+
           shutil.copy("hf_dataset/README.md", staging / "README.md")
           shutil.copy("hf_dataset/.metadata.json", staging / ".metadata.json")
 
@@ -625,7 +642,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add hf_dataset/README.md hf_dataset/.metadata.json hf_dataset/.conversion_report.json hf_dataset/.stats/ README.md
+          git add hf_dataset/README.md hf_dataset/.metadata.json hf_dataset/.conversion_report.json hf_dataset/.stats/ hf_dataset/.neighborhoods/ README.md
           git commit -m "Update dataset counts"
           git push -u origin "$branch"
           existing=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
