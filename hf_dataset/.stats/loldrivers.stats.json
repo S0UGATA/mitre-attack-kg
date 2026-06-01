@@ -31,7 +31,11 @@
       "count": 1310
     },
     {
-      "predicate": "maps-to-technique",
+      "predicate": "rdf:type",
+      "count": 623
+    },
+    {
+      "predicate": "category",
       "count": 623
     },
     {
@@ -39,11 +43,7 @@
       "count": 623
     },
     {
-      "predicate": "rdf:type",
-      "count": 623
-    },
-    {
-      "predicate": "category",
+      "predicate": "maps-to-technique",
       "count": 623
     }
   ],
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:14Z"
+  "generatedAt": "2026-06-01T11:35:58Z"
 }

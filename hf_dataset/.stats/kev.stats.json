@@ -1,64 +1,64 @@
 {
-  "totalTriples": 17550,
-  "uniqueSubjects": 1602,
-  "uniqueObjects": 6154,
+  "totalTriples": 17604,
+  "uniqueSubjects": 1607,
+  "uniqueObjects": 6181,
   "uniquePredicates": 11,
   "bySource": [
     {
       "source": "kev",
-      "count": 17550
+      "count": 17604
     }
   ],
   "topPredicates": [
     {
-      "predicate": "kev-product",
-      "count": 1602
-    },
-    {
-      "predicate": "kev-required-action",
-      "count": 1602
-    },
-    {
       "predicate": "kev-date-added",
-      "count": 1602
+      "count": 1607
     },
     {
       "predicate": "kev-notes",
-      "count": 1602
+      "count": 1607
     },
     {
-      "predicate": "kev-ransomware-use",
-      "count": 1602
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 1602
+      "predicate": "kev-required-action",
+      "count": 1607
     },
     {
       "predicate": "kev-due-date",
-      "count": 1602
-    },
-    {
-      "predicate": "kev-vendor",
-      "count": 1602
+      "count": 1607
     },
     {
       "predicate": "kev-name",
-      "count": 1602
+      "count": 1607
+    },
+    {
+      "predicate": "kev-vendor",
+      "count": 1607
+    },
+    {
+      "predicate": "kev-product",
+      "count": 1607
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1607
+    },
+    {
+      "predicate": "kev-ransomware-use",
+      "count": 1607
     },
     {
       "predicate": "kev-description",
-      "count": 1602
+      "count": 1607
     },
     {
       "predicate": "related-weakness",
-      "count": 1530
+      "count": 1534
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "KnownExploitedVulnerability",
-      "count": 1602
+      "count": 1607
     },
     {
       "entity": "Apply updates per vendor instructions.",
@@ -70,11 +70,11 @@
     },
     {
       "entity": "Known",
-      "count": 323
+      "count": 325
     },
     {
       "entity": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
-      "count": 307
+      "count": 312
     },
     {
       "entity": "2021-11-03",
@@ -118,5 +118,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:14Z"
+  "generatedAt": "2026-06-01T11:35:58Z"
 }

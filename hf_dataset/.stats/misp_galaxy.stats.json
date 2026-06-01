@@ -1,34 +1,34 @@
 {
-  "totalTriples": 201429,
-  "uniqueSubjects": 36943,
-  "uniqueObjects": 74731,
+  "totalTriples": 201732,
+  "uniqueSubjects": 36997,
+  "uniqueObjects": 74841,
   "uniquePredicates": 17,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 201429
+      "count": 201732
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 37323
-    },
-    {
-      "predicate": "galaxy",
-      "count": 33235
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 33235
+      "count": 37413
     },
     {
       "predicate": "name",
-      "count": 33235
+      "count": 33289
+    },
+    {
+      "predicate": "galaxy",
+      "count": 33289
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 33289
     },
     {
       "predicate": "description",
-      "count": 28848
+      "count": 28899
     },
     {
       "predicate": "uses",
@@ -81,11 +81,11 @@
   ],
   "topConnectedEntities": [
     {
-      "entity": "references",
+      "entity": "References",
       "count": 5219
     },
     {
-      "entity": "References",
+      "entity": "references",
       "count": 5219
     },
     {
@@ -97,11 +97,11 @@
       "count": 3683
     },
     {
-      "entity": "sigma-rules",
+      "entity": "SigmaRule",
       "count": 3132
     },
     {
-      "entity": "SigmaRule",
+      "entity": "sigma-rules",
       "count": 3132
     },
     {
@@ -113,11 +113,11 @@
       "count": 2565
     },
     {
-      "entity": "VerisFramework",
+      "entity": "veris-framework",
       "count": 2207
     },
     {
-      "entity": "veris-framework",
+      "entity": "VerisFramework",
       "count": 2207
     },
     {
@@ -142,5 +142,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:14Z"
+  "generatedAt": "2026-06-01T11:35:58Z"
 }

@@ -27,7 +27,7 @@
       "count": 2357
     },
     {
-      "predicate": "name",
+      "predicate": "modified",
       "count": 2357
     },
     {
@@ -39,7 +39,7 @@
       "count": 2357
     },
     {
-      "predicate": "modified",
+      "predicate": "name",
       "count": 2357
     },
     {
@@ -75,11 +75,11 @@
       "count": 287
     },
     {
-      "predicate": "revoked-by",
+      "predicate": "revoked",
       "count": 157
     },
     {
-      "predicate": "revoked",
+      "predicate": "revoked-by",
       "count": 157
     },
     {
@@ -158,5 +158,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:08Z"
+  "generatedAt": "2026-06-01T11:35:54Z"
 }
