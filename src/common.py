@@ -661,9 +661,7 @@ def write_parquet(df: pd.DataFrame, path: Path, parquet_format: str = "v2") -> N
     """
     pq_opts = PARQUET_FORMATS[parquet_format]
     if len(df) and {"subject", "predicate"}.issubset(df.columns):
-        df = df.sort_values(
-            ["subject", "predicate"], kind="stable", ignore_index=True
-        )
+        df = df.sort_values(["subject", "predicate"], kind="stable", ignore_index=True)
     table = pa.table(
         {col: df[col] for col in COLUMNS},
         schema=PARQUET_SCHEMA,

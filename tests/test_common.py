@@ -656,15 +656,14 @@ class TestParquetSubjectSort:
 
         # Two batches; sorting is per-batch, so global order is not guaranteed,
         # but each batch (row group) must be sorted by subject.
-        batch1 = [("C", "p", "o", "s", "string", ""),
-                  ("A", "p", "o", "s", "string", ""),
-                  ("B", "p", "o", "s", "string", "")]
-        batch2 = [("Z", "p", "o", "s", "string", ""),
-                  ("M", "p", "o", "s", "string", "")]
+        batch1 = [
+            ("C", "p", "o", "s", "string", ""),
+            ("A", "p", "o", "s", "string", ""),
+            ("B", "p", "o", "s", "string", ""),
+        ]
+        batch2 = [("Z", "p", "o", "s", "string", ""), ("M", "p", "o", "s", "string", "")]
         out = tmp_path / "stream.parquet"
-        total = write_triples_streaming(
-            iter(batch1 + batch2), out, batch_size=3
-        )
+        total = write_triples_streaming(iter(batch1 + batch2), out, batch_size=3)
         assert total == 5
 
         pf = pq.ParquetFile(out)
