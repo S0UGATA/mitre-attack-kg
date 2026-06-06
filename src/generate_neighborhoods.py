@@ -43,7 +43,17 @@ DEFAULT_PARQUET = "combined.parquet"
 # Junk-entity filter, kept in sync with generate_stats.topConnectedEntities so
 # the same low-information IDs aren't pre-rendered.
 _JUNK_LOWER = {
-    "no", "none", "n/a", "na", "-", "--", "null", "unknown", "other", "true", "false",
+    "no",
+    "none",
+    "n/a",
+    "na",
+    "-",
+    "--",
+    "null",
+    "unknown",
+    "other",
+    "true",
+    "false",
 }
 
 # Slug character class: keep filenames portable on all OSes / HF storage and
@@ -124,9 +134,7 @@ def _resolve_seed_entities(con: duckdb.DuckDBPyConnection, entity: str) -> list[
     return ids or [entity]
 
 
-def _fetch_neighbors(
-    con: duckdb.DuckDBPyConnection, ids: list[str], limit: int
-) -> list[tuple]:
+def _fetch_neighbors(con: duckdb.DuckDBPyConnection, ids: list[str], limit: int) -> list[tuple]:
     """Fetch up to ``limit`` triples touching any of ``ids`` as subject or object.
 
     Uses the same ``UNION ALL`` split the viz uses so DuckDB can prune
@@ -230,9 +238,7 @@ def generate_neighborhoods(
         triples = entity_neighborhood(con, entity, depth, limit)
         (output_dir / filename).write_text(json.dumps(triples, separators=(",", ":")))
         elapsed_ms = int((time.monotonic() - t0) * 1000)
-        index_entries.append(
-            {"entity": entity, "file": filename, "triples": len(triples)}
-        )
+        index_entries.append({"entity": entity, "file": filename, "triples": len(triples)})
         logger.debug("%-30s -> %s (%d triples, %d ms)", entity, filename, len(triples), elapsed_ms)
 
     con.close()
