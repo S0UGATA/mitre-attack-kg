@@ -1,44 +1,44 @@
 {
-  "totalTriples": 10944,
-  "uniqueSubjects": 1798,
-  "uniqueObjects": 3835,
+  "totalTriples": 10980,
+  "uniqueSubjects": 1804,
+  "uniqueObjects": 3848,
   "uniquePredicates": 6,
   "bySource": [
     {
       "source": "atomic",
-      "count": 10944
+      "count": 10980
     }
   ],
   "topPredicates": [
     {
       "predicate": "platform",
-      "count": 1954
-    },
-    {
-      "predicate": "tests-technique",
-      "count": 1798
-    },
-    {
-      "predicate": "name",
-      "count": 1798
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 1798
-    },
-    {
-      "predicate": "description",
-      "count": 1798
+      "count": 1960
     },
     {
       "predicate": "executor",
-      "count": 1798
+      "count": 1804
+    },
+    {
+      "predicate": "name",
+      "count": 1804
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1804
+    },
+    {
+      "predicate": "tests-technique",
+      "count": 1804
+    },
+    {
+      "predicate": "description",
+      "count": 1804
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "AtomicTest",
-      "count": 1798
+      "count": 1804
     },
     {
       "entity": "windows",
@@ -54,11 +54,11 @@
     },
     {
       "entity": "sh",
-      "count": 400
+      "count": 406
     },
     {
       "entity": "linux",
-      "count": 398
+      "count": 404
     },
     {
       "entity": "macos",
@@ -98,5 +98,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:14Z"
+  "generatedAt": "2026-06-01T11:35:58Z"
 }

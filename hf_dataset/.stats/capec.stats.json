@@ -27,15 +27,15 @@
       "count": 558
     },
     {
-      "predicate": "abstraction",
-      "count": 558
-    },
-    {
       "predicate": "status",
       "count": 558
     },
     {
       "predicate": "rdf:type",
+      "count": 558
+    },
+    {
+      "predicate": "abstraction",
       "count": 558
     },
     {
@@ -138,5 +138,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:08Z"
+  "generatedAt": "2026-06-01T11:35:54Z"
 }

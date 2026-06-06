@@ -15,6 +15,10 @@
       "count": 4378
     },
     {
+      "predicate": "description",
+      "count": 102
+    },
+    {
       "predicate": "rdf:type",
       "count": 102
     },
@@ -24,10 +28,6 @@
     },
     {
       "predicate": "control-family",
-      "count": 102
-    },
-    {
-      "predicate": "description",
       "count": 102
     }
   ],
@@ -94,5 +94,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:15Z"
+  "generatedAt": "2026-06-01T11:35:58Z"
 }

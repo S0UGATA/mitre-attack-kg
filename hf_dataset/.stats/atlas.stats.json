@@ -1,21 +1,21 @@
 {
-  "totalTriples": 1442,
+  "totalTriples": 1373,
   "uniqueSubjects": 243,
-  "uniqueObjects": 556,
-  "uniquePredicates": 10,
+  "uniqueObjects": 533,
+  "uniquePredicates": 9,
   "bySource": [
     {
       "source": "atlas",
-      "count": 1442
+      "count": 1373
     }
   ],
   "topPredicates": [
     {
-      "predicate": "rdf:type",
+      "predicate": "name",
       "count": 243
     },
     {
-      "predicate": "name",
+      "predicate": "rdf:type",
       "count": 243
     },
     {
@@ -37,10 +37,6 @@
     {
       "predicate": "belongs-to-tactic",
       "count": 111
-    },
-    {
-      "predicate": "subtechnique-of",
-      "count": 69
     },
     {
       "predicate": "related-attack-technique",
@@ -73,11 +69,11 @@
       "count": 57
     },
     {
-      "entity": "2025-04-09",
+      "entity": "2025-03-12",
       "count": 43
     },
     {
-      "entity": "2025-03-12",
+      "entity": "2025-04-09",
       "count": 43
     },
     {
@@ -109,10 +105,10 @@
       "count": 16
     },
     {
-      "entity": "AML.TA0006",
+      "entity": "AML.TA0008",
       "count": 15
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-05-25T10:02:08Z"
+  "generatedAt": "2026-06-01T11:35:54Z"
 }
