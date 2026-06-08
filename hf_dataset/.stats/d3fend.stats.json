@@ -19,11 +19,11 @@
       "count": 1965
     },
     {
-      "predicate": "d3fend-definition",
+      "predicate": "d3fend-name",
       "count": 1468
     },
     {
-      "predicate": "d3fend-name",
+      "predicate": "d3fend-definition",
       "count": 1468
     },
     {
@@ -85,11 +85,11 @@
       "count": 28
     },
     {
-      "entity": "T1546",
+      "entity": "ATTACKMobileCollectionTechnique",
       "count": 23
     },
     {
-      "entity": "ATTACKMobileCollectionTechnique",
+      "entity": "T1546",
       "count": 23
     },
     {
@@ -97,14 +97,14 @@
       "count": 21
     },
     {
-      "entity": "LateralMovementTechnique",
+      "entity": "T1547",
       "count": 20
     },
     {
-      "entity": "T1547",
+      "entity": "ImpactTechnique",
       "count": 20
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:57Z"
+  "generatedAt": "2026-06-08T10:33:41Z"
 }

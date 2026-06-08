@@ -15,11 +15,11 @@
       "count": 1960
     },
     {
-      "predicate": "executor",
+      "predicate": "description",
       "count": 1804
     },
     {
-      "predicate": "name",
+      "predicate": "executor",
       "count": 1804
     },
     {
@@ -31,7 +31,7 @@
       "count": 1804
     },
     {
-      "predicate": "description",
+      "predicate": "name",
       "count": 1804
     }
   ],
@@ -93,10 +93,10 @@
       "count": 25
     },
     {
-      "entity": "iaas:aws",
+      "entity": "T1087.002",
       "count": 24
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-06-08T10:33:42Z"
 }
