@@ -1,64 +1,64 @@
 {
-  "totalTriples": 3601,
-  "uniqueSubjects": 234,
-  "uniqueObjects": 1434,
+  "totalTriples": 3620,
+  "uniqueSubjects": 235,
+  "uniqueObjects": 1441,
   "uniquePredicates": 9,
   "bySource": [
     {
       "source": "lolbas",
-      "count": 3601
+      "count": 3620
     }
   ],
   "topPredicates": [
     {
       "predicate": "full-path",
-      "count": 579
-    },
-    {
-      "predicate": "privileges",
-      "count": 464
-    },
-    {
-      "predicate": "platform",
-      "count": 464
-    },
-    {
-      "predicate": "maps-to-technique",
-      "count": 464
+      "count": 580
     },
     {
       "predicate": "usecase",
-      "count": 464
+      "count": 467
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 467
+    },
+    {
+      "predicate": "privileges",
+      "count": 467
     },
     {
       "predicate": "category",
-      "count": 464
+      "count": 467
     },
     {
-      "predicate": "rdf:type",
-      "count": 234
-    },
-    {
-      "predicate": "name",
-      "count": 234
+      "predicate": "platform",
+      "count": 467
     },
     {
       "predicate": "description",
-      "count": 234
+      "count": 235
+    },
+    {
+      "predicate": "name",
+      "count": 235
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 235
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "User",
-      "count": 403
+      "count": 406
     },
     {
       "entity": "Execute",
-      "count": 246
+      "count": 249
     },
     {
       "entity": "LOLBinary",
-      "count": 234
+      "count": 235
     },
     {
       "entity": "Windows vista, Windows 7, Windows 8, Windows 8.1, Windows 10, Windows 11",
@@ -97,11 +97,11 @@
       "count": 49
     },
     {
-      "entity": "Certutil.exe",
+      "entity": "Administrator",
       "count": 41
     },
     {
-      "entity": "Administrator",
+      "entity": "Certutil.exe",
       "count": 41
     },
     {
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-06-15T12:06:19Z"
 }

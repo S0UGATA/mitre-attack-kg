@@ -27,10 +27,6 @@
       "count": 293
     },
     {
-      "predicate": "created",
-      "count": 290
-    },
-    {
       "predicate": "rdf:type",
       "count": 290
     },
@@ -40,6 +36,10 @@
     },
     {
       "predicate": "modified",
+      "count": 290
+    },
+    {
+      "predicate": "created",
       "count": 290
     },
     {
@@ -79,11 +79,11 @@
       "count": 12
     },
     {
-      "predicate": "revoked-by",
+      "predicate": "revoked",
       "count": 11
     },
     {
-      "predicate": "revoked",
+      "predicate": "revoked-by",
       "count": 11
     },
     {
@@ -101,11 +101,11 @@
       "count": 118
     },
     {
-      "entity": "enterprise-attack",
+      "entity": "2020-05-21 17:43:26.506000+00:00",
       "count": 82
     },
     {
-      "entity": "2020-05-21 17:43:26.506000+00:00",
+      "entity": "enterprise-attack",
       "count": 82
     },
     {
@@ -117,11 +117,11 @@
       "count": 61
     },
     {
-      "entity": "A0010",
+      "entity": "A0018",
       "count": 60
     },
     {
-      "entity": "A0018",
+      "entity": "A0010",
       "count": 60
     },
     {
@@ -154,5 +154,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:54Z"
+  "generatedAt": "2026-06-15T12:06:13Z"
 }
