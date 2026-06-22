@@ -1,120 +1,120 @@
 {
-  "totalTriples": 1448085,
-  "uniqueSubjects": 151322,
-  "uniqueObjects": 26852,
+  "totalTriples": 1493263,
+  "uniqueSubjects": 156516,
+  "uniqueObjects": 26899,
   "uniquePredicates": 12,
   "bySource": [
     {
       "source": "vulnrichment",
-      "count": 1448085
+      "count": 1493263
     }
   ],
   "topPredicates": [
     {
       "predicate": "ssvc-technical-impact",
-      "count": 151324
+      "count": 156519
     },
     {
       "predicate": "ssvc-automatable",
-      "count": 151324
+      "count": 156519
     },
     {
       "predicate": "ssvc-exploitation",
-      "count": 151324
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 151322
+      "count": 156519
     },
     {
       "predicate": "state",
-      "count": 151322
-    },
-    {
-      "predicate": "date-updated",
-      "count": 151322
+      "count": 156516
     },
     {
       "predicate": "assigner",
-      "count": 151322
+      "count": 156516
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 156516
+    },
+    {
+      "predicate": "date-updated",
+      "count": 156516
     },
     {
       "predicate": "date-published",
-      "count": 151216
+      "count": 156410
     },
     {
       "predicate": "adp-affects-cpe",
       "count": 135403
     },
     {
-      "predicate": "adp-cvss-base-score",
-      "count": 35401
+      "predicate": "adp-cvss-severity",
+      "count": 36646
     },
     {
-      "predicate": "adp-cvss-severity",
-      "count": 35401
+      "predicate": "adp-cvss-base-score",
+      "count": 36646
     },
     {
       "predicate": "adp-related-weakness",
-      "count": 31404
+      "count": 32537
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "Vulnerability",
-      "count": 151322
+      "count": 156516
     },
     {
       "entity": "PUBLISHED",
-      "count": 151322
+      "count": 156516
     },
     {
       "entity": "partial",
-      "count": 100481
+      "count": 103631
+    },
+    {
+      "entity": "total",
+      "count": 52888
     },
     {
       "entity": "CVE-2024-20399",
       "count": 51537
     },
     {
-      "entity": "total",
-      "count": 50843
-    },
-    {
       "entity": "poc",
-      "count": 35440
+      "count": 36435
     },
     {
       "entity": "yes",
-      "count": 34293
+      "count": 35553
     },
     {
       "entity": "mitre",
-      "count": 21062
+      "count": 21325
     },
     {
       "entity": "Patchstack",
-      "count": 15516
+      "count": 16045
     },
     {
       "entity": "MEDIUM",
-      "count": 15421
+      "count": 15891
     },
     {
       "entity": "HIGH",
-      "count": 13480
+      "count": 14067
     },
     {
       "entity": "GitHub_M",
-      "count": 12971
+      "count": 13623
     },
     {
       "entity": "VulDB",
-      "count": 12879
+      "count": 13281
     },
     {
       "entity": "Wordfence",
-      "count": 9742
+      "count": 9898
     },
     {
       "entity": "CVE-2024-20481",
@@ -122,5 +122,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-06-22T11:50:48Z"
 }

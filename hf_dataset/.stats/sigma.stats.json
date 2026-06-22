@@ -15,15 +15,15 @@
       "count": 3912
     },
     {
+      "predicate": "status",
+      "count": 3283
+    },
+    {
       "predicate": "title",
       "count": 3283
     },
     {
       "predicate": "level",
-      "count": 3283
-    },
-    {
-      "predicate": "description",
       "count": 3283
     },
     {
@@ -35,11 +35,11 @@
       "count": 3283
     },
     {
-      "predicate": "status",
+      "predicate": "date",
       "count": 3283
     },
     {
-      "predicate": "date",
+      "predicate": "description",
       "count": 3283
     },
     {
@@ -118,5 +118,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-06-22T11:50:47Z"
 }

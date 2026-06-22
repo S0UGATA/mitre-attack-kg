@@ -15,15 +15,15 @@
       "count": 1960
     },
     {
-      "predicate": "executor",
-      "count": 1804
-    },
-    {
       "predicate": "name",
       "count": 1804
     },
     {
       "predicate": "rdf:type",
+      "count": 1804
+    },
+    {
+      "predicate": "executor",
       "count": 1804
     },
     {
@@ -98,5 +98,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-06-22T11:50:48Z"
 }
