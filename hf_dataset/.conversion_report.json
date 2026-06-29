@@ -1,4 +1,6 @@
 {
-  "failed_sources": [],
-  "timestamp": "2026-06-01T11:23:14Z"
+  "failed_sources": [
+    "cpe"
+  ],
+  "timestamp": "2026-06-29T10:47:48Z"
 }

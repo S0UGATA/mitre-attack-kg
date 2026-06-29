@@ -1,52 +1,52 @@
 {
-  "totalTriples": 10980,
-  "uniqueSubjects": 1804,
-  "uniqueObjects": 3848,
+  "totalTriples": 11024,
+  "uniqueSubjects": 1811,
+  "uniqueObjects": 3865,
   "uniquePredicates": 6,
   "bySource": [
     {
       "source": "atomic",
-      "count": 10980
+      "count": 11024
     }
   ],
   "topPredicates": [
     {
       "predicate": "platform",
-      "count": 1960
-    },
-    {
-      "predicate": "executor",
-      "count": 1804
-    },
-    {
-      "predicate": "name",
-      "count": 1804
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 1804
-    },
-    {
-      "predicate": "tests-technique",
-      "count": 1804
+      "count": 1969
     },
     {
       "predicate": "description",
-      "count": 1804
+      "count": 1811
+    },
+    {
+      "predicate": "name",
+      "count": 1811
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1811
+    },
+    {
+      "predicate": "tests-technique",
+      "count": 1811
+    },
+    {
+      "predicate": "executor",
+      "count": 1811
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "AtomicTest",
-      "count": 1804
+      "count": 1811
     },
     {
       "entity": "windows",
-      "count": 1218
+      "count": 1222
     },
     {
       "entity": "powershell",
-      "count": 699
+      "count": 702
     },
     {
       "entity": "command_prompt",
@@ -54,19 +54,19 @@
     },
     {
       "entity": "sh",
-      "count": 406
+      "count": 408
     },
     {
       "entity": "linux",
-      "count": 404
+      "count": 407
     },
     {
       "entity": "macos",
-      "count": 248
+      "count": 250
     },
     {
       "entity": "bash",
-      "count": 127
+      "count": 128
     },
     {
       "entity": "T1112",
@@ -74,7 +74,7 @@
     },
     {
       "entity": "T1685",
-      "count": 76
+      "count": 77
     },
     {
       "entity": "T1082",
@@ -98,5 +98,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-06-29T10:55:50Z"
 }
