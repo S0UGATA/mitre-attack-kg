@@ -173,7 +173,7 @@ Security data from 24 sources represented as **Subject-Predicate-Object (SPO) tr
 
 Sources: [ATT&CK](https://attack.mitre.org/) · [CAPEC](https://capec.mitre.org/) · [CWE](https://cwe.mitre.org/) · [CVE](https://www.cve.org/) · [CPE](https://nvd.nist.gov/products/cpe) · [D3FEND](https://d3fend.mitre.org/) · [ATLAS](https://atlas.mitre.org/) · [CAR](https://car.mitre.org/) · [ENGAGE](https://engage.mitre.org/) · [F3](https://ctid.mitre.org/fraud) · [EPSS](https://www.first.org/epss/) · [KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) · [Vulnrichment](https://github.com/cisagov/vulnrichment) · [GHSA](https://github.com/github/advisory-database) · [Sigma](https://github.com/SigmaHQ/sigma) · [ExploitDB](https://gitlab.com/exploit-database/exploitdb) · [MISP Galaxies](https://github.com/MISP/misp-galaxy) · [LOLBAS](https://lolbas-project.github.io/) · [LOLDrivers](https://www.loldrivers.io/) · [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) · [NIST 800-53](https://github.com/center-for-threat-informed-defense/mappings-explorer) · [Nuclei](https://github.com/projectdiscovery/nuclei-templates) · [EUVD](https://euvd.enisa.europa.eu/) · [OSV](https://osv.dev/)
 
-*Last updated: 2026-06-01T11:35:44Z*
+*Last updated: 2026-07-06T10:17:51Z*
 
 ## Quick Start
 
@@ -195,28 +195,28 @@ print(ds["train"][0])
 | `attack-all` | ATT&CK combined (deduplicated) | 51,907 | Current |
 | `capec` | CAPEC attack patterns | 8,114 | Current |
 | `cwe` | CWE weaknesses | 14,583 | Current |
-| `cve` | CVE vulnerabilities | 3,735,024 | Current |
-| `cpe` | CPE platform enumeration | 13,312,264 | Current |
+| `cve` | CVE vulnerabilities | 3,853,906 | Current |
+| `cpe` | CPE platform enumeration | 13,545,566 | Current |
 | `d3fend` | D3FEND defensive techniques | 8,154 | Current |
 | `atlas` | ATLAS AI/ML techniques | 1,373 | Current |
 | `car` | CAR analytics | 1,617 | Current |
 | `engage` | ENGAGE adversary engagement | 1,464 | Current |
-| `f3` | F3 fraud techniques & tactics | 1,047 | Current |
-| `epss` | EPSS exploit prediction scores | 673,642 | Current |
-| `kev` | KEV known exploited vulns | 17,604 | Current |
-| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 1,448,085 | Current |
-| `ghsa` | GitHub Security Advisories | 359,802 | Current |
+| `f3` | F3 fraud techniques & tactics | 1,053 | Current |
+| `epss` | EPSS exploit prediction scores | 691,388 | Current |
+| `kev` | KEV known exploited vulns | 17,872 | Current |
+| `vulnrichment` | CISA Vulnrichment (SSVC, CVSS, CWE enrichment) | 1,534,890 | Current |
+| `ghsa` | GitHub Security Advisories | 379,748 | Current |
 | `sigma` | Sigma detection rules | 33,294 | Current |
-| `exploitdb` | ExploitDB public exploits | 347,105 | Current |
-| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 201,732 | Current |
-| `lolbas` | LOLBAS living-off-the-land binaries | 3,601 | Current |
-| `loldrivers` | LOLDrivers vulnerable/malicious drivers | 11,236 | Current |
-| `atomic` | Atomic Red Team test definitions | 10,980 | Current |
+| `exploitdb` | ExploitDB public exploits | 347,133 | Current |
+| `misp_galaxy` | MISP Galaxy threat intelligence clusters | 203,307 | Current |
+| `lolbas` | LOLBAS living-off-the-land binaries | 3,692 | Current |
+| `loldrivers` | LOLDrivers vulnerable/malicious drivers | 11,646 | Current |
+| `atomic` | Atomic Red Team test definitions | 11,024 | Current |
 | `nist_800_53` | NIST 800-53 → ATT&CK control mappings | 4,786 | Current |
-| `nuclei` | Nuclei vulnerability detection templates | 97,438 | Current |
-| `euvd` | EUVD European vulnerability database | 4,833 | Current |
-| `osv` | OSV open-source vulnerabilities (23 ecosystems) | 6,548,900 | Current |
-| `combined` | All sources merged (deduplicated) | 26,898,585 | Current |
+| `nuclei` | Nuclei vulnerability detection templates | 98,482 | Current |
+| `euvd` | EUVD European vulnerability database | 4,905 | Current |
+| `osv` | OSV open-source vulnerabilities (23 ecosystems) | 6,905,046 | Current |
+| `combined` | All sources merged (deduplicated) | 27,734,950 | Current |
 
 
 

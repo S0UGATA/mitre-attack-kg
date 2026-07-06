@@ -1,34 +1,34 @@
 {
-  "totalTriples": 201732,
-  "uniqueSubjects": 36997,
-  "uniqueObjects": 74841,
-  "uniquePredicates": 17,
+  "totalTriples": 203307,
+  "uniqueSubjects": 37369,
+  "uniqueObjects": 75612,
+  "uniquePredicates": 18,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 201732
+      "count": 203307
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 37413
-    },
-    {
-      "predicate": "name",
-      "count": 33289
-    },
-    {
-      "predicate": "galaxy",
-      "count": 33289
+      "count": 37462
     },
     {
       "predicate": "rdf:type",
-      "count": 33289
+      "count": 33661
+    },
+    {
+      "predicate": "name",
+      "count": 33661
+    },
+    {
+      "predicate": "galaxy",
+      "count": 33661
     },
     {
       "predicate": "description",
-      "count": 28899
+      "count": 29271
     },
     {
       "predicate": "uses",
@@ -36,7 +36,7 @@
     },
     {
       "predicate": "synonym",
-      "count": 5184
+      "count": 5202
     },
     {
       "predicate": "related-attack-id",
@@ -48,7 +48,7 @@
     },
     {
       "predicate": "country",
-      "count": 1277
+      "count": 1289
     },
     {
       "predicate": "targets-country",
@@ -77,6 +77,10 @@
     {
       "predicate": "variant-of",
       "count": 43
+    },
+    {
+      "predicate": "similar-to",
+      "count": 8
     }
   ],
   "topConnectedEntities": [
@@ -89,20 +93,20 @@
       "count": 5219
     },
     {
-      "entity": "malpedia",
-      "count": 3683
-    },
-    {
       "entity": "MalpediaEntry",
       "count": 3683
     },
     {
-      "entity": "SigmaRule",
-      "count": 3132
+      "entity": "malpedia",
+      "count": 3683
     },
     {
       "entity": "sigma-rules",
-      "count": 3132
+      "count": 3133
+    },
+    {
+      "entity": "SigmaRule",
+      "count": 3133
     },
     {
       "entity": "ransomware",
@@ -142,5 +146,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-07-06T10:18:09Z"
 }

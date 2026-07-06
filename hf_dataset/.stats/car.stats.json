@@ -15,11 +15,11 @@
       "count": 194
     },
     {
-      "predicate": "detects-technique",
+      "predicate": "coverage-level",
       "count": 159
     },
     {
-      "predicate": "coverage-level",
+      "predicate": "detects-technique",
       "count": 159
     },
     {
@@ -39,7 +39,19 @@
       "count": 108
     },
     {
+      "predicate": "rdf:type",
+      "count": 102
+    },
+    {
+      "predicate": "title",
+      "count": 102
+    },
+    {
       "predicate": "submission-date",
+      "count": 102
+    },
+    {
+      "predicate": "information-domain",
       "count": 102
     },
     {
@@ -48,18 +60,6 @@
     },
     {
       "predicate": "maps-to-d3fend",
-      "count": 102
-    },
-    {
-      "predicate": "title",
-      "count": 102
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 102
-    },
-    {
-      "predicate": "information-domain",
       "count": 102
     }
   ],
@@ -126,5 +126,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:54Z"
+  "generatedAt": "2026-07-06T10:18:03Z"
 }

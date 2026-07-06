@@ -1,50 +1,50 @@
 {
-  "totalTriples": 11236,
-  "uniqueSubjects": 623,
-  "uniqueObjects": 6656,
+  "totalTriples": 11646,
+  "uniqueSubjects": 656,
+  "uniqueObjects": 6922,
   "uniquePredicates": 9,
   "bySource": [
     {
       "source": "loldrivers",
-      "count": 11236
+      "count": 11646
     }
   ],
   "topPredicates": [
     {
       "predicate": "sha1",
-      "count": 2046
+      "count": 2110
     },
     {
       "predicate": "md5",
-      "count": 2029
+      "count": 2093
     },
     {
       "predicate": "sha256",
-      "count": 2028
+      "count": 2092
     },
     {
       "predicate": "vendor",
-      "count": 1331
+      "count": 1368
     },
     {
       "predicate": "product",
-      "count": 1310
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 623
+      "count": 1359
     },
     {
       "predicate": "category",
-      "count": 623
+      "count": 656
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 656
     },
     {
       "predicate": "name",
-      "count": 623
+      "count": 656
     },
     {
       "predicate": "maps-to-technique",
-      "count": 623
+      "count": 656
     }
   ],
   "topConnectedEntities": [
@@ -54,15 +54,15 @@
     },
     {
       "entity": "LOLDriver",
-      "count": 623
+      "count": 656
     },
     {
       "entity": "T1068",
-      "count": 600
+      "count": 621
     },
     {
       "entity": "vulnerable driver",
-      "count": 511
+      "count": 541
     },
     {
       "entity": "0f59ce3b-20ac-41ba-8010-2abc74827eb8",
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-07-06T10:18:09Z"
 }
