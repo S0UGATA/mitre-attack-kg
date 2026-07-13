@@ -35,10 +35,6 @@
       "count": 1212
     },
     {
-      "predicate": "rdf:type",
-      "count": 944
-    },
-    {
       "predicate": "description",
       "count": 944
     },
@@ -47,11 +43,15 @@
       "count": 944
     },
     {
+      "predicate": "name",
+      "count": 944
+    },
+    {
       "predicate": "abstraction",
       "count": 944
     },
     {
-      "predicate": "name",
+      "predicate": "rdf:type",
       "count": 944
     },
     {
@@ -142,5 +142,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:57Z"
+  "generatedAt": "2026-07-13T09:13:09Z"
 }

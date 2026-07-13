@@ -1,92 +1,92 @@
 {
-  "totalTriples": 3601,
-  "uniqueSubjects": 234,
-  "uniqueObjects": 1434,
+  "totalTriples": 3692,
+  "uniqueSubjects": 239,
+  "uniqueObjects": 1471,
   "uniquePredicates": 9,
   "bySource": [
     {
       "source": "lolbas",
-      "count": 3601
+      "count": 3692
     }
   ],
   "topPredicates": [
     {
       "predicate": "full-path",
-      "count": 579
-    },
-    {
-      "predicate": "privileges",
-      "count": 464
-    },
-    {
-      "predicate": "platform",
-      "count": 464
-    },
-    {
-      "predicate": "maps-to-technique",
-      "count": 464
-    },
-    {
-      "predicate": "usecase",
-      "count": 464
+      "count": 600
     },
     {
       "predicate": "category",
-      "count": 464
+      "count": 475
     },
     {
-      "predicate": "rdf:type",
-      "count": 234
+      "predicate": "platform",
+      "count": 475
+    },
+    {
+      "predicate": "usecase",
+      "count": 475
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 475
+    },
+    {
+      "predicate": "privileges",
+      "count": 475
     },
     {
       "predicate": "name",
-      "count": 234
+      "count": 239
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 239
     },
     {
       "predicate": "description",
-      "count": 234
+      "count": 239
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "User",
-      "count": 403
+      "count": 412
     },
     {
       "entity": "Execute",
-      "count": 246
+      "count": 255
     },
     {
       "entity": "LOLBinary",
-      "count": 234
+      "count": 239
     },
     {
       "entity": "Windows vista, Windows 7, Windows 8, Windows 8.1, Windows 10, Windows 11",
-      "count": 115
+      "count": 116
     },
     {
       "entity": "Windows 10, Windows 11",
-      "count": 107
+      "count": 111
     },
     {
       "entity": "T1218",
-      "count": 89
+      "count": 91
     },
     {
       "entity": "Windows",
-      "count": 75
+      "count": 76
+    },
+    {
+      "entity": "T1105",
+      "count": 71
     },
     {
       "entity": "Update.exe",
       "count": 70
     },
     {
-      "entity": "T1105",
-      "count": 69
-    },
-    {
       "entity": "Download",
-      "count": 59
+      "count": 61
     },
     {
       "entity": "T1127",
@@ -97,18 +97,18 @@
       "count": 49
     },
     {
+      "entity": "Administrator",
+      "count": 43
+    },
+    {
       "entity": "Certutil.exe",
       "count": 41
     },
     {
-      "entity": "Administrator",
+      "entity": "Wmic.exe",
       "count": 41
-    },
-    {
-      "entity": "T1202",
-      "count": 37
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-07-13T09:13:10Z"
 }

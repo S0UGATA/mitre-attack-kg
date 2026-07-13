@@ -1,130 +1,130 @@
 {
-  "totalTriples": 3735024,
-  "uniqueSubjects": 336849,
-  "uniqueObjects": 934299,
+  "totalTriples": 3875509,
+  "uniqueSubjects": 347237,
+  "uniqueObjects": 970550,
   "uniquePredicates": 13,
   "bySource": [
     {
       "source": "cve",
-      "count": 3735024
+      "count": 3875509
     }
   ],
   "topPredicates": [
     {
       "predicate": "product",
-      "count": 518406
+      "count": 537287
     },
     {
       "predicate": "vendor",
-      "count": 518376
-    },
-    {
-      "predicate": "date-published",
-      "count": 336849
-    },
-    {
-      "predicate": "assigner",
-      "count": 336849
-    },
-    {
-      "predicate": "state",
-      "count": 336849
-    },
-    {
-      "predicate": "date-updated",
-      "count": 336849
+      "count": 537257
     },
     {
       "predicate": "rdf:type",
-      "count": 336849
+      "count": 347237
+    },
+    {
+      "predicate": "date-published",
+      "count": 347237
+    },
+    {
+      "predicate": "assigner",
+      "count": 347237
+    },
+    {
+      "predicate": "date-updated",
+      "count": 347237
+    },
+    {
+      "predicate": "state",
+      "count": 347237
     },
     {
       "predicate": "description",
-      "count": 329226
-    },
-    {
-      "predicate": "cvss-base-score",
-      "count": 160011
+      "count": 339102
     },
     {
       "predicate": "cvss-severity",
-      "count": 160011
+      "count": 170523
+    },
+    {
+      "predicate": "cvss-base-score",
+      "count": 170523
     },
     {
       "predicate": "related-weakness",
-      "count": 143406
+      "count": 153478
     },
     {
       "predicate": "platform",
-      "count": 134913
+      "count": 138651
     },
     {
       "predicate": "affects-cpe",
-      "count": 86430
+      "count": 92503
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "Vulnerability",
-      "count": 336849
+      "count": 347237
     },
     {
       "entity": "PUBLISHED",
-      "count": 336849
+      "count": 347237
     },
     {
       "entity": "mitre",
-      "count": 113557
+      "count": 113966
     },
     {
       "entity": "Microsoft",
-      "count": 93243
+      "count": 95488
     },
     {
       "entity": "MEDIUM",
-      "count": 80066
+      "count": 84513
     },
     {
       "entity": "x64-based Systems",
-      "count": 67809
+      "count": 69715
     },
     {
       "entity": "Linux",
-      "count": 62587
+      "count": 65493
     },
     {
       "entity": "HIGH",
-      "count": 56942
-    },
-    {
-      "entity": "32-bit Systems",
-      "count": 23933
+      "count": 61302
     },
     {
       "entity": "CWE-79",
-      "count": 23830
+      "count": 24712
+    },
+    {
+      "entity": "32-bit Systems",
+      "count": 24381
     },
     {
       "entity": "ARM64-based Systems",
-      "count": 18448
+      "count": 19045
     },
     {
       "entity": "Siemens",
-      "count": 17574
+      "count": 17684
     },
     {
       "entity": "Patchstack",
-      "count": 16101
+      "count": 16941
     },
     {
       "entity": "GitHub_M",
-      "count": 15262
+      "count": 16938
     },
     {
       "entity": "Red Hat",
-      "count": 15249
+      "count": 16908
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:57Z"
+  "generatedAt": "2026-07-13T09:13:09Z"
 }
