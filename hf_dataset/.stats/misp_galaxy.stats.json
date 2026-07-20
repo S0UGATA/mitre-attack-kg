@@ -1,42 +1,42 @@
 {
-  "totalTriples": 201732,
-  "uniqueSubjects": 36997,
-  "uniqueObjects": 74841,
-  "uniquePredicates": 17,
+  "totalTriples": 205745,
+  "uniqueSubjects": 37775,
+  "uniqueObjects": 76426,
+  "uniquePredicates": 18,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 201732
+      "count": 205745
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 37413
-    },
-    {
-      "predicate": "name",
-      "count": 33289
+      "count": 38265
     },
     {
       "predicate": "galaxy",
-      "count": 33289
+      "count": 34067
+    },
+    {
+      "predicate": "name",
+      "count": 34067
     },
     {
       "predicate": "rdf:type",
-      "count": 33289
+      "count": 34067
     },
     {
       "predicate": "description",
-      "count": 28899
+      "count": 29658
     },
     {
       "predicate": "uses",
-      "count": 20616
+      "count": 20617
     },
     {
       "predicate": "synonym",
-      "count": 5184
+      "count": 5228
     },
     {
       "predicate": "related-attack-id",
@@ -48,7 +48,7 @@
     },
     {
       "predicate": "country",
-      "count": 1277
+      "count": 1292
     },
     {
       "predicate": "targets-country",
@@ -77,6 +77,10 @@
     {
       "predicate": "variant-of",
       "count": 43
+    },
+    {
+      "predicate": "similar-to",
+      "count": 8
     }
   ],
   "topConnectedEntities": [
@@ -89,28 +93,28 @@
       "count": 5219
     },
     {
-      "entity": "malpedia",
-      "count": 3683
-    },
-    {
       "entity": "MalpediaEntry",
       "count": 3683
     },
     {
+      "entity": "malpedia",
+      "count": 3683
+    },
+    {
       "entity": "SigmaRule",
-      "count": 3132
+      "count": 3133
     },
     {
       "entity": "sigma-rules",
-      "count": 3132
+      "count": 3133
     },
     {
       "entity": "ransomware",
-      "count": 2750
+      "count": 2768
     },
     {
       "entity": "Ransomware",
-      "count": 2565
+      "count": 2583
     },
     {
       "entity": "veris-framework",
@@ -142,5 +146,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-07-20T09:05:38Z"
 }
