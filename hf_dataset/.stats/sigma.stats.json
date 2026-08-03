@@ -1,104 +1,104 @@
 {
-  "totalTriples": 33294,
-  "uniqueSubjects": 3283,
-  "uniqueObjects": 8821,
+  "totalTriples": 33498,
+  "uniqueSubjects": 3302,
+  "uniqueObjects": 8874,
   "uniquePredicates": 11,
   "bySource": [
     {
       "source": "sigma",
-      "count": 33294
+      "count": 33498
     }
   ],
   "topPredicates": [
     {
       "predicate": "detects-technique",
-      "count": 3912
-    },
-    {
-      "predicate": "title",
-      "count": 3283
-    },
-    {
-      "predicate": "level",
-      "count": 3283
-    },
-    {
-      "predicate": "description",
-      "count": 3283
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 3283
+      "count": 3948
     },
     {
       "predicate": "author",
-      "count": 3283
-    },
-    {
-      "predicate": "status",
-      "count": 3283
+      "count": 3302
     },
     {
       "predicate": "date",
-      "count": 3283
+      "count": 3302
+    },
+    {
+      "predicate": "title",
+      "count": 3302
+    },
+    {
+      "predicate": "description",
+      "count": 3302
+    },
+    {
+      "predicate": "level",
+      "count": 3302
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 3302
+    },
+    {
+      "predicate": "status",
+      "count": 3302
     },
     {
       "predicate": "logsource-product",
-      "count": 3128
+      "count": 3144
     },
     {
       "predicate": "logsource-category",
-      "count": 2601
+      "count": 2616
     },
     {
       "predicate": "logsource-service",
-      "count": 672
+      "count": 676
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "SigmaRule",
-      "count": 3283
+      "count": 3302
     },
     {
       "entity": "test",
-      "count": 2942
+      "count": 2944
     },
     {
       "entity": "windows",
-      "count": 2543
+      "count": 2554
     },
     {
       "entity": "high",
-      "count": 1708
+      "count": 1716
     },
     {
       "entity": "process_creation",
-      "count": 1447
+      "count": 1456
     },
     {
       "entity": "medium",
-      "count": 1401
+      "count": 1410
     },
     {
       "entity": "Nasreddine Bencherchali (Nextron Systems)",
-      "count": 578
+      "count": 577
     },
     {
       "entity": "Florian Roth (Nextron Systems)",
       "count": 369
     },
     {
+      "entity": "experimental",
+      "count": 275
+    },
+    {
       "entity": "frack113",
       "count": 261
     },
     {
-      "entity": "experimental",
-      "count": 258
-    },
-    {
       "entity": "file_event",
-      "count": 215
+      "count": 217
     },
     {
       "entity": "registry_set",
@@ -106,17 +106,17 @@
     },
     {
       "entity": "T1059.001",
-      "count": 200
+      "count": 201
     },
     {
       "entity": "linux",
-      "count": 178
+      "count": 183
     },
     {
       "entity": "critical",
-      "count": 174
+      "count": 176
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-08-03T09:40:29Z"
 }

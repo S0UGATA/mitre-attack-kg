@@ -1,42 +1,42 @@
 {
-  "totalTriples": 201732,
-  "uniqueSubjects": 36997,
-  "uniqueObjects": 74841,
-  "uniquePredicates": 17,
+  "totalTriples": 205821,
+  "uniqueSubjects": 37789,
+  "uniqueObjects": 76466,
+  "uniquePredicates": 18,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 201732
+      "count": 205821
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 37413
+      "count": 38265
     },
     {
       "predicate": "name",
-      "count": 33289
+      "count": 34081
     },
     {
       "predicate": "galaxy",
-      "count": 33289
+      "count": 34081
     },
     {
       "predicate": "rdf:type",
-      "count": 33289
+      "count": 34081
     },
     {
       "predicate": "description",
-      "count": 28899
+      "count": 29672
     },
     {
       "predicate": "uses",
-      "count": 20616
+      "count": 20617
     },
     {
       "predicate": "synonym",
-      "count": 5184
+      "count": 5241
     },
     {
       "predicate": "related-attack-id",
@@ -48,7 +48,7 @@
     },
     {
       "predicate": "country",
-      "count": 1277
+      "count": 1299
     },
     {
       "predicate": "targets-country",
@@ -77,15 +77,19 @@
     {
       "predicate": "variant-of",
       "count": 43
+    },
+    {
+      "predicate": "similar-to",
+      "count": 8
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "References",
+      "entity": "references",
       "count": 5219
     },
     {
-      "entity": "references",
+      "entity": "References",
       "count": 5219
     },
     {
@@ -98,19 +102,19 @@
     },
     {
       "entity": "SigmaRule",
-      "count": 3132
+      "count": 3133
     },
     {
       "entity": "sigma-rules",
-      "count": 3132
+      "count": 3133
     },
     {
       "entity": "ransomware",
-      "count": 2750
+      "count": 2768
     },
     {
       "entity": "Ransomware",
-      "count": 2565
+      "count": 2583
     },
     {
       "entity": "veris-framework",
@@ -142,5 +146,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:58Z"
+  "generatedAt": "2026-08-03T09:40:29Z"
 }
