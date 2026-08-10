@@ -1,50 +1,50 @@
 {
-  "totalTriples": 51907,
-  "uniqueSubjects": 3613,
-  "uniqueObjects": 14821,
+  "totalTriples": 52199,
+  "uniqueSubjects": 3619,
+  "uniqueObjects": 14884,
   "uniquePredicates": 22,
   "bySource": [
     {
       "source": "attack",
-      "count": 51907
+      "count": 52199
     }
   ],
   "topPredicates": [
     {
       "predicate": "uses",
-      "count": 19988
+      "count": 20224
     },
     {
       "predicate": "platform",
-      "count": 3729
+      "count": 3745
     },
     {
       "predicate": "name",
-      "count": 2919
-    },
-    {
-      "predicate": "modified",
-      "count": 2919
+      "count": 2925
     },
     {
       "predicate": "rdf:type",
-      "count": 2919
+      "count": 2925
+    },
+    {
+      "predicate": "modified",
+      "count": 2925
     },
     {
       "predicate": "created",
-      "count": 2916
+      "count": 2922
     },
     {
       "predicate": "url",
-      "count": 2912
+      "count": 2918
     },
     {
       "predicate": "description",
-      "count": 2901
+      "count": 2907
     },
     {
       "predicate": "domain",
-      "count": 2838
+      "count": 2835
     },
     {
       "predicate": "mitigates",
@@ -72,7 +72,7 @@
     },
     {
       "predicate": "alias",
-      "count": 430
+      "count": 437
     },
     {
       "predicate": "deprecated",
@@ -102,11 +102,11 @@
   "topConnectedEntities": [
     {
       "entity": "enterprise-attack",
-      "count": 2133
+      "count": 2139
     },
     {
       "entity": "Windows",
-      "count": 1321
+      "count": 1324
     },
     {
       "entity": "Technique",
@@ -114,31 +114,31 @@
     },
     {
       "entity": "Malware",
-      "count": 865
+      "count": 869
     },
     {
       "entity": "T1105",
-      "count": 539
+      "count": 544
     },
     {
       "entity": "Linux",
-      "count": 538
+      "count": 541
     },
     {
       "entity": "macOS",
-      "count": 523
+      "count": 526
     },
     {
       "entity": "T1082",
-      "count": 447
+      "count": 450
     },
     {
       "entity": "T1071.001",
-      "count": 437
+      "count": 440
     },
     {
       "entity": "mobile-attack",
-      "count": 411
+      "count": 406
     },
     {
       "entity": "T1059.003",
@@ -146,15 +146,15 @@
     },
     {
       "entity": "T1083",
-      "count": 391
+      "count": 395
     },
     {
       "entity": "T1140",
-      "count": 371
+      "count": 374
     },
     {
       "entity": "T1057",
-      "count": 340
+      "count": 341
     },
     {
       "entity": "Mitigation",
@@ -162,5 +162,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:53Z"
+  "generatedAt": "2026-08-10T07:28:59Z"
 }
