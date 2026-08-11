@@ -15,11 +15,11 @@
       "count": 194
     },
     {
-      "predicate": "detects-technique",
+      "predicate": "coverage-level",
       "count": 159
     },
     {
-      "predicate": "coverage-level",
+      "predicate": "detects-technique",
       "count": 159
     },
     {
@@ -43,7 +43,7 @@
       "count": 102
     },
     {
-      "predicate": "description",
+      "predicate": "title",
       "count": 102
     },
     {
@@ -51,15 +51,15 @@
       "count": 102
     },
     {
-      "predicate": "title",
+      "predicate": "information-domain",
+      "count": 102
+    },
+    {
+      "predicate": "description",
       "count": 102
     },
     {
       "predicate": "rdf:type",
-      "count": 102
-    },
-    {
-      "predicate": "information-domain",
       "count": 102
     }
   ],
@@ -121,10 +121,10 @@
       "count": 25
     },
     {
-      "entity": "CAR-2013-03-001",
+      "entity": "CAR-2020-05-003",
       "count": 24
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:54Z"
+  "generatedAt": "2026-08-10T07:29:00Z"
 }

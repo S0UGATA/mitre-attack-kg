@@ -1,30 +1,30 @@
 {
-  "totalTriples": 8154,
-  "uniqueSubjects": 1934,
-  "uniqueObjects": 4285,
+  "totalTriples": 8473,
+  "uniqueSubjects": 2013,
+  "uniqueObjects": 4434,
   "uniquePredicates": 8,
   "bySource": [
     {
       "source": "d3fend",
-      "count": 8154
+      "count": 8473
     }
   ],
   "topPredicates": [
     {
       "predicate": "child-of",
-      "count": 2124
+      "count": 2206
     },
     {
       "predicate": "rdf:type",
-      "count": 1965
+      "count": 2044
     },
     {
       "predicate": "d3fend-definition",
-      "count": 1468
+      "count": 1547
     },
     {
       "predicate": "d3fend-name",
-      "count": 1468
+      "count": 1547
     },
     {
       "predicate": "name",
@@ -46,27 +46,27 @@
   "topConnectedEntities": [
     {
       "entity": "OffensiveTechnique",
-      "count": 1468
+      "count": 1547
     },
     {
       "entity": "DefensiveTechnique",
       "count": 527
     },
     {
-      "entity": "DefenseEvasionTechnique",
-      "count": 93
+      "entity": "StealthTechnique",
+      "count": 79
     },
     {
       "entity": "PersistenceTechnique",
-      "count": 74
-    },
-    {
-      "entity": "PrivilegeEscalationTechnique",
-      "count": 41
+      "count": 73
     },
     {
       "entity": "ExecutionTechnique",
-      "count": 39
+      "count": 42
+    },
+    {
+      "entity": "PrivilegeEscalationTechnique",
+      "count": 40
     },
     {
       "entity": "DiscoveryTechnique",
@@ -74,7 +74,7 @@
     },
     {
       "entity": "ATTACKMobileDefenseEvasionTechnique",
-      "count": 31
+      "count": 30
     },
     {
       "entity": "CredentialAccessTechnique",
@@ -85,26 +85,26 @@
       "count": 28
     },
     {
-      "entity": "T1546",
-      "count": 23
-    },
-    {
       "entity": "ATTACKMobileCollectionTechnique",
       "count": 23
     },
     {
+      "entity": "T1546",
+      "count": 23
+    },
+    {
       "entity": "T1027",
-      "count": 21
+      "count": 22
     },
     {
       "entity": "LateralMovementTechnique",
       "count": 20
     },
     {
-      "entity": "T1547",
+      "entity": "ImpactTechnique",
       "count": 20
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:57Z"
+  "generatedAt": "2026-08-10T07:29:05Z"
 }

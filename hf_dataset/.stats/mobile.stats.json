@@ -1,12 +1,12 @@
 {
-  "totalTriples": 5579,
+  "totalTriples": 5582,
   "uniqueSubjects": 530,
-  "uniqueObjects": 2164,
+  "uniqueObjects": 2166,
   "uniquePredicates": 19,
   "bySource": [
     {
       "source": "attack",
-      "count": 5579
+      "count": 5582
     }
   ],
   "topPredicates": [
@@ -16,15 +16,11 @@
     },
     {
       "predicate": "domain",
-      "count": 475
+      "count": 478
     },
     {
       "predicate": "platform",
       "count": 435
-    },
-    {
-      "predicate": "url",
-      "count": 406
     },
     {
       "predicate": "created",
@@ -35,11 +31,15 @@
       "count": 406
     },
     {
-      "predicate": "name",
+      "predicate": "url",
       "count": 406
     },
     {
       "predicate": "rdf:type",
+      "count": 406
+    },
+    {
+      "predicate": "name",
       "count": 406
     },
     {
@@ -129,11 +129,11 @@
       "count": 67
     },
     {
-      "entity": "T1533",
+      "entity": "T1418",
       "count": 66
     },
     {
-      "entity": "T1418",
+      "entity": "T1533",
       "count": 66
     },
     {
@@ -150,5 +150,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-06-01T11:35:54Z"
+  "generatedAt": "2026-08-10T07:28:59Z"
 }
