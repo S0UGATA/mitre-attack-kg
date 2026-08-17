@@ -1,12 +1,12 @@
 {
-  "totalTriples": 205917,
-  "uniqueSubjects": 37802,
-  "uniqueObjects": 76533,
+  "totalTriples": 206159,
+  "uniqueSubjects": 37808,
+  "uniqueObjects": 76543,
   "uniquePredicates": 18,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 205917
+      "count": 206159
     }
   ],
   "topPredicates": [
@@ -32,7 +32,7 @@
     },
     {
       "predicate": "uses",
-      "count": 20617
+      "count": 20853
     },
     {
       "predicate": "synonym",
@@ -40,7 +40,7 @@
     },
     {
       "predicate": "related-attack-id",
-      "count": 3973
+      "count": 3979
     },
     {
       "predicate": "used-by",
@@ -101,11 +101,11 @@
       "count": 3683
     },
     {
-      "entity": "sigma-rules",
+      "entity": "SigmaRule",
       "count": 3133
     },
     {
-      "entity": "SigmaRule",
+      "entity": "sigma-rules",
       "count": 3133
     },
     {
@@ -117,11 +117,11 @@
       "count": 2583
     },
     {
-      "entity": "VerisFramework",
+      "entity": "veris-framework",
       "count": 2207
     },
     {
-      "entity": "veris-framework",
+      "entity": "VerisFramework",
       "count": 2207
     },
     {
@@ -146,5 +146,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:05Z"
+  "generatedAt": "2026-08-17T06:49:36Z"
 }

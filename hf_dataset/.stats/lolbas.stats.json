@@ -101,14 +101,14 @@
       "count": 43
     },
     {
-      "entity": "Wmic.exe",
+      "entity": "T1202",
       "count": 41
     },
     {
-      "entity": "Certutil.exe",
+      "entity": "Wmic.exe",
       "count": 41
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:06Z"
+  "generatedAt": "2026-08-17T06:49:36Z"
 }

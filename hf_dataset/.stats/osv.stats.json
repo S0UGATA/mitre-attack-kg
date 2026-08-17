@@ -1,64 +1,64 @@
 {
-  "totalTriples": 7590692,
-  "uniqueSubjects": 526427,
-  "uniqueObjects": 820717,
+  "totalTriples": 7731485,
+  "uniqueSubjects": 531552,
+  "uniqueObjects": 824711,
   "uniquePredicates": 10,
   "bySource": [
     {
       "source": "osv",
-      "count": 7590692
+      "count": 7731485
     }
   ],
   "topPredicates": [
     {
       "predicate": "affects-package",
-      "count": 3075208
+      "count": 3158113
     },
     {
       "predicate": "fixed-in",
-      "count": 1045010
+      "count": 1059659
     },
     {
       "predicate": "ecosystem",
-      "count": 959179
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 561244
-    },
-    {
-      "predicate": "date-modified",
-      "count": 561244
+      "count": 974598
     },
     {
       "predicate": "date-published",
-      "count": 561244
+      "count": 567594
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 567594
+    },
+    {
+      "predicate": "date-modified",
+      "count": 567594
     },
     {
       "predicate": "summary",
-      "count": 402327
+      "count": 406352
     },
     {
       "predicate": "cvss-vector",
-      "count": 289333
+      "count": 292520
     },
     {
       "predicate": "related-weakness",
-      "count": 77678
+      "count": 78908
     },
     {
       "predicate": "related-cve",
-      "count": 58225
+      "count": 58553
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "OSVulnerability",
-      "count": 561244
+      "count": 567594
     },
     {
       "entity": "npm",
-      "count": 226768
+      "count": 227182
     },
     {
       "entity": "2025-11-11",
@@ -73,46 +73,46 @@
       "count": 68430
     },
     {
-      "entity": "Linux",
-      "count": 57194
+      "entity": "2026-08-12",
+      "count": 61561
     },
     {
       "entity": "Linux/Kernel",
-      "count": 57194
+      "count": 59630
     },
     {
-      "entity": "Debian:13",
-      "count": 47739
+      "entity": "Linux",
+      "count": 59630
     },
     {
       "entity": "Debian:14",
-      "count": 47624
+      "count": 49303
+    },
+    {
+      "entity": "Debian:13",
+      "count": 48985
     },
     {
       "entity": "Debian:12",
-      "count": 45859
+      "count": 46877
     },
     {
       "entity": "medium",
-      "count": 45701
+      "count": 46381
     },
     {
       "entity": "Debian:11",
-      "count": 44932
+      "count": 45730
     },
     {
       "entity": "2026-08-04",
-      "count": 42893
+      "count": 40190
     },
     {
       "entity": "Ubuntu:16.04:LTS",
-      "count": 35790
-    },
-    {
-      "entity": "Ubuntu:18.04:LTS",
-      "count": 32744
+      "count": 36240
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:07Z"
+  "generatedAt": "2026-08-17T06:49:38Z"
 }

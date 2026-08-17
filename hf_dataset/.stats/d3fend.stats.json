@@ -73,11 +73,11 @@
       "count": 35
     },
     {
-      "entity": "ATTACKMobileDefenseEvasionTechnique",
+      "entity": "CredentialAccessTechnique",
       "count": 30
     },
     {
-      "entity": "CredentialAccessTechnique",
+      "entity": "ATTACKMobileDefenseEvasionTechnique",
       "count": 30
     },
     {
@@ -97,14 +97,14 @@
       "count": 22
     },
     {
-      "entity": "LateralMovementTechnique",
+      "entity": "T1547",
       "count": 20
     },
     {
-      "entity": "ImpactTechnique",
+      "entity": "LateralMovementTechnique",
       "count": 20
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:05Z"
+  "generatedAt": "2026-08-17T06:49:35Z"
 }
