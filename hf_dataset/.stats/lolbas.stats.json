@@ -1,56 +1,56 @@
 {
-  "totalTriples": 3707,
-  "uniqueSubjects": 240,
-  "uniqueObjects": 1478,
+  "totalTriples": 3719,
+  "uniqueSubjects": 241,
+  "uniqueObjects": 1485,
   "uniquePredicates": 9,
   "bySource": [
     {
       "source": "lolbas",
-      "count": 3707
+      "count": 3719
     }
   ],
   "topPredicates": [
     {
       "predicate": "full-path",
-      "count": 602
-    },
-    {
-      "predicate": "usecase",
-      "count": 477
-    },
-    {
-      "predicate": "maps-to-technique",
-      "count": 477
+      "count": 606
     },
     {
       "predicate": "privileges",
-      "count": 477
-    },
-    {
-      "predicate": "category",
-      "count": 477
+      "count": 478
     },
     {
       "predicate": "platform",
-      "count": 477
+      "count": 478
     },
     {
-      "predicate": "description",
-      "count": 240
+      "predicate": "usecase",
+      "count": 478
+    },
+    {
+      "predicate": "maps-to-technique",
+      "count": 478
+    },
+    {
+      "predicate": "category",
+      "count": 478
     },
     {
       "predicate": "name",
-      "count": 240
+      "count": 241
     },
     {
       "predicate": "rdf:type",
-      "count": 240
+      "count": 241
+    },
+    {
+      "predicate": "description",
+      "count": 241
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "User",
-      "count": 414
+      "count": 415
     },
     {
       "entity": "Execute",
@@ -58,7 +58,7 @@
     },
     {
       "entity": "LOLBinary",
-      "count": 240
+      "count": 241
     },
     {
       "entity": "Windows vista, Windows 7, Windows 8, Windows 8.1, Windows 10, Windows 11",
@@ -94,7 +94,7 @@
     },
     {
       "entity": "AWL Bypass",
-      "count": 49
+      "count": 50
     },
     {
       "entity": "Administrator",
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:06Z"
+  "generatedAt": "2026-08-24T06:57:57Z"
 }
