@@ -27,7 +27,7 @@
       "count": 292
     },
     {
-      "predicate": "created",
+      "predicate": "name",
       "count": 290
     },
     {
@@ -39,7 +39,7 @@
       "count": 290
     },
     {
-      "predicate": "name",
+      "predicate": "created",
       "count": 290
     },
     {
@@ -79,11 +79,11 @@
       "count": 12
     },
     {
-      "predicate": "revoked",
+      "predicate": "revoked-by",
       "count": 11
     },
     {
-      "predicate": "revoked-by",
+      "predicate": "revoked",
       "count": 11
     },
     {
@@ -141,11 +141,11 @@
       "count": 51
     },
     {
-      "entity": "A0005",
+      "entity": "A0009",
       "count": 48
     },
     {
-      "entity": "A0009",
+      "entity": "A0005",
       "count": 48
     },
     {
@@ -154,5 +154,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:28:59Z"
+  "generatedAt": "2026-08-24T06:57:51Z"
 }

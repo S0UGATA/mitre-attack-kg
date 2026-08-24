@@ -1,12 +1,12 @@
 {
-  "totalTriples": 205917,
-  "uniqueSubjects": 37802,
-  "uniqueObjects": 76533,
+  "totalTriples": 206235,
+  "uniqueSubjects": 37823,
+  "uniqueObjects": 76577,
   "uniquePredicates": 18,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 205917
+      "count": 206235
     }
   ],
   "topPredicates": [
@@ -16,39 +16,39 @@
     },
     {
       "predicate": "galaxy",
-      "count": 34094
+      "count": 34109
     },
     {
       "predicate": "name",
-      "count": 34094
+      "count": 34109
     },
     {
       "predicate": "rdf:type",
-      "count": 34094
+      "count": 34109
     },
     {
       "predicate": "description",
-      "count": 29685
+      "count": 29700
     },
     {
       "predicate": "uses",
-      "count": 20617
+      "count": 20853
     },
     {
       "predicate": "synonym",
-      "count": 5283
+      "count": 5284
     },
     {
       "predicate": "related-attack-id",
-      "count": 3973
+      "count": 3979
     },
     {
       "predicate": "used-by",
-      "count": 2235
+      "count": 2248
     },
     {
       "predicate": "country",
-      "count": 1301
+      "count": 1303
     },
     {
       "predicate": "targets-country",
@@ -85,11 +85,11 @@
   ],
   "topConnectedEntities": [
     {
-      "entity": "references",
+      "entity": "References",
       "count": 5219
     },
     {
-      "entity": "References",
+      "entity": "references",
       "count": 5219
     },
     {
@@ -101,11 +101,11 @@
       "count": 3683
     },
     {
-      "entity": "sigma-rules",
+      "entity": "SigmaRule",
       "count": 3133
     },
     {
-      "entity": "SigmaRule",
+      "entity": "sigma-rules",
       "count": 3133
     },
     {
@@ -125,11 +125,11 @@
       "count": 2207
     },
     {
-      "entity": "Naics",
+      "entity": "naics",
       "count": 2125
     },
     {
-      "entity": "naics",
+      "entity": "Naics",
       "count": 2125
     },
     {
@@ -146,5 +146,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:05Z"
+  "generatedAt": "2026-08-24T06:57:57Z"
 }
