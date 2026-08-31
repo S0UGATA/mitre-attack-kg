@@ -1,92 +1,92 @@
 {
-  "totalTriples": 397492,
-  "uniqueSubjects": 34302,
-  "uniqueObjects": 167572,
+  "totalTriples": 405042,
+  "uniqueSubjects": 34913,
+  "uniqueObjects": 170495,
   "uniquePredicates": 10,
   "bySource": [
     {
       "source": "ghsa",
-      "count": 397492
+      "count": 405042
     }
   ],
   "topPredicates": [
     {
       "predicate": "affects-package",
-      "count": 63679
+      "count": 64940
     },
     {
       "predicate": "fixed-in",
-      "count": 56103
+      "count": 57237
     },
     {
       "predicate": "related-weakness",
-      "count": 39897
+      "count": 40736
     },
     {
       "predicate": "cvss-vector",
-      "count": 36304
-    },
-    {
-      "predicate": "date-modified",
-      "count": 34302
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 34302
-    },
-    {
-      "predicate": "summary",
-      "count": 34302
+      "count": 36955
     },
     {
       "predicate": "severity",
-      "count": 34302
+      "count": 34913
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 34913
+    },
+    {
+      "predicate": "date-modified",
+      "count": 34913
+    },
+    {
+      "predicate": "summary",
+      "count": 34913
     },
     {
       "predicate": "date-published",
-      "count": 34302
+      "count": 34913
     },
     {
       "predicate": "related-cve",
-      "count": 29999
+      "count": 30609
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "SecurityAdvisory",
-      "count": 34302
+      "count": 34913
     },
     {
       "entity": "MODERATE",
-      "count": 14970
+      "count": 15214
     },
     {
       "entity": "HIGH",
-      "count": 12242
+      "count": 12513
     },
     {
       "entity": "CWE-79",
-      "count": 4762
+      "count": 4800
     },
     {
       "entity": "CRITICAL",
-      "count": 4530
+      "count": 4601
     },
     {
       "entity": "LOW",
-      "count": 2560
+      "count": 2585
     },
     {
       "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-      "count": 2153
+      "count": 2176
     },
     {
       "entity": "CWE-22",
-      "count": 1965
+      "count": 2014
     },
     {
       "entity": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-      "count": 1672
+      "count": 1702
     },
     {
       "entity": "Packagist/magento/community-edition",
@@ -94,15 +94,15 @@
     },
     {
       "entity": "CWE-200",
-      "count": 1515
+      "count": 1541
     },
     {
       "entity": "CWE-20",
-      "count": 1451
+      "count": 1497
     },
     {
       "entity": "CWE-400",
-      "count": 1341
+      "count": 1375
     },
     {
       "entity": "PyPI/tensorflow",
@@ -114,5 +114,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:05Z"
+  "generatedAt": "2026-08-31T12:44:23Z"
 }

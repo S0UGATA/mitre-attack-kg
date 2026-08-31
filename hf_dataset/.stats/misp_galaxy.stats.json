@@ -1,54 +1,54 @@
 {
-  "totalTriples": 205917,
-  "uniqueSubjects": 37802,
-  "uniqueObjects": 76533,
-  "uniquePredicates": 18,
+  "totalTriples": 221671,
+  "uniqueSubjects": 37931,
+  "uniqueObjects": 76728,
+  "uniquePredicates": 19,
   "bySource": [
     {
       "source": "misp_galaxy",
-      "count": 205917
+      "count": 221671
     }
   ],
   "topPredicates": [
     {
       "predicate": "misp-related",
-      "count": 38265
-    },
-    {
-      "predicate": "galaxy",
-      "count": 34094
-    },
-    {
-      "predicate": "name",
-      "count": 34094
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 34094
-    },
-    {
-      "predicate": "description",
-      "count": 29685
+      "count": 38501
     },
     {
       "predicate": "uses",
-      "count": 20617
+      "count": 34984
+    },
+    {
+      "predicate": "galaxy",
+      "count": 34113
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 34113
+    },
+    {
+      "predicate": "name",
+      "count": 34113
+    },
+    {
+      "predicate": "description",
+      "count": 29704
     },
     {
       "predicate": "synonym",
-      "count": 5283
+      "count": 5284
     },
     {
       "predicate": "related-attack-id",
-      "count": 3973
+      "count": 5005
     },
     {
       "predicate": "used-by",
-      "count": 2235
+      "count": 2248
     },
     {
       "predicate": "country",
-      "count": 1301
+      "count": 1303
     },
     {
       "predicate": "targets-country",
@@ -79,34 +79,38 @@
       "count": 43
     },
     {
+      "predicate": "attributed-to",
+      "count": 27
+    },
+    {
       "predicate": "similar-to",
       "count": 8
     }
   ],
   "topConnectedEntities": [
     {
-      "entity": "references",
-      "count": 5219
-    },
-    {
       "entity": "References",
       "count": 5219
     },
     {
-      "entity": "MalpediaEntry",
-      "count": 3683
+      "entity": "references",
+      "count": 5219
     },
     {
       "entity": "malpedia",
       "count": 3683
     },
     {
-      "entity": "sigma-rules",
-      "count": 3133
+      "entity": "MalpediaEntry",
+      "count": 3683
     },
     {
       "entity": "SigmaRule",
-      "count": 3133
+      "count": 3144
+    },
+    {
+      "entity": "sigma-rules",
+      "count": 3144
     },
     {
       "entity": "ransomware",
@@ -125,11 +129,11 @@
       "count": 2207
     },
     {
-      "entity": "Naics",
+      "entity": "naics",
       "count": 2125
     },
     {
-      "entity": "naics",
+      "entity": "Naics",
       "count": 2125
     },
     {
@@ -146,5 +150,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:05Z"
+  "generatedAt": "2026-08-31T12:44:23Z"
 }

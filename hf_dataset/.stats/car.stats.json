@@ -39,15 +39,7 @@
       "count": 108
     },
     {
-      "predicate": "submission-date",
-      "count": 102
-    },
-    {
-      "predicate": "title",
-      "count": 102
-    },
-    {
-      "predicate": "maps-to-d3fend",
+      "predicate": "rdf:type",
       "count": 102
     },
     {
@@ -55,11 +47,19 @@
       "count": 102
     },
     {
+      "predicate": "title",
+      "count": 102
+    },
+    {
       "predicate": "description",
       "count": 102
     },
     {
-      "predicate": "rdf:type",
+      "predicate": "submission-date",
+      "count": 102
+    },
+    {
+      "predicate": "maps-to-d3fend",
       "count": 102
     }
   ],
@@ -121,10 +121,10 @@
       "count": 25
     },
     {
-      "entity": "CAR-2020-05-003",
+      "entity": "CAR-2013-03-001",
       "count": 24
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:00Z"
+  "generatedAt": "2026-08-31T12:44:17Z"
 }

@@ -1,56 +1,56 @@
 {
-  "totalTriples": 3707,
-  "uniqueSubjects": 240,
-  "uniqueObjects": 1478,
+  "totalTriples": 3728,
+  "uniqueSubjects": 242,
+  "uniqueObjects": 1491,
   "uniquePredicates": 9,
   "bySource": [
     {
       "source": "lolbas",
-      "count": 3707
+      "count": 3728
     }
   ],
   "topPredicates": [
     {
       "predicate": "full-path",
-      "count": 602
-    },
-    {
-      "predicate": "usecase",
-      "count": 477
+      "count": 607
     },
     {
       "predicate": "maps-to-technique",
-      "count": 477
-    },
-    {
-      "predicate": "privileges",
-      "count": 477
-    },
-    {
-      "predicate": "category",
-      "count": 477
+      "count": 479
     },
     {
       "predicate": "platform",
-      "count": 477
+      "count": 479
+    },
+    {
+      "predicate": "privileges",
+      "count": 479
+    },
+    {
+      "predicate": "category",
+      "count": 479
+    },
+    {
+      "predicate": "usecase",
+      "count": 479
     },
     {
       "predicate": "description",
-      "count": 240
+      "count": 242
     },
     {
       "predicate": "name",
-      "count": 240
+      "count": 242
     },
     {
       "predicate": "rdf:type",
-      "count": 240
+      "count": 242
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "User",
-      "count": 414
+      "count": 415
     },
     {
       "entity": "Execute",
@@ -58,7 +58,7 @@
     },
     {
       "entity": "LOLBinary",
-      "count": 240
+      "count": 242
     },
     {
       "entity": "Windows vista, Windows 7, Windows 8, Windows 8.1, Windows 10, Windows 11",
@@ -94,14 +94,14 @@
     },
     {
       "entity": "AWL Bypass",
-      "count": 49
+      "count": 50
     },
     {
       "entity": "Administrator",
-      "count": 43
+      "count": 44
     },
     {
-      "entity": "Wmic.exe",
+      "entity": "T1202",
       "count": 41
     },
     {
@@ -110,5 +110,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:06Z"
+  "generatedAt": "2026-08-31T12:44:23Z"
 }
