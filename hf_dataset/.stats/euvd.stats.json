@@ -1,32 +1,32 @@
 {
-  "totalTriples": 5001,
-  "uniqueSubjects": 1667,
-  "uniqueObjects": 2122,
+  "totalTriples": 5076,
+  "uniqueSubjects": 1692,
+  "uniqueObjects": 2158,
   "uniquePredicates": 3,
   "bySource": [
     {
       "source": "euvd",
-      "count": 5001
+      "count": 5076
     }
   ],
   "topPredicates": [
     {
       "predicate": "date-published",
-      "count": 1667
+      "count": 1692
     },
     {
       "predicate": "rdf:type",
-      "count": 1667
+      "count": 1692
     },
     {
       "predicate": "related-cve",
-      "count": 1667
+      "count": 1692
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "EUVulnerability",
-      "count": 1667
+      "count": 1692
     },
     {
       "entity": "2021-11-03",
@@ -65,11 +65,11 @@
       "count": 15
     },
     {
-      "entity": "2022-02-10",
+      "entity": "2022-03-15",
       "count": 15
     },
     {
-      "entity": "2022-03-15",
+      "entity": "2022-02-10",
       "count": 15
     },
     {
@@ -86,5 +86,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:06Z"
+  "generatedAt": "2026-08-31T12:44:24Z"
 }
