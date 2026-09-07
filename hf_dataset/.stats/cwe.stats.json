@@ -35,6 +35,10 @@
       "count": 1212
     },
     {
+      "predicate": "status",
+      "count": 944
+    },
+    {
       "predicate": "name",
       "count": 944
     },
@@ -44,10 +48,6 @@
     },
     {
       "predicate": "abstraction",
-      "count": 944
-    },
-    {
-      "predicate": "status",
       "count": 944
     },
     {
@@ -142,5 +142,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:05Z"
+  "generatedAt": "2026-09-07T11:32:25Z"
 }

@@ -1,10 +1,10 @@
 {
   "source": "combined.parquet",
-  "fingerprint": "904319d0a046dd2b",
+  "fingerprint": "827d5f9cb44c4a85",
   "depth": 2,
   "limit": 500,
   "count": 200,
-  "generatedAt": "2026-08-10T07:38:17Z",
+  "generatedAt": "2026-09-07T11:41:37Z",
   "entities": [
     {
       "entity": "CVE-2024-20399",
@@ -14,7 +14,7 @@
     {
       "entity": "CWE-79",
       "file": "CWE-79.json",
-      "triples": 499
+      "triples": 500
     },
     {
       "entity": "CWE-89",
@@ -42,6 +42,11 @@
       "triples": 500
     },
     {
+      "entity": "CWE-284",
+      "file": "CWE-284.json",
+      "triples": 500
+    },
+    {
       "entity": "CWE-352",
       "file": "CWE-352.json",
       "triples": 500
@@ -49,11 +54,6 @@
     {
       "entity": "CVE-2024-20481",
       "file": "CVE-2024-20481.json",
-      "triples": 500
-    },
-    {
-      "entity": "CWE-284",
-      "file": "CWE-284.json",
       "triples": 500
     },
     {
@@ -82,6 +82,11 @@
       "triples": 500
     },
     {
+      "entity": "CWE-918",
+      "file": "CWE-918.json",
+      "triples": 500
+    },
+    {
       "entity": "CWE-125",
       "file": "CWE-125.json",
       "triples": 500
@@ -92,13 +97,13 @@
       "triples": 500
     },
     {
-      "entity": "CWE-918",
-      "file": "CWE-918.json",
+      "entity": "CWE-416",
+      "file": "CWE-416.json",
       "triples": 500
     },
     {
-      "entity": "CWE-416",
-      "file": "CWE-416.json",
+      "entity": "CWE-502",
+      "file": "CWE-502.json",
       "triples": 500
     },
     {
@@ -107,8 +112,8 @@
       "triples": 500
     },
     {
-      "entity": "CWE-502",
-      "file": "CWE-502.json",
+      "entity": "CWE-770",
+      "file": "CWE-770.json",
       "triples": 500
     },
     {
@@ -122,13 +127,13 @@
       "triples": 499
     },
     {
-      "entity": "CWE-770",
-      "file": "CWE-770.json",
+      "entity": "CWE-434",
+      "file": "CWE-434.json",
       "triples": 500
     },
     {
-      "entity": "CWE-434",
-      "file": "CWE-434.json",
+      "entity": "CWE-639",
+      "file": "CWE-639.json",
       "triples": 500
     },
     {
@@ -142,13 +147,13 @@
       "triples": 500
     },
     {
-      "entity": "CWE-639",
-      "file": "CWE-639.json",
+      "entity": "CWE-122",
+      "file": "CWE-122.json",
       "triples": 500
     },
     {
-      "entity": "CWE-122",
-      "file": "CWE-122.json",
+      "entity": "CWE-306",
+      "file": "CWE-306.json",
       "triples": 500
     },
     {
@@ -159,11 +164,6 @@
     {
       "entity": "CWE-269",
       "file": "CWE-269.json",
-      "triples": 500
-    },
-    {
-      "entity": "CWE-306",
-      "file": "CWE-306.json",
       "triples": 500
     },
     {
@@ -179,21 +179,21 @@
     {
       "entity": "CVE-2025-61726",
       "file": "CVE-2025-61726.json",
-      "triples": 500
+      "triples": 499
     },
     {
-      "entity": "cpe:/a:redhat:openshift_ai",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_ai.json",
-      "triples": 203
-    },
-    {
-      "entity": "CVE-2024-20433",
-      "file": "CVE-2024-20433.json",
-      "triples": 500
+      "entity": "cpe:/a:redhat:openshift:4",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.json",
+      "triples": 380
     },
     {
       "entity": "CWE-601",
       "file": "CWE-601.json",
+      "triples": 500
+    },
+    {
+      "entity": "CVE-2024-20433",
+      "file": "CVE-2024-20433.json",
       "triples": 500
     },
     {
@@ -202,19 +202,34 @@
       "triples": 500
     },
     {
+      "entity": "cpe:/a:redhat:openshift_ai",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_ai.json",
+      "triples": 168
+    },
+    {
+      "entity": "cpe:/a:redhat:openshift:4.18::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.18_3a_3ael9.json",
+      "triples": 269
+    },
+    {
       "entity": "CVE-2026-25679",
       "file": "CVE-2026-25679.json",
       "triples": 500
     },
     {
-      "entity": "cpe:/a:redhat:openshift:4",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.json",
-      "triples": 326
+      "entity": "CWE-362",
+      "file": "CWE-362.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-1321",
+      "file": "CWE-1321.json",
+      "triples": 500
     },
     {
       "entity": "cpe:2.3:o:microsoft:windows_10_1809:*:*:*:*:*:*:x64:*",
       "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_10_1809_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
-      "triples": 304
+      "triples": 322
     },
     {
       "entity": "CVE-2025-61732",
@@ -227,8 +242,8 @@
       "triples": 498
     },
     {
-      "entity": "CWE-1321",
-      "file": "CWE-1321.json",
+      "entity": "CWE-295",
+      "file": "CWE-295.json",
       "triples": 500
     },
     {
@@ -237,18 +252,38 @@
       "triples": 500
     },
     {
-      "entity": "CWE-362",
-      "file": "CWE-362.json",
-      "triples": 500
+      "entity": "cpe:/o:redhat:enterprise_linux:8",
+      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a8.json",
+      "triples": 433
     },
     {
-      "entity": "CWE-295",
-      "file": "CWE-295.json",
-      "triples": 500
+      "entity": "cpe:/o:redhat:enterprise_linux:9",
+      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a9.json",
+      "triples": 449
     },
     {
       "entity": "CWE-611",
       "file": "CWE-611.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-522",
+      "file": "CWE-522.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-266",
+      "file": "CWE-266.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-532",
+      "file": "CWE-532.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-59",
+      "file": "CWE-59.json",
       "triples": 500
     },
     {
@@ -259,31 +294,11 @@
     {
       "entity": "CVE-2026-21441",
       "file": "CVE-2026-21441.json",
-      "triples": 500
+      "triples": 486
     },
     {
       "entity": "CVE-2024-8105",
       "file": "CVE-2024-8105.json",
-      "triples": 500
-    },
-    {
-      "entity": "CWE-532",
-      "file": "CWE-532.json",
-      "triples": 500
-    },
-    {
-      "entity": "CWE-266",
-      "file": "CWE-266.json",
-      "triples": 500
-    },
-    {
-      "entity": "cpe:/o:redhat:enterprise_linux:8",
-      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a8.json",
-      "triples": 353
-    },
-    {
-      "entity": "CWE-522",
-      "file": "CWE-522.json",
       "triples": 500
     },
     {
@@ -292,9 +307,9 @@
       "triples": 500
     },
     {
-      "entity": "cpe:/o:redhat:enterprise_linux:9",
-      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a9.json",
-      "triples": 430
+      "entity": "CWE-347",
+      "file": "CWE-347.json",
+      "triples": 500
     },
     {
       "entity": "CVE-2024-51980",
@@ -312,23 +327,8 @@
       "triples": 499
     },
     {
-      "entity": "CWE-59",
-      "file": "CWE-59.json",
-      "triples": 500
-    },
-    {
-      "entity": "CVE-2012-4549",
-      "file": "CVE-2012-4549.json",
-      "triples": 459
-    },
-    {
-      "entity": "CVE-2012-4550",
-      "file": "CVE-2012-4550.json",
-      "triples": 454
-    },
-    {
-      "entity": "CWE-98",
-      "file": "CWE-98.json",
+      "entity": "CWE-1333",
+      "file": "CWE-1333.json",
       "triples": 500
     },
     {
@@ -337,13 +337,33 @@
       "triples": 500
     },
     {
-      "entity": "CWE-347",
-      "file": "CWE-347.json",
+      "entity": "CWE-98",
+      "file": "CWE-98.json",
       "triples": 500
     },
     {
-      "entity": "CWE-1333",
-      "file": "CWE-1333.json",
+      "entity": "CWE-693",
+      "file": "CWE-693.json",
+      "triples": 500
+    },
+    {
+      "entity": "CVE-2012-4549",
+      "file": "CVE-2012-4549.json",
+      "triples": 331
+    },
+    {
+      "entity": "CVE-2012-4550",
+      "file": "CVE-2012-4550.json",
+      "triples": 363
+    },
+    {
+      "entity": "cpe:/o:redhat:enterprise_linux:7",
+      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a7.json",
+      "triples": 461
+    },
+    {
+      "entity": "CWE-345",
+      "file": "CWE-345.json",
       "triples": 500
     },
     {
@@ -352,63 +372,28 @@
       "triples": 500
     },
     {
-      "entity": "CVE-2024-51979",
-      "file": "CVE-2024-51979.json",
-      "triples": 500
-    },
-    {
-      "entity": "cpe:/o:redhat:enterprise_linux:7",
-      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a7.json",
-      "triples": 423
-    },
-    {
-      "entity": "CWE-693",
-      "file": "CWE-693.json",
-      "triples": 500
-    },
-    {
       "entity": "CWE-732",
       "file": "CWE-732.json",
       "triples": 500
     },
     {
-      "entity": "CVE-2022-4974",
-      "file": "CVE-2022-4974.json",
-      "triples": 500
+      "entity": "cpe:/a:redhat:openshift:4.19::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.19_3a_3ael9.json",
+      "triples": 264
     },
     {
-      "entity": "CVE-2024-51978",
-      "file": "CVE-2024-51978.json",
+      "entity": "CVE-2024-51979",
+      "file": "CVE-2024-51979.json",
       "triples": 500
     },
     {
       "entity": "cpe:/o:redhat:enterprise_linux:10",
       "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a10.json",
-      "triples": 457
+      "triples": 435
     },
     {
-      "entity": "CWE-345",
-      "file": "CWE-345.json",
-      "triples": 500
-    },
-    {
-      "entity": "cpe:/o:redhat:enterprise_linux:6",
-      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a6.json",
-      "triples": 489
-    },
-    {
-      "entity": "CWE-798",
-      "file": "CWE-798.json",
-      "triples": 500
-    },
-    {
-      "entity": "cpe:/a:redhat:openshift:4.14::el9",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.14_3a_3ael9.json",
-      "triples": 92
-    },
-    {
-      "entity": "CWE-367",
-      "file": "CWE-367.json",
+      "entity": "CVE-2022-4974",
+      "file": "CVE-2022-4974.json",
       "triples": 500
     },
     {
@@ -417,23 +402,28 @@
       "triples": 500
     },
     {
-      "entity": "GHSA-5v8v-66v8-mwm7",
-      "file": "GHSA-5v8v-66v8-mwm7.json",
-      "triples": 492
-    },
-    {
-      "entity": "CWE-404",
-      "file": "CWE-404.json",
-      "triples": 499
-    },
-    {
-      "entity": "CWE-427",
-      "file": "CWE-427.json",
+      "entity": "CVE-2024-51978",
+      "file": "CVE-2024-51978.json",
       "triples": 500
     },
     {
-      "entity": "CWE-80",
-      "file": "CWE-80.json",
+      "entity": "cpe:/o:redhat:enterprise_linux:6",
+      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a6.json",
+      "triples": 489
+    },
+    {
+      "entity": "CWE-367",
+      "file": "CWE-367.json",
+      "triples": 500
+    },
+    {
+      "entity": "CVE-2026-33814",
+      "file": "CVE-2026-33814.json",
+      "triples": 499
+    },
+    {
+      "entity": "CWE-798",
+      "file": "CWE-798.json",
       "triples": 500
     },
     {
@@ -442,14 +432,49 @@
       "triples": 500
     },
     {
+      "entity": "cpe:/a:redhat:ansible_automation_platform:2",
+      "file": "cpe_3a_2fa_3aredhat_3aansible_automation_platform_3a2.json",
+      "triples": 226
+    },
+    {
+      "entity": "cpe:/a:redhat:openshift:4.14::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.14_3a_3ael9.json",
+      "triples": 279
+    },
+    {
       "entity": "CWE-346",
       "file": "CWE-346.json",
       "triples": 500
     },
     {
-      "entity": "cpe:/a:redhat:ansible_automation_platform:2",
-      "file": "cpe_3a_2fa_3aredhat_3aansible_automation_platform_3a2.json",
-      "triples": 171
+      "entity": "CWE-404",
+      "file": "CWE-404.json",
+      "triples": 499
+    },
+    {
+      "entity": "CWE-80",
+      "file": "CWE-80.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-427",
+      "file": "CWE-427.json",
+      "triples": 500
+    },
+    {
+      "entity": "GHSA-5v8v-66v8-mwm7",
+      "file": "GHSA-5v8v-66v8-mwm7.json",
+      "triples": 492
+    },
+    {
+      "entity": "CWE-835",
+      "file": "CWE-835.json",
+      "triples": 500
+    },
+    {
+      "entity": "misp:e6919abc-99f9-4c6c-95a5-14761e7b2add",
+      "file": "misp_3ae6919abc-99f9-4c6c-95a5-14761e7b2add.json",
+      "triples": 421
     },
     {
       "entity": "CWE-613",
@@ -459,22 +484,12 @@
     {
       "entity": "cpe:/a:redhat:openshift:4.13::el9",
       "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.13_3a_3ael9.json",
-      "triples": 86
+      "triples": 294
     },
     {
       "entity": "CWE-506",
       "file": "CWE-506.json",
-      "triples": 499
-    },
-    {
-      "entity": "CWE-835",
-      "file": "CWE-835.json",
       "triples": 500
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_server_2019:*:*:*:*:*:*:*:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2019_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
-      "triples": 363
     },
     {
       "entity": "CWE-843",
@@ -482,8 +497,8 @@
       "triples": 500
     },
     {
-      "entity": "CVE-2024-51977",
-      "file": "CVE-2024-51977.json",
+      "entity": "CWE-116",
+      "file": "CWE-116.json",
       "triples": 500
     },
     {
@@ -492,14 +507,9 @@
       "triples": 500
     },
     {
-      "entity": "CVE-2022-33323",
-      "file": "CVE-2022-33323.json",
-      "triples": 499
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_10:1903:*:*:*:*:*:*:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_10_3a1903_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
-      "triples": 326
+      "entity": "cpe:/a:redhat:openshift:4.17::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.17_3a_3ael9.json",
+      "triples": 284
     },
     {
       "entity": "CWE-401",
@@ -507,33 +517,53 @@
       "triples": 500
     },
     {
-      "entity": "cpe:/a:redhat:openshift:4.17::el9",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.17_3a_3ael9.json",
-      "triples": 302
-    },
-    {
-      "entity": "cpe:/a:redhat:openshift:4.19::el9",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.19_3a_3ael9.json",
-      "triples": 294
-    },
-    {
-      "entity": "cpe:/a:redhat:openshift:4.15::el9",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.15_3a_3ael9.json",
-      "triples": 95
+      "entity": "CVE-2024-51977",
+      "file": "CVE-2024-51977.json",
+      "triples": 500
     },
     {
       "entity": "cpe:/a:redhat:openshift:4.20::el9",
       "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.20_3a_3ael9.json",
-      "triples": 244
-    },
-    {
-      "entity": "cpe:/a:redhat:openshift:4.18::el9",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.18_3a_3ael9.json",
       "triples": 253
     },
     {
-      "entity": "CWE-116",
-      "file": "CWE-116.json",
+      "entity": "cpe:/a:redhat:openshift:4.15::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.15_3a_3ael9.json",
+      "triples": 290
+    },
+    {
+      "entity": "CWE-674",
+      "file": "CWE-674.json",
+      "triples": 500
+    },
+    {
+      "entity": "cpe:2.3:o:microsoft:windows_10:1903:*:*:*:*:*:*:*",
+      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_10_3a1903_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
+      "triples": 338
+    },
+    {
+      "entity": "CVE-2022-33323",
+      "file": "CVE-2022-33323.json",
+      "triples": 499
+    },
+    {
+      "entity": "CWE-23",
+      "file": "CWE-23.json",
+      "triples": 500
+    },
+    {
+      "entity": "cpe:/a:redhat:openshift:4.16::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.16_3a_3ael9.json",
+      "triples": 277
+    },
+    {
+      "entity": "cpe:2.3:o:microsoft:windows_server_2019:*:*:*:*:*:*:*:*",
+      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2019_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
+      "triples": 371
+    },
+    {
+      "entity": "CWE-209",
+      "file": "CWE-209.json",
       "triples": 500
     },
     {
@@ -542,48 +572,43 @@
       "triples": 500
     },
     {
-      "entity": "cpe:/a:redhat:openshift:4.16::el9",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.16_3a_3ael9.json",
-      "triples": 313
-    },
-    {
-      "entity": "CWE-23",
-      "file": "CWE-23.json",
-      "triples": 499
-    },
-    {
-      "entity": "CVE-2025-8452",
-      "file": "CVE-2025-8452.json",
-      "triples": 500
-    },
-    {
-      "entity": "CVE-2024-1139",
-      "file": "CVE-2024-1139.json",
-      "triples": 469
-    },
-    {
-      "entity": "CWE-209",
-      "file": "CWE-209.json",
-      "triples": 500
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_server_2016:*:*:*:*:*:*:*:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2016_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
-      "triples": 363
-    },
-    {
-      "entity": "cpe:2.3:o:linux:linux_kernel:-:*:*:*:*:*:*:*",
-      "file": "cpe_3a2.3_3ao_3alinux_3alinux_kernel_3a-_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
-      "triples": 424
-    },
-    {
-      "entity": "CWE-674",
-      "file": "CWE-674.json",
-      "triples": 475
+      "entity": "misp:354a7f88-63fb-41b5-a801-ce3b377b36f1",
+      "file": "misp_3a354a7f88-63fb-41b5-a801-ce3b377b36f1.json",
+      "triples": 420
     },
     {
       "entity": "CWE-319",
       "file": "CWE-319.json",
+      "triples": 500
+    },
+    {
+      "entity": "CVE-2025-8452",
+      "file": "CVE-2025-8452.json",
+      "triples": 490
+    },
+    {
+      "entity": "CVE-2024-1139",
+      "file": "CVE-2024-1139.json",
+      "triples": 390
+    },
+    {
+      "entity": "misp:df8b2a25-8bdf-4856-953c-a04372b1c161",
+      "file": "misp_3adf8b2a25-8bdf-4856-953c-a04372b1c161.json",
+      "triples": 418
+    },
+    {
+      "entity": "CWE-444",
+      "file": "CWE-444.json",
+      "triples": 499
+    },
+    {
+      "entity": "CWE-307",
+      "file": "CWE-307.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-312",
+      "file": "CWE-312.json",
       "triples": 500
     },
     {
@@ -592,9 +617,9 @@
       "triples": 500
     },
     {
-      "entity": "CWE-307",
-      "file": "CWE-307.json",
-      "triples": 500
+      "entity": "cpe:2.3:o:linux:linux_kernel:-:*:*:*:*:*:*:*",
+      "file": "cpe_3a2.3_3ao_3alinux_3alinux_kernel_3a-_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
+      "triples": 422
     },
     {
       "entity": "CWE-617",
@@ -604,17 +629,7 @@
     {
       "entity": "cpe:/a:redhat:enterprise_linux:9::appstream",
       "file": "cpe_3a_2fa_3aredhat_3aenterprise_linux_3a9_3a_3aappstream.json",
-      "triples": 323
-    },
-    {
-      "entity": "CWE-444",
-      "file": "CWE-444.json",
-      "triples": 494
-    },
-    {
-      "entity": "CWE-312",
-      "file": "CWE-312.json",
-      "triples": 500
+      "triples": 406
     },
     {
       "entity": "CWE-327",
@@ -622,19 +637,14 @@
       "triples": 500
     },
     {
-      "entity": "CVE-2025-57848",
-      "file": "CVE-2025-57848.json",
-      "triples": 460
+      "entity": "CVE-2024-12085",
+      "file": "CVE-2024-12085.json",
+      "triples": 395
     },
     {
-      "entity": "CVE-2020-28400",
-      "file": "CVE-2020-28400.json",
-      "triples": 498
-    },
-    {
-      "entity": "cpe:/a:redhat:openshift:4.12::el9",
-      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.12_3a_3ael9.json",
-      "triples": 47
+      "entity": "CWE-668",
+      "file": "CWE-668.json",
+      "triples": 499
     },
     {
       "entity": "T1068",
@@ -642,14 +652,34 @@
       "triples": 500
     },
     {
-      "entity": "CWE-668",
-      "file": "CWE-668.json",
-      "triples": 498
+      "entity": "cpe:/a:redhat:openshift:4.12::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_3a4.12_3a_3ael9.json",
+      "triples": 122
+    },
+    {
+      "entity": "CVE-2025-57848",
+      "file": "CVE-2025-57848.json",
+      "triples": 347
+    },
+    {
+      "entity": "CVE-2020-28400",
+      "file": "CVE-2020-28400.json",
+      "triples": 499
     },
     {
       "entity": "T1105",
       "file": "T1105.json",
       "triples": 500
+    },
+    {
+      "entity": "misp:7bc57495-ea59-4380-be31-a64af124ef18",
+      "file": "misp_3a7bc57495-ea59-4380-be31-a64af124ef18.json",
+      "triples": 421
+    },
+    {
+      "entity": "cpe:2.3:o:microsoft:windows_server_2016:*:*:*:*:*:*:*:*",
+      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2016_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a.json",
+      "triples": 371
     },
     {
       "entity": "CVE-2025-12799",
@@ -667,14 +697,19 @@
       "triples": 500
     },
     {
-      "entity": "CVE-2024-0793",
-      "file": "CVE-2024-0793.json",
-      "triples": 452
+      "entity": "CWE-248",
+      "file": "CWE-248.json",
+      "triples": 500
     },
     {
-      "entity": "CVE-2025-7195",
-      "file": "CVE-2025-7195.json",
-      "triples": 499
+      "entity": "misp:d1fcf083-a721-4223-aedf-bf8960798d62",
+      "file": "misp_3ad1fcf083-a721-4223-aedf-bf8960798d62.json",
+      "triples": 422
+    },
+    {
+      "entity": "misp:3ccef7ae-cb5e-48f6-8302-897105fbf55c",
+      "file": "misp_3a3ccef7ae-cb5e-48f6-8302-897105fbf55c.json",
+      "triples": 417
     },
     {
       "entity": "CWE-201",
@@ -687,29 +722,29 @@
       "triples": 500
     },
     {
-      "entity": "cpe:2.3:o:microsoft:windows_server_2012_R2:*:*:*:*:*:*:x64:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2012_R2_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
-      "triples": 363
-    },
-    {
-      "entity": "CWE-248",
-      "file": "CWE-248.json",
-      "triples": 451
-    },
-    {
-      "entity": "CVE-2025-40833",
-      "file": "CVE-2025-40833.json",
-      "triples": 498
-    },
-    {
-      "entity": "CVE-2022-23439",
-      "file": "CVE-2022-23439.json",
-      "triples": 500
+      "entity": "CVE-2024-0793",
+      "file": "CVE-2024-0793.json",
+      "triples": 353
     },
     {
       "entity": "CWE-88",
       "file": "CWE-88.json",
-      "triples": 494
+      "triples": 500
+    },
+    {
+      "entity": "CVE-2025-7195",
+      "file": "CVE-2025-7195.json",
+      "triples": 499
+    },
+    {
+      "entity": "CWE-1336",
+      "file": "CWE-1336.json",
+      "triples": 493
+    },
+    {
+      "entity": "CVE-2024-9341",
+      "file": "CVE-2024-9341.json",
+      "triples": 499
     },
     {
       "entity": "CWE-552",
@@ -717,9 +752,24 @@
       "triples": 500
     },
     {
-      "entity": "misp:e6919abc-99f9-4c6c-95a5-14761e7b2add",
-      "file": "misp_3ae6919abc-99f9-4c6c-95a5-14761e7b2add.json",
-      "triples": 500
+      "entity": "misp:8f4a33ec-8b1f-4b80-a2f6-642b2e479580",
+      "file": "misp_3a8f4a33ec-8b1f-4b80-a2f6-642b2e479580.json",
+      "triples": 411
+    },
+    {
+      "entity": "CWE-184",
+      "file": "CWE-184.json",
+      "triples": 485
+    },
+    {
+      "entity": "CVE-2025-40833",
+      "file": "CVE-2025-40833.json",
+      "triples": 499
+    },
+    {
+      "entity": "CVE-2024-10963",
+      "file": "CVE-2024-10963.json",
+      "triples": 499
     },
     {
       "entity": "CWE-126",
@@ -727,14 +777,54 @@
       "triples": 500
     },
     {
-      "entity": "cpe:2.3:o:microsoft:windows_server_2012:*:*:*:*:*:*:x64:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2012_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
-      "triples": 363
+      "entity": "CVE-2022-23439",
+      "file": "CVE-2022-23439.json",
+      "triples": 500
     },
     {
-      "entity": "CWE-184",
-      "file": "CWE-184.json",
-      "triples": 481
+      "entity": "CVE-2024-7387",
+      "file": "CVE-2024-7387.json",
+      "triples": 491
+    },
+    {
+      "entity": "CVE-2024-6508",
+      "file": "CVE-2024-6508.json",
+      "triples": 499
+    },
+    {
+      "entity": "misp:d63a3fb8-9452-4e9d-a60a-54be68d5998c",
+      "file": "misp_3ad63a3fb8-9452-4e9d-a60a-54be68d5998c.json",
+      "triples": 454
+    },
+    {
+      "entity": "CVE-2024-45496",
+      "file": "CVE-2024-45496.json",
+      "triples": 500
+    },
+    {
+      "entity": "CVE-2024-50312",
+      "file": "CVE-2024-50312.json",
+      "triples": 500
+    },
+    {
+      "entity": "CVE-2024-45497",
+      "file": "CVE-2024-45497.json",
+      "triples": 500
+    },
+    {
+      "entity": "cpe:2.3:o:microsoft:windows_server_2012_R2:*:*:*:*:*:*:x64:*",
+      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2012_R2_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
+      "triples": 374
+    },
+    {
+      "entity": "misp:707399d6-ab3e-4963-9315-d9d3818cd6a0",
+      "file": "misp_3a707399d6-ab3e-4963-9315-d9d3818cd6a0.json",
+      "triples": 381
+    },
+    {
+      "entity": "CVE-2024-3727",
+      "file": "CVE-2024-3727.json",
+      "triples": 472
     },
     {
       "entity": "CVE-2023-4699",
@@ -742,29 +832,19 @@
       "triples": 498
     },
     {
-      "entity": "CVE-2024-3727",
-      "file": "CVE-2024-3727.json",
-      "triples": 412
-    },
-    {
       "entity": "CVE-2022-33321",
       "file": "CVE-2022-33321.json",
       "triples": 494
     },
     {
-      "entity": "CWE-384",
-      "file": "CWE-384.json",
-      "triples": 428
+      "entity": "CWE-829",
+      "file": "CWE-829.json",
+      "triples": 460
     },
     {
-      "entity": "CWE-1336",
-      "file": "CWE-1336.json",
-      "triples": 488
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_server_2008_R2:*:*:*:*:*:*:x64:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2008_R2_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
-      "triples": 363
+      "entity": "CWE-915",
+      "file": "CWE-915.json",
+      "triples": 463
     },
     {
       "entity": "cpe:2.3:a:gitlab:gitlab:*:*:*:*:*:*:*:*",
@@ -772,9 +852,89 @@
       "triples": 500
     },
     {
-      "entity": "CVE-2024-1394",
-      "file": "CVE-2024-1394.json",
+      "entity": "CWE-384",
+      "file": "CWE-384.json",
+      "triples": 500
+    },
+    {
+      "entity": "CWE-789",
+      "file": "CWE-789.json",
+      "triples": 401
+    },
+    {
+      "entity": "CWE-191",
+      "file": "CWE-191.json",
+      "triples": 453
+    },
+    {
+      "entity": "cpe:/a:redhat:jboss_enterprise_application_platform_els:7.4::el7",
+      "file": "cpe_3a_2fa_3aredhat_3ajboss_enterprise_application_platform_els_3a7.4_3a_3ael7.json",
+      "triples": 160
+    },
+    {
+      "entity": "misp:9efb1ea7-c37b-4595-9640-b7680cd84279",
+      "file": "misp_3a9efb1ea7-c37b-4595-9640-b7680cd84279.json",
+      "triples": 420
+    },
+    {
+      "entity": "misp:970a3432-3237-47ad-bcca-7d8cbb217736",
+      "file": "misp_3a970a3432-3237-47ad-bcca-7d8cbb217736.json",
+      "triples": 443
+    },
+    {
+      "entity": "cpe:/a:redhat:openstack:16.2",
+      "file": "cpe_3a_2fa_3aredhat_3aopenstack_3a16.2.json",
+      "triples": 136
+    },
+    {
+      "entity": "cpe:/o:redhat:enterprise_linux:10.2",
+      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a10.2.json",
+      "triples": 431
+    },
+    {
+      "entity": "CWE-426",
+      "file": "CWE-426.json",
+      "triples": 453
+    },
+    {
+      "entity": "CWE-95",
+      "file": "CWE-95.json",
+      "triples": 431
+    },
+    {
+      "entity": "CVE-2026-14256",
+      "file": "CVE-2026-14256.json",
+      "triples": 496
+    },
+    {
+      "entity": "CWE-1284",
+      "file": "CWE-1284.json",
+      "triples": 498
+    },
+    {
+      "entity": "misp:03d7999c-1f4c-42cc-8373-e7690d318104",
+      "file": "misp_3a03d7999c-1f4c-42cc-8373-e7690d318104.json",
+      "triples": 419
+    },
+    {
+      "entity": "CWE-93",
+      "file": "CWE-93.json",
+      "triples": 461
+    },
+    {
+      "entity": "CVE-2026-34986",
+      "file": "CVE-2026-34986.json",
       "triples": 499
+    },
+    {
+      "entity": "cpe:/a:redhat:rhel_aus:8.6::appstream",
+      "file": "cpe_3a_2fa_3aredhat_3arhel_aus_3a8.6_3a_3aappstream.json",
+      "triples": 283
+    },
+    {
+      "entity": "CWE-208",
+      "file": "CWE-208.json",
+      "triples": 361
     },
     {
       "entity": "GHSA-c6w8-7mp3-34j9",
@@ -782,24 +942,34 @@
       "triples": 476
     },
     {
-      "entity": "cpe:/a:redhat:rhel_aus:8.6::appstream",
-      "file": "cpe_3a_2fa_3aredhat_3arhel_aus_3a8.6_3a_3aappstream.json",
-      "triples": 345
-    },
-    {
-      "entity": "CWE-829",
-      "file": "CWE-829.json",
-      "triples": 481
-    },
-    {
-      "entity": "CWE-915",
-      "file": "CWE-915.json",
-      "triples": 451
-    },
-    {
       "entity": "CWE-755",
       "file": "CWE-755.json",
-      "triples": 483
+      "triples": 473
+    },
+    {
+      "entity": "CVE-2024-1394",
+      "file": "CVE-2024-1394.json",
+      "triples": 499
+    },
+    {
+      "entity": "cpe:2.3:o:microsoft:windows_server_2012:*:*:*:*:*:*:x64:*",
+      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2012_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
+      "triples": 384
+    },
+    {
+      "entity": "cpe:/a:redhat:enterprise_linux:9",
+      "file": "cpe_3a_2fa_3aredhat_3aenterprise_linux_3a9.json",
+      "triples": 438
+    },
+    {
+      "entity": "cpe:/o:redhat:enterprise_linux_eus:10.0",
+      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_eus_3a10.0.json",
+      "triples": 433
+    },
+    {
+      "entity": "CWE-129",
+      "file": "CWE-129.json",
+      "triples": 497
     },
     {
       "entity": "T1082",
@@ -807,204 +977,34 @@
       "triples": 500
     },
     {
-      "entity": "cpe:/o:redhat:enterprise_linux_eus:10.0",
-      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_eus_3a10.0.json",
-      "triples": 414
-    },
-    {
-      "entity": "CWE-426",
-      "file": "CWE-426.json",
-      "triples": 495
-    },
-    {
-      "entity": "CWE-789",
-      "file": "CWE-789.json",
-      "triples": 426
-    },
-    {
-      "entity": "CVE-2017-12736",
-      "file": "CVE-2017-12736.json",
-      "triples": 499
-    },
-    {
-      "entity": "cpe:/a:redhat:enterprise_linux_ai:3",
-      "file": "cpe_3a_2fa_3aredhat_3aenterprise_linux_ai_3a3.json",
-      "triples": 395
-    },
-    {
-      "entity": "CVE-2026-34986",
-      "file": "CVE-2026-34986.json",
-      "triples": 496
-    },
-    {
       "entity": "cpe:/a:redhat:enterprise_linux:8::appstream",
       "file": "cpe_3a_2fa_3aredhat_3aenterprise_linux_3a8_3a_3aappstream.json",
-      "triples": 331
-    },
-    {
-      "entity": "CWE-129",
-      "file": "CWE-129.json",
-      "triples": 496
-    },
-    {
-      "entity": "CWE-191",
-      "file": "CWE-191.json",
-      "triples": 431
-    },
-    {
-      "entity": "CWE-208",
-      "file": "CWE-208.json",
-      "triples": 389
-    },
-    {
-      "entity": "0f59ce3b-20ac-41ba-8010-2abc74827eb8",
-      "file": "0f59ce3b-20ac-41ba-8010-2abc74827eb8.json",
-      "triples": 434
+      "triples": 385
     },
     {
       "entity": "CWE-250",
       "file": "CWE-250.json",
-      "triples": 490
+      "triples": 486
     },
     {
-      "entity": "T1071.001",
-      "file": "T1071.001.json",
-      "triples": 500
-    },
-    {
-      "entity": "cpe:/o:redhat:enterprise_linux:10.2",
-      "file": "cpe_3a_2fo_3aredhat_3aenterprise_linux_3a10.2.json",
-      "triples": 435
-    },
-    {
-      "entity": "T1059.001",
-      "file": "T1059.001.json",
-      "triples": 500
+      "entity": "cpe:/a:redhat:openshift_data_foundation:4.22::el9",
+      "file": "cpe_3a_2fa_3aredhat_3aopenshift_data_foundation_3a4.22_3a_3ael9.json",
+      "triples": 97
     },
     {
       "entity": "CWE-415",
       "file": "CWE-415.json",
-      "triples": 495
+      "triples": 447
     },
     {
-      "entity": "CVE-2025-56005",
-      "file": "CVE-2025-56005.json",
-      "triples": 499
-    },
-    {
-      "entity": "CVE-2022-31765",
-      "file": "CVE-2022-31765.json",
-      "triples": 499
-    },
-    {
-      "entity": "CWE-93",
-      "file": "CWE-93.json",
+      "entity": "CVE-2017-12736",
+      "file": "CVE-2017-12736.json",
       "triples": 500
     },
     {
-      "entity": "CWE-95",
-      "file": "CWE-95.json",
-      "triples": 451
-    },
-    {
-      "entity": "CVE-2022-36324",
-      "file": "CVE-2022-36324.json",
-      "triples": 498
-    },
-    {
-      "entity": "CVE-2022-36323",
-      "file": "CVE-2022-36323.json",
-      "triples": 499
-    },
-    {
-      "entity": "CVE-2022-36325",
-      "file": "CVE-2022-36325.json",
-      "triples": 499
-    },
-    {
-      "entity": "CWE-497",
-      "file": "CWE-497.json",
-      "triples": 499
-    },
-    {
-      "entity": "misp:354a7f88-63fb-41b5-a801-ce3b377b36f1",
-      "file": "misp_3a354a7f88-63fb-41b5-a801-ce3b377b36f1.json",
-      "triples": 499
-    },
-    {
-      "entity": "cpe:/a:redhat:enterprise_linux:9",
-      "file": "cpe_3a_2fa_3aredhat_3aenterprise_linux_3a9.json",
-      "triples": 401
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_server_2008_sp2:*:*:*:*:*:*:x86:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2008_sp2_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax86_3a_2a.json",
-      "triples": 363
-    },
-    {
-      "entity": "CWE-1284",
-      "file": "CWE-1284.json",
-      "triples": 469
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_10_1809:*:*:*:*:*:*:arm64:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_10_1809_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3aarm64_3a_2a.json",
-      "triples": 492
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_10_1809:*:*:*:*:*:*:x86:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_10_1809_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax86_3a_2a.json",
-      "triples": 492
-    },
-    {
-      "entity": "GHSA-5844-q3fc-56rh",
-      "file": "GHSA-5844-q3fc-56rh.json",
-      "triples": 481
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_server_2008_sp2:*:*:*:*:*:*:x64:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2008_sp2_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
-      "triples": 363
-    },
-    {
-      "entity": "CVE-2026-35159",
-      "file": "CVE-2026-35159.json",
-      "triples": 500
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_10_1803:*:*:*:*:*:*:x64:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_10_1803_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
-      "triples": 491
-    },
-    {
-      "entity": "misp:df8b2a25-8bdf-4856-953c-a04372b1c161",
-      "file": "misp_3adf8b2a25-8bdf-4856-953c-a04372b1c161.json",
-      "triples": 500
-    },
-    {
-      "entity": "CVE-2024-51982",
-      "file": "CVE-2024-51982.json",
-      "triples": 500
-    },
-    {
-      "entity": "CVE-2022-46143",
-      "file": "CVE-2022-46143.json",
-      "triples": 498
-    },
-    {
-      "entity": "cpe:/a:redhat:rhel_aus:8.4::appstream",
-      "file": "cpe_3a_2fa_3aredhat_3arhel_aus_3a8.4_3a_3aappstream.json",
-      "triples": 325
-    },
-    {
-      "entity": "T1059.003",
-      "file": "T1059.003.json",
-      "triples": 499
-    },
-    {
-      "entity": "cpe:2.3:o:microsoft:windows_10_1803:*:*:*:*:*:*:arm64:*",
-      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_10_1803_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3aarm64_3a_2a.json",
-      "triples": 486
+      "entity": "cpe:2.3:o:microsoft:windows_server_2008_R2:*:*:*:*:*:*:x64:*",
+      "file": "cpe_3a2.3_3ao_3amicrosoft_3awindows_server_2008_R2_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3a_2a_3ax64_3a_2a.json",
+      "triples": 373
     }
   ]
 }

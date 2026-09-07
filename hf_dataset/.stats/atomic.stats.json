@@ -1,96 +1,96 @@
 {
-  "totalTriples": 11061,
-  "uniqueSubjects": 1817,
-  "uniqueObjects": 3878,
+  "totalTriples": 11442,
+  "uniqueSubjects": 1878,
+  "uniqueObjects": 4004,
   "uniquePredicates": 6,
   "bySource": [
     {
       "source": "atomic",
-      "count": 11061
+      "count": 11442
     }
   ],
   "topPredicates": [
     {
       "predicate": "platform",
-      "count": 1976
-    },
-    {
-      "predicate": "tests-technique",
-      "count": 1817
-    },
-    {
-      "predicate": "name",
-      "count": 1817
-    },
-    {
-      "predicate": "executor",
-      "count": 1817
-    },
-    {
-      "predicate": "rdf:type",
-      "count": 1817
+      "count": 2052
     },
     {
       "predicate": "description",
-      "count": 1817
+      "count": 1878
+    },
+    {
+      "predicate": "executor",
+      "count": 1878
+    },
+    {
+      "predicate": "rdf:type",
+      "count": 1878
+    },
+    {
+      "predicate": "tests-technique",
+      "count": 1878
+    },
+    {
+      "predicate": "name",
+      "count": 1878
     }
   ],
   "topConnectedEntities": [
     {
       "entity": "AtomicTest",
-      "count": 1817
+      "count": 1878
     },
     {
       "entity": "windows",
-      "count": 1225
+      "count": 1260
     },
     {
       "entity": "powershell",
-      "count": 703
+      "count": 734
     },
     {
       "entity": "command_prompt",
-      "count": 559
+      "count": 563
     },
     {
       "entity": "sh",
-      "count": 411
+      "count": 435
     },
     {
       "entity": "linux",
-      "count": 410
+      "count": 434
     },
     {
       "entity": "macos",
-      "count": 250
+      "count": 267
     },
     {
       "entity": "bash",
-      "count": 128
+      "count": 130
     },
     {
       "entity": "T1112",
-      "count": 90
+      "count": 92
     },
     {
       "entity": "T1685",
-      "count": 77
+      "count": 78
     },
     {
       "entity": "T1082",
-      "count": 40
+      "count": 41
     },
     {
       "entity": "T1105",
       "count": 39
     },
     {
-      "entity": "T1548.002",
-      "count": 27
+      "entity": "T1552.001",
+      "count": 32
     },
     {
-      "entity": "iaas:aws",
-      "count": 25
+      "entity": "T1548.002",
+      "count": 28
     },
     {
       "entity": "T1686",
@@ -98,5 +98,5 @@
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:06Z"
+  "generatedAt": "2026-09-07T11:32:26Z"
 }
