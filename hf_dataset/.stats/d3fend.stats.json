@@ -1,30 +1,30 @@
 {
-  "totalTriples": 8473,
-  "uniqueSubjects": 2013,
-  "uniqueObjects": 4434,
+  "totalTriples": 8513,
+  "uniqueSubjects": 2023,
+  "uniqueObjects": 4454,
   "uniquePredicates": 8,
   "bySource": [
     {
       "source": "d3fend",
-      "count": 8473
+      "count": 8513
     }
   ],
   "topPredicates": [
     {
       "predicate": "child-of",
-      "count": 2206
+      "count": 2216
     },
     {
       "predicate": "rdf:type",
-      "count": 2044
-    },
-    {
-      "predicate": "d3fend-definition",
-      "count": 1547
+      "count": 2054
     },
     {
       "predicate": "d3fend-name",
-      "count": 1547
+      "count": 1557
+    },
+    {
+      "predicate": "d3fend-definition",
+      "count": 1557
     },
     {
       "predicate": "name",
@@ -46,7 +46,7 @@
   "topConnectedEntities": [
     {
       "entity": "OffensiveTechnique",
-      "count": 1547
+      "count": 1557
     },
     {
       "entity": "DefensiveTechnique",
@@ -85,11 +85,11 @@
       "count": 28
     },
     {
-      "entity": "ATTACKMobileCollectionTechnique",
+      "entity": "T1546",
       "count": 23
     },
     {
-      "entity": "T1546",
+      "entity": "ATTACKMobileCollectionTechnique",
       "count": 23
     },
     {
@@ -97,14 +97,14 @@
       "count": 22
     },
     {
-      "entity": "LateralMovementTechnique",
+      "entity": "ImpactTechnique",
       "count": 20
     },
     {
-      "entity": "ImpactTechnique",
+      "entity": "T1547",
       "count": 20
     }
   ],
   "crossSourceLinks": [],
-  "generatedAt": "2026-08-10T07:29:05Z"
+  "generatedAt": "2026-09-07T11:32:25Z"
 }
